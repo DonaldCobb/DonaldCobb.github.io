@@ -1,51 +1,78 @@
-<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Референсы Штаба</title>
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"><title>Референсы Штаба</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
-:root{--bg:#f4f4f2;--card:#fff;--ink:#111;--muted:#666;--acc:#2f6bff}
-body{font-family:system-ui,-apple-system,sans-serif;margin:0;background:var(--bg);color:var(--ink);padding-bottom:90px}
-h1{font-size:20px;margin:0;padding:16px 16px 4px}p{margin:0;padding:0 16px 8px;color:var(--muted);font-size:14px}
-.g{columns:2 160px;gap:10px;padding:10px}
-figure{break-inside:avoid;margin:0 0 10px;background:var(--card);border-radius:14px;overflow:hidden;position:relative;border:2px solid transparent}
-figure.on{border-color:var(--acc)}
-img{width:100%;display:block}
-figcaption{position:absolute;top:8px;left:8px;background:#111;color:#fff;font-weight:700;border-radius:8px;padding:2px 9px}
-.pick{display:flex;gap:6px;align-items:center;padding:8px 10px 0;font-size:14px}
-textarea{width:calc(100% - 20px);margin:6px 10px 10px;border:1px solid #ddd;border-radius:8px;padding:6px;font:inherit;font-size:13px;min-height:34px;resize:vertical;box-sizing:border-box}
-.bar{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid #e5e5e5;padding:10px 16px;display:flex;gap:8px;align-items:center}
-.bar button{flex:1;border:0;border-radius:12px;padding:12px;font:600 15px system-ui;background:var(--acc);color:#fff}
-.bar .sec{background:#eee;color:#111;flex:0 0 auto}
-#cnt{font-size:13px;color:var(--muted)}
+:root{--bg:#f4f4f2;--card:#fff;--ink:#111;--muted:#666;--yes:#1f9d55;--no:#d93636;--acc:#2f6bff}
+*{box-sizing:border-box}body{font-family:system-ui,-apple-system,sans-serif;margin:0;background:var(--bg);color:var(--ink);padding-bottom:84px}
+header{display:flex;align-items:center;gap:8px;padding:14px 16px 6px}h1{font-size:19px;margin:0;flex:1}
+.mode{border:0;background:#111;color:#fff;border-radius:10px;padding:8px 12px;font:600 14px system-ui}
+p.hint{margin:0;padding:0 16px 8px;color:var(--muted);font-size:13px}
+.g{columns:2 150px;gap:10px;padding:10px}
+figure{break-inside:avoid;margin:0 0 10px;background:var(--card);border-radius:14px;overflow:hidden;position:relative;border:3px solid transparent}
+figure.yes{border-color:var(--yes)}figure.no{border-color:var(--no);opacity:.75}
+figure img{width:100%;display:block;cursor:zoom-in}
+.num{position:absolute;top:8px;left:8px;background:#111;color:#fff;font-weight:700;border-radius:8px;padding:2px 9px;font-size:13px}
+.vote{display:flex;gap:6px;padding:8px}
+.vote button{flex:1;border:1px solid #ddd;background:#fff;border-radius:10px;padding:8px 4px;font:600 13px system-ui}
+.vote .y.on{background:var(--yes);color:#fff;border-color:var(--yes)}.vote .n.on{background:var(--no);color:#fff;border-color:var(--no)}
+textarea{width:calc(100% - 16px);margin:0 8px 8px;border:1px solid #ddd;border-radius:8px;padding:7px;font:inherit;font-size:14px;min-height:36px;resize:vertical}
+.bar{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid #e5e5e5;padding:10px 16px;display:flex;gap:8px;align-items:center;z-index:5}
+.bar button{border:0;border-radius:12px;padding:12px;font:600 15px system-ui}
+#send{flex:1;background:var(--acc);color:#fff}#copy{background:#eee}
+#cnt{font-size:12px;color:var(--muted);min-width:70px}
+/* просмотр по одной */
+#viewer{position:fixed;inset:0;background:#0b0b0b;display:none;flex-direction:column;z-index:10}
+#viewer.open{display:flex}
+#vtop{display:flex;align-items:center;color:#fff;padding:10px 14px;gap:10px}
+#vtop b{flex:1;font-size:16px}#vtop button{background:#222;color:#fff;border:0;border-radius:10px;padding:8px 12px;font:600 14px system-ui}
+#vimgwrap{flex:1;display:flex;align-items:center;justify-content:center;overflow:auto;touch-action:pan-y pinch-zoom}
+#vimg{max-width:100%;max-height:100%;object-fit:contain}
+#vpanel{background:#161616;padding:10px 12px 14px}
+#vpanel .vote button{background:#222;color:#fff;border-color:#333;padding:12px 4px;font-size:15px}
+#vpanel textarea{width:100%;margin:8px 0 0;background:#222;color:#fff;border-color:#333}
+#vnav{display:flex;gap:8px;margin-top:8px}#vnav button{flex:1;background:#2a2a2a;color:#fff;border:0;border-radius:10px;padding:11px;font:600 14px system-ui}
 </style></head><body>
-<h1>Референсы для Штаба · 17</h1><p>Отметь, что нравится, и напиши пару слов. Потом «Отправить боту».</p>
-<div class="g"><figure data-n="1"><img loading="lazy" src="https://i.pinimg.com/736x/05/22/a3/0522a36abbf8ec0bdc5a7715a3914466.jpg"><figcaption>1</figcaption><label class="pick"><input type="checkbox"> нравится</label><textarea placeholder="что нравится / что нет"></textarea></figure>
-<figure data-n="2"><img loading="lazy" src="https://i.pinimg.com/736x/b8/1e/c5/b81ec59eabf0fdc3d0db21875a5c5539.jpg"><figcaption>2</figcaption><label class="pick"><input type="checkbox"> нравится</label><textarea placeholder="что нравится / что нет"></textarea></figure>
-<figure data-n="3"><img loading="lazy" src="https://i.pinimg.com/736x/38/29/75/3829751d99fc855f410c77697df64720.jpg"><figcaption>3</figcaption><label class="pick"><input type="checkbox"> нравится</label><textarea placeholder="что нравится / что нет"></textarea></figure>
-<figure data-n="4"><img loading="lazy" src="https://i.pinimg.com/736x/86/01/70/860170b9d079ffc539ea04edd7b538ba.jpg"><figcaption>4</figcaption><label class="pick"><input type="checkbox"> нравится</label><textarea placeholder="что нравится / что нет"></textarea></figure>
-<figure data-n="5"><img loading="lazy" src="https://i.pinimg.com/736x/ad/14/57/ad145727518ed50277fdcb38ede09209.jpg"><figcaption>5</figcaption><label class="pick"><input type="checkbox"> нравится</label><textarea placeholder="что нравится / что нет"></textarea></figure>
-<figure data-n="6"><img loading="lazy" src="https://i.pinimg.com/736x/85/6f/30/856f3062ec23cf64518b8029be074b8d.jpg"><figcaption>6</figcaption><label class="pick"><input type="checkbox"> нравится</label><textarea placeholder="что нравится / что нет"></textarea></figure>
-<figure data-n="7"><img loading="lazy" src="https://i.pinimg.com/736x/7b/b0/2f/7bb02fd3805e9d60417de963b06ad9c2.jpg"><figcaption>7</figcaption><label class="pick"><input type="checkbox"> нравится</label><textarea placeholder="что нравится / что нет"></textarea></figure>
-<figure data-n="8"><img loading="lazy" src="https://i.pinimg.com/736x/41/02/e2/4102e21096a0d67838661ff3960cd49a.jpg"><figcaption>8</figcaption><label class="pick"><input type="checkbox"> нравится</label><textarea placeholder="что нравится / что нет"></textarea></figure>
-<figure data-n="9"><img loading="lazy" src="https://i.pinimg.com/736x/c5/de/26/c5de26fd195ad221c23e2560ffe9b4a1.jpg"><figcaption>9</figcaption><label class="pick"><input type="checkbox"> нравится</label><textarea placeholder="что нравится / что нет"></textarea></figure>
-<figure data-n="10"><img loading="lazy" src="https://i.pinimg.com/736x/3c/c2/4b/3cc24bb68ae2ff3e40b482dfe2ea8f73.jpg"><figcaption>10</figcaption><label class="pick"><input type="checkbox"> нравится</label><textarea placeholder="что нравится / что нет"></textarea></figure>
-<figure data-n="11"><img loading="lazy" src="https://i.pinimg.com/736x/fb/07/e5/fb07e583250f4114510e0916a0bb351f.jpg"><figcaption>11</figcaption><label class="pick"><input type="checkbox"> нравится</label><textarea placeholder="что нравится / что нет"></textarea></figure>
-<figure data-n="12"><img loading="lazy" src="https://i.pinimg.com/736x/8d/69/76/8d6976b5cd8373d404629f5d0483a120.jpg"><figcaption>12</figcaption><label class="pick"><input type="checkbox"> нравится</label><textarea placeholder="что нравится / что нет"></textarea></figure>
-<figure data-n="13"><img loading="lazy" src="https://i.pinimg.com/736x/69/af/c6/69afc6842f8537db8a2b78b024dce3be.jpg"><figcaption>13</figcaption><label class="pick"><input type="checkbox"> нравится</label><textarea placeholder="что нравится / что нет"></textarea></figure>
-<figure data-n="14"><img loading="lazy" src="https://i.pinimg.com/736x/89/22/30/89223090c6e4d43ed744da9e6f13eb0d.jpg"><figcaption>14</figcaption><label class="pick"><input type="checkbox"> нравится</label><textarea placeholder="что нравится / что нет"></textarea></figure>
-<figure data-n="15"><img loading="lazy" src="https://i.pinimg.com/736x/ed/54/36/ed5436743e5ab154ceb77457a36506e0.jpg"><figcaption>15</figcaption><label class="pick"><input type="checkbox"> нравится</label><textarea placeholder="что нравится / что нет"></textarea></figure>
-<figure data-n="16"><img loading="lazy" src="https://i.pinimg.com/736x/85/ba/95/85ba95ea5a25d4ac98617e3fc81196e4.jpg"><figcaption>16</figcaption><label class="pick"><input type="checkbox"> нравится</label><textarea placeholder="что нравится / что нет"></textarea></figure>
-<figure data-n="17"><img loading="lazy" src="https://i.pinimg.com/736x/b4/49/fc/b449fcc06309f1598781513353805070.jpg"><figcaption>17</figcaption><label class="pick"><input type="checkbox"> нравится</label><textarea placeholder="что нравится / что нет"></textarea></figure></div>
-<div class="bar"><span id="cnt">0</span><button class="sec" id="copy">Копировать</button><button id="send">Отправить боту</button></div>
+<header><h1>Референсы · <span id="tot"></span></h1><button class="mode" id="one">По одной ▶</button></header>
+<p class="hint">Нажми на картинку — откроется крупно, листай свайпом. «Нравится / Не нравится» сразу открывает поле для пары слов.</p>
+<div class="g" id="g"></div>
+<div class="bar"><span id="cnt"></span><button id="copy">Копировать</button><button id="send">Отправить боту</button></div>
+<div id="viewer"><div id="vtop"><b id="vtitle"></b><button id="vclose">Сетка ✕</button></div>
+<div id="vimgwrap"><img id="vimg" alt=""></div>
+<div id="vpanel"><div class="vote"><button class="y" id="vy">👍 Нравится</button><button class="n" id="vn">👎 Не нравится</button></div>
+<textarea id="vta" placeholder="почему — пара слов"></textarea>
+<div id="vnav"><button id="vprev">◀ Назад</button><button id="vnext">Дальше ▶</button></div></div></div>
 <script>
-const KEY='refs-shtab-v1';
-const figs=[...document.querySelectorAll('figure')];
-let st={}; try{st=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){}
-function save(){try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}}
-function upd(){let n=0;figs.forEach(f=>{const s=st[f.dataset.n]||{};f.classList.toggle('on',!!s.on);if(s.on)n++});document.getElementById('cnt').textContent='выбрано: '+n}
-figs.forEach(f=>{const n=f.dataset.n,cb=f.querySelector('input'),ta=f.querySelector('textarea');const s=st[n]||{};cb.checked=!!s.on;ta.value=s.c||'';
- cb.onchange=()=>{st[n]={...(st[n]||{}),on:cb.checked};save();upd()};ta.oninput=()=>{st[n]={...(st[n]||{}),c:ta.value};if(ta.value&&!cb.checked){cb.checked=true;st[n].on=true}save();upd()}});
-upd();
-function text(){const L=[];figs.forEach(f=>{const s=st[f.dataset.n];if(s&&(s.on||s.c))L.push(f.dataset.n+(s.on?' ✅':'')+(s.c?' — '+s.c.trim():''))});return 'Референсы Штаба:\n'+(L.join('\n')||'ничего не выбрано')}
+const URLS=["https://i.pinimg.com/736x/05/22/a3/0522a36abbf8ec0bdc5a7715a3914466.jpg", "https://i.pinimg.com/736x/b8/1e/c5/b81ec59eabf0fdc3d0db21875a5c5539.jpg", "https://i.pinimg.com/736x/38/29/75/3829751d99fc855f410c77697df64720.jpg", "https://i.pinimg.com/736x/86/01/70/860170b9d079ffc539ea04edd7b538ba.jpg", "https://i.pinimg.com/736x/ad/14/57/ad145727518ed50277fdcb38ede09209.jpg", "https://i.pinimg.com/736x/85/6f/30/856f3062ec23cf64518b8029be074b8d.jpg", "https://i.pinimg.com/736x/7b/b0/2f/7bb02fd3805e9d60417de963b06ad9c2.jpg", "https://i.pinimg.com/736x/41/02/e2/4102e21096a0d67838661ff3960cd49a.jpg", "https://i.pinimg.com/736x/c5/de/26/c5de26fd195ad221c23e2560ffe9b4a1.jpg", "https://i.pinimg.com/736x/3c/c2/4b/3cc24bb68ae2ff3e40b482dfe2ea8f73.jpg", "https://i.pinimg.com/736x/fb/07/e5/fb07e583250f4114510e0916a0bb351f.jpg", "https://i.pinimg.com/736x/8d/69/76/8d6976b5cd8373d404629f5d0483a120.jpg", "https://i.pinimg.com/736x/69/af/c6/69afc6842f8537db8a2b78b024dce3be.jpg", "https://i.pinimg.com/736x/89/22/30/89223090c6e4d43ed744da9e6f13eb0d.jpg", "https://i.pinimg.com/736x/ed/54/36/ed5436743e5ab154ceb77457a36506e0.jpg", "https://i.pinimg.com/736x/85/ba/95/85ba95ea5a25d4ac98617e3fc81196e4.jpg", "https://i.pinimg.com/736x/b4/49/fc/b449fcc06309f1598781513353805070.jpg"]; const KEY='refs-shtab-v2';
+let st={};try{st=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}};
+const g=document.getElementById('g'); document.getElementById('tot').textContent=URLS.length;
+URLS.forEach((u,i)=>{const n=i+1;const f=document.createElement('figure');f.dataset.n=n;
+f.innerHTML=`<img loading="lazy" src="${u}"><span class="num">${n}</span><div class="vote"><button class="y">👍 Нравится</button><button class="n">👎 Нет</button></div><textarea placeholder="почему — пара слов"></textarea>`;
+g.appendChild(f);
+const ta=f.querySelector('textarea');ta.value=(st[n]||{}).c||'';
+f.querySelector('img').onclick=()=>openV(i);
+f.querySelector('.y').onclick=()=>{vote(n,'yes');ta.focus()};
+f.querySelector('.n').onclick=()=>{vote(n,'no');ta.focus()};
+ta.oninput=()=>{st[n]={...(st[n]||{}),c:ta.value};save();paint()};});
+function vote(n,v){const s=st[n]||{};s.v=(s.v===v?undefined:v);st[n]=s;save();paint()}
+function paint(){let y=0,no=0;document.querySelectorAll('figure').forEach(f=>{const s=st[f.dataset.n]||{};f.classList.toggle('yes',s.v==='yes');f.classList.toggle('no',s.v==='no');
+f.querySelector('.y').classList.toggle('on',s.v==='yes');f.querySelector('.n').classList.toggle('on',s.v==='no');if(s.v==='yes')y++;if(s.v==='no')no++});
+document.getElementById('cnt').textContent=`👍 ${y} · 👎 ${no}`; if(cur>=0) paintV()}
+let cur=-1;const V=document.getElementById('viewer'),vimg=document.getElementById('vimg'),vta=document.getElementById('vta');
+function openV(i){cur=i;V.classList.add('open');showV()}
+function showV(){const n=cur+1;vimg.src=URLS[cur];document.getElementById('vtitle').textContent=`${n} из ${URLS.length}`;vta.value=(st[n]||{}).c||'';paintV()}
+function paintV(){const s=st[cur+1]||{};document.getElementById('vy').classList.toggle('on',s.v==='yes');document.getElementById('vn').classList.toggle('on',s.v==='no')}
+document.getElementById('vy').onclick=()=>{vote(cur+1,'yes');vta.focus()};
+document.getElementById('vn').onclick=()=>{vote(cur+1,'no');vta.focus()};
+vta.oninput=()=>{const n=cur+1;st[n]={...(st[n]||{}),c:vta.value};save();const f=document.querySelector(`figure[data-n="${n}"] textarea`);if(f)f.value=vta.value};
+const go=d=>{cur=(cur+d+URLS.length)%URLS.length;showV()};
+document.getElementById('vnext').onclick=()=>go(1);document.getElementById('vprev').onclick=()=>go(-1);
+document.getElementById('vclose').onclick=()=>{V.classList.remove('open');cur=-1;paint()};
+document.getElementById('one').onclick=()=>openV(0);
+let x0=null;const w=document.getElementById('vimgwrap');w.addEventListener('touchstart',e=>{x0=e.touches[0].clientX},{passive:true});
+w.addEventListener('touchend',e=>{if(x0===null)return;const dx=e.changedTouches[0].clientX-x0;if(Math.abs(dx)>50)go(dx<0?1:-1);x0=null});
+function text(){const L=[];URLS.forEach((u,i)=>{const n=i+1,s=st[n];if(s&&(s.v||s.c))L.push(n+' '+(s.v==='yes'?'👍':s.v==='no'?'👎':'·')+(s.c?' — '+s.c.trim():''))});return 'Референсы Штаба:\n'+(L.join('\n')||'ничего не отмечено')}
 document.getElementById('copy').onclick=async()=>{try{await navigator.clipboard.writeText(text());alert('Скопировано — вставь в чат с ботом')}catch(e){prompt('Скопируй:',text())}};
-document.getElementById('send').onclick=()=>{const u='https://t.me/airemeev_bot?text='+encodeURIComponent(text());const tg=window.Telegram&&Telegram.WebApp;if(tg&&tg.openTelegramLink){tg.openTelegramLink(u)}else{location.href=u}};
-if(window.Telegram&&Telegram.WebApp){Telegram.WebApp.ready();Telegram.WebApp.expand()}
+document.getElementById('send').onclick=()=>{const u='https://t.me/airemeev_bot?text='+encodeURIComponent(text());const tg=window.Telegram&&Telegram.WebApp;if(tg&&tg.openTelegramLink)tg.openTelegramLink(u);else location.href=u};
+try{const old=JSON.parse(localStorage.getItem('refs-shtab-v1')||'{}');for(const k in old){if(!st[k])st[k]={v:old[k].on?'yes':undefined,c:old[k].c||''}}save()}catch(e){}
+paint(); if(window.Telegram&&Telegram.WebApp){Telegram.WebApp.ready();Telegram.WebApp.expand()}
 </script></body></html>
