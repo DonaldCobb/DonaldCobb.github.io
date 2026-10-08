@@ -1,0 +1,29 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"><title>Чек-лист</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+*{box-sizing:border-box}body{font-family:system-ui,-apple-system,sans-serif;margin:0;background:#f4f4f2;color:#111;padding:16px 16px 96px}
+h1{font-size:19px;line-height:1.3;margin:4px 0 14px}
+label{display:flex;gap:12px;align-items:center;background:#fff;border-radius:14px;padding:14px;margin:0 0 8px;font-size:16px;border:2px solid transparent}
+label.on{border-color:#2f6bff}input[type=checkbox]{width:22px;height:22px;flex:none}
+textarea{width:100%;border:1px solid #ddd;border-radius:12px;padding:10px;font:inherit;font-size:15px;min-height:70px;margin-top:6px}
+.bar{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid #e5e5e5;padding:10px 16px}
+button{width:100%;border:0;border-radius:12px;padding:14px;font:600 16px system-ui;background:#2f6bff;color:#fff}
+</style></head><body>
+<h1 id="q"></h1><div id="opts"></div><textarea id="note" placeholder="Своё / комментарий (необязательно)"></textarea>
+<div class="bar"><button id="send">Отправить боту</button></div>
+<script>
+// Адрес: /ask/#q=<вопрос>&o=<вариант1>|<вариант2>|...&id=<метка>
+const h=new URLSearchParams(location.hash.slice(1));
+const q=h.get('q')||'Отметь всё, что правда', ops=(h.get('o')||'').split('|').filter(Boolean), id=h.get('id')||'';
+document.getElementById('q').textContent=q;
+const box=document.getElementById('opts');
+ops.forEach((o,i)=>{const l=document.createElement('label');l.innerHTML=`<input type="checkbox"><span></span>`;l.querySelector('span').textContent=o;
+l.querySelector('input').onchange=e=>l.classList.toggle('on',e.target.checked);box.appendChild(l)});
+document.getElementById('send').onclick=()=>{
+ const sel=[...box.querySelectorAll('label')].filter(l=>l.querySelector('input').checked).map(l=>'✅ '+l.textContent.trim());
+ const note=document.getElementById('note').value.trim();
+ const t=(id?'['+id+'] ':'')+q+'\n'+(sel.join('\n')||'— ничего не отмечено')+(note?'\n💬 '+note:'');
+ const u='https://t.me/airemeev_bot?text='+encodeURIComponent(t);const tg=window.Telegram&&Telegram.WebApp;
+ if(tg&&tg.openTelegramLink){tg.openTelegramLink(u);setTimeout(()=>tg.close(),400)}else location.href=u};
+if(window.Telegram&&Telegram.WebApp){Telegram.WebApp.ready();Telegram.WebApp.expand()}
+</script></body></html>
