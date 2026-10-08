@@ -72,7 +72,7 @@ let x0=null;const w=document.getElementById('vimgwrap');w.addEventListener('touc
 w.addEventListener('touchend',e=>{if(x0===null)return;const dx=e.changedTouches[0].clientX-x0;if(Math.abs(dx)>50)go(dx<0?1:-1);x0=null});
 function text(){const L=[];URLS.forEach((u,i)=>{const n=i+1,s=st[n];if(s&&(s.v||s.c))L.push(n+' '+(s.v==='yes'?'👍':s.v==='no'?'👎':'·')+(s.c?' — '+s.c.trim():''))});return 'Референсы Штаба:\n'+(L.join('\n')||'ничего не отмечено')}
 document.getElementById('copy').onclick=async()=>{try{await navigator.clipboard.writeText(text());alert('Скопировано — вставь в чат с ботом')}catch(e){prompt('Скопируй:',text())}};
-document.getElementById('send').onclick=()=>{const u='https://t.me/airemeev_bot?text='+encodeURIComponent(text());const tg=window.Telegram&&Telegram.WebApp;if(tg&&tg.openTelegramLink)tg.openTelegramLink(u);else location.href=u};
+document.getElementById('send').onclick=()=>{const t=text();const tg=window.Telegram&&Telegram.WebApp;if(tg&&tg.initData&&tg.sendData&&tg.initDataUnsafe&&!tg.initDataUnsafe.query_id){try{tg.sendData(t.slice(0,4000));return}catch(e){}}const u='https://t.me/share/url?url='+encodeURIComponent(' ')+'&text='+encodeURIComponent(t);if(tg&&tg.openTelegramLink)tg.openTelegramLink(u);else location.href=u};
 try{const old=JSON.parse(localStorage.getItem('refs-shtab-v1')||'{}');for(const k in old){if(!st[k])st[k]={v:old[k].on?'yes':undefined,c:old[k].c||''}}save()}catch(e){}
 paint(); if(window.Telegram&&Telegram.WebApp){Telegram.WebApp.ready();Telegram.WebApp.expand()}
 </script></body></html>

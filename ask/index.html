@@ -23,7 +23,9 @@ document.getElementById('send').onclick=()=>{
  const sel=[...box.querySelectorAll('label')].filter(l=>l.querySelector('input').checked).map(l=>'✅ '+l.textContent.trim());
  const note=document.getElementById('note').value.trim();
  const t=(id?'['+id+'] ':'')+q+'\n'+(sel.join('\n')||'— ничего не отмечено')+(note?'\n💬 '+note:'');
- const u='https://t.me/airemeev_bot?text='+encodeURIComponent(t);const tg=window.Telegram&&Telegram.WebApp;
- if(tg&&tg.openTelegramLink){tg.openTelegramLink(u);setTimeout(()=>tg.close(),400)}else location.href=u};
+ const tg=window.Telegram&&Telegram.WebApp;
+ if(tg&&tg.initData&&tg.sendData&&tg.initDataUnsafe&&!tg.initDataUnsafe.query_id){try{tg.sendData(t.slice(0,4000));return}catch(e){}}
+ const u='https://t.me/share/url?url='+encodeURIComponent(' ')+'&text='+encodeURIComponent(t);
+ if(tg&&tg.openTelegramLink){tg.openTelegramLink(u)}else location.href=u};
 if(window.Telegram&&Telegram.WebApp){Telegram.WebApp.ready();Telegram.WebApp.expand()}
 </script></body></html>
