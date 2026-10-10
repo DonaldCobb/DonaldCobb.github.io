@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Приёмка сырья голосом</title>
+<style>
+:root{
+  --bg:#f4f2ee; --card:#ffffff; --ink:#1c1d21; --muted:#5b5e66; --line:#e3e0d9;
+  --accent:#1f5f8b; --accent-soft:#e6eff6;
+  --warn:#9a4a00; --warn-soft:#fbeee0;
+  --bad:#a3262a; --bad-soft:#f9e5e5;
+  --ok:#1e6b3a; --ok-soft:#e3f2e8;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#15161a; --card:#1f2026; --ink:#ecebe8; --muted:#a6a8b0; --line:#33343b;
+    --accent:#7cb6e0; --accent-soft:#1c2c3a;
+    --warn:#f0b070; --warn-soft:#3a2a18;
+    --bad:#f08a8d; --bad-soft:#3a1d1f;
+    --ok:#7fd19b; --ok-soft:#183223;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#15161a; --card:#1f2026; --ink:#ecebe8; --muted:#a6a8b0; --line:#33343b;
+  --accent:#7cb6e0; --accent-soft:#1c2c3a;
+  --warn:#f0b070; --warn-soft:#3a2a18;
+  --bad:#f08a8d; --bad-soft:#3a1d1f;
+  --ok:#7fd19b; --ok-soft:#183223;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:15px/1.45 -apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;-webkit-text-size-adjust:100%}
+.wrap{max-width:560px;margin:0 auto;padding:20px 16px 28px}
+header h1{font-size:23px;line-height:1.2;margin:0 0 6px;letter-spacing:-.01em}
+header p{margin:0;color:var(--muted);font-size:14px}
+.tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 8px;border-radius:6px;background:var(--accent-soft);color:var(--accent);margin-bottom:10px}
+.section-label{display:flex;align-items:center;gap:8px;margin:22px 0 8px;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.section-label b{color:var(--ink);font-size:13px;white-space:nowrap}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px}
+.voice{display:flex;align-items:center;gap:10px;padding-bottom:10px;margin-bottom:10px;border-bottom:1px solid var(--line)}
+.play{width:34px;height:34px;border-radius:50%;background:var(--accent);flex:none;position:relative}
+.play:after{content:"";position:absolute;left:13px;top:10px;border-left:11px solid var(--card);border-top:7px solid transparent;border-bottom:7px solid transparent}
+.wave{flex:1;height:22px;display:flex;align-items:center;gap:2px}
+.wave i{display:block;width:3px;border-radius:2px;background:var(--accent);opacity:.55}
+.dur{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.who{font-size:13px;color:var(--muted);margin-bottom:6px}
+.quote{margin:0;font-size:15px}
+.note{font-size:12px;color:var(--muted);margin-top:10px}
+.flow{text-align:center;color:var(--muted);font-size:13px;margin:14px 0 0}
+.flow span{display:inline-block;padding:6px 12px;border:1px dashed var(--line);border-radius:999px;background:var(--card)}
+.act-head{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:8px}
+.act-head h2{font-size:17px;margin:0}
+.act-head small{color:var(--muted);font-size:12px;white-space:nowrap}
+dl{margin:0;display:grid;grid-template-columns:118px 1fr;row-gap:0}
+dt,dd{padding:8px 0;border-top:1px solid var(--line);margin:0}
+dt{color:var(--muted);font-size:13px;padding-right:10px}
+dd{font-size:14px}
+.num{font-variant-numeric:tabular-nums}
+.minus{color:var(--bad);font-weight:600}
+ul.issues{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+ul.issues li{font-size:14px;padding:6px 8px;border-radius:8px;background:var(--warn-soft);color:var(--ink)}
+ul.issues li b{color:var(--warn)}
+.status{display:inline-block;font-weight:700;font-size:13px;padding:3px 9px;border-radius:6px;background:var(--warn-soft);color:var(--warn)}
+.split{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:6px}
+.split div{border-radius:8px;padding:6px 6px;text-align:center;font-size:12px;line-height:1.25}
+.split strong{display:block;font-size:15px}
+.s-ok{background:var(--ok-soft);color:var(--ok)}
+.s-dry{background:var(--warn-soft);color:var(--warn)}
+.s-back{background:var(--bad-soft);color:var(--bad)}
+.gap{height:12px}
+h2.t{font-size:17px;margin:0 0 2px}
+.sub{color:var(--muted);font-size:12px;margin:0 0 10px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;font-weight:600;color:var(--muted);font-size:11px;letter-spacing:.02em;padding:0 4px 6px;vertical-align:bottom}
+td{padding:9px 4px;border-top:1px solid var(--line);vertical-align:top}
+td.r,th.r{text-align:right}
+td.share{white-space:nowrap}
+td.name{font-weight:600}
+tr.hl td{background:var(--bad-soft)}
+tr.hl td.share{color:var(--bad);font-weight:700}
+.bar{height:5px;border-radius:3px;background:var(--line);margin-top:4px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--muted)}
+tr.hl .bar i{background:var(--bad)}
+.why{font-size:12px;color:var(--muted)}
+.conclusion{margin-top:12px;padding:10px 12px;border-left:3px solid var(--bad);background:var(--bad-soft);border-radius:0 8px 8px 0;font-size:14px}
+footer{margin-top:26px;padding-top:14px;border-top:1px solid var(--line);font-size:13px;color:var(--muted);text-align:center}
+footer b{color:var(--ink);font-weight:600}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <span class="tag">Пример · данные вымышленные</span>
+  <h1>Приёмка сырья голосом</h1>
+  <p>Кладовщик наговаривает с телефона, что пришло и что не так. Акт приёмки и журнал брака по поставщикам собираются сами.</p>
+</header>
+
+<div class="section-label"><b>Вход</b> · голосовое, 27 с</div>
+<div class="card">
+  <div class="voice" aria-hidden="true">
+    <div class="play"></div>
+    <div class="wave" id="wave"></div>
+    <div class="dur">0:27</div>
+  </div>
+  <div class="who">Расшифровка (пример)</div>
+  <p class="quote">«Приёмка, одиннадцатое октября. Поставщик Б, накладная двести сорок семь. Гранулы ПЭТГ, чёрные, двадцать пять мешков по двадцать пять кило. На весах шестьсот восемнадцать, а по накладной шестьсот двадцать пять. Два мешка влажные, гранулы слиплись — отложил на сушку. В одном мешке цвет не тот, сероватый, и попадаются посторонние включения, похоже на дроблёнку. Этот мешок — на возврат. Остальное принял».</p>
+  <div class="note">Говорить можно как удобно: в любом порядке, с паузами и оговорками.</div>
+</div>
+
+<p class="flow"><span>↓ расшифровка → поля акта → строка в журнале</span></p>
+
+<div class="section-label"><b>Выход 1</b> · акт приёмки</div>
+<div class="card">
+  <div class="act-head">
+    <h2>Акт приёмки № 118</h2>
+    <small class="num">11.10.2026 · 10:42</small>
+  </div>
+  <dl>
+    <dt>Поставщик</dt><dd>Поставщик Б · накладная №&nbsp;247</dd>
+    <dt>Материал</dt><dd>Гранулы ПЭТГ, чёрные</dd>
+    <dt>По накладной</dt><dd class="num">25 мешков × 25 кг = 625 кг</dd>
+    <dt>Факт на весах</dt><dd class="num">618 кг <span class="minus">−7 кг (−1,1 %)</span></dd>
+    <dt>Замечания</dt>
+    <dd>
+      <ul class="issues">
+        <li><b>Влажность</b> — 2 мешка, гранулы слиплись</li>
+        <li><b>Цвет</b> — 1 мешок, сероватый оттенок</li>
+        <li><b>Примеси</b> — посторонние включения, тот же мешок</li>
+      </ul>
+    </dd>
+    <dt>Решение</dt>
+    <dd>
+      <span class="status">Принято с замечаниями</span>
+      <div class="split num">
+        <div class="s-ok"><strong>22</strong>принято</div>
+        <div class="s-dry"><strong>2</strong>на сушку</div>
+        <div class="s-back"><strong>1</strong>возврат</div>
+      </div>
+    </dd>
+    <dt>Дальше</dt><dd>Претензия поставщику по недовесу и мешку с примесями — черновик готов к проверке</dd>
+  </dl>
+</div>
+
+<div class="section-label"><b>Выход 2</b> · журнал брака по поставщикам</div>
+<div class="card">
+  <h2 class="t">Сентябрь 2026</h2>
+  <p class="sub">Собирается из актов автоматически. Брак — доля по весу.</p>
+  <table>
+    <thead>
+      <tr><th>Поставщик</th><th class="r">Партий</th><th class="r">С&nbsp;браком</th><th class="r">Брак</th><th>Чаще всего</th></tr>
+    </thead>
+    <tbody class="num">
+      <tr><td class="name">А</td><td class="r">9</td><td class="r">1</td><td class="r share">0,8 %<div class="bar"><i style="width:12%"></i></div></td><td class="why">влажность</td></tr>
+      <tr class="hl"><td class="name">Б</td><td class="r">7</td><td class="r">4</td><td class="r share">6,4 %<div class="bar"><i style="width:100%"></i></div></td><td class="why">влажность, примеси</td></tr>
+      <tr><td class="name">В</td><td class="r">5</td><td class="r">1</td><td class="r share">1,5 %<div class="bar"><i style="width:23%"></i></div></td><td class="why">цвет</td></tr>
+    </tbody>
+  </table>
+  <div class="conclusion"><b>Вывод:</b> чаще всего подводит поставщик Б — брак в 4 партиях из 7 и 6,4 % веса, в 4–8 раз больше, чем у остальных; основная причина — влажность.</div>
+</div>
+
+<footer><b>Юлай Ремеев</b>, Пермь — внедряю ИИ на малых производствах</footer>
+
+</div>
+<script>
+(function(){
+  var w=document.getElementById('wave'); if(!w) return;
+  var h=[6,10,16,9,20,14,8,18,22,12,7,15,19,11,6,13,21,17,9,14,8,16,12,20,10,7,15,18,9,12,6,10];
+  for(var i=0;i<h.length;i++){var e=document.createElement('i');e.style.height=h[i]+'px';w.appendChild(e);}
+})();
+</script>
+</body>
+</html>
