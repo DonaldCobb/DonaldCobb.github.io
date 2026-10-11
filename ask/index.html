@@ -12,13 +12,15 @@ label.on{border-color:#2f6bff}input[type=checkbox]{width:22px;height:22px;flex:n
 .top{display:block;text-align:center;background:#fff;border-radius:12px;padding:12px;margin:0 0 12px;font-size:15px;font-weight:600;text-decoration:none;color:#2f6bff}.top:empty{display:none}
 textarea{width:100%;border:1px solid #ddd;border-radius:12px;padding:10px;font:inherit;font-size:15px;min-height:70px;margin-top:6px}
 .bar{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid #e5e5e5;padding:10px 16px}
-button{width:100%;border:0;border-radius:12px;padding:14px;font:600 16px system-ui;background:#2f6bff;color:#fff}
+#send{width:100%;border:0;border-radius:12px;padding:14px;font:600 16px system-ui;background:#2f6bff;color:#fff}
+.av{flex:none;width:40px;height:40px;border-radius:50%;background:#dfe6f5;color:#2f4f8f;display:flex;align-items:center;justify-content:center;font:600 15px system-ui;overflow:hidden}.av img{width:100%;height:100%;object-fit:cover}
+.body{flex:1;min-width:0}.chat{flex:none;align-self:center;border:0;border-radius:10px;padding:8px 10px;font:600 13px system-ui;background:#eef3ff;color:#2f6bff;white-space:nowrap}.chat:disabled{background:#f1f1f1;color:#999;font-weight:400}
 </style></head><body>
 <h1 id="q"></h1><p class="about" id="about"></p><p class="next" id="next"></p><a class="top" id="top"></a><div id="opts"></div><textarea id="note" placeholder="Своё / комментарий (необязательно)"></textarea>
 <div class="bar"><button id="send">Отправить боту</button></div>
 <script>
 // Адрес: /ask/#q=<вопрос>&o=<вариант1>|<вариант2>|...&id=<метка>  (вариант «название::пояснение»)
-// или /ask/#z=<base64url(deflate-raw(JSON {q, a:что выбираем, n:что дальше, o:[[название, пояснение]], id}))> — короче в 4 раза (Юлай 2026-10-11: пояснения серым)
+// или /ask/#z=<base64url(deflate-raw(JSON {q, a:что выбираем, n:что дальше, o:[[название, пояснение, подробно, [ключ человека, t.me]]], id, l, p:файл людей, v:версия}))>&k=<ключ Штаба> — короче в 4 раза (Юлай 2026-10-11: пояснения серым)
 const h=new URLSearchParams(location.hash.slice(1));
 let q=h.get('q')||'Отметь всё, что правда', id=h.get('id')||'', about=h.get('a')||'Отметь всё, что подходит, — можно несколько.', nxt=h.get('n')||'';
 let lnk=[];
@@ -26,25 +28,42 @@ function opn(u){const tg=window.Telegram&&Telegram.WebApp;if(/^https:\/\/t\.me\/
 function linkify(el,t){t.split(/(https?:\/\/\S+)/).forEach(x=>{if(/^https?:\/\//.test(x)){const a=document.createElement('a');a.href=x;a.textContent=x.replace(/^https?:\/\//,'').slice(0,40);a.onclick=e=>{e.preventDefault();e.stopPropagation();opn(x)};el.appendChild(a)}else el.appendChild(document.createTextNode(x))})}
 let ops=(h.get('o')||'').split('|').filter(Boolean).map(o=>o.split('::'));
 const box=document.getElementById('opts');
+// Люди (msg 3851): c=[ключ, публичная ссылка t.me]; аватарки и запасная ссылка — в зашифрованном p/<метка>.txt (ключ Штаба в адресе после k=)
+let ppl={}, pfile='', pver='';
+function person(l,t,c){const av=document.createElement('span');av.className='av';av.dataset.k=c[0];
+ av.textContent=(t.replace(/[^\p{L}\p{N} ]/gu,'').trim().split(/\s+/).slice(0,2).map(w=>w[0]||'').join('')||'?').toUpperCase();
+ l.insertBefore(av,l.querySelector('.body'));
+ const b=document.createElement('button');b.type='button';b.className='chat';b.dataset.k=c[0];b.dataset.u=c[1]||'';l.appendChild(b);chatBtn(b)}
+function chatBtn(b){const u=b.dataset.u||(ppl[b.dataset.k]||{}).l||'';b.disabled=!u;b.textContent=u?'💬 Чат':'нет username';
+ b.onclick=e=>{e.preventDefault();e.stopPropagation();if(u)opn(u)}}
+function b64u(s){s=s.replace(/-/g,'+').replace(/_/g,'/');while(s.length%4)s+='=';return Uint8Array.from(atob(s),c=>c.charCodeAt(0))}
+async function loadPeople(){const k=h.get('k');if(!pfile||!k||!window.crypto||!crypto.subtle)return;
+ try{const r=await fetch('p/'+encodeURIComponent(pfile)+'.txt?v='+encodeURIComponent(pver),{cache:'no-store'});if(!r.ok)return;
+  const blob=b64u((await r.text()).trim());const key=await crypto.subtle.importKey('raw',b64u(k),{name:'AES-GCM'},false,['decrypt']);
+  ppl=JSON.parse(new TextDecoder().decode(await crypto.subtle.decrypt({name:'AES-GCM',iv:blob.slice(0,12)},key,blob.slice(12))));
+  document.querySelectorAll('.av').forEach(a=>{const p=ppl[a.dataset.k];if(p&&p.i){const im=new Image();im.alt='';im.src='data:image/jpeg;base64,'+p.i;a.textContent='';a.appendChild(im)}});
+  document.querySelectorAll('.chat').forEach(chatBtn)}catch(e){}}
 function render(){
  document.getElementById('q').textContent=q;document.getElementById('about').textContent=about;document.getElementById('next').textContent=nxt?'Дальше: '+nxt:'';
  const tp=document.getElementById('top');if(lnk.length==2){tp.textContent=lnk[0];tp.href=lnk[1];tp.onclick=e=>{e.preventDefault();opn(lnk[1])}}
- ops.forEach(([t,d,m])=>{const l=document.createElement('label');l.innerHTML='<input type="checkbox"><span><span class="t"></span><span class="d"></span></span>';
+ ops.forEach(([t,d,m,c])=>{const l=document.createElement('label');l.innerHTML='<input type="checkbox"><span class="body"><span class="t"></span><span class="d"></span></span>';
+  if(c)person(l,t,c);
   l.querySelector('.t').textContent=t;const dd=l.querySelector('.d');if(d)dd.textContent=d;else dd.remove();
-  if(m){const sp=l.querySelector('span');const mo=document.createElement('span');mo.className='more';mo.textContent='подробнее ▾';const mx=document.createElement('span');mx.className='mx';linkify(mx,m);
+  if(m){const sp=l.querySelector('.body');const mo=document.createElement('span');mo.className='more';mo.textContent='подробнее ▾';const mx=document.createElement('span');mx.className='mx';linkify(mx,m);
    mo.onclick=e=>{e.preventDefault();e.stopPropagation();mx.classList.toggle('on');mo.textContent=mx.classList.contains('on')?'свернуть ▴':'подробнее ▾'};sp.appendChild(mo);sp.appendChild(mx)}
   l.querySelector('input').onchange=e=>l.classList.toggle('on',e.target.checked);box.appendChild(l)});
 }
 async function unz(z){const b=Uint8Array.from(atob(z.replace(/-/g,'+').replace(/_/g,'/')),c=>c.charCodeAt(0));
  const st=new Blob([b]).stream().pipeThrough(new DecompressionStream('deflate-raw'));return JSON.parse(await new Response(st).text())}
-if(h.get('z')){unz(h.get('z')).then(j=>{q=j.q||q;id=j.id||'';if(j.a)about=j.a;if(j.n)nxt=j.n;if(j.l)lnk=j.l;ops=(j.o||[]).map(x=>Array.isArray(x)?x:[x]);render()}).catch(()=>{document.getElementById('q').textContent='Не удалось открыть чек-лист'})}else render();
+if(h.get('z')){unz(h.get('z')).then(j=>{q=j.q||q;id=j.id||'';if(j.a)about=j.a;if(j.n)nxt=j.n;if(j.l)lnk=j.l;if(j.p){pfile=j.p;pver=j.v||''}ops=(j.o||[]).map(x=>Array.isArray(x)?x:[x]);render();loadPeople()}).catch(()=>{document.getElementById('q').textContent='Не удалось открыть чек-лист'})}else render();
 document.getElementById('send').onclick=()=>{
  const sel=[...box.querySelectorAll('label')].filter(l=>l.querySelector('input').checked).map(l=>'✅ '+l.querySelector('.t').textContent.trim());
  const note=document.getElementById('note').value.trim();
  const t=(id?'['+id+'] ':'')+q+'\n'+(sel.join('\n')||'— ничего не отмечено')+(note?'\n💬 '+note:'');
  const tg=window.Telegram&&Telegram.WebApp;
- if(tg&&tg.initData&&tg.sendData&&tg.initDataUnsafe&&!tg.initDataUnsafe.query_id){try{tg.sendData(t.slice(0,4000));return}catch(e){}}
+ if(tg&&tg.initData&&tg.sendData&&tg.initDataUnsafe&&!tg.initDataUnsafe.query_id){try{tg.sendData(t.slice(0,4000));try{tg.close()}catch(e){}return}catch(e){}}
  const u='https://t.me/share/url?url='+encodeURIComponent(' ')+'&text='+encodeURIComponent(t);
- if(tg&&tg.openTelegramLink){tg.openTelegramLink(u)}else location.href=u};
+ // после отправки — закрыть чек-лист сам (Юлай 2026-10-11 msg 3855); 300 мс, чтобы ссылка успела открыться
+ if(tg&&tg.openTelegramLink){tg.openTelegramLink(u);setTimeout(()=>{try{tg.close()}catch(e){}},300)}else location.href=u};
 if(window.Telegram&&Telegram.WebApp){Telegram.WebApp.ready();Telegram.WebApp.expand()}
 </script></body></html>
