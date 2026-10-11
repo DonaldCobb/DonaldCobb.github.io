@@ -43,11 +43,14 @@ async function loadPeople(){const k=h.get('k');if(!pfile||!k||!window.crypto||!c
   ppl=JSON.parse(new TextDecoder().decode(await crypto.subtle.decrypt({name:'AES-GCM',iv:blob.slice(0,12)},key,blob.slice(12))));
   document.querySelectorAll('.av').forEach(a=>{const p=ppl[a.dataset.k];if(p&&p.i){const im=new Image();im.alt='';im.src='data:image/jpeg;base64,'+p.i;a.textContent='';a.appendChild(im)}});
   document.querySelectorAll('.chat').forEach(chatBtn)}catch(e){}}
+// заглушка-аватарка для человека без Telegram (Юлай 2026-10-11 msg 3903: «аватарки не хватает — ставить заглушку»)
+function stub(l,t){const av=document.createElement('span');av.className='av';av.textContent=(t.replace(/[^\p{L}\p{N} ]/gu,'').trim().split(/\s+/).slice(0,2).map(w=>w[0]||'').join('')||'?').toUpperCase();l.insertBefore(av,l.querySelector('.body'))}
 function render(){
+ const hasP=ops.some(x=>x[3]);
  document.getElementById('q').textContent=q;document.getElementById('about').textContent=about;document.getElementById('next').textContent=nxt?'Дальше: '+nxt:'';
  const tp=document.getElementById('top');if(lnk.length==2){tp.textContent=lnk[0];tp.href=lnk[1];tp.onclick=e=>{e.preventDefault();opn(lnk[1])}}
  ops.forEach(([t,d,m,c])=>{const l=document.createElement('label');l.innerHTML='<input type="checkbox"><span class="body"><span class="t"></span><span class="d"></span></span>';
-  if(c)person(l,t,c);
+  if(c)person(l,t,c);else if(hasP)stub(l,t);
   l.querySelector('.t').textContent=t;const dd=l.querySelector('.d');if(d)dd.textContent=d;else dd.remove();
   if(m){const sp=l.querySelector('.body');const mo=document.createElement('span');mo.className='more';mo.textContent='подробнее ▾';const mx=document.createElement('span');mx.className='mx';linkify(mx,m);
    mo.onclick=e=>{e.preventDefault();e.stopPropagation();mx.classList.toggle('on');mo.textContent=mx.classList.contains('on')?'свернуть ▴':'подробнее ▾'};sp.appendChild(mo);sp.appendChild(mx)}
