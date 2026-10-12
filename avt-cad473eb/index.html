@@ -1,178 +1,300 @@
 <!doctype html>
 <html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex,nofollow">
-<title>Карта автономии</title>
+<title>Автономия</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Golos+Text:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap">
 <style>
-/* Layout: шапка с полосой-«разрезом» всех зон по глубине изученности → фильтр по статусу → сетка карточек зон → что изучаем дальше */
+/* Карта знаний v2 — универсальный шаблон. Порядок: за 10 секунд (пять строк + цифра + ход) → тепловая сетка зон → что дальше и куда двигаемся → карточки зон */
 :root{
-  --bg:#edf1ec; --surface:#f8faf7; --fg:#1b2620; --muted:#5d6b63; --line:#cfd8d1;
-  --accent:#2c6a52;
-  --done:#2f7d58; --done-soft:#d6eadf;
-  --part:#b7791f; --part-soft:#f3e5c9;
-  --empty:#8a958f; --empty-soft:#e2e7e3;
+  --bg:#edf1ec; --surface:#f8faf7; --fg:#1b2620; --muted:#5d6b63; --line:#cfd8d1; --accent:#2c6a52; --warn:#9a5b12;
+  --l0:#e2e7e3; --l0f:#4c5a52; --l1:#cfe6d6; --l1f:#1d4a33; --l2:#74b892; --l2f:#0f2a1c; --l3:#2c6a52; --l3f:#ffffff;
   --f-display:"Unbounded","Golos Text",system-ui,sans-serif;
   --f-body:"Golos Text",system-ui,-apple-system,"Segoe UI",sans-serif;
   --f-mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --bg:#111814; --surface:#18211c; --fg:#e2eae4; --muted:#9aa8a0; --line:#2b3831;
-  --accent:#6cc39b; --done:#5cbf8d; --done-soft:#1d3a2c; --part:#e0a54a; --part-soft:#3a2f1a;
-  --empty:#7d8a83; --empty-soft:#232d27; color-scheme:dark}}
+  --bg:#111814; --surface:#18211c; --fg:#e2eae4; --muted:#9aa8a0; --line:#2b3831; --accent:#6cc39b; --warn:#e0a54a;
+  --l0:#222c26; --l0f:#9aa8a0; --l1:#24432f; --l1f:#cfe8d8; --l2:#2f7350; --l2f:#f0faf4; --l3:#7fd1a5; --l3f:#0d1f15; color-scheme:dark}}
 :root[data-theme="dark"]{
-  --bg:#111814; --surface:#18211c; --fg:#e2eae4; --muted:#9aa8a0; --line:#2b3831;
-  --accent:#6cc39b; --done:#5cbf8d; --done-soft:#1d3a2c; --part:#e0a54a; --part-soft:#3a2f1a;
-  --empty:#7d8a83; --empty-soft:#232d27; color-scheme:dark}
+  --bg:#111814; --surface:#18211c; --fg:#e2eae4; --muted:#9aa8a0; --line:#2b3831; --accent:#6cc39b; --warn:#e0a54a;
+  --l0:#222c26; --l0f:#9aa8a0; --l1:#24432f; --l1f:#cfe8d8; --l2:#2f7350; --l2f:#f0faf4; --l3:#7fd1a5; --l3f:#0d1f15; color-scheme:dark}
 *{box-sizing:border-box}
 body{background:var(--bg);color:var(--fg);font:16px/1.5 var(--f-body);margin:0}
-.wrap{max-width:1100px;margin:0 auto;padding-inline:16px;padding-block:28px 56px;display:grid;gap:28px}
-header{display:grid;gap:14px}
-.eyebrow{font:500 12px/1 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
-h1{font:700 clamp(34px,7vw,56px)/1.05 var(--f-display);margin:0;letter-spacing:-.01em;text-wrap:balance}
-.lead{max-width:62ch;margin:0;color:var(--fg);font-size:17px}
-.strata{display:grid;gap:8px}
-.strip{display:flex;height:46px;border-radius:6px;overflow:hidden;border:1px solid var(--line);background:var(--surface)}
-.strip button{flex:1 1 0;min-width:0;border:0;padding:0;cursor:pointer;position:relative;background:var(--surface)}
-.strip button+button{border-left:1px solid var(--line)}
-.strip .fill{position:absolute;left:0;right:0;bottom:0}
-.strip button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
-.strip-labels{display:flex;font:500 11px/1.2 var(--f-mono);color:var(--muted)}
-.strip-labels span{flex:1 1 0;min-width:0;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding-inline:2px}
-.counts{display:flex;flex-wrap:wrap;gap:8px}
-.chip{display:inline-flex;align-items:center;gap:8px;font:500 14px/1 var(--f-body);padding:9px 14px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--fg);cursor:pointer}
+.wrap{max-width:1100px;margin:0 auto;padding:20px 16px 48px;display:grid;gap:26px}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.eyebrow,.lbl,h3{font:500 11px/1.2 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0}
+h1{font:700 clamp(30px,8vw,52px)/1.05 var(--f-display);margin:6px 0 0;letter-spacing:-.01em;text-wrap:balance}
+h2{font:700 19px/1.2 var(--f-display);margin:0}
+.n{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.muted{color:var(--muted)}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px}
+/* за 10 секунд */
+.ten{display:grid;gap:16px}
+.hero{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:center}
+.big{font:700 44px/1 var(--f-display);font-variant-numeric:tabular-nums;white-space:nowrap}
+.big small{font-size:.5em;color:var(--muted);font-weight:500}
+.hero-l{display:grid;gap:6px}
+.badge{display:inline-block;font:500 12px/1.3 var(--f-mono);padding:4px 8px;border-radius:6px;background:var(--l1);color:var(--l1f)}
+.five{display:grid;gap:10px;margin:0}
+.five div{display:grid;grid-template-columns:7.2em 1fr;gap:10px;align-items:baseline}
+.five dt{font:500 11px/1.4 var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.five dd{margin:0;font-size:15px;line-height:1.45}
+.five .goal dd{font-weight:600}
+.trend svg{display:block;width:100%;height:auto;overflow:visible}
+.trend figcaption{font-size:12px;color:var(--muted)}
+/* тепловая сетка */
+.mapsec{display:grid;gap:12px}
+.mhead{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;align-items:end}
+.legend{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:12px;color:var(--muted)}
+.legend span{display:inline-flex;gap:6px;align-items:center}
+.sw{width:12px;height:12px;border-radius:3px;border:1px solid var(--line)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{display:inline-flex;align-items:center;gap:6px;min-height:36px;padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:var(--surface);cursor:pointer;font-size:14px}
 .chip[aria-pressed="true"]{border-color:var(--fg);box-shadow:inset 0 0 0 1px var(--fg)}
-.chip:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.dot{width:10px;height:10px;border-radius:50%;flex:none}
-.n{font-family:var(--f-mono);font-variant-numeric:tabular-nums;color:var(--muted)}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
-.zone{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px;display:grid;gap:12px;align-content:start;min-width:0;scroll-margin-top:16px}
+.band{display:grid;gap:6px}
+.tiles{display:grid;gap:6px;grid-template-columns:repeat(6,1fr)}
+.tile{border:0;border-radius:8px;padding:10px;text-align:left;cursor:pointer;display:flex;flex-direction:column;justify-content:space-between;gap:6px;min-width:0}
+.tile b{font:600 14px/1.2 var(--f-body);overflow-wrap:anywhere;hyphens:auto}
+.tile .tm{display:flex;justify-content:space-between;gap:6px;font:500 12px/1 var(--f-mono);opacity:.9}
+.w3 .tile{grid-column:span 3;min-height:96px}
+.w3 .tile b{font-size:16px}
+.w2 .tile{grid-column:span 2;min-height:80px}
+.w1 .tile{grid-column:span 2;min-height:58px;padding:8px}
+.w1 .tile b{font-size:13px}
+.tile.dim{opacity:.35}
+.L0{background:var(--l0);color:var(--l0f)} .L1{background:var(--l1);color:var(--l1f)} .L2{background:var(--l2);color:var(--l2f)} .L3{background:var(--l3);color:var(--l3f)}
+/* что дальше и куда двигаемся */
+.dec{display:grid;gap:14px}
+.next ol{margin:10px 0 0;padding:0;list-style:none;display:grid;gap:12px;counter-reset:n}
+.next li{display:grid;grid-template-columns:28px 1fr;gap:10px;counter-increment:n}
+.next li::before{content:counter(n);font:700 18px/1.2 var(--f-display);color:var(--accent)}
+.next .t{font-weight:600}
+.next .st{font-size:14px}
+.why{font-size:12px;color:var(--muted);font-family:var(--f-mono)}
+.dirs{display:grid;gap:8px;margin-top:10px}
+.dir{border:1px solid var(--line);border-radius:10px;padding:12px;display:grid;gap:6px;background:var(--bg)}
+.dir .dh{display:flex;justify-content:space-between;gap:8px;align-items:start}
+.dir b{font-weight:600;line-height:1.3}
+.dir p{margin:0;font-size:14px}
+.dir .k{font:500 11px/1 var(--f-mono);color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-right:4px}
+.stat{font:500 11px/1.2 var(--f-mono);padding:4px 7px;border-radius:5px;white-space:nowrap;background:var(--l0);color:var(--l0f)}
+.stat.s-выбрано{background:var(--l3);color:var(--l3f)} .stat.s-предлагаем{background:var(--l1);color:var(--l1f)} .stat.draft{background:transparent;border:1px dashed var(--warn);color:var(--warn);white-space:normal}
+/* карточки зон */
+.cards{display:grid;gap:10px}
+.zone{background:var(--surface);border:1px solid var(--line);border-radius:12px;scroll-margin-top:12px}
 .zone.flash{box-shadow:0 0 0 2px var(--accent)}
-.zhead{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
-.zbody{display:grid;gap:12px}
-.zone h2{font:600 19px/1.2 var(--f-body);margin:0}
-.status{font:500 12px/1 var(--f-mono);padding:5px 8px;border-radius:4px;white-space:nowrap}
-.s-done{background:var(--done-soft);color:var(--done)}
-.s-part{background:var(--part-soft);color:var(--part)}
-.s-empty{background:var(--empty-soft);color:var(--empty)}
-.meter{display:flex;align-items:center;gap:10px}
-.bar{flex:1;height:6px;border-radius:3px;background:var(--empty-soft);overflow:hidden}
-.bar i{display:block;height:100%}
-.pct{font:500 13px/1 var(--f-mono);font-variant-numeric:tabular-nums;color:var(--muted);min-width:3.2em;text-align:right}
-.zone h3{font:500 11px/1 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 6px}
-.zone ul{margin:0;padding-left:18px;display:grid;gap:4px;font-size:15px}
-.gaps li::marker{content:"? ";color:var(--part);font-family:var(--f-mono)}
-.src{font-size:13px;color:var(--muted);border-top:1px dashed var(--line);padding-top:10px}
-.next{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:20px;display:grid;gap:10px}
-.next h2{font:700 20px/1.2 var(--f-display);margin:0}
-.next ol{margin:0;padding-left:22px;display:grid;gap:6px;max-width:70ch}
-footer{font-size:13px;color:var(--muted);max-width:70ch}
-
-.top{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center}
-.overall{display:grid;gap:2px;padding:12px 16px;border:1px solid var(--line);border-radius:10px;background:var(--surface);min-width:0}
-.overall b{font:700 40px/1 var(--f-display);font-variant-numeric:tabular-nums}
-.overall span{font:500 12px/1.3 var(--f-mono);color:var(--muted);max-width:16ch}
-.rank{display:none;gap:2px}
-.rank button{display:grid;grid-template-columns:1fr 64px auto;align-items:center;gap:10px;min-height:44px;padding:6px 4px;border:0;border-bottom:1px solid var(--line);background:none;color:var(--fg);font:500 15px/1.25 var(--f-body);text-align:left;cursor:pointer}
-.rank button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.rank .bar{display:block;height:6px;flex:none}
-.zone .ztoggle{all:unset;display:grid;gap:10px;cursor:default}
-.zone .ztoggle:focus-visible{outline:2px solid var(--accent);outline-offset:4px;border-radius:4px}
-.more{display:none;font:500 13px/1 var(--f-mono);color:var(--accent)}
-@media (max-width:639px){
-  .wrap{padding-block:20px 40px;gap:22px}
-  .top{grid-template-columns:1fr}
-  .overall{grid-template-columns:auto 1fr;align-items:center;gap:12px}
-  .overall span{max-width:none}
-  .strip,.strip-labels{display:none}
-  .rank{display:grid}
-  .grid{grid-template-columns:1fr;gap:10px}
-  .zone{padding:14px 16px;gap:10px}
-  .zone .ztoggle{cursor:pointer}
-  .zone:not(.open) .zbody{display:none}
-  .more{display:block}
-  .zone.open .more{display:none}
-  .lead{font-size:16px}
+.zt{all:unset;box-sizing:border-box;width:100%;display:grid;gap:8px;padding:14px 16px;cursor:pointer}
+.zt:focus-visible{outline:2px solid var(--accent);outline-offset:-2px;border-radius:12px}
+.zh{display:flex;justify-content:space-between;gap:10px;align-items:baseline}
+.zh h2{font:600 18px/1.25 var(--f-body)}
+.lvl{font:500 12px/1 var(--f-mono);padding:5px 8px;border-radius:5px;white-space:nowrap}
+.zm{display:flex;flex-wrap:wrap;gap:4px 12px;font:500 12px/1.3 var(--f-mono);color:var(--muted)}
+.up{color:var(--accent)} .down{color:var(--warn)}
+.segs{display:flex;gap:2px;height:8px}
+.segs i{flex:1;border-radius:2px;min-width:3px}
+.more{font:500 12px/1 var(--f-mono);color:var(--accent)}
+.zone.open .more{display:none}
+.zb{display:none;padding:0 16px 16px;gap:14px}
+.zone.open .zb{display:grid}
+.zb ul{margin:6px 0 0;padding:0;list-style:none;display:grid;gap:8px}
+.it{display:grid;grid-template-columns:22px 1fr;gap:8px;font-size:15px;line-height:1.4}
+.it svg{width:18px;height:18px;margin-top:2px;color:var(--accent)}
+.it small{display:block;color:var(--muted);font-size:12.5px}
+.it .lv{font:500 11px/1 var(--f-mono);color:var(--muted)}
+details summary{cursor:pointer;font-size:14px;color:var(--muted);min-height:32px;display:flex;align-items:center}
+.gap{border-left:3px solid var(--warn);padding:2px 0 2px 10px;display:grid;gap:3px;font-size:15px}
+.gap .nx{font-size:14px}
+.gap .wh{font-size:12.5px;color:var(--muted)}
+.eff{font:500 11px/1 var(--f-mono);padding:2px 5px;border:1px solid var(--line);border-radius:4px;margin-left:4px}
+.src{font-size:12.5px;color:var(--muted);border-top:1px dashed var(--line);padding-top:8px}
+footer{font-size:13px;color:var(--muted);display:grid;gap:6px;max-width:72ch}
+footer p{margin:0}
+@media (min-width:720px){
+  .wrap{padding-top:32px;gap:32px}
+  .ten{grid-template-columns:minmax(260px,1fr) 2fr;align-items:start}
+  .tiles{grid-template-columns:repeat(12,1fr)}
+  .w3 .tile{grid-column:span 4;min-height:110px} .w2 .tile{grid-column:span 3} .w1 .tile{grid-column:span 2}
+  .dec{grid-template-columns:1fr 1fr;align-items:start}
+  .cards{grid-template-columns:1fr 1fr;align-items:start}
 }
-@media (prefers-reduced-motion:no-preference){.bar i,.strip .fill{transition:height .4s,width .4s}}
+@media (max-width:380px){.big{font-size:38px}.five div{grid-template-columns:1fr;gap:2px}}
+@media (prefers-reduced-motion:no-preference){.zone{transition:box-shadow .3s}}
+@media (forced-colors:active){.tile,.segs i{border:1px solid CanvasText}}
 </style>
-
 </head><body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="k-знание" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M4 5.5C6.5 4 9.5 4 12 5.5v14C9.5 18 6.5 18 4 19.5zM20 5.5C17.5 4 14.5 4 12 5.5v14c2.5-1.5 5.5-1.5 8 0z"/></symbol>
+  <symbol id="k-человек" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.6" fill="none" stroke="currentColor" stroke-width="2"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M5 20c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5"/></symbol>
+  <symbol id="k-инструмент" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M14.5 4.5a4.5 4.5 0 0 0 5 6l-9 9a2.1 2.1 0 0 1-3-3l9-9a4.5 4.5 0 0 0-2-3z"/></symbol>
+  <symbol id="k-ресурс" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M3.5 8 12 4l8.5 4v8.5L12 20.5 3.5 16.5zM3.5 8 12 12l8.5-4M12 12v8.5"/></symbol>
+</svg>
 <div class="wrap">
   <header>
-    <div class="eyebrow">Община · карта знаний · обновлено <span id="upd"></span></div>
-    <h1>Автономия</h1>
-    <div class="top"><div class="overall" id="overall"></div><p class="lead" id="summary"></p></div>
-    <div class="strata" aria-label="Глубина изученности по зонам">
-      <div class="strip" id="strip"></div>
-      <div class="strip-labels" id="striplabels"></div>
-      <div class="rank" id="rank"></div>
-    </div>
-    <div class="counts" id="filters" role="group" aria-label="Фильтр по статусу"></div>
+    <div class="eyebrow" id="eyebrow"></div>
+    <h1 id="title"></h1>
   </header>
 
-  <main class="grid" id="grid"></main>
-
-  <section class="next">
-    <h2>Что изучаем дальше</h2>
-    <ol id="next"></ol>
+  <section class="ten" aria-label="Главное за 10 секунд">
+    <div class="panel hero-l">
+      <div class="hero"><div class="big n" id="big"></div><div class="lbl" id="biglbl"></div></div>
+      <div id="delta"></div>
+      <figure class="trend" style="margin:6px 0 0"><svg id="chart" role="img"></svg><figcaption id="chartcap"></figcaption></figure>
+    </div>
+    <dl class="five panel" id="five"></dl>
   </section>
 
-  <footer>Глубина — насколько зона проработана (0–100). «Изучено» — есть исследование с выводами и цифрами; «начато» — отдельные факты, видео, заметки; «пусто» — почти ничего. Карта пополняется по мере того, как копятся знания, потом по ней распределим, кто что берёт.</footer>
+  <section class="mapsec" aria-label="Карта зон">
+    <div class="mhead"><h2>Карта зон</h2><div class="legend" id="legend"></div></div>
+    <div class="chips" id="kinds" role="group" aria-label="Фильтр по виду пункта"></div>
+    <div id="bands" style="display:grid;gap:14px"></div>
+  </section>
+
+  <section class="dec">
+    <div class="panel next"><h2>Что дальше</h2><ol id="top"></ol></div>
+    <div class="panel"><h2>Куда двигаемся</h2><div class="dirs" id="dirs"></div></div>
+  </section>
+
+  <section class="cards" id="cards" aria-label="Зоны подробно"></section>
+
+  <footer id="foot"></footer>
 </div>
-
 <script>
-const ZONES = [{"zone": "Энергия", "status": "изучено", "depth": 65, "known": ["Зимой солнце даёт 9–25 % от летнего: нужен гибрид с сетью или генератором как резервом", "Гибрид 10 кВт у Кисловодска: оборудование 0,44–0,87 млн ₽ + монтаж; ~2 090 солнечных часов в год", "Батареи LiFePO4 — только в тепле: на морозе литий не заряжается; дешёвый контроллер — риск пожара", "Подключение к сети как ИП/КФХ — пример ~80 тыс. ₽ вместо 1–2,5 млн у физлица (не проверено)"], "gaps": ["Сколько кВт·ч в день нужно семье — расчёт по самому тёмному месяцу", "Правила льготного подключения в Ставропольском крае", "Есть ли линия электропередачи у конкретных участков"], "sources": ["исследование 46", "свод «Автономный дом» (20 роликов)", "рилс о подключении фермы", "разбор видео о подготовке общин"]}, {"zone": "Вода и стоки", "status": "изучено", "depth": 50, "known": ["Скважина без лицензии — до 100 м³ в сутки; у КМВ риск попасть в минеральные горизонты", "Во 2-й зоне охраны КМВ дом, похоже, только с центральной водой и канализацией — автономия под вопросом", "Септик: ≥ 3 м от дома, 1 м от границы, не под скатом крыши, ближе к подъезду ассенизатора", "Дождевая вода: крыша (м²) × осадки (мм) × 0,9 = литры; трубы — ниже промерзания или с подогревом"], "gaps": ["Цены на скважину и септик в регионе", "В какой зоне охраны КМВ лежит участок и что там разрешено", "Качество воды и глубина горизонта на месте"], "sources": ["исследование 46", "свод «Автономный дом»"]}, {"zone": "Тепло", "status": "изучено", "depth": 50, "known": ["Нужны две независимые системы: автоматическая (котёл) и ручная (печь с теплоёмкой массой)", "Газ дешевле всего (~0,7 ₽ за кВт·ч против 2–7 ₽), но подключение ~1 млн ₽ может не окупиться", "200–300 тыс. ₽ в утепление и окна часто выгоднее; электрокотёл 60–80 тыс. ₽, радиатор 4–6 тыс.", "Печь ставить в центре дома: одна печь не тянет большой неутеплённый дом"], "gaps": ["Свод сделан под уральскую зиму — пересчитать под климат у Кисловодска (высота, ветер)", "Есть ли газ у выбранных участков и сколько стоит подключение", "Дрова: откуда, сколько кубов на сезон, кто заготавливает"], "sources": ["свод «Автономный дом»", "тир-лист YouTube"]}, {"zone": "Еда (огород, животные, запасы)", "status": "начато", "depth": 35, "known": ["Огород 125 м² дал ~700 кг еды за год на двоих (грядки, полутуннель, компост, план посадок)", "Полное самообеспечение семьи из пяти — ~12 га: нереально, реально — овощи, зелень, яйца, заготовки", "Теплица с тепловой массой держит +10…12 °C ночью при −40 °C — главный рычаг на холодную зиму", "10 кур с петухом — ~41 сотка с кормом; пруды и раздел культур между семьями — взято в план"], "gaps": ["Сколько земли нужно трём семьям и что растёт в климате у Кисловодска", "Кто из семей что ведёт: огород, животные, пруд", "Запасы на «3 месяца без города»: что и сколько"], "sources": ["свод «Автономный дом»", "разбор видео о подготовке общин", "исследование 46 (слой «еда» не сделан)"]}, {"zone": "Дом (стройка, материалы)", "status": "начато", "depth": 30, "known": ["На земле КФХ — один дом ≤ 500 м², застройка ≤ 0,25 % участка (дом 125 м² → нужно 5 га)", "Утеплить стены: 10 см ваты ≈ −90 % потерь; проектировать дом вокруг печи", "Стены с массой (глина, саман) держат тепло; дом без разрешения — годы споров с властями", "Сметы на практике выходят в 2–3 раза выше расчёта"], "gaps": ["Какой дом: площадь, материал, этапы стройки", "Цены стройки и подрядчики в регионе", "Грунты и фундамент — нужны изыскания на участке"], "sources": ["исследование 46", "свод «Автономный дом»"]}, {"zone": "Земля и место", "status": "изучено", "depth": 60, "known": ["Бесплатно у Кисловодска нет (только многодетным); путь — КФХ в аренду + 2–3 участка ИЖС рядом", "Зоны охраны КМВ: в 1-й жить нельзя, во 2-й автономный дом под вопросом — искать вне зон и в КЧР", "Цены 2026: Кисловодск 0,35–1,5 млн ₽ за сотку, СНТ Предгорного округа 75–140 тыс. ₽", "ТЗ на участок: южный склон 3–10°, защита от ветра с С/СВ, ветер ≤ 3–4 м/с, без подтоплений"], "gaps": ["Наложить зоны охраны КМВ на кадастровую карту", "Оценить участки-кандидаты по шкале 0–10: роза ветров, сток, высота", "Выезд на 2–3 участка"], "sources": ["исследование 46", "ТЗ на поиск участка", "разбор первого участка-кандидата"]}, {"zone": "Доход и деньги", "status": "начато", "depth": 20, "known": ["К переезду нужен капитал; сумма и этапы не посчитаны", "Взято правилом: у каждой семьи больше одного дохода, запас наличных, обмен внутри общины", "Пример практиков: переезд в старый дом ~1,57 млн ₽ за полгода, расходы потом не кончаются", "Общий котёл — только письменно; до устава каждая семья платит за своё"], "gaps": ["Чем зарабатывать на месте и удалённо", "Капитал по этапам: земля, дом, системы", "Кто глава КФХ/ИП и как делим доли"], "sources": ["исследование 46", "исследование 116", "свод «Автономный дом»", "разбор видео о подготовке общин"]}, {"zone": "Люди и община", "status": "изучено", "depth": 65, "known": ["~90 % общин не доходят до жизни на земле; главная причина — не записали правила и решения", "Лестница «гость → участник → ядро», ядро ≤ 12–15 человек; шаг назад — без вины", "Решения по согласию с датой; религиозные общины жили дольше (~25 лет против 6,4)", "Чат открыт; бот — летописец, задания люди берут сами; мерило пробы — 8 недель"], "gaps": ["Замысел и устав (вход, выход, споры, деньги) не дописаны", "Карта «кто что может и кому что нужно» пока пуста", "Хотят ли люди быть в карте ресурсов — проверка «≥ 2 да из трёх»"], "sources": ["исследование 116", "проект «Автономия — община»", "карта общины"]}, {"zone": "Связь, интернет и ИИ", "status": "начато", "depth": 15, "known": ["Рации PMR 446 и LPD 433 МГц в РФ — без разрешения, малая дальность (сверить)", "Связь — одна из пяти систем в мерке «3 месяца без города»", "Свои локальные модели ИИ — идея на потом; база по железу есть в прошлых исследованиях"], "gaps": ["Интернет на участке: мобильная сеть, спутник — что доступно и почём", "Дальняя связь при отключении сети", "Какие локальные модели и железо реально нужны"], "sources": ["разбор видео о подготовке общин", "список идей"]}, {"zone": "Здоровье и медицина", "status": "начато", "depth": 15, "known": ["Взято в план: медицинский узел — аптечка, первая помощь, врач на связи", "Телемедицина в РФ законна, но первичный диагноз и назначение онлайн — нельзя", "Нужно знать ближайшую больницу и время доезда"], "gaps": ["Ближайшая больница и скорая от места — сколько ехать", "Курсы первой помощи для взрослых", "Состав аптечки на три семьи"], "sources": ["разбор видео о подготовке общин"]}, {"zone": "Безопасность", "status": "пусто", "depth": 10, "known": ["Батареи без контроля вздуваются, дешёвый инвертор горит — риск пожара", "Проводку — только с опытным электриком; дрова и печи — постоянный труд и надзор"], "gaps": ["Пожарная безопасность дома, печей и батарей", "Охрана участка и дома в отъезд", "План на ЧС: отключение света, топлива, дорог"], "sources": ["свод «Автономный дом»"]}, {"zone": "Право и документы", "status": "изучено", "depth": 55, "known": ["КФХ: аренда сельхозземли без торгов до 5 лет, потом выкуп (≤ 15 % кадастровой — по пересказу)", "ИЖС без торгов, если за 30 дней извещения нет конкурентов, иначе аукцион", "В КФХ — не более трёх семей родственников; устав ложится в соглашение членов КФХ", "Вера и здоровье — особые данные: с 01.09.2025 нужно отдельное письменное согласие"], "gaps": ["Закон края 36-кз и перечень № 1186 (п. 6) не прочитаны", "Звонок в земельный отдел: есть ли свободная сельхозземля и можно ли дом", "Капстрой в округе КМВ — через экологическую экспертизу: сроки и цена"], "sources": ["исследование 46", "исследование 116"]}, {"zone": "Дети и образование", "status": "пусто", "depth": 5, "known": ["«Дети» — одна из тем в анкете общины («что волнует больше всего»)", "Печь с горячей массой: с малышами нужен барьер (опыт практиков)"], "gaps": ["Школа, детсад или семейное обучение рядом с местом", "Детский врач и роддом — сколько ехать", "Чему учить детей в хозяйстве"], "sources": ["исследование 116", "свод «Автономный дом»"]}];
-const META = {"summary": "Глубже всего изучены земля и право у Кисловодска, энергия и община: есть исследования с выводами и цифрами. Почти пусто — безопасность, дети, связь и медицина, а тепло и еда разобраны под уральскую зиму, не под выбранное место.", "next": ["Наложить зоны охраны КМВ на карту и оценить участки-кандидаты по ТЗ 0–10 — от этого зависят вода, септик и дом", "Слой «еда и тепло под климат у Кисловодска»: сколько земли трём семьям, газ или дрова, теплица", "Мерка «3 месяца без города» по пяти системам (еда, вода, тепло, свет, связь) — лист готовности каждой семьи"], "updated": "2026-10-12", "overall": {"value": "6 из 13", "label": "зон изучено"}};
-const ST = {"изучено":["s-done","--done"],"начато":["s-part","--part"],"пусто":["s-empty","--empty"]};
-const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-const col = st => `var(${(ST[st]||ST["пусто"])[1]})`;
-document.getElementById("upd").textContent = (META.updated||"").split("-").reverse().join(".");
-document.getElementById("summary").textContent = META.summary || "";
-document.getElementById("next").innerHTML = (META.next||[]).map(x=>`<li>${esc(x)}</li>`).join("");
+const D = {"meta": {"title": "Автономия", "eyebrow": "Община · карта знаний", "goal": "Автономное семейное поместье: несколько семей живут на своей земле и выдерживают 3 месяца без города", "updated": "2026-10-12", "directions": [{"name": "Сначала место: зоны охраны и участки-кандидаты", "gives": "От места зависят вода, септик, дом и закон — снимает неопределённость сразу в четырёх зонах", "costs": "Работа кадастрового инженера и выезд на 2–3 участка; стройка и еда ждут", "needs": ["Земля: зоны охраны на кадастровой карте", "Вода: зона охраны участка", "Право: звонок в земельный отдел"], "status": "предлагаем"}, {"name": "Еда и тепло под климат у Кисловодска", "gives": "Свод сейчас под уральскую зиму — пересчёт делает планы еды и тепла пригодными для места", "costs": "Одно исследование; без выбранного участка часть цифр останется общей", "needs": ["Тепло: пересчёт под климат", "Еда: сколько земли трём семьям"], "status": "предлагаем"}, {"name": "Мерка «3 месяца без города»", "gives": "Лист готовности каждой семьи по пяти системам — видно, у кого чего не хватает", "costs": "Время каждой семьи на заполнение", "needs": ["Еда: запасы", "Связь: дальняя связь", "Безопасность: план на ЧС"], "status": "предлагаем"}], "footer": "Карта собрана из исследований 46 и 116, свода «Автономный дом» и разборов видео. Цены и имена сюда не выносятся — они в исходных файлах.", "top": [{"text": "Капитал по этапам: земля, дом, системы", "next": "Свести суммы из исследования 46 и свода в таблицу по этапам", "who": "бот (расчёт)", "effort": "S", "zone": "Доход и деньги", "zid": "money", "score": 4.5, "why": "вес 3 из 3 · зона «в работе» (2/4) · усилие S"}, {"text": "Интернет на участке: мобильная сеть, спутник — что доступно", "next": "Проверить покрытие операторов и спутниковые варианты у кандидатов", "who": "местные жители, операторы связи", "effort": "S", "zone": "Связь, интернет и ИИ", "zid": "comms", "score": 4.0, "why": "вес 2 из 3 · зона «начато» (0/3) · усилие S"}, {"text": "Ближайшая больница и скорая от места — сколько ехать", "next": "Отметить на карте больницу и скорую от каждого кандидата", "who": "бот по картам", "effort": "S", "zone": "Здоровье и медицина", "zid": "health", "score": 4.0, "why": "вес 2 из 3 · зона «начато» (0/3) · усилие S"}], "totals": {"ok": 31, "total": 46, "gaps": 39, "zones": 13, "kinds": {"знание": 44, "человек": 0, "инструмент": 0, "ресурс": 2}}, "five": {"goal": "Автономное семейное поместье: несколько семей живут на своей земле и выдерживают 3 месяца без города", "where": "Освоено 31 из 46: сильнее всего «Земля и место» и «Люди и община», слабее всего из главного — «Доход и деньги», «Вода и стоки».", "have": "На уровне «пробовали» и выше — 31, больше всего в «Земля и место» (4), «Право и документы» (4); всего на карте: знаний 44 · ресурсов 2.", "missing": "39 пробелов в 13 зонах; первый — «Капитал по этапам: земля, дом, системы» (Доход и деньги).", "heading": "Предлагаем: Сначала место: зоны охраны и участки-кандидаты; Еда и тепло под климат у Кисловодска; Мерка «3 месяца без города» — решение не принято."}, "built": "2026-10-12", "history": [{"date": "2026-10-12", "ok": 31, "total": 46, "gaps": 39}], "prev": null}, "zones": [{"id": "land", "zone": "Земля и место", "weight": 3, "items": [{"name": "Бесплатно у Кисловодска нет (только многодетным); путь — КФХ в аренду + 2–3 участка ИЖС рядом", "kind": "знание", "level": 2, "note": "", "source": "исследование 46"}, {"name": "Зоны охраны КМВ: в 1-й жить нельзя, во 2-й автономный дом под вопросом — искать вне зон и в КЧР", "kind": "знание", "level": 2, "note": "", "source": "исследование 46"}, {"name": "Цены на землю 2026 у Кисловодска и в СНТ рядом собраны", "kind": "знание", "level": 2, "note": "цифры — в исследовании 46", "source": "исследование 46"}, {"name": "ТЗ на участок: южный склон 3–10°, защита от ветра с С/СВ, ветер ≤ 3–4 м/с, без подтоплений", "kind": "ресурс", "level": 3, "note": "документ есть", "source": "ТЗ на поиск участка"}], "gaps": [{"text": "Наложить зоны охраны КМВ на кадастровую карту", "next": "Наложить зоны охраны КМВ на карту и оценить участки-кандидаты по ТЗ 0–10 — от этого зависят вода, септик и дом", "who": "кадастровый инженер", "effort": "M"}, {"text": "Оценить участки-кандидаты по шкале 0–10: роза ветров, сток, высота", "next": "Пройти каждого кандидата по ТЗ на участок", "who": "бот по картам; семьи общины", "effort": "S"}, {"text": "Выезд на 2–3 участка", "next": "Назначить дату выезда после оценки по шкале", "who": "семьи общины", "effort": "L"}], "sources": ["исследование 46", "ТЗ на поиск участка", "разбор первого участка-кандидата"], "total": 4, "ok": 4, "mean": 2.25, "levelWord": "в работе", "lv": 2, "gapsN": 3, "prev": null}, {"id": "law", "zone": "Право и документы", "weight": 3, "items": [{"name": "КФХ: аренда сельхозземли без торгов до 5 лет, потом выкуп", "kind": "знание", "level": 2, "note": "условия выкупа — по пересказу", "source": "исследование 46"}, {"name": "ИЖС без торгов, если за 30 дней извещения нет конкурентов, иначе аукцион", "kind": "знание", "level": 2, "note": "", "source": "исследование 46"}, {"name": "В КФХ — не более трёх семей родственников; устав ложится в соглашение членов КФХ", "kind": "знание", "level": 2, "note": "", "source": "исследование 116"}, {"name": "Вера и здоровье — особые данные: с 01.09.2025 нужно отдельное письменное согласие", "kind": "знание", "level": 2, "note": "", "source": "исследование 116"}], "gaps": [{"text": "Закон края 36-кз и перечень № 1186 (п. 6) не прочитаны", "next": "Прочитать и выписать, что касается КФХ и дома", "who": "бот", "effort": "S"}, {"text": "Есть ли свободная сельхозземля и можно ли на ней дом", "next": "Позвонить в земельный отдел округа", "who": "земельный отдел округа", "effort": "S"}, {"text": "Капстрой в округе КМВ — через экологическую экспертизу: сроки и порядок", "next": "Узнать сроки и порядок экспертизы", "who": "юрист по земле или проектировщик региона", "effort": "M"}], "sources": ["исследование 46", "исследование 116"], "total": 4, "ok": 4, "mean": 2.0, "levelWord": "в работе", "lv": 2, "gapsN": 3, "prev": null}, {"id": "water", "zone": "Вода и стоки", "weight": 3, "items": [{"name": "Скважина без лицензии — до 100 м³ в сутки; у КМВ риск попасть в минеральные горизонты", "kind": "знание", "level": 2, "note": "", "source": "исследование 46"}, {"name": "Во 2-й зоне охраны КМВ дом, похоже, только с центральной водой и канализацией", "kind": "знание", "level": 1, "note": "не подтверждено", "source": "исследование 46"}, {"name": "Септик: ≥ 3 м от дома, 1 м от границы, не под скатом крыши, ближе к подъезду ассенизатора", "kind": "знание", "level": 2, "note": "", "source": "свод «Автономный дом»"}, {"name": "Дождевая вода: крыша (м²) × осадки (мм) × 0,9 = литры; трубы — ниже промерзания или с подогревом", "kind": "знание", "level": 2, "note": "", "source": "свод «Автономный дом»"}], "gaps": [{"text": "Цены на скважину и септик в регионе", "next": "Собрать 2–3 предложения у буровиков и монтажников септиков региона", "who": "местная буровая компания", "effort": "S"}, {"text": "В какой зоне охраны КМВ лежит участок и что там разрешено", "next": "Наложить зоны охраны на кадастровую карту (общий шаг с «Землёй»)", "who": "кадастровый инженер", "effort": "M"}, {"text": "Качество воды и глубина горизонта на месте", "next": "Спросить глубину скважин у соседей и буровиков; анализ воды после бурения", "who": "буровики, лаборатория воды", "effort": "M"}], "sources": ["исследование 46", "свод «Автономный дом»"], "total": 4, "ok": 3, "mean": 1.75, "levelWord": "в работе", "lv": 2, "gapsN": 3, "prev": null}, {"id": "heat", "zone": "Тепло", "weight": 3, "items": [{"name": "Нужны две независимые системы: автоматическая (котёл) и ручная (печь с теплоёмкой массой)", "kind": "знание", "level": 2, "note": "свод под уральскую зиму", "source": "свод «Автономный дом»"}, {"name": "Газ — самое дешёвое тепло, но подключение может не окупиться", "kind": "знание", "level": 2, "note": "цифры — в своде", "source": "свод «Автономный дом»"}, {"name": "Утепление и окна часто выгоднее, чем дорогое подключение", "kind": "знание", "level": 2, "note": "цифры — в своде", "source": "свод «Автономный дом»"}, {"name": "Печь ставить в центре дома: одна печь не тянет большой неутеплённый дом", "kind": "знание", "level": 2, "note": "", "source": "тир-лист YouTube"}], "gaps": [{"text": "Свод сделан под уральскую зиму — пересчитать под климат у Кисловодска (высота, ветер)", "next": "Слой «еда и тепло под климат у Кисловодска»: газ или дрова, теплица", "who": "исследование бота", "effort": "M"}, {"text": "Есть ли газ у выбранных участков и сколько стоит подключение", "next": "Запрос в газовую службу района по участкам-кандидатам", "who": "газовая служба района", "effort": "S"}, {"text": "Дрова: откуда, сколько кубов на сезон, кто заготавливает", "next": "Посчитать кубы на сезон по площади дома и найти поставщика", "who": "местный поставщик дров", "effort": "S"}], "sources": ["свод «Автономный дом»", "тир-лист YouTube"], "total": 4, "ok": 4, "mean": 2.0, "levelWord": "в работе", "lv": 2, "gapsN": 3, "prev": null}, {"id": "people", "zone": "Люди и община", "weight": 3, "items": [{"name": "~90 % общин не доходят до жизни на земле; главная причина — не записали правила и решения", "kind": "знание", "level": 2, "note": "", "source": "исследование 116"}, {"name": "Лестница «гость → участник → ядро», ядро ≤ 12–15 человек; шаг назад — без вины", "kind": "знание", "level": 2, "note": "", "source": "исследование 116"}, {"name": "Решения по согласию с датой; религиозные общины жили дольше (~25 лет против 6,4)", "kind": "знание", "level": 2, "note": "", "source": "исследование 116"}, {"name": "Чат общины открыт; бот — летописец, задания люди берут сами; мерило пробы — 8 недель", "kind": "ресурс", "level": 3, "note": "есть и работает", "source": "проект «Автономия — община»"}], "gaps": [{"text": "Замысел и устав (вход, выход, споры, деньги) не дописаны", "next": "Дописать устав по четырём разделам и принять по согласию", "who": "ядро общины; юрист — для раздела о деньгах", "effort": "M"}, {"text": "Карта «кто что может и кому что нужно» пока пуста", "next": "Анкета в чате: навыки и нужды каждой семьи", "who": "участники чата", "effort": "S"}, {"text": "Хотят ли люди быть в карте ресурсов", "next": "Спросить троих — нужно ≥ 2 «да»", "who": "участники чата", "effort": "S"}], "sources": ["исследование 116", "проект «Автономия — община»", "карта общины"], "total": 4, "ok": 4, "mean": 2.25, "levelWord": "в работе", "lv": 2, "gapsN": 3, "prev": null}, {"id": "money", "zone": "Доход и деньги", "weight": 3, "items": [{"name": "К переезду нужен капитал; сумма и этапы не посчитаны", "kind": "знание", "level": 1, "note": "", "source": "исследование 46"}, {"name": "Правило: у каждой семьи больше одного дохода, запас наличных, обмен внутри общины", "kind": "знание", "level": 2, "note": "принято правилом", "source": "разбор видео о подготовке общин"}, {"name": "Пример практиков: переезд в старый дом занял полгода и крупную сумму, расходы потом не кончаются", "kind": "знание", "level": 1, "note": "один пример", "source": "свод «Автономный дом»"}, {"name": "Общий котёл — только письменно; до устава каждая семья платит за своё", "kind": "знание", "level": 2, "note": "принято правилом", "source": "исследование 116"}], "gaps": [{"text": "Чем зарабатывать на месте и удалённо", "next": "Список доходов каждой семьи: что уже есть удалённо, что можно на месте", "who": "семьи общины", "effort": "M"}, {"text": "Капитал по этапам: земля, дом, системы", "next": "Свести суммы из исследования 46 и свода в таблицу по этапам", "who": "бот (расчёт)", "effort": "S"}, {"text": "Кто глава КФХ/ИП и как делим доли", "next": "Решить на встрече общины и записать в соглашение членов КФХ", "who": "юрист по КФХ", "effort": "M"}], "sources": ["исследование 46", "исследование 116", "свод «Автономный дом»", "разбор видео о подготовке общин"], "total": 4, "ok": 2, "mean": 1.5, "levelWord": "в работе", "lv": 2, "gapsN": 3, "prev": null}, {"id": "energy", "zone": "Энергия", "weight": 2, "items": [{"name": "Зимой солнце даёт 9–25 % от летнего: нужен гибрид с сетью или генератором как резервом", "kind": "знание", "level": 2, "note": "", "source": "исследование 46"}, {"name": "Гибрид 10 кВт у Кисловодска: порядок цены известен; ~2 090 солнечных часов в год", "kind": "знание", "level": 2, "note": "цифры — в исследовании 46", "source": "исследование 46"}, {"name": "Батареи LiFePO4 — только в тепле: на морозе не заряжаются; дешёвый контроллер — риск пожара", "kind": "знание", "level": 2, "note": "", "source": "свод «Автономный дом»"}, {"name": "Подключение к сети как ИП/КФХ заметно дешевле, чем у физлица", "kind": "знание", "level": 1, "note": "один пример, не проверено", "source": "рилс о подключении фермы"}], "gaps": [{"text": "Сколько кВт·ч в день нужно семье", "next": "Расчёт по самому тёмному месяцу: приборы и часы работы", "who": "практик с солнечной станцией", "effort": "S"}, {"text": "Правила льготного подключения в Ставропольском крае", "next": "Прочитать правила сетевой компании края и позвонить в её офис", "who": "сетевая компания края", "effort": "M"}, {"text": "Есть ли линия электропередачи у конкретных участков", "next": "Проверить по публичной карте и при выезде", "who": "кадастровый инженер или сетевая компания", "effort": "S"}], "sources": ["исследование 46", "свод «Автономный дом» (20 роликов)", "рилс о подключении фермы", "разбор видео о подготовке общин"], "total": 4, "ok": 3, "mean": 1.75, "levelWord": "в работе", "lv": 2, "gapsN": 3, "prev": null}, {"id": "food", "zone": "Еда (огород, животные, запасы)", "weight": 2, "items": [{"name": "Огород 125 м² дал ~700 кг еды за год на двоих (грядки, полутуннель, компост)", "kind": "знание", "level": 2, "note": "пример практиков", "source": "свод «Автономный дом»"}, {"name": "Полное самообеспечение семьи из пяти — ~12 га: нереально; реально — овощи, зелень, яйца, заготовки", "kind": "знание", "level": 2, "note": "", "source": "свод «Автономный дом»"}, {"name": "Теплица с тепловой массой держит +10…12 °C ночью при −40 °C", "kind": "знание", "level": 2, "note": "", "source": "свод «Автономный дом»"}, {"name": "10 кур с петухом — ~41 сотка с кормом; пруды и раздел культур между семьями", "kind": "знание", "level": 1, "note": "взято в план", "source": "разбор видео о подготовке общин"}], "gaps": [{"text": "Сколько земли нужно трём семьям и что растёт в климате у Кисловодска", "next": "Слой «еда под климат у Кисловодска»: земля на три семьи, теплица", "who": "агроном или фермер региона", "effort": "M"}, {"text": "Кто из семей что ведёт: огород, животные, пруд", "next": "Распределить на встрече общины", "who": "семьи общины", "effort": "S"}, {"text": "Запасы на «3 месяца без города»: что и сколько", "next": "Лист готовности каждой семьи по пяти системам", "who": "семьи общины", "effort": "S"}], "sources": ["свод «Автономный дом»", "разбор видео о подготовке общин", "исследование 46 (слой «еда» не сделан)"], "total": 4, "ok": 3, "mean": 1.75, "levelWord": "в работе", "lv": 2, "gapsN": 3, "prev": null}, {"id": "house", "zone": "Дом (стройка, материалы)", "weight": 2, "items": [{"name": "На земле КФХ — один дом ≤ 500 м², застройка ≤ 0,25 % участка (дом 125 м² → нужно 5 га)", "kind": "знание", "level": 2, "note": "", "source": "исследование 46"}, {"name": "Утеплить стены: 10 см ваты ≈ −90 % потерь; проектировать дом вокруг печи", "kind": "знание", "level": 2, "note": "", "source": "свод «Автономный дом»"}, {"name": "Стены с массой (глина, саман) держат тепло; дом без разрешения — годы споров с властями", "kind": "знание", "level": 2, "note": "", "source": "свод «Автономный дом»"}, {"name": "Сметы на практике выходят в 2–3 раза выше расчёта", "kind": "знание", "level": 2, "note": "", "source": "свод «Автономный дом»"}], "gaps": [{"text": "Какой дом: площадь, материал, этапы стройки", "next": "Эскиз: площадь, материал, порядок стройки", "who": "строитель с опытом домов с массой", "effort": "M"}, {"text": "Цены стройки и подрядчики в регионе", "next": "Собрать 2–3 сметы у подрядчиков региона", "who": "местные подрядчики", "effort": "M"}, {"text": "Грунты и фундамент — нужны изыскания на участке", "next": "Заказать изыскания после выбора участка", "who": "изыскательская организация", "effort": "L"}], "sources": ["исследование 46", "свод «Автономный дом»"], "total": 4, "ok": 4, "mean": 2.0, "levelWord": "в работе", "lv": 2, "gapsN": 3, "prev": null}, {"id": "comms", "zone": "Связь, интернет и ИИ", "weight": 2, "items": [{"name": "Рации PMR 446 и LPD 433 МГц в РФ — без разрешения, малая дальность", "kind": "знание", "level": 1, "note": "сверить", "source": "разбор видео о подготовке общин"}, {"name": "Связь — одна из пяти систем в мерке «3 месяца без города»", "kind": "знание", "level": 1, "note": "", "source": "разбор видео о подготовке общин"}, {"name": "Свои локальные модели ИИ — идея на потом; база по железу есть в прошлых исследованиях", "kind": "знание", "level": 1, "note": "", "source": "список идей"}], "gaps": [{"text": "Интернет на участке: мобильная сеть, спутник — что доступно", "next": "Проверить покрытие операторов и спутниковые варианты у кандидатов", "who": "местные жители, операторы связи", "effort": "S"}, {"text": "Дальняя связь при отключении сети", "next": "Изучить радиосвязь и что требует разрешения", "who": "радиолюбитель", "effort": "M"}, {"text": "Какие локальные модели и железо реально нужны", "next": "Свести прошлые исследования по железу в одну таблицу", "who": "бот", "effort": "S"}], "sources": ["разбор видео о подготовке общин", "список идей"], "total": 3, "ok": 0, "mean": 1.0, "levelWord": "начато", "lv": 1, "gapsN": 3, "prev": null}, {"id": "health", "zone": "Здоровье и медицина", "weight": 2, "items": [{"name": "Медицинский узел — аптечка, первая помощь, врач на связи", "kind": "знание", "level": 1, "note": "взято в план", "source": "разбор видео о подготовке общин"}, {"name": "Телемедицина в РФ законна, но первичный диагноз и назначение онлайн — нельзя", "kind": "знание", "level": 1, "note": "один источник", "source": "разбор видео о подготовке общин"}, {"name": "Нужно знать ближайшую больницу и время доезда", "kind": "знание", "level": 1, "note": "", "source": "разбор видео о подготовке общин"}], "gaps": [{"text": "Ближайшая больница и скорая от места — сколько ехать", "next": "Отметить на карте больницу и скорую от каждого кандидата", "who": "бот по картам", "effort": "S"}, {"text": "Курсы первой помощи для взрослых", "next": "Найти курсы и записаться", "who": "инструктор первой помощи", "effort": "S"}, {"text": "Состав аптечки на три семьи", "next": "Список по совету медика", "who": "врач или фельдшер", "effort": "S"}], "sources": ["разбор видео о подготовке общин"], "total": 3, "ok": 0, "mean": 1.0, "levelWord": "начато", "lv": 1, "gapsN": 3, "prev": null}, {"id": "safety", "zone": "Безопасность", "weight": 2, "items": [{"name": "Батареи без контроля вздуваются, дешёвый инвертор горит — риск пожара", "kind": "знание", "level": 1, "note": "", "source": "свод «Автономный дом»"}, {"name": "Проводку — только с опытным электриком; дрова и печи — постоянный труд и надзор", "kind": "знание", "level": 1, "note": "", "source": "свод «Автономный дом»"}], "gaps": [{"text": "Пожарная безопасность дома, печей и батарей", "next": "Чек-лист для печей, проводки и батарей", "who": "электрик или пожарный инспектор", "effort": "S"}, {"text": "Охрана участка и дома в отъезд", "next": "Сравнить варианты: соседи, камеры, сторож", "who": "соседи, местная охрана", "effort": "M"}, {"text": "План на ЧС: отключение света, топлива, дорог", "next": "Добавить в мерку «3 месяца без города»", "who": "семьи общины", "effort": "M"}], "sources": ["свод «Автономный дом»"], "total": 2, "ok": 0, "mean": 1.0, "levelWord": "начато", "lv": 1, "gapsN": 3, "prev": null}, {"id": "kids", "zone": "Дети и образование", "weight": 2, "items": [{"name": "«Дети» — одна из тем анкеты общины («что волнует больше всего»)", "kind": "знание", "level": 1, "note": "", "source": "исследование 116"}, {"name": "Печь с горячей массой: с малышами нужен барьер", "kind": "знание", "level": 1, "note": "опыт практиков", "source": "свод «Автономный дом»"}], "gaps": [{"text": "Школа, детсад или семейное обучение рядом с местом", "next": "Найти школы и детсады у кандидатов", "who": "бот по картам; семьи с детьми в регионе", "effort": "S"}, {"text": "Детский врач и роддом — сколько ехать", "next": "Отметить на карте вместе с больницей", "who": "бот по картам", "effort": "S"}, {"text": "Чему учить детей в хозяйстве", "next": "Собрать опыт семей-практиков", "who": "семьи-практики", "effort": "M"}], "sources": ["исследование 116", "свод «Автономный дом»"], "total": 2, "ok": 0, "mean": 1.0, "levelWord": "начато", "lv": 1, "gapsN": 3, "prev": null}]};
+const M = D.meta, Z = D.zones;
+const W = ["пусто","начато","в работе","освоено"];
+const KN = {"знание":"знания","человек":"люди","инструмент":"инструменты","ресурс":"ресурсы"};
+const LVN = ["нет","слышали","пробовали / частично","освоено / есть"];
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const $ = id => document.getElementById(id);
+const dt = s => (s||"").split("-").reverse().join(".");
+const lvOf = m => m < .5 ? 0 : m < 1.5 ? 1 : m < 2.5 ? 2 : 3;
+const icon = k => `<svg aria-hidden="true"><use href="#k-${esc(k)}"/></svg>`;
+const plural = (n, a, b, c) => { const m = n % 10, h = n % 100; return m === 1 && h !== 11 ? a : m >= 2 && m <= 4 && (h < 10 || h >= 20) ? b : c; };
 
-const zones = ZONES.map((z,i)=>({...z,id:"z"+i}));
-document.getElementById("strip").innerHTML = zones.map(z=>
-  `<button type="button" data-id="${z.id}" title="${esc(z.zone)} — ${z.depth}" aria-label="${esc(z.zone)}: ${esc(z.status)}, ${z.depth} из 100"><span class="fill" style="height:${Math.max(4,z.depth)}%;background:${col(z.status)}"></span></button>`).join("");
-document.getElementById("striplabels").innerHTML = zones.map(z=>`<span>${esc(z.zone.split(/[ ,(]/)[0])}</span>`).join("");
+document.title = M.title;
+$("eyebrow").textContent = `${M.eyebrow || "Карта знаний"} · обновлено ${dt(M.updated)}`;
+$("title").textContent = M.title;
 
-const order = ["изучено","начато","пусто"];
-const sorted = [...zones].sort((a,b)=>order.indexOf(a.status)-order.indexOf(b.status)||b.depth-a.depth);
-document.getElementById("grid").innerHTML = sorted.map(z=>`
-  <article class="zone" id="${z.id}" data-status="${esc(z.status)}">
-    <button type="button" class="ztoggle" aria-expanded="false">
-    <div class="zhead"><h2>${esc(z.zone)}</h2><span class="status ${(ST[z.status]||ST["пусто"])[0]}">${esc(z.status)}</span></div>
-    <div class="meter"><div class="bar"><i style="width:${z.depth}%;background:${col(z.status)}"></i></div><span class="pct">${z.depth}/100</span></div>
-    <span class="more">Подробнее ↓</span>
-    </button><div class="zbody">
-    ${z.known?.length?`<div><h3>Известно</h3><ul>${z.known.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>`:""}
-    ${z.gaps?.length?`<div><h3>Не хватает</h3><ul class="gaps">${z.gaps.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>`:""}
-    ${z.sources?.length?`<div class="src">Откуда: ${z.sources.map(esc).join(" · ")}</div>`:""}
-  </div></article>`).join("");
+/* --- за 10 секунд --- */
+const T = M.totals;
+$("big").innerHTML = `${T.ok}<small> из ${T.total}</small>`;
+$("biglbl").textContent = "освоено · пунктов на уровне «пробовали» и выше";
+const P = M.prev;
+let delta;
+if (P) {
+  const k = T.gaps - P.gaps, d = T.ok - P.ok;
+  delta = `<span class="badge">${d >= 0 ? "+" : "−"}${Math.abs(d)} освоено с ${dt(P.date)}</span> ` +
+    (k > 0 ? `<span class="badge">+${k} ${plural(k,"новый пробел найден","новых пробела найдено","новых пробелов найдено")} — карта выросла</span>` : `<span class="muted" style="font-size:13px">пробелов ${T.gaps} (было ${P.gaps})</span>`);
+} else delta = `<span class="muted" style="font-size:13px">${T.gaps} ${plural(T.gaps,"пробел","пробела","пробелов")} на карте · новые пробелы — рост знания, а не провал</span>`;
+$("delta").innerHTML = delta;
+const F = M.five;
+$("five").innerHTML = [["goal","Цель",F.goal],["where","Где мы",F.where],["have","Что имеем",F.have],["miss","Чего не хватает",F.missing],["head","Куда двигаемся",F.heading]]
+  .map(([c,l,t]) => `<div class="${c}"><dt>${l}</dt><dd>${esc(t)}</dd></div>`).join("");
 
-const cnt = s => zones.filter(z=>!s||z.status===s).length;
-const filters = [["","Все",null],...order.map(s=>[s,s[0].toUpperCase()+s.slice(1),col(s)])];
-const fEl = document.getElementById("filters");
-fEl.innerHTML = filters.map(([s,l,c])=>`<button type="button" class="chip" data-s="${s}" aria-pressed="${s===""}">${c?`<span class="dot" style="background:${c}"></span>`:""}${l} <span class="n">${cnt(s)}</span></button>`).join("");
-let saved=""; try{saved=localStorage.getItem("avt-filter")||""}catch(e){}
-function apply(s){
-  fEl.querySelectorAll(".chip").forEach(b=>b.setAttribute("aria-pressed",b.dataset.s===s));
-  document.querySelectorAll(".zone").forEach(a=>a.hidden=!!s&&a.dataset.status!==s);
-  try{localStorage.setItem("avt-filter",s)}catch(e){}
+/* --- график хода: освоено и всего пунктов, одна шкала --- */
+(function chart(){
+  const H = M.history || [], w = 320, h = 96, pl = 6, pr = 34, pt = 14, pb = 18;
+  const max = Math.max(1, ...H.map(r => r.total));
+  const x = i => H.length < 2 ? (pl + w - pr) / 2 : pl + i * (w - pl - pr) / (H.length - 1);
+  const y = v => pt + (h - pt - pb) * (1 - v / max);
+  const line = (k, st) => H.length > 1 ? `<polyline fill="none" ${st} points="${H.map((r,i)=>`${x(i)},${y(r[k])}`).join(" ")}"/>` : "";
+  const last = H.length - 1, r = H[last] || {ok:0,total:0};
+  let s = `<line x1="${pl}" x2="${w-pr}" y1="${y(0)}" y2="${y(0)}" stroke="var(--line)"/>`;
+  s += line("total", `stroke="var(--muted)" stroke-width="1.5" stroke-dasharray="4 3"`);
+  s += line("ok", `stroke="var(--accent)" stroke-width="2"`);
+  H.forEach((q,i) => { s += `<circle cx="${x(i)}" cy="${y(q.ok)}" r="4" fill="var(--accent)" stroke="var(--surface)" stroke-width="2"><title>${dt(q.date)}: освоено ${q.ok} из ${q.total}, пробелов ${q.gaps}</title></circle>`; });
+  if (H.length) {
+    s += `<text x="${x(last)+8}" y="${y(r.ok)+4}" font-size="11" fill="var(--fg)" font-family="var(--f-mono)">${r.ok}</text>`;
+    s += `<text x="${x(last)+8}" y="${y(r.total)+4}" font-size="11" fill="var(--muted)" font-family="var(--f-mono)">${r.total}</text>`;
+    if (H.length > 1) s += `<text x="${x(0)}" y="${h-3}" font-size="10" fill="var(--muted)">${dt(H[0].date).slice(0,5)}</text>`;
+    s += `<text x="${x(last)}" y="${h-3}" font-size="10" fill="var(--muted)" text-anchor="${H.length>1?"end":"middle"}">${dt(r.date).slice(0,5)}</text>`;
+  }
+  const c = $("chart"); c.setAttribute("viewBox", `0 0 ${w} ${h}`);
+  c.setAttribute("aria-label", "Ход по снимкам: " + H.map(q => `${dt(q.date)} — ${q.ok} из ${q.total}`).join("; "));
+  c.innerHTML = s;
+  $("chartcap").textContent = H.length > 1 ? "Ход по снимкам: сплошная — освоено, пунктир — всего пунктов на карте"
+    : "Первый снимок. Линия хода появится после сборки в другой день.";
+})();
+
+/* --- тепловая сетка с фильтром по виду --- */
+const kindsPresent = Object.keys(KN).filter(k => Z.some(z => z.items.some(i => i.kind === k)));
+let kind = "";
+try { const s = localStorage.getItem("kmap-kind:" + M.title); if (kindsPresent.includes(s)) kind = s; } catch (e) {}
+$("legend").innerHTML = W.map((w,i) => `<span><i class="sw L${i}"></i>${w}</span>`).join("") + `<span>· размер — важность для цели</span>`;
+function stats(z) {
+  const it = z.items.filter(i => !kind || i.kind === kind);
+  const mean = it.length ? it.reduce((a,i) => a + i.level, 0) / it.length : 0;
+  return {it, ok: it.filter(i => i.level >= 2).length, n: it.length, lv: it.length ? lvOf(mean) : 0, mean};
 }
-fEl.addEventListener("click",e=>{const b=e.target.closest(".chip"); if(b) apply(b.dataset.s)});
-if(order.includes(saved)) apply(saved);
+function trend(z) {
+  if (!z.prev || kind) return "";
+  const d = z.ok - z.prev.ok;
+  return d > 0 ? `<span class="up">↑ ${z.prev.ok}→${z.ok}</span>` : d < 0 ? `<span class="down">↓ ${z.prev.ok}→${z.ok}</span>` : "";
+}
+function renderKinds() {
+  const el = $("kinds");
+  if (kindsPresent.length < 2) { el.innerHTML = `<span class="muted" style="font-size:13px">Все пункты — ${esc(KN[kindsPresent[0]] || "")}</span>`; return; }
+  el.innerHTML = [["", "Все"], ...kindsPresent.map(k => [k, KN[k]])].map(([k,l]) =>
+    `<button type="button" class="chip" data-k="${esc(k)}" aria-pressed="${k === kind}">${k ? icon(k).replace("<svg","<svg width=\"16\" height=\"16\"") : ""}${esc(l)} <span class="n muted">${Z.reduce((a,z) => a + z.items.filter(i => !k || i.kind === k).length, 0)}</span></button>`).join("");
+}
+function renderBands() {
+  const names = {3:"Главное для цели", 2:"Важно", 1:"Фон"};
+  $("bands").innerHTML = [3,2,1].filter(w => Z.some(z => z.weight === w)).map(w => {
+    const zs = Z.filter(z => z.weight === w).map(z => [z, stats(z)]).sort((a,b) => b[1].mean - a[1].mean);
+    return `<div class="band w${w}"><div class="lbl">${names[w]} · вес ${w}</div><div class="tiles">${zs.map(([z,s]) =>
+      `<button type="button" class="tile L${s.lv}${s.n ? "" : " dim"}" data-id="${esc(z.id)}" aria-label="${esc(z.zone)}: ${W[s.lv]}, ${s.ok} из ${s.n}"><b>${esc(z.zone)}</b><span class="tm"><span>${W[s.lv]}</span><span>${s.ok}/${s.n} ${trend(z)}</span></span></button>`).join("")}</div></div>`;
+  }).join("");
+}
 
-const ov=document.getElementById("overall");
-if(META.overall){ov.innerHTML=`<b>${esc(META.overall.value)}</b><span>${esc(META.overall.label)}</span>`}else ov.hidden=true;
-const byDepth=[...zones].sort((a,b)=>b.depth-a.depth);
-document.getElementById("rank").innerHTML=byDepth.map(z=>`<button type="button" data-id="${z.id}"><span>${esc(z.zone)}</span><span class="bar"><i style="display:block;height:100%;width:${z.depth}%;background:${col(z.status)}"></i></span><span class="pct">${z.depth}/100</span></button>`).join("");
-function openZone(id){const el=document.getElementById(id); apply(""); el.classList.add("open"); el.querySelector(".ztoggle").setAttribute("aria-expanded","true");
-  el.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"start"});
-  el.classList.add("flash"); setTimeout(()=>el.classList.remove("flash"),1200);}
-document.getElementById("rank").addEventListener("click",e=>{const b=e.target.closest("button"); if(b) openZone(b.dataset.id)});
-document.getElementById("grid").addEventListener("click",e=>{const b=e.target.closest(".ztoggle"); if(!b||!matchMedia("(max-width:639px)").matches) return;
-  const a=b.closest(".zone"); const o=a.classList.toggle("open"); b.setAttribute("aria-expanded",o)});
-document.getElementById("strip").addEventListener("click",e=>{const b=e.target.closest("button"); if(b) openZone(b.dataset.id)});
+/* --- что дальше и куда двигаемся --- */
+$("top").innerHTML = (M.top || []).map(t => `<li><div><div class="t">${esc(t.text)}</div>
+  ${t.next && t.next !== t.text ? `<div class="st">→ ${esc(t.next)}</div>` : ""}<div class="why">${esc(t.zone)} · ${esc(t.why)}${t.who ? " · поможет: " + esc(t.who) : ""}</div></div></li>`).join("")
+  || `<li><div>Пробелов не записано</div></li>`;
+$("dirs").innerHTML = (M.directions || []).map(d => `<div class="dir"><div class="dh"><b>${esc(d.name)}</b><span class="stat ${d.draft ? "draft" : "s-" + esc(d.status)}">${esc(d.status)}</span></div>
+  ${d.gives ? `<p><span class="k">даёт</span>${esc(d.gives)}</p>` : ""}${d.costs ? `<p><span class="k">цена</span>${esc(d.costs)}</p>` : ""}
+  ${(d.needs||[]).length ? `<p><span class="k">закрывает</span>${d.needs.map(esc).join(" · ")}</p>` : ""}</div>`).join("");
+
+/* --- карточки зон --- */
+const desktop = matchMedia("(min-width:720px)");
+const order = [...Z].sort((a,b) => b.weight - a.weight || a.mean - b.mean);
+function renderCards() {
+  const openIds = new Set([...document.querySelectorAll(".zone.open")].map(e => e.id.slice(2)));
+  $("cards").innerHTML = order.map(z => {
+    const s = stats(z), have = s.it.filter(i => i.level >= 2).sort((a,b) => b.level - a.level), low = s.it.filter(i => i.level < 2);
+    const segs = [...s.it].sort((a,b) => b.level - a.level).map(i => `<i class="L${i.level}" title="${esc(i.name)}: ${LVN[i.level]}"></i>`).join("");
+    const item = i => `<li class="it">${icon(i.kind)}<span>${esc(i.name)} <span class="lv">· ${LVN[i.level]}</span>${i.note || i.source ? `<small>${esc([i.note, i.source && "источник: " + i.source].filter(Boolean).join(" · "))}</small>` : ""}</span></li>`;
+    const open = openIds.has(z.id) || (!openIds.size && desktop.matches);
+    return `<article class="zone${open ? " open" : ""}" id="c-${esc(z.id)}">
+    <button type="button" class="zt" aria-expanded="${open}">
+      <span class="zh"><h2>${esc(z.zone)}</h2><span class="lvl L${s.lv}">${W[s.lv]}</span></span>
+      <span class="segs" aria-hidden="true">${segs || '<i class="L0"></i>'}</span>
+      <span class="zm"><span>освоено ${s.ok} из ${s.n}</span><span>пробелов ${z.gapsN}</span><span>вес ${z.weight}</span>${z.prev && !kind ? `<span>было ${z.prev.ok}/${z.prev.total} → стало ${z.ok}/${z.total} ${trend(z)}</span>` : ""}</span>
+      <span class="more">Подробнее ↓</span>
+    </button>
+    <div class="zb">
+      <div><h3>Где мы</h3><div style="font-size:15px;margin-top:4px">${W[s.lv][0].toUpperCase() + W[s.lv].slice(1)}: ${s.ok} из ${s.n} ${plural(s.n,"пункта","пунктов","пунктов")} на уровне «пробовали» и выше${s.n ? `, средний уровень ${s.mean.toFixed(1).replace(".", ",")} из 3` : ""}.</div></div>
+      <div><h3>Что имеем</h3>${have.length ? `<ul>${have.map(item).join("")}</ul>` : `<div class="muted" style="font-size:14px;margin-top:4px">Пока ничего на уровне «пробовали».</div>`}
+        ${low.length ? `<details><summary>Слышали или нет — ${low.length}</summary><ul>${low.map(item).join("")}</ul></details>` : ""}</div>
+      ${(z.gaps||[]).length ? `<div><h3>Чего не хватает</h3><ul>${z.gaps.map(g => `<li class="gap"><span>${esc(g.text)}<span class="eff">${esc(g.effort)}</span></span>${g.next && g.next !== g.text ? `<span class="nx">→ ${esc(g.next)}</span>` : ""}${g.who ? `<span class="wh">Кто поможет: ${esc(g.who)}</span>` : ""}</li>`).join("")}</ul></div>` : ""}
+      ${(z.sources||[]).length ? `<div class="src">Откуда: ${z.sources.map(esc).join(" · ")}</div>` : ""}
+    </div></article>`;
+  }).join("");
+}
+function renderAll() { renderKinds(); renderBands(); renderCards(); }
+renderAll();
+
+$("kinds").addEventListener("click", e => { const b = e.target.closest(".chip"); if (!b) return; kind = b.dataset.k;
+  try { localStorage.setItem("kmap-kind:" + M.title, kind); } catch (er) {} renderAll(); });
+$("bands").addEventListener("click", e => { const b = e.target.closest(".tile"); if (!b) return;
+  const el = $("c-" + b.dataset.id); el.classList.add("open"); el.querySelector(".zt").setAttribute("aria-expanded", "true");
+  el.scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start"});
+  el.classList.add("flash"); setTimeout(() => el.classList.remove("flash"), 1200); });
+$("cards").addEventListener("click", e => { const b = e.target.closest(".zt"); if (!b) return;
+  const a = b.closest(".zone"); b.setAttribute("aria-expanded", a.classList.toggle("open")); });
+
+$("foot").innerHTML = `<p><b>Как читать.</b> Уровень пункта: 0 нет · 1 слышали · 2 пробовали или частично · 3 освоено или есть. Уровень зоны — средний по пунктам: «пусто» до 0,5 · «начато» до 1,5 · «в работе» до 2,5 · «освоено» выше. Главная цифра — сколько пунктов на уровне 2 и выше; процентов нет: новый пробел — это рост знания, а не провал.</p>
+<p><b>«Что дальше»</b> — по одному пробелу из зоны, порядок: вес зоны × (3 − уровень зоны), делённое на усилие (S — 1, M — 1,5, L — 2,5).</p>${M.footer ? `<p>${esc(M.footer)}</p>` : ""}`;
 </script>
 </body></html>
