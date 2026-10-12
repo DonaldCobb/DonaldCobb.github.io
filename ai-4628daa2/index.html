@@ -119,7 +119,8 @@ footer p{margin:0}
   .dec{grid-template-columns:1fr 1fr;align-items:start}
   .cards{grid-template-columns:1fr 1fr;align-items:start}
 }
-@media (max-width:380px){.big{font-size:38px}.five div{grid-template-columns:1fr;gap:2px}}
+@media (max-width:380px){.big{font-size:38px}}
+@media (max-width:600px){.five div{grid-template-columns:1fr;gap:2px}}
 @media (prefers-reduced-motion:no-preference){.zone{transition:box-shadow .3s}}
 @media (forced-colors:active){.tile,.segs i{border:1px solid CanvasText}}
 </style>
@@ -214,8 +215,9 @@ $("five").innerHTML = [["goal","Цель",F.goal],["where","Где мы",F.where
   const c = $("chart"); c.setAttribute("viewBox", `0 0 ${w} ${h}`);
   c.setAttribute("aria-label", "Ход по снимкам: " + H.map(q => `${dt(q.date)} — ${q.ok} из ${q.total}`).join("; "));
   c.innerHTML = s;
+  if (H.length < 2) c.hidden = true;  /* одна точка — пустой график, только подпись (Юлай: главное крупно) */
   $("chartcap").textContent = H.length > 1 ? "Ход по снимкам: сплошная — освоено, пунктир — всего пунктов на карте"
-    : "Первый снимок. Линия хода появится после сборки в другой день.";
+    : "Первый снимок — график хода появится со второго.";
 })();
 
 /* --- тепловая сетка с фильтром по виду --- */
