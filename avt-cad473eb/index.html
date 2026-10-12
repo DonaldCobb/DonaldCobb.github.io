@@ -5,20 +5,20 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Golos+Text:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap">
 <style>
-/* Карта знаний v2 — универсальный шаблон. Порядок: за 10 секунд (пять строк + цифра + ход) → тепловая сетка зон → что дальше и куда двигаемся → карточки зон */
+/* Карта знаний v2 — универсальный шаблон. Порядок: за 10 секунд (пять строк + цифра + ход) → сводка «что есть и чего не хватает» (полосы по зонам) → тепловая сетка зон → что дальше и куда двигаемся → карточки зон */
 :root{
   --bg:#edf1ec; --surface:#f8faf7; --fg:#1b2620; --muted:#5d6b63; --line:#cfd8d1; --accent:#2c6a52; --warn:#9a5b12;
-  --l0:#e2e7e3; --l0f:#4c5a52; --l1:#cfe6d6; --l1f:#1d4a33; --l2:#74b892; --l2f:#0f2a1c; --l3:#2c6a52; --l3f:#ffffff;
+  --l0:#f6d5cf; --l0f:#7a2b1f; --l1:#f7e1a8; --l1f:#5e4204; --l2:#b5dd98; --l2f:#1d4510; --l3:#2f8a57; --l3f:#ffffff; --gap:#e0664f;
   --f-display:"Unbounded","Golos Text",system-ui,sans-serif;
   --f-body:"Golos Text",system-ui,-apple-system,"Segoe UI",sans-serif;
   --f-mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
   --bg:#111814; --surface:#18211c; --fg:#e2eae4; --muted:#9aa8a0; --line:#2b3831; --accent:#6cc39b; --warn:#e0a54a;
-  --l0:#222c26; --l0f:#9aa8a0; --l1:#24432f; --l1f:#cfe8d8; --l2:#2f7350; --l2f:#f0faf4; --l3:#7fd1a5; --l3f:#0d1f15; color-scheme:dark}}
+  --l0:#462622; --l0f:#f3b9ae; --l1:#4d3c12; --l1f:#f5d98e; --l2:#2f5a24; --l2f:#d9f2c9; --l3:#5ccb8d; --l3f:#0d1f15; --gap:#f07c64; color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#111814; --surface:#18211c; --fg:#e2eae4; --muted:#9aa8a0; --line:#2b3831; --accent:#6cc39b; --warn:#e0a54a;
-  --l0:#222c26; --l0f:#9aa8a0; --l1:#24432f; --l1f:#cfe8d8; --l2:#2f7350; --l2f:#f0faf4; --l3:#7fd1a5; --l3f:#0d1f15; color-scheme:dark}
+  --l0:#462622; --l0f:#f3b9ae; --l1:#4d3c12; --l1f:#f5d98e; --l2:#2f5a24; --l2f:#d9f2c9; --l3:#5ccb8d; --l3f:#0d1f15; --gap:#f07c64; color-scheme:dark}
 *{box-sizing:border-box}
 body{background:var(--bg);color:var(--fg);font:16px/1.5 var(--f-body);margin:0}
 .wrap{max-width:1100px;margin:0 auto;padding:20px 16px 48px;display:grid;gap:26px}
@@ -30,6 +30,20 @@ h2{font:700 19px/1.2 var(--f-display);margin:0}
 .n{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
 .muted{color:var(--muted)}
 .panel{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px}
+.sum{display:grid;gap:12px}
+.sum .rows{display:grid;gap:9px;margin:0;padding:0;list-style:none}
+.srow{display:grid;grid-template-columns:minmax(0,11em) 1fr auto;gap:10px;align-items:center;width:100%;background:none;border:0;padding:2px 0;text-align:left;cursor:pointer}
+.srow .nm{font:500 14px/1.25 var(--f-body);min-width:0}
+.srow .nm small{display:block;font:500 10px/1.2 var(--f-mono);color:var(--muted);letter-spacing:.04em}
+.sbar{display:flex;height:16px;border-radius:5px;overflow:hidden;background:var(--line);gap:2px}
+.sbar i{display:block;height:100%;min-width:3px}
+.sbar .g{background:repeating-linear-gradient(135deg,var(--gap) 0 5px,color-mix(in srgb,var(--gap) 55%,var(--surface)) 5px 9px)}
+.srow .cnt{font:500 12px/1.2 var(--f-mono);font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
+.srow .cnt b{color:var(--gap);font-weight:600}
+.skey{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12px;color:var(--muted)}
+.skey span{display:inline-flex;align-items:center;gap:6px}
+.skey i{width:12px;height:12px;border-radius:3px;display:inline-block}
+@media (max-width:520px){.srow{grid-template-columns:1fr auto}.srow .sbar{grid-column:1/-1;order:3}}
 /* за 10 секунд */
 .ten{display:grid;gap:16px}
 .hero{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:center}
@@ -146,6 +160,12 @@ footer p{margin:0}
     <dl class="five panel" id="five"></dl>
   </section>
 
+  <section class="panel sum" aria-label="Сводка по зонам">
+    <h2>Что есть и чего не хватает</h2>
+    <div class="skey" id="skey"></div>
+    <ul class="rows" id="sumrows"></ul>
+  </section>
+
   <section class="mapsec" aria-label="Карта зон">
     <div class="mhead"><h2>Карта зон</h2><div class="legend" id="legend"></div></div>
     <div class="chips" id="kinds" role="group" aria-label="Фильтр по виду пункта"></div>
@@ -241,6 +261,17 @@ function renderKinds() {
   el.innerHTML = [["", "Все"], ...kindsPresent.map(k => [k, KN[k]])].map(([k,l]) =>
     `<button type="button" class="chip" data-k="${esc(k)}" aria-pressed="${k === kind}">${k ? icon(k).replace("<svg","<svg width=\"16\" height=\"16\"") : ""}${esc(l)} <span class="n muted">${Z.reduce((a,z) => a + z.items.filter(i => !k || i.kind === k).length, 0)}</span></button>`).join("");
 }
+function renderSum() {
+  const seg = [["L3","освоено"],["L2","пробовали"],["L1","слышали"],["L0","нет"]];
+  $("skey").innerHTML = seg.map(([c,l]) => `<span><i class="${c}"></i>${l}</span>`).join("") + `<span><i class="sbarkey" style="background:var(--gap)"></i>не хватает (пробелы)</span><span>· ●●● — важность</span>`;
+  const rows = Z.map(z => { const s = stats(z), g = kind ? 0 : z.gaps.length, c = [3,2,1,0].map(l => s.it.filter(i => i.level === l).length);
+    return {z, s, g, c, tot: s.n + g}; }).filter(r => r.tot)
+    .sort((a,b) => b.z.weight - a.z.weight || (b.g / b.tot) - (a.g / a.tot));
+  $("sumrows").innerHTML = rows.map(r => `<li><button type="button" class="srow" data-id="${esc(r.z.id)}" aria-label="${esc(r.z.zone)}: есть ${r.s.ok} из ${r.s.n}, не хватает ${r.g}">
+    <span class="nm">${esc(r.z.zone)}<small>${"●".repeat(r.z.weight)}${"○".repeat(3 - r.z.weight)}</small></span>
+    <span class="sbar">${r.c.map((n,i) => n ? `<i class="L${3-i}" style="flex:${n}" title="${seg[i][1]}: ${n}"></i>` : "").join("")}${r.g ? `<i class="g" style="flex:${r.g}" title="не хватает: ${r.g}"></i>` : ""}</span>
+    <span class="cnt">${r.s.ok}/${r.s.n}${r.g ? ` · <b>−${r.g}</b>` : ""}</span></button></li>`).join("");
+}
 function renderBands() {
   const names = {3:"Главное для цели", 2:"Важно", 1:"Фон"};
   $("bands").innerHTML = [3,2,1].filter(w => Z.some(z => z.weight === w)).map(w => {
@@ -284,15 +315,16 @@ function renderCards() {
     </div></article>`;
   }).join("");
 }
-function renderAll() { renderKinds(); renderBands(); renderCards(); }
+function renderAll() { renderKinds(); renderSum(); renderBands(); renderCards(); }
 renderAll();
 
 $("kinds").addEventListener("click", e => { const b = e.target.closest(".chip"); if (!b) return; kind = b.dataset.k;
   try { localStorage.setItem("kmap-kind:" + M.title, kind); } catch (er) {} renderAll(); });
-$("bands").addEventListener("click", e => { const b = e.target.closest(".tile"); if (!b) return;
+const openZone = e => { const b = e.target.closest(".tile,.srow"); if (!b) return;
   const el = $("c-" + b.dataset.id); el.classList.add("open"); el.querySelector(".zt").setAttribute("aria-expanded", "true");
   el.scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start"});
-  el.classList.add("flash"); setTimeout(() => el.classList.remove("flash"), 1200); });
+  el.classList.add("flash"); setTimeout(() => el.classList.remove("flash"), 1200); };
+$("bands").addEventListener("click", openZone); $("sumrows").addEventListener("click", openZone);
 $("cards").addEventListener("click", e => { const b = e.target.closest(".zt"); if (!b) return;
   const a = b.closest(".zone"); b.setAttribute("aria-expanded", a.classList.toggle("open")); });
 
