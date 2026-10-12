@@ -1,7 +1,8 @@
 <!doctype html>
 <html lang="ru">
-<head><meta name="robots" content="noindex,nofollow">
+<head>
 <meta charset="utf-8">
+<meta name="robots" content="noindex,nofollow">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Среда — путеводитель</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -13,13 +14,13 @@
   --fb-text: #1b1d17;
   --fb-hint: #64675c;
   --fb-sep: #e2e2db;
+  --line: #85877d;         /* граница полей и чипов: ≥ 3:1 к фону */
 
   /* свой акцент: олива — «лоза» и «масло», не синий Telegram и не терракота */
   --olive: #4b5b22;
   --olive-ink: #ffffff;
-  --olive-soft: #e7ebd8;
+  --olive-soft: #e7ebd8;   /* заливка — только у служений по записи */
   --olive-line: #c9d1ad;
-  --wax: #8a6a1f;          /* тёплое золото для мелких отметок, не для текста */
   --sample-bg: #f4ecd6;
   --sample-ink: #6e5414;
 
@@ -33,16 +34,16 @@
   --ui: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, "Helvetica Neue", Manrope, Arial, sans-serif;
   --book: Georgia, "PT Serif", "Iowan Old Style", "DejaVu Serif", serif;
 
+  /* шкала: четыре ступени */
   --fs-meta: 13px;
-  --fs-small: 15px;
-  --fs-body: 16px;
-  --fs-title: 17px;
-  --fs-h2: 22px;
-  --fs-h1: 30px;
+  --fs-body: 15px;
+  --fs-title: 18px;
+  --fs-display: 34px;
 
   --r-block: 16px;
   --r-btn: 12px;
   --gut: 16px;
+  --tap: 44px;
   color-scheme: light;
 }
 
@@ -53,11 +54,11 @@
     --fb-text: #ecede6;
     --fb-hint: #9c9f94;
     --fb-sep: #2e302a;
+    --line: #74776b;
     --olive: #b6c47a;
     --olive-ink: #192009;
     --olive-soft: #2a3119;
     --olive-line: #48532a;
-    --wax: #d2b46a;
     --sample-bg: #3a3218;
     --sample-ink: #e6cf8f;
     color-scheme: dark;
@@ -69,11 +70,11 @@
   --fb-text: #ecede6;
   --fb-hint: #9c9f94;
   --fb-sep: #2e302a;
+  --line: #74776b;
   --olive: #b6c47a;
   --olive-ink: #192009;
   --olive-soft: #2a3119;
   --olive-line: #48532a;
-  --wax: #d2b46a;
   --sample-bg: #3a3218;
   --sample-ink: #e6cf8f;
   color-scheme: dark;
@@ -96,29 +97,32 @@ h1, h2, h3, p { margin: 0; }
 a { color: inherit; }
 button { font: inherit; color: inherit; }
 :focus-visible { outline: 2px solid var(--olive); outline-offset: 2px; border-radius: 6px; }
-@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
+[hidden] { display: none !important; }
 
 .hint { color: var(--hint); }
 .meta { font-size: var(--fs-meta); color: var(--hint); }
+.display { font-size: var(--fs-display); line-height: 1.08; font-weight: 800; letter-spacing: -0.025em; }
 
 /* Метка «пример» — чтобы скриншот не приняли за настоящие данные */
 .sample {
-  display: inline-block; vertical-align: 2px;
-  font-size: 11px; font-weight: 600; line-height: 1;
-  padding: 4px 7px; border-radius: 6px;
+  display: inline-block; vertical-align: 1px;
+  font-size: var(--fs-meta); font-weight: 600; line-height: 1;
+  padding: 3px 7px; border-radius: 6px; letter-spacing: 0;
   background: var(--sample-bg); color: var(--sample-ink);
 }
 
 /* Шапка внутренних экранов (в браузере; в Telegram назад — системной кнопкой) */
-.topbar { display: flex; align-items: center; gap: 8px; padding: 10px var(--gut) 4px; min-height: 48px; }
+.topbar { display: flex; align-items: center; padding: 6px var(--gut) 0; min-height: 50px; }
 .back {
-  border: 0; background: none; padding: 10px 8px 10px 0; min-height: 44px;
+  border: 0; background: none; padding: 0 8px 0 0; min-height: var(--tap);
   color: var(--olive); font-size: var(--fs-body); cursor: pointer;
 }
-.in-tg .topbar .back { visibility: hidden; }
-.inner-head { padding: 4px var(--gut) 16px; }
-.inner-head h1 { font-size: var(--fs-h2); line-height: 1.2; font-weight: 700; letter-spacing: -0.01em; }
-.inner-head p { margin-top: 6px; color: var(--hint); font-size: var(--fs-small); }
+.in-tg .topbar { display: none; }
+.in-tg .inner-head { padding-top: 20px; }
+.inner-head { padding: 8px var(--gut) 18px; }
+.inner-head h1 { font-size: var(--fs-display); line-height: 1.08; font-weight: 800; letter-spacing: -0.025em; }
+.inner-head p { margin-top: 8px; color: var(--hint); }
 
 /* Группированный список — родной язык Telegram */
 .group { background: var(--section); margin: 0 var(--gut) 16px; border-radius: var(--r-block); overflow: hidden; }
@@ -130,57 +134,86 @@ button { font: inherit; color: inherit; }
 }
 .row + .row { border-top: 1px solid var(--sep); }
 .row-body { flex: 1; min-width: 0; }
-.row-title { font-size: var(--fs-body); font-weight: 600; line-height: 1.3; }
-.row-sub { font-size: var(--fs-small); color: var(--hint); line-height: 1.35; margin-top: 2px; }
+.row-title { font-weight: 600; line-height: 1.3; }
+.row-sub { color: var(--hint); line-height: 1.35; margin-top: 2px; }
+.row .btn { min-height: var(--tap); padding: 0 14px; flex: none; }
 
 /* Кнопки */
 .btn {
   display: inline-flex; align-items: center; justify-content: center;
-  min-height: 44px; padding: 0 18px; border-radius: var(--r-btn);
+  min-height: var(--tap); padding: 0 18px; border-radius: var(--r-btn);
   font-size: var(--fs-body); font-weight: 600; text-decoration: none; cursor: pointer;
   border: 1.5px solid var(--olive); background: transparent; color: var(--olive);
 }
 .btn-main { background: var(--olive); color: var(--olive-ink); }
-.btn-block { width: 100%; min-height: 50px; }
-.btn-quiet { border-color: transparent; background: var(--olive-soft); }
+.btn-block { width: 100%; min-height: 52px; font-size: var(--fs-title); }
+
+/* Главное действие: в Telegram — MainButton, в браузере — эта кнопка в потоке */
+.main-fallback { padding: 20px var(--gut) 0; }
 
 /* Карточка места */
 .place { background: var(--section); margin: 0 var(--gut) 12px; border-radius: var(--r-block); padding: 16px; }
 .place-kind { font-size: var(--fs-meta); color: var(--hint); }
 .place h3 { font-size: var(--fs-title); line-height: 1.3; margin-top: 2px; }
-.place p { font-size: var(--fs-small); margin-top: 6px; }
+.place p { margin-top: 6px; }
 .place .entry { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 14px; }
 .place .entry .meta { flex: 1; }
 .place.first { box-shadow: inset 0 0 0 1.5px var(--olive-line); }
 .place.first .lead { font-size: var(--fs-meta); font-weight: 600; color: var(--olive); margin-bottom: 4px; }
 
+/* Поиск */
+.search { position: relative; display: block; }
+.search .icon { position: absolute; left: 12px; top: 13px; color: var(--hint); width: 22px; height: 22px; }
+.search input { padding-left: 42px; }
+.results .row-sub { font-size: var(--fs-meta); }
+.empty { margin: 8px var(--gut) 16px; padding: 20px 16px; background: var(--section); border-radius: var(--r-block); }
+.empty h2 { font-size: var(--fs-title); }
+.empty p { margin: 6px 0 16px; color: var(--hint); }
+
+/* Карта сфер (B — главная, A — второй уровень) */
+.sphere { padding: 22px var(--gut) 0; scroll-margin-top: 140px; }
+.sphere-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 10px; }
+.sphere-head h2 { font-size: var(--fs-title); font-weight: 700; }
+.tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.tile { display: flex; flex-direction: column; gap: 4px; min-height: 92px; padding: 12px 14px; border-radius: 14px; background: var(--section); text-decoration: none; }
+.tile b { line-height: 1.3; font-weight: 600; }
+.tile .line { font-size: var(--fs-meta); color: var(--hint); line-height: 1.35; }
+.tile.wide { grid-column: span 2; min-height: 64px; }
+.tiles.ministry .tile.signup { background: var(--olive-soft); min-height: 112px; }
+.tiles.ministry .tile .go { margin-top: auto; font-size: var(--fs-meta); font-weight: 700; color: var(--olive); }
+.lands { display: flex; flex-wrap: wrap; gap: 2px 4px; background: var(--section); border-radius: 14px; padding: 10px 8px; }
+.lands a { font-size: var(--fs-title); line-height: 1.2; font-weight: 600; letter-spacing: -0.01em; text-decoration: none; padding: 0 8px; border-radius: 8px; min-height: var(--tap); display: inline-flex; align-items: center; }
+.lands a:nth-child(3n+2) { color: var(--olive); }
+.quiet-links { display: flex; flex-wrap: wrap; gap: 4px 16px; padding: 24px var(--gut) 0; }
+.quiet-links a { min-height: var(--tap); display: inline-flex; align-items: center; color: var(--olive); font-weight: 600; text-decoration: none; }
+
 /* Форма записи */
 .form { padding: 0 var(--gut); display: flex; flex-direction: column; gap: 20px; }
-.field label, .field .label { display: block; font-size: var(--fs-small); font-weight: 600; margin-bottom: 8px; }
+.field label, .field .label { display: block; font-weight: 600; margin-bottom: 8px; }
 .field .meta { margin-top: 6px; }
 .input {
   width: 100%; min-height: 48px; padding: 12px 14px; border-radius: var(--r-btn);
-  border: 1px solid var(--sep); background: var(--section); color: var(--text); font: inherit;
+  border: 1px solid var(--line); background: var(--section); color: var(--text); font: inherit;
 }
 textarea.input { min-height: 96px; resize: vertical; }
 .input::placeholder { color: var(--hint); }
 .chips { display: flex; flex-wrap: wrap; gap: 8px; }
 .chip {
-  min-height: 40px; padding: 8px 14px; border-radius: 999px; cursor: pointer;
-  border: 1px solid var(--sep); background: var(--section); font-size: var(--fs-small);
+  min-height: var(--tap); padding: 0 16px; border-radius: 999px; cursor: pointer;
+  border: 1px solid var(--line); background: var(--section);
 }
-.chip[aria-pressed="true"] { background: var(--olive-soft); border-color: var(--olive); color: var(--text); font-weight: 600; }
-.note { font-size: var(--fs-small); padding: 12px 14px; border-radius: var(--r-btn); background: var(--olive-soft); }
-.form-foot { padding: 4px var(--gut) 0; margin-top: 20px; }
+/* «выбрано» — обводкой и галочкой, без оливковой заливки */
+.chip[aria-pressed="true"] { border: 2px solid var(--olive); padding: 0 15px; font-weight: 600; }
+.chip[aria-pressed="true"]::before { content: "✓"; color: var(--olive); margin-right: 6px; font-weight: 700; }
 
 /* Экран «принято» */
-.done { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 32px 24px; text-align: left; }
-.done .mark { width: 56px; height: 56px; border-radius: 50%; background: var(--olive-soft); display: grid; place-items: center; margin-bottom: 20px; }
+.done { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 32px 24px; }
+.done .mark { width: 56px; height: 56px; border-radius: 50%; border: 2px solid var(--olive); display: grid; place-items: center; margin-bottom: 20px; }
 .done .mark svg { stroke: var(--olive); }
-.done h1 { font-size: var(--fs-h2); line-height: 1.25; }
-.done .proto { margin-top: 8px; font-size: var(--fs-small); color: var(--sample-ink); background: var(--sample-bg); padding: 8px 12px; border-radius: 10px; align-self: flex-start; }
-.done p.next { margin-top: 16px; font-size: var(--fs-small); color: var(--hint); max-width: 34ch; }
-.done .actions { margin-top: 28px; display: flex; flex-direction: column; gap: 10px; }
+.done h1 { font-size: var(--fs-display); line-height: 1.08; letter-spacing: -0.025em; }
+.done .proto { margin-top: 10px; color: var(--sample-ink); background: var(--sample-bg); padding: 8px 12px; border-radius: 10px; align-self: flex-start; }
+.done p.next { margin-top: 16px; color: var(--hint); max-width: 34ch; }
+.done .actions { margin-top: 28px; }
 
 /* Расписание */
 .slot { display: grid; grid-template-columns: 64px 1fr; gap: 12px; padding: 12px 16px; align-items: baseline; }
@@ -189,12 +222,12 @@ textarea.input { min-height: 96px; resize: vertical; }
 
 /* Свидетельство */
 .story { background: var(--section); margin: 0 var(--gut) 12px; border-radius: var(--r-block); padding: 18px 16px; }
-.story blockquote { margin: 0; font-family: var(--book); font-size: 18px; line-height: 1.5; }
+.story blockquote { margin: 0; font-family: var(--book); font-size: var(--fs-title); line-height: 1.5; }
 .story .meta { margin-top: 10px; }
 
 /* Подвал варианта */
-.variant-foot { margin-top: auto; padding: 24px var(--gut) 8px; text-align: center; font-size: 12px; color: var(--hint); }
-.variant-foot a { color: var(--hint); }
+.variant-foot { margin-top: auto; padding: 16px var(--gut) 0; text-align: center; font-size: var(--fs-meta); color: var(--hint); }
+.variant-foot a { color: var(--hint); display: inline-flex; align-items: center; min-height: var(--tap); padding: 0 4px; }
 
 .icon { width: 24px; height: 24px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
 .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
@@ -203,28 +236,42 @@ textarea.input { min-height: 96px; resize: vertical; }
 /* ===== Вариант A — путеводитель: один вопрос крупно, ответы списком ===== */
 .screen-home { background: var(--section); }
 .brand { padding: 20px var(--gut) 0; display: flex; align-items: baseline; gap: 10px; }
-.brand b { font-size: var(--fs-title); letter-spacing: -0.01em; }
-.question { padding: 36px var(--gut) 8px; }
-.question h1 { font-size: 34px; line-height: 1.08; font-weight: 800; letter-spacing: -0.025em; max-width: 9em; }
-.question p { margin-top: 12px; color: var(--hint); font-size: var(--fs-small); }
+.brand b { font-size: var(--fs-body); }
+.question { padding: 32px var(--gut) 0; }
+.question h1 { max-width: 9em; }
+.question p { margin-top: 12px; color: var(--hint); }
+.question .search { margin-top: 18px; }
+.question .search input { background: var(--page); border-color: transparent; }
+#a-found { padding-top: 16px; }
+#a-found .group, #a-found .empty { background: var(--page); }
 
-.needs { list-style: none; margin: 20px 0 0; padding: 0 var(--gut); }
+.needs { list-style: none; margin: 16px 0 0; padding: 0 var(--gut); }
 .needs li + li { border-top: 1px solid var(--sep); }
-.need { display: flex; align-items: center; gap: 14px; padding: 14px 0; min-height: 68px; text-decoration: none; }
-.need .ic { width: 44px; height: 44px; border-radius: 50%; background: var(--olive-soft); color: var(--olive); display: grid; place-items: center; flex: none; }
-.need .t { font-size: 18px; font-weight: 650; line-height: 1.25; }
-.need .s { font-size: var(--fs-small); color: var(--hint); line-height: 1.3; margin-top: 1px; }
+.need { display: flex; align-items: center; gap: 14px; padding: 12px 0; min-height: 68px; text-decoration: none; }
+.need .ic { width: 44px; height: 44px; border-radius: 50%; border: 1.5px solid var(--olive-line); color: var(--olive); display: grid; place-items: center; flex: none; }
+.need .t { display: block; font-size: var(--fs-title); font-weight: 650; line-height: 1.25; }
+.need .s { display: block; color: var(--hint); line-height: 1.3; margin-top: 1px; }
 .need:active .t { color: var(--olive); }
+.need.all .ic { border-style: dashed; }
 
-.unsure { margin: 20px var(--gut) 0; padding: 14px 16px; border-radius: var(--r-block); background: var(--page); font-size: var(--fs-small); }
-.unsure a { color: var(--olive); font-weight: 600; text-decoration: none; }
-.more { margin: 28px var(--gut) 0; }
-.more .meta { margin-bottom: 10px; }
-.more .links { display: flex; flex-wrap: wrap; gap: 8px; }
-.more .links a { min-height: 40px; display: inline-flex; align-items: center; padding: 0 14px; border-radius: 999px; background: var(--page); text-decoration: none; font-size: var(--fs-small); }
+.newbie { margin: 20px var(--gut) 0; }
+.newbie a { display: flex; align-items: center; gap: 12px; min-height: 48px; padding: 0 16px; border-radius: var(--r-btn); background: var(--page); text-decoration: none; }
+.newbie a span { flex: 1; }
+.newbie a b { color: var(--olive); }
 
-.lands .row { min-height: 52px; }
-.lands .btn { min-height: 36px; padding: 0 14px; font-size: var(--fs-small); }
+.more { margin: 24px 0 0; }
+.more .group { background: var(--page); }
+
+/* подборка: другая нужда — без возврата назад */
+.switch { display: flex; gap: 8px; overflow-x: auto; padding: 0 var(--gut) 16px; scrollbar-width: none; }
+.switch::-webkit-scrollbar { display: none; }
+.switch a { flex: none; display: inline-flex; align-items: center; gap: 8px; min-height: var(--tap); padding: 0 14px 0 10px; border-radius: 999px; border: 1px solid var(--line); background: var(--section); text-decoration: none; }
+.switch a .icon { width: 20px; height: 20px; color: var(--olive); }
+.switch a[aria-current="true"] { border: 2px solid var(--olive); padding: 0 13px 0 9px; font-weight: 600; }
+.pick-head { padding: 8px var(--gut) 14px; }
+.pick-head h1 { font-size: var(--fs-display); line-height: 1.08; font-weight: 800; letter-spacing: -0.025em; }
+.pick-head p { margin-top: 8px; color: var(--hint); }
+.in-tg .switch { padding-top: 16px; }
 </style>
 </head>
 <body>
@@ -233,80 +280,82 @@ textarea.input { min-height: 96px; resize: vertical; }
 const VARIANT = 'A';
 /* ===== Данные — константа, придуманное помечено «пример» ===== */
 const SPHERES = [
-  { id: 'study', name: 'Учёба' },
-  { id: 'ministry', name: 'Служения по записи' },
-  { id: 'people', name: 'Группы по людям' },
-  { id: 'land', name: 'Территории' },
-  { id: 'care', name: 'Общение и поддержка' },
-  { id: 'records', name: 'Записи эфиров' },
-  { id: 'info', name: 'Вход и новости' },
+  { id: 'people', name: 'Группы по людям', short: 'Люди' },
+  { id: 'land', name: 'Территории', short: 'Территории' },
+  { id: 'ministry', name: 'Служения по записи', short: 'Служения' },
+  { id: 'care', name: 'Общение и поддержка', short: 'Общение' },
+  { id: 'records', name: 'Записи эфиров', short: 'Записи' },
+  { id: 'info', name: 'Вход и новости', short: 'Вход' },
+  { id: 'study', name: 'Учёба', short: 'Учёба' },
 ];
+const SPHERE_BY_ID = Object.fromEntries(SPHERES.map(s => [s.id, s]));
 
 /* entry: signup — запись к служению; join — группа, вход по заявке; open — канал */
 const PLACES = [
   { id: 'school', sphere: 'study', name: 'Школа «Апостольско-пророческая культура»', short: 'Школа', kind: 'Школа', entry: 'join',
-    about: 'Учебные модули и эфиры школы. Для тех, кто хочет расти системно, а не урывками.' },
+    line: 'Модули и эфиры школы', about: 'Учебные модули и эфиры школы. Для тех, кто хочет расти системно, а не урывками.' },
   { id: 'library', sphere: 'study', name: 'Небесная библиотека', short: 'Небесная библиотека', kind: 'Канал', entry: 'open',
-    about: 'Материалы для самостоятельного изучения в своём темпе.' },
+    line: 'Материалы для чтения в своём темпе', about: 'Материалы для самостоятельного изучения в своём темпе.' },
 
   { id: 'new-heart', sphere: 'ministry', name: '«Новое сердце»', short: 'Душепопечение', kind: 'Душепопечение', entry: 'signup',
-    about: 'Личная беседа и молитва с душепопечителем — о том, что болит и не отпускает.' },
+    line: 'Беседа и молитва с душепопечителем', about: 'Личная беседа и молитва с душепопечителем — о том, что болит и не отпускает.' },
   { id: 'prophetic-table', sphere: 'ministry', name: '«Пророческий стол»', short: 'Пророческий стол', kind: 'Служение по записи', entry: 'signup',
-    about: 'Слово, ободрение и молитва о вас.' },
+    line: 'Слово, ободрение, молитва', about: 'Слово, ободрение и молитва о вас.' },
   { id: 'deliverance', sphere: 'ministry', name: 'Служение освобождения', short: 'Освобождение', kind: 'Служение по записи', entry: 'signup',
-    about: 'Служение по предварительной записи, в назначенное время.' },
+    line: 'В назначенное время', about: 'Служение по предварительной записи, в назначенное время.' },
   { id: 'dreams', sphere: 'ministry', name: '«Библейское толкование снов»', short: 'Толкование снов', kind: 'Служение по записи', entry: 'signup',
-    about: 'Разбор сна или видения по Писанию. За символическую плату.' },
+    line: 'По Писанию, символическая плата', about: 'Разбор сна или видения по Писанию. За символическую плату.' },
   { id: 'dreams-abc', sphere: 'ministry', name: '«Азбука снов и видений»', short: 'Азбука снов', kind: 'Группа', entry: 'join',
-    about: 'Учимся понимать язык снов и видений вместе.' },
+    line: 'Учимся понимать сны и видения', about: 'Учимся понимать язык снов и видений вместе.' },
 
   { id: 'women', sphere: 'people', name: 'Женщина влияния', short: 'Женщина влияния', kind: 'Группа', entry: 'join',
-    about: 'Сообщество женщин: общение, молитва, эфиры.' },
+    line: 'Общение, молитва и эфиры', about: 'Сообщество женщин: общение, молитва, эфиры.' },
   { id: 'men', sphere: 'people', name: 'Муж в Боге', short: 'Муж в Боге', kind: 'Группа', entry: 'join',
-    about: 'Мужская группа: ответственность, семья, служение.' },
+    line: 'Семья, ответственность, служение', about: 'Мужская группа: ответственность, семья, служение.' },
   { id: 'youth', sphere: 'people', name: 'Молодёжь', short: 'Молодёжь', kind: 'Группа', entry: 'join',
-    about: 'Молодёжное сообщество платформы.' },
+    line: 'Молодёжное сообщество', about: 'Молодёжное сообщество платформы.' },
   { id: 'kids', sphere: 'people', name: 'Детский канал', short: 'Детский канал', kind: 'Канал', entry: 'open',
-    about: 'Материалы для детей и для родителей, которые занимаются с ними.' },
+    line: 'Для детей и их родителей', about: 'Материалы для детей и для родителей, которые занимаются с ними.' },
 
   { id: 'shield', sphere: 'care', name: '«Молитвенный щит»', short: 'Молитвенный щит', kind: 'Группа', entry: 'join',
-    about: 'Сюда приносят молитвенные нужды — за вас будут молиться вместе.' },
+    line: 'Сюда приносят молитвенные нужды', about: 'Сюда приносят молитвенные нужды — за вас будут молиться вместе.' },
   { id: 'besedka', sphere: 'care', name: 'Беседка', short: 'Беседка', kind: 'Группа', entry: 'join',
-    about: 'Общение и свидетельства. Место, где можно просто быть с людьми.' },
+    line: 'Общение и свидетельства', about: 'Общение и свидетельства. Место, где можно просто быть с людьми.' },
   { id: 'stories', sphere: 'care', name: 'Свидетельства', short: 'Свидетельства', kind: 'Канал', entry: 'open',
-    about: 'Истории участников о том, что Бог сделал в их жизни.' },
+    line: 'Истории участников', about: 'Истории участников о том, что Бог сделал в их жизни.' },
 
   { id: 'prophecies', sphere: 'records', name: 'Пророчества с эфиров', short: 'Пророчества с эфиров', kind: 'Канал', entry: 'open',
-    about: 'Аудио личных пророчеств, сказанных на эфирах.' },
+    line: 'Аудио личных пророчеств', about: 'Аудио личных пророчеств, сказанных на эфирах.' },
   { id: 'tech', sphere: 'records', name: 'Записи эфиров', short: 'Записи эфиров', kind: 'Канал', entry: 'open',
-    about: 'Полные записи эфиров и короткие нарезки.' },
+    line: 'Полные записи и нарезки', about: 'Полные записи эфиров и короткие нарезки.' },
 
   { id: 'contact', sphere: 'info', name: 'Контакт для новеньких', short: 'Для новеньких', kind: 'Группа', entry: 'join',
-    about: 'Подключение новых участников: помогут, если не нашли своё место здесь.' },
+    line: 'Помогут найти своё место', about: 'Подключение новых участников: помогут, если не нашли своё место здесь.' },
   { id: 'portal', sphere: 'info', name: 'Конференции по странам', short: 'Конференции', kind: 'Канал', entry: 'open',
-    about: 'Анонсы конференций в разных странах.' },
+    line: 'Анонсы конференций', about: 'Анонсы конференций в разных странах.' },
   { id: 'youtube', sphere: 'info', name: 'Видео на YouTube', short: 'YouTube', kind: 'Видео', entry: 'open',
-    about: 'Открытые эфиры и проповеди.' },
+    line: 'Открытые эфиры и проповеди', about: 'Открытые эфиры и проповеди.' },
   { id: 'news', sphere: 'info', name: 'Канал платформы', short: 'Новости', kind: 'Канал', entry: 'open',
-    about: 'Главные новости и анонсы.' },
+    line: 'Главные новости и анонсы', about: 'Главные новости и анонсы.' },
 ];
 
 const LANDS = ['Россия', 'ПФО и Урал', 'Сибирь', 'ЮФО и Кавказ', 'Беларусь', 'Украина', 'Латвия', 'Литва', 'Германия', 'Англия', 'Европа', 'Америка'];
 LANDS.forEach((n, i) => PLACES.push({ id: 'land-' + i, sphere: 'land', name: n, short: n, kind: 'Территория', entry: 'join',
-  about: 'Группа участников: ' + n + '. Молитва за свою землю, встречи и новости рядом.' }));
+  line: 'Группа участников', about: 'Группа участников: ' + n + '. Молитва за свою землю, встречи и новости рядом.' }));
 
 const BY_ID = Object.fromEntries(PLACES.map(p => [p.id, p]));
 
-/* «Что вам сейчас нужно?» — для вариантов A и C */
+/* «Что вам сейчас нужно?» — для вариантов A и C; «Учиться» — последним */
 const NEEDS = [
-  { id: 'study', title: 'Учиться', sub: 'Школа и библиотека', icon: 'book', places: ['school', 'library', 'dreams-abc'] },
   { id: 'prayer', title: 'Молитва и поддержка', sub: 'Когда тяжело или нужна молитва', icon: 'flame', places: ['shield', 'new-heart', 'besedka'] },
   { id: 'signup', title: 'Служение по записи', sub: 'Душепопечение, пророческий стол, освобождение, сны', icon: 'calendar', places: ['new-heart', 'prophetic-table', 'deliverance', 'dreams'] },
   { id: 'talk', title: 'Общение', sub: 'Люди, свидетельства, свои по духу', icon: 'talk', places: ['besedka', 'women', 'men', 'youth'] },
   { id: 'land', title: 'Моя страна или город', sub: '12 территорий', icon: 'pin', places: [] },
   { id: 'family', title: 'Для семьи и детей', sub: 'Дети, молодёжь, мужья и жёны', icon: 'home', places: ['kids', 'youth', 'women', 'men'] },
+  { id: 'study', title: 'Учиться', sub: 'Школа и библиотека', icon: 'book', places: ['school', 'library', 'dreams-abc'] },
 ];
 const NEED_BY_ID = Object.fromEntries(NEEDS.map(n => [n.id, n]));
+const needPlaces = n => n.id === 'land' ? PLACES.filter(p => p.sphere === 'land') : n.places.map(pid => BY_ID[pid]);
 
 const MINISTRIES = ['new-heart', 'prophetic-table', 'deliverance', 'dreams'];
 
@@ -315,6 +364,7 @@ const SCHEDULE = [ /* пример */
   { day: 'Среда', slots: [['19:00', 'Урок школы', 'Zoom, для студентов']] },
   { day: 'Четверг', slots: [['20:00', 'Молитвенный щит', 'Zoom, молитва за нужды']] },
 ];
+const NEXT_LIVE = 'Лидерская через 2 часа'; /* пример */
 
 const STORIES = [ /* пример */
   { text: 'Год ходила по разным чатам и не понимала, где моё место. На пророческом столе мне сказали слово, о котором знала только я. В ту ночь впервые за долгое время спокойно уснула.', who: 'Участница, Германия' },
@@ -336,9 +386,11 @@ const ICONS = {
   talk: '<path d="M4 6.5C4 5.1 5.1 4 6.5 4h7C14.9 4 16 5.1 16 6.5v4c0 1.4-1.1 2.5-2.5 2.5H9l-3.5 3v-3h0A1.5 1.5 0 0 1 4 11.5z"/><path d="M18 8.5h.5c.8 0 1.5.7 1.5 1.5v5c0 .8-.7 1.5-1.5 1.5H18v2.5L15 16.5h-3"/>',
   pin: '<path d="M12 21s-6-5.6-6-11a6 6 0 1 1 12 0c0 5.4-6 11-6 11z"/><circle cx="12" cy="10" r="2.2"/>',
   home: '<path d="M4 11 12 4l8 7"/><path d="M6 9.5V20h12V9.5"/><path d="M10 20v-5h4v5"/>',
+  grid: '<rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/>',
   search: '<circle cx="11" cy="11" r="6"/><path d="m20 20-4.5-4.5"/>',
   check: '<path d="m6 12.5 4 4 8-9"/>',
   play: '<circle cx="12" cy="12" r="8"/><path d="m10.5 9 4.5 3-4.5 3z"/>',
+  hand: '<path d="M8 13V6.5a1.5 1.5 0 0 1 3 0V12"/><path d="M11 11V5a1.5 1.5 0 0 1 3 0v6"/><path d="M14 11V6.5a1.5 1.5 0 0 1 3 0V14c0 3.9-2.7 7-6.5 7-2.4 0-4-1.2-5.2-3.2L4 15.6a1.5 1.5 0 0 1 2.4-1.8L8 15.5"/>',
 };
 const icon = (name, cls = '') => `<svg class="icon ${cls}" viewBox="0 0 24 24" aria-hidden="true">${ICONS[name] || ''}</svg>`;
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -355,9 +407,22 @@ if (TG) {
   if (IN_TG) {
     document.documentElement.classList.add('in-tg');
     applyTgScheme();
-    TG.onEvent('themeChanged', applyTgScheme);
+    TG.onEvent('themeChanged', () => { applyTgScheme(); setMain(current.main); });
     TG.BackButton.onClick(() => goBack());
   }
+}
+
+/* Главное действие экрана: в Telegram — нативная MainButton, в браузере — кнопка в потоке */
+let mainHandler = null;
+function setMain(m) {
+  if (!IN_TG) return;
+  const mb = TG.MainButton;
+  if (mainHandler) { mb.offClick(mainHandler); mainHandler = null; }
+  if (!m) { mb.hide(); return; }
+  const cs = getComputedStyle(document.documentElement);
+  mb.setParams({ text: m.text, color: cs.getPropertyValue('--olive').trim(), text_color: cs.getPropertyValue('--olive-ink').trim(), is_visible: true });
+  mainHandler = m.fn;
+  mb.onClick(mainHandler);
 }
 
 /* ===== Навигация по hash ===== */
@@ -368,11 +433,13 @@ function goBack() { go(current.parent || '#/'); }
 
 function render() {
   const parts = location.hash.replace(/^#\/?/, '').split('/').filter(Boolean);
-  const name = parts[0] || 'home';
-  const fn = ROUTES[name] || ROUTES.home;
-  current = fn(...parts.slice(1)) || {};
+  const name = ROUTES[parts[0]] ? parts[0] : 'home';
+  current = ROUTES[name](...parts.slice(1)) || {};
+  const fallback = current.main && !IN_TG ? `<div class="main-fallback"><button type="button" class="btn btn-main btn-block" id="main-fallback">${esc(current.main.text)}</button></div>` : '';
   const app = document.getElementById('app');
-  app.innerHTML = `<main class="screen screen-${name}">${current.html}${foot()}</main>`;
+  app.innerHTML = `<main class="screen screen-${name}">${current.html}${fallback}${foot()}</main>`;
+  if (fallback) document.getElementById('main-fallback').addEventListener('click', current.main.fn);
+  setMain(current.main);
   if (IN_TG) { current.parent ? TG.BackButton.show() : TG.BackButton.hide(); }
   window.scrollTo(0, 0);
   if (current.after) current.after(app);
@@ -382,8 +449,9 @@ document.addEventListener('click', e => {
   const chip = e.target.closest('.chip');
   if (!chip) return;
   const group = chip.closest('.chips');
-  if (group && group.dataset.single !== undefined) group.querySelectorAll('.chip').forEach(c => c.setAttribute('aria-pressed', 'false'));
-  chip.setAttribute('aria-pressed', group && group.dataset.single !== undefined ? 'true' : String(chip.getAttribute('aria-pressed') !== 'true'));
+  const single = group && group.dataset.single !== undefined;
+  if (single) group.querySelectorAll('.chip').forEach(c => c.setAttribute('aria-pressed', 'false'));
+  chip.setAttribute('aria-pressed', single ? 'true' : String(chip.getAttribute('aria-pressed') !== 'true'));
   if (TG && TG.HapticFeedback) try { TG.HapticFeedback.selectionChanged(); } catch (e) {}
 });
 
@@ -413,11 +481,41 @@ function placeCard(p, first) {
     <div class="entry"><span class="meta">${entryNote(p)}</span>${entryAction(p, first)}</div>
   </article>`;
 }
+const placeHref = p => p.entry === 'signup' ? '#/form/' + p.id : '#/place/' + p.id;
+const kindLabel = p => p.entry === 'signup' ? 'по записи' : p.kind === 'Группа' ? 'группа' : p.kind.toLowerCase();
+
+/* Поиск по названию: прячет блок allId и показывает найденное в foundId */
+function searchField(allId, foundId) {
+  return `<label class="search"><span class="visually-hidden">Поиск</span>${icon('search')}<input class="input" type="search" placeholder="Группа, служение или страна" oninput="filterPlaces(this.value, '${allId}', '${foundId}')"></label>`;
+}
+function filterPlaces(q, allId, foundId) {
+  q = q.trim().toLowerCase();
+  const all = document.getElementById(allId), found = document.getElementById(foundId);
+  if (!q) { all.hidden = false; found.hidden = true; return; }
+  const hits = PLACES.filter(p => (p.name + ' ' + p.short + ' ' + p.kind + ' ' + p.about + ' ' + SPHERE_BY_ID[p.sphere].name).toLowerCase().includes(q));
+  all.hidden = true; found.hidden = false;
+  found.innerHTML = hits.length
+    ? `<div class="group-title">Нашлось: ${hits.length}</div><div class="group results">${hits.map(p => `<a class="row" href="${placeHref(p)}"><div class="row-body"><div class="row-title">${esc(p.name)}</div><div class="row-sub">${SPHERE_BY_ID[p.sphere].name}, ${kindLabel(p)}</div></div></a>`).join('')}</div>`
+    : `<div class="empty"><h2>По «${esc(q)}» ничего нет</h2><p>Попробуйте «сны», «молитва» или название страны. Или спросите людей — они знают всё.</p><a class="btn btn-main btn-block" href="#/place/contact">Спросить в «Контакт для новеньких»</a></div>`;
+}
+
+/* Карта всех сфер */
+function sphereBlock(s) {
+  const list = PLACES.filter(p => p.sphere === s.id);
+  const tile = (p, wide) => `<a class="tile${wide ? ' wide' : ''}" href="${placeHref(p)}"><b>${esc(p.name)}</b><span class="line">${esc(p.line)}</span></a>`;
+  let body;
+  if (s.id === 'land') body = `<div class="lands">${list.map(p => `<a href="#/place/${p.id}">${p.name}</a>`).join('')}</div>`;
+  else if (s.id === 'ministry') body = `<div class="tiles ministry">${list.filter(p => p.entry === 'signup').map(p => `<a class="tile signup" href="#/form/${p.id}"><b>${esc(p.short)}</b><span class="line">${esc(p.line)}</span><span class="go">Записаться</span></a>`).join('')}
+      ${list.filter(p => p.entry !== 'signup').map(p => tile(p, true)).join('')}</div>`;
+  else body = `<div class="tiles">${list.map((p, i) => tile(p, list.length % 2 && i === list.length - 1)).join('')}</div>`;
+  return `<section class="sphere" id="s-${s.id}"><div class="sphere-head"><h2>${s.name}</h2><span class="meta">${list.length}</span></div>${body}</section>`;
+}
+function mapHTML() { return SPHERES.map(sphereBlock).join(''); }
 
 /* ===== Общие экраны ===== */
 ROUTES.place = id => {
   const p = BY_ID[id] || PLACES[0];
-  const sphere = SPHERES.find(s => s.id === p.sphere);
+  const sphere = SPHERE_BY_ID[p.sphere];
   return { parent: '#/', html: `${topbar()}
     <div class="inner-head"><div class="meta">${esc(sphere.name)}, ${esc(p.kind.toLowerCase())}</div><h1>${esc(p.name)}</h1><p>${esc(p.about)}</p></div>
     <div class="group">
@@ -425,12 +523,16 @@ ROUTES.place = id => {
       <div class="row"><div class="row-body"><div class="row-sub">Как попасть</div><div class="row-title">${p.entry === 'signup' ? 'Заявка здесь — координатор напишет сам' : p.entry === 'join' ? 'Нажмите «Войти» — писать в личку не нужно' : 'Открыт для всех'}</div></div></div>
     </div>
     ${p.id === 'school' ? `<div class="group-title">Модули <span class="sample">пример</span></div><div class="group">${SCHOOL_MODULES.map(m => `<div class="row"><div class="row-body"><div class="row-title">${m[0]}</div><div class="row-sub">${m[1]}</div></div></div>`).join('')}</div>` : ''}
-    <div class="form-foot">${entryAction(p, true).replace('class="btn btn-main"', 'class="btn btn-main btn-block"')}</div>` };
+    <div class="main-fallback" style="padding-top:4px">${entryAction(p, true).replace('class="btn btn-main"', 'class="btn btn-main btn-block"')}</div>` };
 };
 
 ROUTES.form = id => {
   const pre = MINISTRIES.includes(id) ? id : MINISTRIES[0];
-  return { parent: '#/', html: `${topbar()}
+  const submit = () => {
+    const sel = document.querySelector('[data-single] [aria-pressed="true"]');
+    go('#/done/signup/' + (sel ? sel.dataset.id : pre));
+  };
+  return { parent: '#/', main: { text: 'Отправить', fn: submit }, html: `${topbar()}
     <div class="inner-head"><h1>Запись на служение</h1><p>Три поля. Координатор служения ответит вам здесь, в Telegram.</p></div>
     <form class="form" onsubmit="return false">
       <div class="field"><span class="label">Служение</span>
@@ -441,11 +543,10 @@ ROUTES.form = id => {
       <div class="field"><label for="f-about">О чём помолиться или поговорить <span class="hint" style="font-weight:400">— по желанию</span></label>
         <textarea class="input" id="f-about" placeholder="Пара слов. Подробности — на встрече."></textarea></div>
       <div class="field"><span class="label">Когда удобно</span>
-        <div class="chips">${['Будни днём', 'Будни вечером', 'Выходные'].map((t, i) => `<button type="button" class="chip" aria-pressed="${i === 1}">${t}</button>`).join('')}</div>
+        <div class="chips">${['Будни днём', 'Будни вечером', 'Выходные'].map(t => `<button type="button" class="chip" aria-pressed="false">${t}</button>`).join('')}</div>
         <div class="meta">Время — по Москве.</div>
       </div>
-    </form>
-    <div class="form-foot"><button type="button" class="btn btn-main btn-block" onclick="go('#/done/signup/' + (document.querySelector('[data-single] [aria-pressed=true]') || {dataset:{id:'${pre}'}}).dataset.id)">Отправить</button></div>` };
+    </form>` };
 };
 
 ROUTES.done = (kind, id) => {
@@ -461,20 +562,23 @@ ROUTES.done = (kind, id) => {
       <h1>${esc(t[0])}</h1>
       <div class="proto">(прототип, никуда не отправлено)</div>
       <p class="next">${esc(t[1])}</p>
-      <div class="actions"><a class="btn btn-main btn-block" href="#/">На главную</a></div>
+      <div class="actions"><a class="btn btn-block" href="#/">На главную</a></div>
     </section>` };
 };
 
 ROUTES.schedule = () => ({ parent: '#/', html: `${topbar()}
-  <div class="inner-head"><h1>Расписание эфиров <span class="sample">пример</span></h1><p>Время московское. Ссылка на эфир придёт сюда за 10 минут.</p></div>
+  <div class="inner-head"><h1>Расписание эфиров</h1><p><span class="sample">пример</span> Время московское. Ссылка на эфир придёт сюда за 10 минут.</p></div>
   ${SCHEDULE.map(d => `<div class="group-title">${d.day}</div><div class="group">${d.slots.map(s => `<div class="slot"><time>${s[0]}</time><div><div class="row-title">${s[1]}</div><div class="row-sub">${s[2]}</div></div></div>`).join('')}</div>`).join('')}` });
 
 ROUTES.stories = () => ({ parent: '#/', html: `${topbar()}
-  <div class="inner-head"><h1>Свидетельства <span class="sample">пример</span></h1><p>Настоящие истории будут приходить из канала «Свидетельства». Здесь — придуманные, для вида.</p></div>
+  <div class="inner-head"><h1>Свидетельства</h1><p><span class="sample">пример</span> Настоящие истории будут приходить из канала «Свидетельства». Здесь — придуманные, для вида.</p></div>
   ${STORIES.map(s => `<article class="story"><blockquote>${esc(s.text)}</blockquote><div class="meta">${esc(s.who)}</div></article>`).join('')}
-  <div class="form-foot"><a class="btn btn-block" href="#/done/open/stories">Открыть канал свидетельств</a></div>` });
+  <div class="main-fallback" style="padding-top:4px"><a class="btn btn-block" href="#/done/open/stories">Открыть канал свидетельств</a></div>` });
 
 ROUTES.school = () => ROUTES.place('school');
+ROUTES.map = () => ({ parent: '#/', html: `${topbar()}
+  <div class="inner-head"><h1>Все группы и служения</h1><p>${PLACES.length} мест на платформе, по разделам.</p></div>
+  ${mapHTML()}` });
 
 function start() { render(); }
 
@@ -482,31 +586,38 @@ function start() { render(); }
 ROUTES.home = () => ({ parent: null, html: `
   <header class="brand"><b>Среда</b><span class="meta">платформа служения онлайн</span></header>
   <section class="question">
-    <h1>Что вам сейчас нужно?</h1>
+    <h1 class="display">Что вам сейчас нужно?</h1>
     <p>Выберите одно — покажем, куда идти.</p>
+    ${searchField('a-all', 'a-found')}
   </section>
-  <ul class="needs">
-    ${NEEDS.map(n => `<li><a class="need" href="#/need/${n.id}">
-      <span class="ic">${icon(n.icon)}</span>
-      <span><span class="t">${n.title}</span><span class="s" style="display:block">${n.sub}</span></span>
-    </a></li>`).join('')}
-  </ul>
-  <p class="unsure">Не знаете, с чего начать? <a href="#/place/contact">Контакт для новеньких</a> поможет.</p>
-  <nav class="more" aria-label="Ещё">
-    <div class="meta">Ещё на платформе</div>
-    <div class="links"><a href="#/schedule">Расписание эфиров</a><a href="#/stories">Свидетельства</a><a href="#/school">Школа</a></div>
-  </nav>` });
+  <div id="a-found" hidden></div>
+  <div id="a-all">
+    <ul class="needs">
+      ${NEEDS.map(n => `<li><a class="need" href="#/need/${n.id}"><span class="ic">${icon(n.icon)}</span><span><span class="t">${n.title}</span><span class="s">${n.sub}</span></span></a></li>`).join('')}
+      <li><a class="need all" href="#/map"><span class="ic">${icon('grid')}</span><span><span class="t">Все группы и служения</span><span class="s">${PLACES.length} мест по разделам</span></span></a></li>
+    </ul>
+    <div class="newbie"><a href="#/place/contact">${icon('hand')}<span>Не знаете, с чего начать? <b>Контакт для новеньких</b></span></a></div>
+    <nav class="more" aria-label="Ещё на платформе">
+      <div class="group-title">Ещё на платформе</div>
+      <div class="group">
+        <a class="row" href="#/schedule"><div class="row-body"><div class="row-title">Расписание эфиров</div><div class="row-sub">Ближайший: ${NEXT_LIVE} <span class="sample">пример</span></div></div></a>
+        <a class="row" href="#/stories"><div class="row-body"><div class="row-title">Свидетельства</div><div class="row-sub">Истории участников</div></div></a>
+      </div>
+    </nav>
+  </div>` });
 
 ROUTES.need = id => {
   const n = NEED_BY_ID[id] || NEEDS[0];
-  if (n.id === 'land') return { parent: '#/', html: `${topbar()}
-    <div class="inner-head"><h1>Моя страна или город</h1><p>Группы участников по территориям. Вход — по заявке в один шаг.</p></div>
-    <div class="group lands">${PLACES.filter(p => p.sphere === 'land').map(p => `<div class="row"><div class="row-body"><div class="row-title">${p.name}</div></div><a class="btn" href="#/done/join/${p.id}">Войти</a></div>`).join('')}</div>
-    <p class="unsure" style="margin-top:0">Нет вашей земли? <a href="#/place/contact">Контакт для новеньких</a> подскажет ближайшую группу.</p>` };
-  const lead = { study: 'Начните со школы — остальное приложится.', prayer: 'Если тяжело прямо сейчас — напишите нужду в «Молитвенный щит».', signup: 'Запись — короткая форма здесь же. Писать в личку не нужно.', talk: 'Беседка — самое тёплое место для первого шага.', family: 'Для детей, молодёжи и для мужей и жён — отдельно.' }[n.id];
+  const lead = { study: 'Начните со школы — остальное приложится.', prayer: 'Если тяжело прямо сейчас — напишите нужду в «Молитвенный щит».', signup: 'Запись — короткая форма здесь же. Писать в личку не нужно.', talk: 'Беседка — самое тёплое место для первого шага.', family: 'Для детей, молодёжи и для мужей и жён — отдельно.', land: 'Группы участников по территориям. Вход — по заявке в один шаг.' }[n.id];
+  const list = n.id === 'land'
+    ? `<div class="group">${needPlaces(n).map(p => `<div class="row"><div class="row-body"><div class="row-title">${p.name}</div></div><a class="btn" href="#/done/join/${p.id}">Войти</a></div>`).join('')}</div>
+       <div class="newbie" style="margin-top:0"><a href="#/place/contact" style="background:var(--section)">${icon('hand')}<span>Нет вашей земли? <b>Контакт для новеньких</b></span></a></div>`
+    : needPlaces(n).map((p, i) => placeCard(p, i === 0)).join('');
   return { parent: '#/', html: `${topbar()}
-    <div class="inner-head"><h1>${n.title}</h1><p>${lead}</p></div>
-    ${n.places.map((pid, i) => placeCard(BY_ID[pid], i === 0)).join('')}` };
+    <nav class="switch" aria-label="Что вам нужно">${NEEDS.map(x => `<a href="#/need/${x.id}" aria-current="${x === n}">${icon(x.icon)}${x.title}</a>`).join('')}</nav>
+    <div class="pick-head"><h1>${n.title}</h1><p>${lead}</p></div>
+    ${list}`,
+    after: app => { const cur = app.querySelector('.switch [aria-current="true"]'); if (cur) cur.scrollIntoView({ inline: 'center', block: 'nearest' }); window.scrollTo(0, 0); } };
 };
 
 start();
