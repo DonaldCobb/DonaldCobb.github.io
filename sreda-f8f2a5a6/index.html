@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="ru">
+<head><meta name="robots" content="noindex,nofollow">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Среда — варианты</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+:root {
+  --fb-bg: #ffffff; --fb-page: #f2f2ee; --fb-text: #1b1d17; --fb-hint: #64675c;
+  --olive: #4b5b22; --olive-soft: #e7ebd8; --sample-bg: #f4ecd6; --sample-ink: #6e5414;
+  --bg: var(--tg-theme-bg-color, var(--fb-bg));
+  --page: var(--tg-theme-secondary-bg-color, var(--fb-page));
+  --text: var(--tg-theme-text-color, var(--fb-text));
+  --hint: var(--tg-theme-hint-color, var(--fb-hint));
+  --ui: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Manrope, Arial, sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-scheme="light"]) {
+    --fb-bg: #1c1d1a; --fb-page: #121310; --fb-text: #ecede6; --fb-hint: #9c9f94;
+    --olive: #b6c47a; --olive-soft: #2a3119; --sample-bg: #3a3218; --sample-ink: #e6cf8f; color-scheme: dark;
+  }
+}
+:root[data-scheme="dark"] {
+  --fb-bg: #1c1d1a; --fb-page: #121310; --fb-text: #ecede6; --fb-hint: #9c9f94;
+  --olive: #b6c47a; --olive-soft: #2a3119; --sample-bg: #3a3218; --sample-ink: #e6cf8f; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--page); color: var(--text); font: 16px/1.45 var(--ui); -webkit-font-smoothing: antialiased; }
+main { max-width: 480px; margin: 0 auto; padding: 24px 16px 40px; }
+.proto { display: inline-block; font-size: 13px; font-weight: 600; padding: 6px 10px; border-radius: 8px; background: var(--sample-bg); color: var(--sample-ink); }
+h1 { margin: 16px 0 6px; font-size: 30px; line-height: 1.1; font-weight: 800; letter-spacing: -0.02em; }
+.lead { margin: 0 0 24px; color: var(--hint); font-size: 15px; }
+.v { display: grid; grid-template-columns: 1fr 96px; gap: 14px; align-items: center; padding: 16px; margin-bottom: 12px; border-radius: 16px; background: var(--bg); text-decoration: none; color: inherit; min-height: 120px; }
+.v:focus-visible { outline: 2px solid var(--olive); outline-offset: 2px; }
+.v .letter { width: 40px; height: 40px; border-radius: 50%; background: var(--olive-soft); color: var(--olive); display: grid; place-items: center; font-weight: 800; font-size: 18px; }
+.v h2 { margin: 10px 0 4px; font-size: 19px; line-height: 1.2; }
+.v p { margin: 0; font-size: 15px; color: var(--hint); }
+.v .go { margin-top: 10px; display: inline-block; font-size: 14px; font-weight: 700; color: var(--olive); }
+.v img { width: 96px; height: 208px; object-fit: cover; object-position: top; border-radius: 12px; border: 1px solid color-mix(in srgb, var(--hint) 30%, transparent); background: var(--page); }
+.foot { margin-top: 20px; font-size: 13px; color: var(--hint); }
+</style>
+</head>
+<body>
+<main>
+  <span class="proto">Прототип для проверки гипотез, данных нет</span>
+  <h1>Среда: три главных экрана</h1>
+  <p class="lead">Один вопрос новичка — «куда мне идти на платформе?» — и три способа на него ответить. Откройте каждый и попробуйте найти свою группу за два нажатия.</p>
+
+  <a class="v" href="a.html">
+    <div><span class="letter">A</span><h2>Путеводитель</h2><p>Один вопрос «Что вам сейчас нужно?» — и подборка из 2–4 мест.</p><span class="go">Открыть вариант A</span></div>
+    <img src="shots/a-light.png" alt="Главный экран варианта A">
+  </a>
+  <a class="v" href="b.html">
+    <div><span class="letter">B</span><h2>Карта сфер</h2><p>Все группы и служения разом, по разделам, с поиском сверху.</p><span class="go">Открыть вариант B</span></div>
+    <img src="shots/b-light.png" alt="Главный экран варианта B">
+  </a>
+  <a class="v" href="c.html">
+    <div><span class="letter">C</span><h2>Сегодня</h2><p>Лента дня: эфиры, школа, свидетельство; вход — кнопкой «Найти своё место».</p><span class="go">Открыть вариант C</span></div>
+    <img src="shots/c-light.png" alt="Главный экран варианта C">
+  </a>
+
+  <p class="foot">Расписание, свидетельства и уроки — пример. Названия групп — из описания платформы, без имён и ссылок. Кнопки «Отправить» и «Войти» никуда не отправляют.</p>
+</main>
+<script>
+const TG = window.Telegram && window.Telegram.WebApp;
+if (TG) { try { TG.ready(); TG.expand(); } catch (e) {} if (TG.initData) document.documentElement.dataset.scheme = TG.colorScheme === 'dark' ? 'dark' : 'light'; }
+</script>
+</body>
+</html>
