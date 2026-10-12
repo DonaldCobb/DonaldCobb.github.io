@@ -526,7 +526,7 @@ const STUB_SCREEN = k => { const s = STUBS[k]; return `<section class="empty"><h
 const TABS = [['spheres', 'Сферы', 'compass'], ['today', 'Сегодня', 'sun'], ['mine', 'Служения', 'calendarCheck'], ['me', 'Моё', 'user']];
 const state = { tab: 'spheres', stack: [] };
 const TG = window.Telegram && window.Telegram.WebApp;
-const START_TAB = (location.hash || '').replace('#', '');
+const [START_TAB, START_POS] = (location.hash || '').replace('#', '').split('-'); // #me, #today, #me-end (для снимков низа)
 if (['spheres', 'today', 'mine', 'me'].includes(START_TAB)) state.tab = START_TAB;
 function setScheme(s) {
   document.documentElement.dataset.scheme = s;
@@ -586,6 +586,7 @@ document.addEventListener('DOMContentLoaded', () => {
     } catch (e) {}
   }
   render();
+  if (START_POS === 'end') { const v = document.getElementById('view'); v.scrollTop = v.scrollHeight; }
 });
 
 /* B «Сферы» v5: светлая главная, золото рассвета вторым акцентом, живые данные (пример), профиль Авеля во «Моё».
