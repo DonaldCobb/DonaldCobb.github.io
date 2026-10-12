@@ -49,6 +49,7 @@ h1{font:700 clamp(34px,7vw,56px)/1.05 var(--f-display);margin:0;letter-spacing:-
 .zone{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px;display:grid;gap:12px;align-content:start;min-width:0;scroll-margin-top:16px}
 .zone.flash{box-shadow:0 0 0 2px var(--accent)}
 .zhead{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.zbody{display:grid;gap:12px}
 .zone h2{font:600 19px/1.2 var(--f-body);margin:0}
 .status{font:500 12px/1 var(--f-mono);padding:5px 8px;border-radius:4px;white-space:nowrap}
 .s-done{background:var(--done-soft);color:var(--done)}
@@ -66,6 +67,33 @@ h1{font:700 clamp(34px,7vw,56px)/1.05 var(--f-display);margin:0;letter-spacing:-
 .next h2{font:700 20px/1.2 var(--f-display);margin:0}
 .next ol{margin:0;padding-left:22px;display:grid;gap:6px;max-width:70ch}
 footer{font-size:13px;color:var(--muted);max-width:70ch}
+
+.top{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center}
+.overall{display:grid;gap:2px;padding:12px 16px;border:1px solid var(--line);border-radius:10px;background:var(--surface);min-width:0}
+.overall b{font:700 40px/1 var(--f-display);font-variant-numeric:tabular-nums}
+.overall span{font:500 12px/1.3 var(--f-mono);color:var(--muted);max-width:16ch}
+.rank{display:none;gap:2px}
+.rank button{display:grid;grid-template-columns:1fr 64px 2.6em;align-items:center;gap:10px;min-height:44px;padding:6px 4px;border:0;border-bottom:1px solid var(--line);background:none;color:var(--fg);font:500 15px/1.25 var(--f-body);text-align:left;cursor:pointer}
+.rank button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.rank .bar{height:6px}
+.zone .ztoggle{all:unset;display:grid;gap:10px;cursor:default}
+.zone .ztoggle:focus-visible{outline:2px solid var(--accent);outline-offset:4px;border-radius:4px}
+.more{display:none;font:500 13px/1 var(--f-mono);color:var(--accent)}
+@media (max-width:639px){
+  .wrap{padding-block:20px 40px;gap:22px}
+  .top{grid-template-columns:1fr}
+  .overall{grid-template-columns:auto 1fr;align-items:center;gap:12px}
+  .overall span{max-width:none}
+  .strip,.strip-labels{display:none}
+  .rank{display:grid}
+  .grid{grid-template-columns:1fr;gap:10px}
+  .zone{padding:14px 16px;gap:10px}
+  .zone .ztoggle{cursor:pointer}
+  .zone:not(.open) .zbody{display:none}
+  .more{display:block}
+  .zone.open .more{display:none}
+  .lead{font-size:16px}
+}
 @media (prefers-reduced-motion:no-preference){.bar i,.strip .fill{transition:height .4s,width .4s}}
 </style>
 
@@ -74,10 +102,11 @@ footer{font-size:13px;color:var(--muted);max-width:70ch}
   <header>
     <div class="eyebrow">Община · карта знаний · обновлено <span id="upd"></span></div>
     <h1>Автономия</h1>
-    <p class="lead" id="summary"></p>
+    <div class="top"><div class="overall" id="overall"></div><p class="lead" id="summary"></p></div>
     <div class="strata" aria-label="Глубина изученности по зонам">
       <div class="strip" id="strip"></div>
       <div class="strip-labels" id="striplabels"></div>
+      <div class="rank" id="rank"></div>
     </div>
     <div class="counts" id="filters" role="group" aria-label="Фильтр по статусу"></div>
   </header>
@@ -89,12 +118,12 @@ footer{font-size:13px;color:var(--muted);max-width:70ch}
     <ol id="next"></ol>
   </section>
 
-  <footer>Высота столбика в полосе — насколько зона проработана (0–100). «Изучено» — есть исследование с выводами и цифрами; «начато» — отдельные факты, видео, заметки; «пусто» — почти ничего. Карта пополняется по мере того, как копятся знания, потом по ней распределим, кто что берёт.</footer>
+  <footer>Глубина — насколько зона проработана (0–100). «Изучено» — есть исследование с выводами и цифрами; «начато» — отдельные факты, видео, заметки; «пусто» — почти ничего. Карта пополняется по мере того, как копятся знания, потом по ней распределим, кто что берёт.</footer>
 </div>
 
 <script>
 const ZONES = [{"zone": "Энергия", "status": "изучено", "depth": 65, "known": ["Зимой солнце даёт 9–25 % от летнего: нужен гибрид с сетью или генератором как резервом", "Гибрид 10 кВт у Кисловодска: оборудование 0,44–0,87 млн ₽ + монтаж; ~2 090 солнечных часов в год", "Батареи LiFePO4 — только в тепле: на морозе литий не заряжается; дешёвый контроллер — риск пожара", "Подключение к сети как ИП/КФХ — пример ~80 тыс. ₽ вместо 1–2,5 млн у физлица (не проверено)"], "gaps": ["Сколько кВт·ч в день нужно семье — расчёт по самому тёмному месяцу", "Правила льготного подключения в Ставропольском крае", "Есть ли линия электропередачи у конкретных участков"], "sources": ["исследование 46", "свод «Автономный дом» (20 роликов)", "рилс о подключении фермы", "разбор видео о подготовке общин"]}, {"zone": "Вода и стоки", "status": "изучено", "depth": 50, "known": ["Скважина без лицензии — до 100 м³ в сутки; у КМВ риск попасть в минеральные горизонты", "Во 2-й зоне охраны КМВ дом, похоже, только с центральной водой и канализацией — автономия под вопросом", "Септик: ≥ 3 м от дома, 1 м от границы, не под скатом крыши, ближе к подъезду ассенизатора", "Дождевая вода: крыша (м²) × осадки (мм) × 0,9 = литры; трубы — ниже промерзания или с подогревом"], "gaps": ["Цены на скважину и септик в регионе", "В какой зоне охраны КМВ лежит участок и что там разрешено", "Качество воды и глубина горизонта на месте"], "sources": ["исследование 46", "свод «Автономный дом»"]}, {"zone": "Тепло", "status": "изучено", "depth": 50, "known": ["Нужны две независимые системы: автоматическая (котёл) и ручная (печь с теплоёмкой массой)", "Газ дешевле всего (~0,7 ₽ за кВт·ч против 2–7 ₽), но подключение ~1 млн ₽ может не окупиться", "200–300 тыс. ₽ в утепление и окна часто выгоднее; электрокотёл 60–80 тыс. ₽, радиатор 4–6 тыс.", "Печь ставить в центре дома: одна печь не тянет большой неутеплённый дом"], "gaps": ["Свод сделан под уральскую зиму — пересчитать под климат у Кисловодска (высота, ветер)", "Есть ли газ у выбранных участков и сколько стоит подключение", "Дрова: откуда, сколько кубов на сезон, кто заготавливает"], "sources": ["свод «Автономный дом»", "тир-лист YouTube"]}, {"zone": "Еда (огород, животные, запасы)", "status": "начато", "depth": 35, "known": ["Огород 125 м² дал ~700 кг еды за год на двоих (грядки, полутуннель, компост, план посадок)", "Полное самообеспечение семьи из пяти — ~12 га: нереально, реально — овощи, зелень, яйца, заготовки", "Теплица с тепловой массой держит +10…12 °C ночью при −40 °C — главный рычаг на холодную зиму", "10 кур с петухом — ~41 сотка с кормом; пруды и раздел культур между семьями — взято в план"], "gaps": ["Сколько земли нужно трём семьям и что растёт в климате у Кисловодска", "Кто из семей что ведёт: огород, животные, пруд", "Запасы на «3 месяца без города»: что и сколько"], "sources": ["свод «Автономный дом»", "разбор видео о подготовке общин", "исследование 46 (слой «еда» не сделан)"]}, {"zone": "Дом (стройка, материалы)", "status": "начато", "depth": 30, "known": ["На земле КФХ — один дом ≤ 500 м², застройка ≤ 0,25 % участка (дом 125 м² → нужно 5 га)", "Утеплить стены: 10 см ваты ≈ −90 % потерь; проектировать дом вокруг печи", "Стены с массой (глина, саман) держат тепло; дом без разрешения — годы споров с властями", "Сметы на практике выходят в 2–3 раза выше расчёта"], "gaps": ["Какой дом: площадь, материал, этапы стройки", "Цены стройки и подрядчики в регионе", "Грунты и фундамент — нужны изыскания на участке"], "sources": ["исследование 46", "свод «Автономный дом»"]}, {"zone": "Земля и место", "status": "изучено", "depth": 60, "known": ["Бесплатно у Кисловодска нет (только многодетным); путь — КФХ в аренду + 2–3 участка ИЖС рядом", "Зоны охраны КМВ: в 1-й жить нельзя, во 2-й автономный дом под вопросом — искать вне зон и в КЧР", "Цены 2026: Кисловодск 0,35–1,5 млн ₽ за сотку, СНТ Предгорного округа 75–140 тыс. ₽", "ТЗ на участок: южный склон 3–10°, защита от ветра с С/СВ, ветер ≤ 3–4 м/с, без подтоплений"], "gaps": ["Наложить зоны охраны КМВ на кадастровую карту", "Оценить участки-кандидаты по шкале 0–10: роза ветров, сток, высота", "Выезд на 2–3 участка"], "sources": ["исследование 46", "ТЗ на поиск участка", "разбор первого участка-кандидата"]}, {"zone": "Доход и деньги", "status": "начато", "depth": 20, "known": ["К переезду нужен капитал; сумма и этапы не посчитаны", "Взято правилом: у каждой семьи больше одного дохода, запас наличных, обмен внутри общины", "Пример практиков: переезд в старый дом ~1,57 млн ₽ за полгода, расходы потом не кончаются", "Общий котёл — только письменно; до устава каждая семья платит за своё"], "gaps": ["Чем зарабатывать на месте и удалённо", "Капитал по этапам: земля, дом, системы", "Кто глава КФХ/ИП и как делим доли"], "sources": ["исследование 46", "исследование 116", "свод «Автономный дом»", "разбор видео о подготовке общин"]}, {"zone": "Люди и община", "status": "изучено", "depth": 65, "known": ["~90 % общин не доходят до жизни на земле; главная причина — не записали правила и решения", "Лестница «гость → участник → ядро», ядро ≤ 12–15 человек; шаг назад — без вины", "Решения по согласию с датой; религиозные общины жили дольше (~25 лет против 6,4)", "Чат открыт; бот — летописец, задания люди берут сами; мерило пробы — 8 недель"], "gaps": ["Замысел и устав (вход, выход, споры, деньги) не дописаны", "Карта «кто что может и кому что нужно» пока пуста", "Хотят ли люди быть в карте ресурсов — проверка «≥ 2 да из трёх»"], "sources": ["исследование 116", "проект «Автономия — община»", "карта общины"]}, {"zone": "Связь, интернет и ИИ", "status": "начато", "depth": 15, "known": ["Рации PMR 446 и LPD 433 МГц в РФ — без разрешения, малая дальность (сверить)", "Связь — одна из пяти систем в мерке «3 месяца без города»", "Свои локальные модели ИИ — идея на потом; база по железу есть в прошлых исследованиях"], "gaps": ["Интернет на участке: мобильная сеть, спутник — что доступно и почём", "Дальняя связь при отключении сети", "Какие локальные модели и железо реально нужны"], "sources": ["разбор видео о подготовке общин", "список идей"]}, {"zone": "Здоровье и медицина", "status": "начато", "depth": 15, "known": ["Взято в план: медицинский узел — аптечка, первая помощь, врач на связи", "Телемедицина в РФ законна, но первичный диагноз и назначение онлайн — нельзя", "Нужно знать ближайшую больницу и время доезда"], "gaps": ["Ближайшая больница и скорая от места — сколько ехать", "Курсы первой помощи для взрослых", "Состав аптечки на три семьи"], "sources": ["разбор видео о подготовке общин"]}, {"zone": "Безопасность", "status": "пусто", "depth": 10, "known": ["Батареи без контроля вздуваются, дешёвый инвертор горит — риск пожара", "Проводку — только с опытным электриком; дрова и печи — постоянный труд и надзор"], "gaps": ["Пожарная безопасность дома, печей и батарей", "Охрана участка и дома в отъезд", "План на ЧС: отключение света, топлива, дорог"], "sources": ["свод «Автономный дом»"]}, {"zone": "Право и документы", "status": "изучено", "depth": 55, "known": ["КФХ: аренда сельхозземли без торгов до 5 лет, потом выкуп (≤ 15 % кадастровой — по пересказу)", "ИЖС без торгов, если за 30 дней извещения нет конкурентов, иначе аукцион", "В КФХ — не более трёх семей родственников; устав ложится в соглашение членов КФХ", "Вера и здоровье — особые данные: с 01.09.2025 нужно отдельное письменное согласие"], "gaps": ["Закон края 36-кз и перечень № 1186 (п. 6) не прочитаны", "Звонок в земельный отдел: есть ли свободная сельхозземля и можно ли дом", "Капстрой в округе КМВ — через экологическую экспертизу: сроки и цена"], "sources": ["исследование 46", "исследование 116"]}, {"zone": "Дети и образование", "status": "пусто", "depth": 5, "known": ["«Дети» — одна из тем в анкете общины («что волнует больше всего»)", "Печь с горячей массой: с малышами нужен барьер (опыт практиков)"], "gaps": ["Школа, детсад или семейное обучение рядом с местом", "Детский врач и роддом — сколько ехать", "Чему учить детей в хозяйстве"], "sources": ["исследование 116", "свод «Автономный дом»"]}];
-const META = {"summary": "Глубже всего изучены земля и право у Кисловодска, энергия и община: есть исследования с выводами и цифрами. Почти пусто — безопасность, дети, связь и медицина, а тепло и еда разобраны под уральскую зиму, не под выбранное место.", "next": ["Наложить зоны охраны КМВ на карту и оценить участки-кандидаты по ТЗ 0–10 — от этого зависят вода, септик и дом", "Слой «еда и тепло под климат у Кисловодска»: сколько земли трём семьям, газ или дрова, теплица", "Мерка «3 месяца без города» по пяти системам (еда, вода, тепло, свет, связь) — лист готовности каждой семьи"], "updated": "2026-10-12"};
+const META = {"summary": "Глубже всего изучены земля и право у Кисловодска, энергия и община: есть исследования с выводами и цифрами. Почти пусто — безопасность, дети, связь и медицина, а тепло и еда разобраны под уральскую зиму, не под выбранное место.", "next": ["Наложить зоны охраны КМВ на карту и оценить участки-кандидаты по ТЗ 0–10 — от этого зависят вода, септик и дом", "Слой «еда и тепло под климат у Кисловодска»: сколько земли трём семьям, газ или дрова, теплица", "Мерка «3 месяца без города» по пяти системам (еда, вода, тепло, свет, связь) — лист готовности каждой семьи"], "updated": "2026-10-12", "overall": {"value": "6 из 13", "label": "зон изучено"}};
 const ST = {"изучено":["s-done","--done"],"начато":["s-part","--part"],"пусто":["s-empty","--empty"]};
 const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const col = st => `var(${(ST[st]||ST["пусто"])[1]})`;
@@ -111,12 +140,15 @@ const order = ["изучено","начато","пусто"];
 const sorted = [...zones].sort((a,b)=>order.indexOf(a.status)-order.indexOf(b.status)||b.depth-a.depth);
 document.getElementById("grid").innerHTML = sorted.map(z=>`
   <article class="zone" id="${z.id}" data-status="${esc(z.status)}">
+    <button type="button" class="ztoggle" aria-expanded="false">
     <div class="zhead"><h2>${esc(z.zone)}</h2><span class="status ${(ST[z.status]||ST["пусто"])[0]}">${esc(z.status)}</span></div>
     <div class="meter"><div class="bar"><i style="width:${z.depth}%;background:${col(z.status)}"></i></div><span class="pct">${z.depth}/100</span></div>
+    <span class="more">Подробнее ↓</span>
+    </button><div class="zbody">
     ${z.known?.length?`<div><h3>Известно</h3><ul>${z.known.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>`:""}
     ${z.gaps?.length?`<div><h3>Не хватает</h3><ul class="gaps">${z.gaps.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>`:""}
     ${z.sources?.length?`<div class="src">Откуда: ${z.sources.map(esc).join(" · ")}</div>`:""}
-  </article>`).join("");
+  </div></article>`).join("");
 
 const cnt = s => zones.filter(z=>!s||z.status===s).length;
 const filters = [["","Все",null],...order.map(s=>[s,s[0].toUpperCase()+s.slice(1),col(s)])];
@@ -130,11 +162,17 @@ function apply(s){
 }
 fEl.addEventListener("click",e=>{const b=e.target.closest(".chip"); if(b) apply(b.dataset.s)});
 if(order.includes(saved)) apply(saved);
-document.getElementById("strip").addEventListener("click",e=>{
-  const b=e.target.closest("button"); if(!b) return; apply("");
-  const el=document.getElementById(b.dataset.id); el.scrollIntoView({behavior:"smooth",block:"start"});
-  el.classList.add("flash"); setTimeout(()=>el.classList.remove("flash"),1200);
-});
-</script>
 
+const ov=document.getElementById("overall");
+if(META.overall){ov.innerHTML=`<b>${esc(META.overall.value)}</b><span>${esc(META.overall.label)}</span>`}else ov.hidden=true;
+const byDepth=[...zones].sort((a,b)=>b.depth-a.depth);
+document.getElementById("rank").innerHTML=byDepth.map(z=>`<button type="button" data-id="${z.id}"><span>${esc(z.zone)}</span><span class="bar"><i style="display:block;height:100%;width:${z.depth}%;background:${col(z.status)}"></i></span><span class="pct">${z.depth}/100</span></button>`).join("");
+function openZone(id){const el=document.getElementById(id); apply(""); el.classList.add("open"); el.querySelector(".ztoggle").setAttribute("aria-expanded","true");
+  el.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"start"});
+  el.classList.add("flash"); setTimeout(()=>el.classList.remove("flash"),1200);}
+document.getElementById("rank").addEventListener("click",e=>{const b=e.target.closest("button"); if(b) openZone(b.dataset.id)});
+document.getElementById("grid").addEventListener("click",e=>{const b=e.target.closest(".ztoggle"); if(!b||!matchMedia("(max-width:639px)").matches) return;
+  const a=b.closest(".zone"); const o=a.classList.toggle("open"); b.setAttribute("aria-expanded",o)});
+document.getElementById("strip").addEventListener("click",e=>{const b=e.target.closest("button"); if(b) openZone(b.dataset.id)});
+</script>
 </body></html>
