@@ -210,14 +210,13 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .t-ministry .tile-count { color: var(--sea-mist); }
 .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; position: relative; z-index: 1; }
 .pill { min-height: 36px; padding: 0 13px; border-radius: 11px; background: var(--sea-pill); color: var(--sea-text); font-size: 14px; font-weight: 600; display: inline-flex; align-items: center; white-space: nowrap; }
-.pill.more { background: transparent; border: 1.5px solid var(--sea-stroke); }
 .t-ministry .waves { height: 64px; opacity: .28; }
 
 /* «Территории» — самая крупная: 3 страны и «ещё 9» */
-.t-land { min-height: 176px; }
+.t-land { min-height: 160px; }
 .t-land h2 { font-size: var(--fs-sec); font-weight: 800; }
-.lands { list-style: none; margin: auto 0 0; padding: 14px 0 0; display: grid; grid-template-columns: 1fr 1fr; gap: 10px 14px; }
-.lands li { display: flex; align-items: center; gap: 8px; font-size: var(--fs-row); font-weight: 600; min-height: 30px; }
+.lands { list-style: none; margin: auto 0 0; padding: 14px 0 0; display: grid; grid-template-columns: 1fr 1fr; gap: 8px 14px; }
+.lands li { display: flex; align-items: center; gap: 8px; font-size: var(--fs-row); font-weight: 600; min-height: 34px; }
 .lands li .icon { width: 20px; height: 20px; color: var(--mist); }
 .lands li.more { color: var(--mist); font-weight: 600; }
 
@@ -445,7 +444,7 @@ function HOME() {
       <span class="tail"><span class="tile-count">${n('info')}</span>${icon('chev', 'chev')}</span></div>
     ${open('ministry', 't-ministry')}${WAVES()}
       <div class="tile-head">${icon(S.ministry.icon)}<h2>${S.ministry.name}</h2><span class="tile-count">${n('ministry')}</span></div>
-      <div class="pills">${ministry.slice(0, 2).map(p => `<button class="pill" data-go="place:${p.id}">${p.name}</button>`).join('')}<button class="pill more" data-go="sphere:ministry">ещё ${ministry.length - 2}</button></div></div>
+      <div class="pills">${ministry.slice(0, 2).map(p => `<button class="pill" data-go="place:${p.id}">${p.name}</button>`).join('')}</div></div>
     ${open('land', 't-land')}
       <div class="tile-head">${icon(S.land.icon)}<h2>${S.land.name}</h2><span class="tile-count">${n('land')}</span></div>
       <ul class="lands">${lands.map(l => `<li>${icon('mapPin')}${l}</li>`).join('')}<li class="more">ещё ${n('land') - lands.length}</li></ul></div>
