@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark light">
+<title>Среда · выбор главного экрана</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+:root { --bg: #07131d; --surface: #0d2333; --stroke: #557a96; --text: #f2f6f9; --mist: #9fb4c4; --signal: #6cc0f5; --signal-fill: #1d6aa0; --signal-ink: #ffffff; color-scheme: dark; }
+@media (prefers-color-scheme: light) { :root:not([data-scheme="dark"]) { --bg: #eef3f7; --surface: #ffffff; --stroke: #7b91a3; --text: #0b1d2b; --mist: #4f6577; --signal: #1d6aa0; color-scheme: light; } }
+:root[data-scheme="light"] { --bg: #eef3f7; --surface: #ffffff; --stroke: #7b91a3; --text: #0b1d2b; --mist: #4f6577; --signal: #1d6aa0; color-scheme: light; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text); font: 400 15px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  padding: calc(20px + env(safe-area-inset-top, 0px)) 16px calc(28px + env(safe-area-inset-bottom, 0px)); }
+main { max-width: 1240px; margin: 0 auto; }
+h1 { font-size: 30px; font-weight: 800; margin: 0; letter-spacing: -0.01em; }
+.lead { color: var(--mist); margin: 6px 0 22px; max-width: 60ch; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+.card { background: var(--surface); border-radius: 20px; padding: 16px; display: flex; flex-direction: column; }
+.card h2 { font-size: 22px; font-weight: 800; margin: 0; }
+.card p { margin: 6px 0 0; color: var(--mist); }
+.card b { color: var(--text); font-weight: 650; }
+.frame { margin-top: 14px; width: 100%; aspect-ratio: 390 / 844; border-radius: 18px; overflow: hidden; border: 1.5px solid var(--stroke); position: relative; }
+.frame iframe { position: absolute; left: 0; top: 0; width: 390px; height: 844px; border: 0; transform-origin: 0 0; }
+.btn { margin-top: 14px; display: flex; align-items: center; justify-content: center; min-height: 52px; border-radius: 14px;
+  background: var(--signal-fill); color: var(--signal-ink); font-weight: 700; font-size: 17px; text-decoration: none; }
+.note { color: var(--mist); font-size: 13px; margin-top: 22px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Среда: главный экран</h1>
+  <p class="lead">Три компоновки экрана «Сферы» в одной рамке: нижнее меню, цвет ночного моря, крупные иконки. Это визуал — кнопки только переключают экраны.</p>
+  <div class="grid">
+    <section class="card"><h2>A · Оглавление</h2>
+      <p>Вопрос «Куда вам?» крупно по морю, под ним все семь сфер столбцом. <b>Смелое место — шапка-вопрос.</b></p>
+      <div class="frame"><iframe src="../v4a/" title="Вариант A" loading="lazy"></iframe></div>
+      <a class="btn" href="../v4a/">Открыть A</a></section>
+    <section class="card"><h2>B · Мозаика</h2>
+      <p>Плитки сфер: чем больше мест, тем больше плитка; служения по записи — морем. <b>Смелое место — морская плитка.</b></p>
+      <div class="frame"><iframe src="../v4b/" title="Вариант B" loading="lazy"></iframe></div>
+      <a class="btn" href="../v4b/">Открыть B</a></section>
+    <section class="card"><h2>C · Первая дверь</h2>
+      <p>Светлый блок «Впервые здесь?», лента сфер и весь список подряд. <b>Смелое место — первая дверь.</b></p>
+      <div class="frame"><iframe src="../v4c/" title="Вариант C" loading="lazy"></iframe></div>
+      <a class="btn" href="../v4c/">Открыть C</a></section>
+  </div>
+  <p class="note">Прототип · названия групп — из поста платформы, описания — пример.</p>
+</main>
+<script>
+(function () {
+  var TG = window.Telegram && window.Telegram.WebApp;
+  if (TG && TG.platform && TG.platform !== 'unknown') { try { TG.ready(); TG.expand(); document.documentElement.dataset.scheme = TG.colorScheme === 'light' ? 'light' : 'dark'; } catch (e) {} }
+  function fit() { document.querySelectorAll('.frame').forEach(function (f) { f.querySelector('iframe').style.transform = 'scale(' + (f.clientWidth / 390) + ')'; }); }
+  addEventListener('resize', fit); fit();
+})();
+</script>
+</body>
+</html>
