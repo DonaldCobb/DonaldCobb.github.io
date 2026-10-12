@@ -5,174 +5,296 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Golos+Text:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap">
 <style>
-/* Layout: шапка с полосой-«разрезом» всех зон по глубине изученности → фильтр по статусу → сетка карточек зон → что изучаем дальше */
+/* Карта знаний v2 — универсальный шаблон. Порядок: за 10 секунд (пять строк + цифра + ход) → тепловая сетка зон → что дальше и куда двигаемся → карточки зон */
 :root{
-  --bg:#edf1ec; --surface:#f8faf7; --fg:#1b2620; --muted:#5d6b63; --line:#cfd8d1;
-  --accent:#2c6a52;
-  --done:#2f7d58; --done-soft:#d6eadf;
-  --part:#b7791f; --part-soft:#f3e5c9;
-  --empty:#8a958f; --empty-soft:#e2e7e3;
+  --bg:#edf1ec; --surface:#f8faf7; --fg:#1b2620; --muted:#5d6b63; --line:#cfd8d1; --accent:#2c6a52; --warn:#9a5b12;
+  --l0:#e2e7e3; --l0f:#4c5a52; --l1:#cfe6d6; --l1f:#1d4a33; --l2:#74b892; --l2f:#0f2a1c; --l3:#2c6a52; --l3f:#ffffff;
   --f-display:"Unbounded","Golos Text",system-ui,sans-serif;
   --f-body:"Golos Text",system-ui,-apple-system,"Segoe UI",sans-serif;
   --f-mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --bg:#111814; --surface:#18211c; --fg:#e2eae4; --muted:#9aa8a0; --line:#2b3831;
-  --accent:#6cc39b; --done:#5cbf8d; --done-soft:#1d3a2c; --part:#e0a54a; --part-soft:#3a2f1a;
-  --empty:#7d8a83; --empty-soft:#232d27; color-scheme:dark}}
+  --bg:#111814; --surface:#18211c; --fg:#e2eae4; --muted:#9aa8a0; --line:#2b3831; --accent:#6cc39b; --warn:#e0a54a;
+  --l0:#222c26; --l0f:#9aa8a0; --l1:#24432f; --l1f:#cfe8d8; --l2:#2f7350; --l2f:#f0faf4; --l3:#7fd1a5; --l3f:#0d1f15; color-scheme:dark}}
 :root[data-theme="dark"]{
-  --bg:#111814; --surface:#18211c; --fg:#e2eae4; --muted:#9aa8a0; --line:#2b3831;
-  --accent:#6cc39b; --done:#5cbf8d; --done-soft:#1d3a2c; --part:#e0a54a; --part-soft:#3a2f1a;
-  --empty:#7d8a83; --empty-soft:#232d27; color-scheme:dark}
+  --bg:#111814; --surface:#18211c; --fg:#e2eae4; --muted:#9aa8a0; --line:#2b3831; --accent:#6cc39b; --warn:#e0a54a;
+  --l0:#222c26; --l0f:#9aa8a0; --l1:#24432f; --l1f:#cfe8d8; --l2:#2f7350; --l2f:#f0faf4; --l3:#7fd1a5; --l3f:#0d1f15; color-scheme:dark}
 *{box-sizing:border-box}
 body{background:var(--bg);color:var(--fg);font:16px/1.5 var(--f-body);margin:0}
-.wrap{max-width:1100px;margin:0 auto;padding-inline:16px;padding-block:28px 56px;display:grid;gap:28px}
-header{display:grid;gap:14px}
-.eyebrow{font:500 12px/1 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
-h1{font:700 clamp(34px,7vw,56px)/1.05 var(--f-display);margin:0;letter-spacing:-.01em;text-wrap:balance}
-.lead{max-width:62ch;margin:0;color:var(--fg);font-size:17px}
-.strata{display:grid;gap:8px}
-.strip{display:flex;height:46px;border-radius:6px;overflow:hidden;border:1px solid var(--line);background:var(--surface)}
-.strip button{flex:1 1 0;min-width:0;border:0;padding:0;cursor:pointer;position:relative;background:var(--surface)}
-.strip button+button{border-left:1px solid var(--line)}
-.strip .fill{position:absolute;left:0;right:0;bottom:0}
-.strip button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
-.strip-labels{display:flex;font:500 11px/1.2 var(--f-mono);color:var(--muted)}
-.strip-labels span{flex:1 1 0;min-width:0;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding-inline:2px}
-.counts{display:flex;flex-wrap:wrap;gap:8px}
-.chip{display:inline-flex;align-items:center;gap:8px;font:500 14px/1 var(--f-body);padding:9px 14px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--fg);cursor:pointer}
+.wrap{max-width:1100px;margin:0 auto;padding:20px 16px 48px;display:grid;gap:26px}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.eyebrow,.lbl,h3{font:500 11px/1.2 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0}
+h1{font:700 clamp(30px,8vw,52px)/1.05 var(--f-display);margin:6px 0 0;letter-spacing:-.01em;text-wrap:balance}
+h2{font:700 19px/1.2 var(--f-display);margin:0}
+.n{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.muted{color:var(--muted)}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px}
+/* за 10 секунд */
+.ten{display:grid;gap:16px}
+.hero{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:center}
+.big{font:700 44px/1 var(--f-display);font-variant-numeric:tabular-nums;white-space:nowrap}
+.big small{font-size:.5em;color:var(--muted);font-weight:500}
+.hero-l{display:grid;gap:6px}
+.badge{display:inline-block;font:500 12px/1.3 var(--f-mono);padding:4px 8px;border-radius:6px;background:var(--l1);color:var(--l1f)}
+.five{display:grid;gap:10px;margin:0}
+.five div{display:grid;grid-template-columns:7.2em 1fr;gap:10px;align-items:baseline}
+.five dt{font:500 11px/1.4 var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.five dd{margin:0;font-size:15px;line-height:1.45}
+.five .goal dd{font-weight:600}
+.trend svg{display:block;width:100%;height:auto;overflow:visible}
+.trend figcaption{font-size:12px;color:var(--muted)}
+/* тепловая сетка */
+.mapsec{display:grid;gap:12px}
+.mhead{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;align-items:end}
+.legend{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:12px;color:var(--muted)}
+.legend span{display:inline-flex;gap:6px;align-items:center}
+.sw{width:12px;height:12px;border-radius:3px;border:1px solid var(--line)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{display:inline-flex;align-items:center;gap:6px;min-height:36px;padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:var(--surface);cursor:pointer;font-size:14px}
 .chip[aria-pressed="true"]{border-color:var(--fg);box-shadow:inset 0 0 0 1px var(--fg)}
-.chip:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.dot{width:10px;height:10px;border-radius:50%;flex:none}
-.n{font-family:var(--f-mono);font-variant-numeric:tabular-nums;color:var(--muted)}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
-.zone{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px;display:grid;gap:12px;align-content:start;min-width:0;scroll-margin-top:16px}
+.band{display:grid;gap:6px}
+.tiles{display:grid;gap:6px;grid-template-columns:repeat(6,1fr)}
+.tile{border:0;border-radius:8px;padding:10px;text-align:left;cursor:pointer;display:flex;flex-direction:column;justify-content:space-between;gap:6px;min-width:0}
+.tile b{font:600 14px/1.2 var(--f-body);overflow-wrap:anywhere;hyphens:auto}
+.tile .tm{display:flex;justify-content:space-between;gap:6px;font:500 12px/1 var(--f-mono);opacity:.9}
+.w3 .tile{grid-column:span 3;min-height:96px}
+.w3 .tile b{font-size:16px}
+.w2 .tile{grid-column:span 2;min-height:80px}
+.w1 .tile{grid-column:span 2;min-height:58px;padding:8px}
+.w1 .tile b{font-size:13px}
+.tile.dim{opacity:.35}
+.L0{background:var(--l0);color:var(--l0f)} .L1{background:var(--l1);color:var(--l1f)} .L2{background:var(--l2);color:var(--l2f)} .L3{background:var(--l3);color:var(--l3f)}
+/* что дальше и куда двигаемся */
+.dec{display:grid;gap:14px}
+.next ol{margin:10px 0 0;padding:0;list-style:none;display:grid;gap:12px;counter-reset:n}
+.next li{display:grid;grid-template-columns:28px 1fr;gap:10px;counter-increment:n}
+.next li::before{content:counter(n);font:700 18px/1.2 var(--f-display);color:var(--accent)}
+.next .t{font-weight:600}
+.next .st{font-size:14px}
+.why{font-size:12px;color:var(--muted);font-family:var(--f-mono)}
+.dirs{display:grid;gap:8px;margin-top:10px}
+.dir{border:1px solid var(--line);border-radius:10px;padding:12px;display:grid;gap:6px;background:var(--bg)}
+.dir .dh{display:flex;justify-content:space-between;gap:8px;align-items:start}
+.dir b{font-weight:600;line-height:1.3}
+.dir p{margin:0;font-size:14px}
+.dir .k{font:500 11px/1 var(--f-mono);color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-right:4px}
+.stat{font:500 11px/1.2 var(--f-mono);padding:4px 7px;border-radius:5px;white-space:nowrap;background:var(--l0);color:var(--l0f)}
+.stat.s-выбрано{background:var(--l3);color:var(--l3f)} .stat.s-предлагаем{background:var(--l1);color:var(--l1f)} .stat.draft{background:transparent;border:1px dashed var(--warn);color:var(--warn);white-space:normal}
+/* карточки зон */
+.cards{display:grid;gap:10px}
+.zone{background:var(--surface);border:1px solid var(--line);border-radius:12px;scroll-margin-top:12px}
 .zone.flash{box-shadow:0 0 0 2px var(--accent)}
-.zhead{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
-.zbody{display:grid;gap:12px}
-.zone h2{font:600 19px/1.2 var(--f-body);margin:0}
-.status{font:500 12px/1 var(--f-mono);padding:5px 8px;border-radius:4px;white-space:nowrap}
-.s-done{background:var(--done-soft);color:var(--done)}
-.s-part{background:var(--part-soft);color:var(--part)}
-.s-empty{background:var(--empty-soft);color:var(--empty)}
-.meter{display:flex;align-items:center;gap:10px}
-.bar{flex:1;height:6px;border-radius:3px;background:var(--empty-soft);overflow:hidden}
-.bar i{display:block;height:100%}
-.pct{font:500 13px/1 var(--f-mono);font-variant-numeric:tabular-nums;color:var(--muted);min-width:3.2em;text-align:right}
-.zone h3{font:500 11px/1 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 6px}
-.zone ul{margin:0;padding-left:18px;display:grid;gap:4px;font-size:15px}
-.gaps li::marker{content:"? ";color:var(--part);font-family:var(--f-mono)}
-.src{font-size:13px;color:var(--muted);border-top:1px dashed var(--line);padding-top:10px}
-.next{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:20px;display:grid;gap:10px}
-.next h2{font:700 20px/1.2 var(--f-display);margin:0}
-.next ol{margin:0;padding-left:22px;display:grid;gap:6px;max-width:70ch}
-footer{font-size:13px;color:var(--muted);max-width:70ch}
-
-.top{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center}
-.overall{display:grid;gap:2px;padding:12px 16px;border:1px solid var(--line);border-radius:10px;background:var(--surface);min-width:0}
-.overall b{font:700 40px/1 var(--f-display);font-variant-numeric:tabular-nums}
-.overall span{font:500 12px/1.3 var(--f-mono);color:var(--muted);max-width:16ch}
-.rank{display:none;gap:2px}
-.rank button{display:grid;grid-template-columns:1fr 64px auto;align-items:center;gap:10px;min-height:44px;padding:6px 4px;border:0;border-bottom:1px solid var(--line);background:none;color:var(--fg);font:500 15px/1.25 var(--f-body);text-align:left;cursor:pointer}
-.rank button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.rank .bar{display:block;height:6px;flex:none}
-.zone .ztoggle{all:unset;display:grid;gap:10px;cursor:default}
-.zone .ztoggle:focus-visible{outline:2px solid var(--accent);outline-offset:4px;border-radius:4px}
-.more{display:none;font:500 13px/1 var(--f-mono);color:var(--accent)}
-@media (max-width:639px){
-  .wrap{padding-block:20px 40px;gap:22px}
-  .top{grid-template-columns:1fr}
-  .overall{grid-template-columns:auto 1fr;align-items:center;gap:12px}
-  .overall span{max-width:none}
-  .strip,.strip-labels{display:none}
-  .rank{display:grid}
-  .grid{grid-template-columns:1fr;gap:10px}
-  .zone{padding:14px 16px;gap:10px}
-  .zone .ztoggle{cursor:pointer}
-  .zone:not(.open) .zbody{display:none}
-  .more{display:block}
-  .zone.open .more{display:none}
-  .lead{font-size:16px}
+.zt{all:unset;box-sizing:border-box;width:100%;display:grid;gap:8px;padding:14px 16px;cursor:pointer}
+.zt:focus-visible{outline:2px solid var(--accent);outline-offset:-2px;border-radius:12px}
+.zh{display:flex;justify-content:space-between;gap:10px;align-items:baseline}
+.zh h2{font:600 18px/1.25 var(--f-body)}
+.lvl{font:500 12px/1 var(--f-mono);padding:5px 8px;border-radius:5px;white-space:nowrap}
+.zm{display:flex;flex-wrap:wrap;gap:4px 12px;font:500 12px/1.3 var(--f-mono);color:var(--muted)}
+.up{color:var(--accent)} .down{color:var(--warn)}
+.segs{display:flex;gap:2px;height:8px}
+.segs i{flex:1;border-radius:2px;min-width:3px}
+.more{font:500 12px/1 var(--f-mono);color:var(--accent)}
+.zone.open .more{display:none}
+.zb{display:none;padding:0 16px 16px;gap:14px}
+.zone.open .zb{display:grid}
+.zb ul{margin:6px 0 0;padding:0;list-style:none;display:grid;gap:8px}
+.it{display:grid;grid-template-columns:22px 1fr;gap:8px;font-size:15px;line-height:1.4}
+.it svg{width:18px;height:18px;margin-top:2px;color:var(--accent)}
+.it small{display:block;color:var(--muted);font-size:12.5px}
+.it .lv{font:500 11px/1 var(--f-mono);color:var(--muted)}
+details summary{cursor:pointer;font-size:14px;color:var(--muted);min-height:32px;display:flex;align-items:center}
+.gap{border-left:3px solid var(--warn);padding:2px 0 2px 10px;display:grid;gap:3px;font-size:15px}
+.gap .nx{font-size:14px}
+.gap .wh{font-size:12.5px;color:var(--muted)}
+.eff{font:500 11px/1 var(--f-mono);padding:2px 5px;border:1px solid var(--line);border-radius:4px;margin-left:4px}
+.src{font-size:12.5px;color:var(--muted);border-top:1px dashed var(--line);padding-top:8px}
+footer{font-size:13px;color:var(--muted);display:grid;gap:6px;max-width:72ch}
+footer p{margin:0}
+@media (min-width:720px){
+  .wrap{padding-top:32px;gap:32px}
+  .ten{grid-template-columns:minmax(260px,1fr) 2fr;align-items:start}
+  .tiles{grid-template-columns:repeat(12,1fr)}
+  .w3 .tile{grid-column:span 4;min-height:110px} .w2 .tile{grid-column:span 3} .w1 .tile{grid-column:span 2}
+  .dec{grid-template-columns:1fr 1fr;align-items:start}
+  .cards{grid-template-columns:1fr 1fr;align-items:start}
 }
-@media (prefers-reduced-motion:no-preference){.bar i,.strip .fill{transition:height .4s,width .4s}}
+@media (max-width:380px){.big{font-size:38px}.five div{grid-template-columns:1fr;gap:2px}}
+@media (prefers-reduced-motion:no-preference){.zone{transition:box-shadow .3s}}
+@media (forced-colors:active){.tile,.segs i{border:1px solid CanvasText}}
 </style>
-
 </head><body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="k-знание" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M4 5.5C6.5 4 9.5 4 12 5.5v14C9.5 18 6.5 18 4 19.5zM20 5.5C17.5 4 14.5 4 12 5.5v14c2.5-1.5 5.5-1.5 8 0z"/></symbol>
+  <symbol id="k-человек" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.6" fill="none" stroke="currentColor" stroke-width="2"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M5 20c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5"/></symbol>
+  <symbol id="k-инструмент" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M14.5 4.5a4.5 4.5 0 0 0 5 6l-9 9a2.1 2.1 0 0 1-3-3l9-9a4.5 4.5 0 0 0-2-3z"/></symbol>
+  <symbol id="k-ресурс" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M3.5 8 12 4l8.5 4v8.5L12 20.5 3.5 16.5zM3.5 8 12 12l8.5-4M12 12v8.5"/></symbol>
+</svg>
 <div class="wrap">
   <header>
-    <div class="eyebrow">Что мы знаем об ИИ · сверка <span id="upd"></span></div>
-    <h1>Карта ИИ</h1>
-    <div class="top"><div class="overall" id="overall"></div><p class="lead" id="summary"></p></div>
-    <div class="strata" aria-label="Глубина изученности по зонам">
-      <div class="strip" id="strip"></div>
-      <div class="strip-labels" id="striplabels"></div>
-      <div class="rank" id="rank"></div>
-    </div>
-    <div class="counts" id="filters" role="group" aria-label="Фильтр по статусу"></div>
+    <div class="eyebrow" id="eyebrow"></div>
+    <h1 id="title"></h1>
   </header>
 
-  <main class="grid" id="grid"></main>
-
-  <section class="next">
-    <h2>Что изучаем дальше: пробелы пилотов</h2>
-    <ol id="next"></ol>
+  <section class="ten" aria-label="Главное за 10 секунд">
+    <div class="panel hero-l">
+      <div class="hero"><div class="big n" id="big"></div><div class="lbl" id="biglbl"></div></div>
+      <div id="delta"></div>
+      <figure class="trend" style="margin:6px 0 0"><svg id="chart" role="img"></svg><figcaption id="chartcap"></figcaption></figure>
+    </div>
+    <dl class="five panel" id="five"></dl>
   </section>
 
-  <footer>Доля — сколько инструментов направления мы пробовали или используем в работе. «Изучено» — 50 % и больше, «начато» — 20–49 %, «пусто» — меньше 20 %. Шкала владения: знаем, что есть · пробовали · используем · владеем (учим или продаём — пока ни одного). Обновляется раз в месяц и при новинках.</footer>
+  <section class="mapsec" aria-label="Карта зон">
+    <div class="mhead"><h2>Карта зон</h2><div class="legend" id="legend"></div></div>
+    <div class="chips" id="kinds" role="group" aria-label="Фильтр по виду пункта"></div>
+    <div id="bands" style="display:grid;gap:14px"></div>
+  </section>
+
+  <section class="dec">
+    <div class="panel next"><h2>Что дальше</h2><ol id="top"></ol></div>
+    <div class="panel"><h2>Куда двигаемся</h2><div class="dirs" id="dirs"></div></div>
+  </section>
+
+  <section class="cards" id="cards" aria-label="Зоны подробно"></section>
+
+  <footer id="foot"></footer>
 </div>
-
 <script>
-const ZONES = [{"zone": "Тексты и рассуждение", "status": "изучено", "depth": 58, "known": ["Claude Opus 5.5 — используем", "GPT 6.1 Sol / GPT 6 Luna — используем", "Claude Sonnet 5.5 — пробовали", "Claude Haiku 5.5 — пробовали", "DeepSeek V4.1 Flash / V4 Pro — пробовали", "Kimi K3 (Moonshot) — пробовали", "OpenRouter — пробовали"], "gaps": ["Не пробовали: Gemini 3.8 Flash / 4 Argon, YandexGPT Pro 5.1 / Alice AI LLM Flash, GigaChat 3.5 Ultra / Lightning, GLM-5.3 / Qwen3.8 Max / MiMo-V2.6-Pro, Microsoft-Decision-1"], "sources": ["7 из 12 пробовали", "исследование 117"]}, {"zone": "Агенты и вайбкодинг", "status": "начато", "depth": 43, "known": ["Claude Code (агенты, навыки, хуки, `claude -p`) — используем", "Эталон (плагин sdd) — используем", "Hermes, OpenClaw — пробовали"], "gaps": ["Не пробовали: Claude Agent SDK / Managed Agents, OpenAI Codex CLI, Cursor 3, zed.dev"], "sources": ["3 из 7 пробовали", "исследование 117"]}, {"zone": "Голос", "status": "начато", "depth": 45, "known": ["Deepgram Nova-3 — используем", "edge-tts — используем", "Whisper / faster-whisper — используем", "GigaAM v3 — пробовали", "Qwen3-TTS — пробовали"], "gaps": ["Не пробовали: Yandex SpeechKit / Realtime, ElevenLabs Eleven v4, OpenAI GPT-Realtime-2, Groq (Whisper, LLM), lobbystack, Google AI Edge Foresight"], "sources": ["5 из 11 пробовали", "исследование 117"]}, {"zone": "Изображения", "status": "начато", "depth": 43, "known": ["GPT Image 2.5 — используем", "HTML-макеты моделью — используем", "Penpot (локально, MCP) — пробовали"], "gaps": ["Не пробовали: Nano Banana 2.1, Seedream 5.0 Pro, FLUX.2 klein / Qwen-Image-Edit, Kandinsky / Шедеврум"], "sources": ["3 из 7 пробовали", "исследование 117"]}, {"zone": "Видео и монтаж", "status": "пусто", "depth": 11, "known": ["ffmpeg + yt-dlp — используем"], "gaps": ["Не пробовали: Remotion, Veo 3.1, Kling 3.0 / 4.0 Flash, MiniMax H3 / Seedance 2.5, Descript Underlord, HeyGen / Kling Avatar, Claude Motion, clip-forge / MoneyPrinterTurbo"], "sources": ["1 из 9 пробовали", "исследование 117"]}, {"zone": "Музыка и звук", "status": "пусто", "depth": 0, "known": [], "gaps": ["Не пробовали: Suno v6, ElevenLabs Music v2.5, Lyria 3 Clip, ACE-Step / Stable Audio Open"], "sources": ["0 из 4 пробовали", "исследование 117"]}, {"zone": "Локальные и открытые модели", "status": "пусто", "depth": 14, "known": ["«Цех» речи на ПК (GigaAM, faster-whisper, Silero, bge-m3) — пробовали"], "gaps": ["Не пробовали: Ollama, llama.cpp, vLLM, Qwen3.6 27B / 35B-A3B, GigaChat 3 Lightning / T-pro-it-2.1, Gemma 4 E4B / 12B"], "sources": ["1 из 7 пробовали", "исследование 117"]}, {"zone": "Поиск, RAG, базы знаний", "status": "изучено", "depth": 50, "known": ["База на markdown + INDEX — используем", "Веб-поиск агентов — используем", "Context7 (MCP) — используем", "Эмбеддинги bge-m3 + RAG Сетевика — пробовали"], "gaps": ["Не пробовали: Yandex AI Studio Vector Store, Эмбеддинги GigaChat, pgvector / Qdrant, NotebookLM / deep research"], "sources": ["4 из 8 пробовали", "исследование 117"]}, {"zone": "Автоматизация и интеграции", "status": "начато", "depth": 40, "known": ["Telegram Bot API — используем", "Telethon (аккаунт Юлая) — используем", "MCP — используем", "cron + systemd — используем"], "gaps": ["Не пробовали: n8n, MAX Bot API, WhatsApp Business API, Yandex MCP Hub, Albato, activepieces"], "sources": ["4 из 10 пробовали", "исследование 117"]}, {"zone": "Документы и таблицы", "status": "начато", "depth": 25, "known": ["Claude: картинки, PDF, JSON по схеме — используем", "Excel/xlsx — пробовали"], "gaps": ["Не пробовали: Word/docx по шаблону, 1С:Распознавание первичных документов, Yandex Vision OCR, GigaChat: JSON по схеме, Mistral OCR 4, Docling"], "sources": ["2 из 8 пробовали", "исследование 117"]}, {"zone": "Зрение и управление компьютером", "status": "начато", "depth": 38, "known": ["Руки на ПК (Playwright, MCP) — используем", "Бот-браузер (Chrome-профиль) — используем", "Instagram через @SaveAsBot (bin/insta-fetch) — используем"], "gaps": ["Не пробовали: Claude computer use, Claude in Chrome, Browser Use, Ultralytics YOLO, Sherpa RPA"], "sources": ["3 из 8 пробовали", "исследование 117"]}, {"zone": "Безопасность, данные, качество", "status": "изучено", "depth": 50, "known": ["Хуки защиты и бюджета — используем", "Поиск секретов, бэкапы с учебным восстановлением — используем", "Критик другой моделью — используем", "Учёт расходов — используем", "Бенч моделей, слепой тест — пробовали"], "gaps": ["Не пробовали: OWASP Top 10 для LLM и агентов, 152-ФЗ (ред. 2026-07-26), 243-ФЗ об ИИ, Отключение логов Yandex AI Studio, promptfoo, Langfuse"], "sources": ["5 из 10 пробовали", "исследование 117"]}, {"zone": "Российские ИИ и 1С", "status": "пусто", "depth": 0, "known": [], "gaps": ["Не пробовали: Yandex AI Studio, GigaChat API, Cloud.ru Evolution, Рублёвые агрегаторы (Polza, ProxyAPI), Связка 1С ↔ LLM (HTTP-сервисы, OData), 1С:Напарник, Битрикс24 BitrixGPT"], "sources": ["0 из 7 пробовали", "исследование 117"]}];
-const META = {"updated": "2026-10-12", "summary": "Из 108 инструментов в 13 направлениях пробовали или используем 38. Сильнее всего: «Тексты и рассуждение», «Поиск, RAG, базы знаний», «Безопасность, данные, качество». Слабее всего: «Музыка и звук», «Российские ИИ и 1С», «Видео и монтаж».", "next": ["Отчёт в Word по шаблону", "Сканы и PDF клиента → поля", "1С", "Заявки из мессенджеров", "Смета в таблицах на номенклатуре + российская модель для данных клиента"], "overall": {"value": "35 %", "label": "изучено · 38 из 108 инструментов"}};
-const ST = {"изучено":["s-done","--done"],"начато":["s-part","--part"],"пусто":["s-empty","--empty"]};
-const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-const col = st => `var(${(ST[st]||ST["пусто"])[1]})`;
-document.getElementById("upd").textContent = (META.updated||"").split("-").reverse().join(".");
-document.getElementById("summary").textContent = META.summary || "";
-document.getElementById("next").innerHTML = (META.next||[]).map(x=>`<li>${esc(x)}</li>`).join("");
+const D = {"meta": {"title": "Карта ИИ", "eyebrow": "Что мы умеем в ИИ · сверка", "goal": "Бизнес Юлая: ИИ-услуги малым производствам Перми — первый платный пилот", "updated": "2026-10-12", "decider": "Юлай", "directions": [{"name": "Документы пилота: отчёт в Word по шаблону и PDF → поля", "gives": "Пилот геодезиста упирается прямо сюда: отчёт ~57 страниц в Word и сканы через «pdf to scan»", "costs": "Часы сборки до письма с ценой; видео, музыка и локальные модели ждут", "needs": ["Документы: Word по шаблону", "Документы: сканы и PDF → поля"], "status": "предлагаем"}, {"name": "1С и заявки из мессенджеров — под клиента по лесу", "gives": "В его цену заложена 1С/CRM; он работает в WhatsApp; повод — конференция 1С 14.10", "costs": "Проб ноль, нужен доступ к конфигурации клиента; WhatsApp из РФ — только руками", "needs": ["1С: конфигурация и OData/HTTP-сервисы", "Автоматизация: заявки Telegram/MAX → n8n"], "status": "предлагаем"}, {"name": "Российский контур: YandexGPT/GigaChat и смета на номенклатуре", "gives": "Данные клиента с персональными данными остаются в РФ; следующий шаг «заявка → кубы, цена, срок»", "costs": "Замер на одном архиве клиента; российские модели у нас на уровне «знаем, что есть»", "needs": ["Документы: смета в xlsx", "Тексты: Alice AI / GigaChat против Sonnet"], "status": "предлагаем"}], "footer": "Пункты — инструменты из models/ai-map.md (исследование 117). Уровень: 0 не знаем · 1 знаем, что есть · 2 пробовали · 3 используем или владеем (в md 3 и 4).", "top": [{"text": "На конференции 1С 14.10 — какие конфигурации у малых производств Перми и открыты ли OData/HTTP-сервисы", "next": "На конференции 1С 14.10 — какие конфигурации у малых производств Перми и открыты ли OData/HTTP-сервисы", "who": "бот — проба и замер", "effort": "S", "zone": "Российские ИИ и 1С", "zid": "ru", "score": 6.0, "why": "вес 3 из 3 · зона «начато» (0/7) · усилие S"}, {"text": "Пилот: Отчёт в Word по шаблону (уровень 1)", "next": "сборка docx по шаблону кодом (python-docx/docxtpl), модель — только абзацы", "who": "клиент — шаблон и 2–3 готовых отчёта; бот — сборка кодом", "effort": "M", "zone": "Документы и таблицы", "zid": "docs", "score": 3.5, "why": "вес 3 из 3 · зона «начато» (2/8) · усилие M"}, {"text": "Пилот: Заявки из мессенджеров (WhatsApp 0, MAX 0)", "next": "заявка из Telegram/MAX → n8n у себя → таблица или 1С; WhatsApp — руками", "who": "бот — n8n у себя; клиент — пример заявок", "effort": "M", "zone": "Автоматизация и интеграции", "zid": "automation", "score": 2.6, "why": "вес 3 из 3 · зона «в работе» (4/10) · усилие M"}], "totals": {"ok": 38, "total": 108, "gaps": 15, "zones": 13, "kinds": {"знание": 0, "человек": 0, "инструмент": 108, "ресурс": 0}}, "five": {"goal": "Бизнес Юлая: ИИ-услуги малым производствам Перми — первый платный пилот", "where": "Освоено 38 из 108: сильнее всего «Безопасность, данные, качество» и «Поиск, RAG, базы знаний», слабее всего из главного — «Российские ИИ и 1С», «Документы и таблицы».", "have": "На уровне «пробовали» и выше — 38, больше всего в «Тексты и рассуждение» (7), «Голос» (5); всего на карте: инструментов 108.", "missing": "15 пробелов в 12 зонах; первый — «На конференции 1С 14.10 — какие конфигурации у малых производств Перми и открыты ли OData/HTTP-сервисы» (Российские ИИ и 1С).", "heading": "Предлагаем: Документы пилота: отчёт в Word по шаблону и PDF → поля; 1С и заявки из мессенджеров — под клиента по лесу; Российский контур: YandexGPT/GigaChat и смета на номенклатуре — решение не принято."}, "built": "2026-10-12", "history": [{"date": "2026-10-12", "ok": 38, "total": 108, "gaps": 15}], "prev": null}, "zones": [{"id": "text", "zone": "Тексты и рассуждение", "weight": 3, "items": [{"name": "Claude Opus 5.5", "kind": "инструмент", "level": 3, "note": "рассуждение, код, долгие агентные задачи; effort low…max", "source": "главная сессия и 12 агентов; 107; 136: взгляды xhigh, свод v1 max (journal 2026-10-12)"}, {"name": "Claude Sonnet 5.5", "kind": "инструмент", "level": 2, "note": "дешевле Opus вдвое, сборка по ТЗ", "source": "библиотекарь на Sonnet с 11.10 (.claude/agents/librarian.md; research/results/librarian-20"}, {"name": "Claude Haiku 5.5", "kind": "инструмент", "level": 2, "note": "потоки, рутина", "source": "54 мини-тест"}, {"name": "GPT 6.1 Sol / GPT 6 Luna", "kind": "инструмент", "level": 3, "note": "второе мнение, дешёвые потоки", "source": "bin/critique, second-opinion; свод 136 v2 на max (136-svod-v2-gpt)"}, {"name": "Gemini 3.8 Flash / 4 Argon", "kind": "инструмент", "level": 1, "note": "длинный контекст, видео на вход", "source": "tiers.md, ключа нет"}, {"name": "DeepSeek V4.1 Flash / V4 Pro", "kind": "инструмент", "level": 2, "note": "дешёвая, понимает картинки", "source": "V4 Pro — свод 136 v3 (136-svod-v3-deepseek, journal 2026-10-12)"}, {"name": "YandexGPT Pro 5.1 / Alice AI LLM Flash", "kind": "инструмент", "level": 1, "note": "данные в РФ, 0,8 ₽ за 1 000 токенов", "source": "clients-rf"}, {"name": "GigaChat 3.5 Ultra / Lightning", "kind": "инструмент", "level": 1, "note": "API и открытые веса, JSON по схеме", "source": "clients-rf.md"}, {"name": "Kimi K3 (Moonshot)", "kind": "инструмент", "level": 2, "note": "длинный контекст, оркестратор сводов, effort max", "source": "свод 136 v3, $0,38 (136-svod-v3-moonshotai)"}, {"name": "GLM-5.3 / Qwen3.8 Max / MiMo-V2.6-Pro", "kind": "инструмент", "level": 1, "note": "китайские флагманы, effort max", "source": "доступ проверен (200 на effort max, journal 2026-10-12 21:3x); работы ещё нет"}, {"name": "OpenRouter", "kind": "инструмент", "level": 2, "note": "один ключ к сотням моделей, reasoning.effort", "source": "ключ в llm.env, своды 136 v3 с ПК (journal 2026-10-12 20:5x)"}, {"name": "Microsoft-Decision-1", "kind": "инструмент", "level": 1, "note": "вероятности по заданным вариантам, ~$0,042 за млн", "source": "library"}], "gaps": [{"text": "Alice AI LLM Flash и GigaChat Lightning на архиве отчётов клиента против Sonnet 5.5", "next": "Alice AI LLM Flash и GigaChat Lightning на архиве отчётов клиента против Sonnet 5.5", "who": "бот — проба и замер", "effort": "M"}], "total": 12, "ok": 7, "mean": 1.75, "levelWord": "в работе", "lv": 2, "gapsN": 1, "prev": null}, {"id": "agents", "zone": "Агенты и вайбкодинг", "weight": 3, "items": [{"name": "Claude Code (агенты, навыки, хуки, claude -p)", "kind": "инструмент", "level": 3, "note": "агент в терминале, субагенты, плагины", "source": ".claude/agents (12), skills (19), bin/brain-oneshot"}, {"name": "Эталон (плагин sdd)", "kind": "инструмент", "level": 3, "note": "сборка по спекам", "source": "~/projects/etalon-sdd; family-bot, brain-bots"}, {"name": "Claude Agent SDK / Managed Agents", "kind": "инструмент", "level": 1, "note": "облачный агент с бюджетом, памятью, политиками", "source": ""}, {"name": "Hermes, OpenClaw", "kind": "инструмент", "level": 2, "note": "чужие оболочки агентов", "source": "Hermes стоял и снесён (STATE.md)"}, {"name": "OpenAI Codex CLI", "kind": "инструмент", "level": 1, "note": "агент OpenAI, AGENTS.md, MCP", "source": "journal 2026-10-06"}, {"name": "Cursor 3", "kind": "инструмент", "level": 1, "note": "IDE с параллельными агентами", "source": "упоминания"}, {"name": "zed.dev", "kind": "инструмент", "level": 1, "note": "быстрый редактор кода, свой агент через шлюз", "source": "совет знакомого"}], "gaps": [{"text": "Agent SDK — как поставить клиенту агента отчётов", "next": "Agent SDK — как поставить клиенту агента отчётов", "who": "бот — проба и замер", "effort": "M"}], "total": 7, "ok": 3, "mean": 1.71, "levelWord": "в работе", "lv": 2, "gapsN": 1, "prev": null}, {"id": "voice", "zone": "Голос", "weight": 2, "items": [{"name": "Deepgram Nova-3", "kind": "инструмент", "level": 3, "note": "распознавание; у нас ошибка 24 % на русских голосовых", "source": "journal 2026-10-06; бот партнёра; проба на лекторе, insta-fetch"}, {"name": "edge-tts", "kind": "инструмент", "level": 3, "note": "озвучка", "source": "bin/tts-voice, bin/say-endpoint"}, {"name": "GigaAM v3", "kind": "инструмент", "level": 2, "note": "открытое распознавание Сбера, ошибка 18,2 %", "source": "journal 2026-10-07 «цех» на ПК"}, {"name": "Whisper / faster-whisper", "kind": "инструмент", "level": 3, "note": "распознавание локально", "source": "145 лекций лектора расшифровано на ПК (journal 2026-10-12, msg 4401)"}, {"name": "Qwen3-TTS", "kind": "инструмент", "level": 2, "note": "синтез и клон голоса", "source": "journal 2026-10-07"}, {"name": "Yandex SpeechKit / Realtime", "kind": "инструмент", "level": 1, "note": "синтез, распознавание, голосовой агент ~330 мс", "source": "tiers.md"}, {"name": "ElevenLabs Eleven v4", "kind": "инструмент", "level": 1, "note": "синтез 90 языков, клон по 10 с", "source": "tiers.md"}, {"name": "OpenAI GPT-Realtime-2", "kind": "инструмент", "level": 1, "note": "голосовые агенты, синхронный перевод", "source": "tiers.md"}, {"name": "Groq (Whisper, LLM)", "kind": "инструмент", "level": 1, "note": "быстрое облачное распознавание, бесплатный ключ", "source": "journal 2026-10-11 10:02, 10:25; strategy/assets.md"}, {"name": "lobbystack", "kind": "инструмент", "level": 1, "note": "открытый ИИ-администратор звонков и записи", "source": "карусель teyhan"}, {"name": "Google AI Edge Foresight", "kind": "инструмент", "level": 1, "note": "секретарь встреч офлайн на Mac", "source": "library"}], "gaps": [{"text": "Yandex SpeechKit / Realtime — уровень 1", "next": "голосовой приём заявок производства", "who": "бот — проба и замер", "effort": "M"}], "total": 11, "ok": 5, "mean": 1.73, "levelWord": "в работе", "lv": 2, "gapsN": 1, "prev": null}, {"id": "images", "zone": "Изображения", "weight": 1, "items": [{"name": "GPT Image 2.5", "kind": "инструмент", "level": 3, "note": "генерация и правка, кириллица", "source": "brain-bots/tools/gen_image.py; journal 2026-10-06"}, {"name": "HTML-макеты моделью", "kind": "инструмент", "level": 3, "note": "экраны, карточки, демо", "source": "library/demo/pilorama-svodka.html"}, {"name": "Penpot (локально, MCP)", "kind": "инструмент", "level": 2, "note": "макеты под ручную правку", "source": "bin/penpot; MCP ждёт ключа"}, {"name": "Nano Banana 2.1", "kind": "инструмент", "level": 1, "note": "правка по маске, 14 референсов, 4K", "source": "tiers.md"}, {"name": "Seedream 5.0 Pro", "kind": "инструмент", "level": 1, "note": "держит лицо, путает кириллицу", "source": "watchlist-genmodels"}, {"name": "FLUX.2 klein / Qwen-Image-Edit", "kind": "инструмент", "level": 1, "note": "открытые веса", "source": "watchlist-genmodels"}, {"name": "Kandinsky / Шедеврум", "kind": "инструмент", "level": 1, "note": "российские", "source": "journal 2026-10-10"}], "gaps": [{"text": "Правка фото продукции → карточки для каталога и КП поставщика", "next": "Правка фото продукции → карточки для каталога и КП поставщика", "who": "бот — проба и замер", "effort": "M"}], "total": 7, "ok": 3, "mean": 1.71, "levelWord": "в работе", "lv": 2, "gapsN": 1, "prev": null}, {"id": "video", "zone": "Видео и монтаж", "weight": 1, "items": [{"name": "ffmpeg + yt-dlp", "kind": "инструмент", "level": 3, "note": "склейка, звук, субтитры, скачивание", "source": "bin/tts-voice, bin/yt-scout; перекодировка клипов Авсеевых 1080×1920 (journal 2026-10-11 1"}, {"name": "Remotion", "kind": "инструмент", "level": 1, "note": "монтаж кодом", "source": "поставлен на ПК, пробы нет"}, {"name": "Veo 3.1", "kind": "инструмент", "level": 1, "note": "видео до 4K со звуком", "source": "tiers.md"}, {"name": "Kling 3.0 / 4.0 Flash", "kind": "инструмент", "level": 1, "note": "генерация видео; аватары и липсинк", "source": "tiers.md"}, {"name": "MiniMax H3 / Seedance 2.5", "kind": "инструмент", "level": 1, "note": "видео из картинки, $0,05 за секунду", "source": "tiers.md"}, {"name": "Descript Underlord", "kind": "инструмент", "level": 1, "note": "монтаж по тексту, есть API · уровень не проверен", "source": ""}, {"name": "HeyGen / Kling Avatar", "kind": "инструмент", "level": 1, "note": "аватары", "source": "research 78"}, {"name": "Claude Motion", "kind": "инструмент", "level": 1, "note": "анимации по брифу", "source": "пост"}, {"name": "clip-forge / MoneyPrinterTurbo", "kind": "инструмент", "level": 1, "note": "нарезка подкаста в вертикальные клипы; ролик из темы", "source": "карусель teyhan"}], "gaps": [{"text": "Ролик «было / стало» с производства через Descript, монтирует Ева", "next": "Ролик «было / стало» с производства через Descript, монтирует Ева", "who": "бот — проба и замер", "effort": "M"}], "total": 9, "ok": 1, "mean": 1.22, "levelWord": "начато", "lv": 1, "gapsN": 1, "prev": null}, {"id": "music", "zone": "Музыка и звук", "weight": 1, "items": [{"name": "Suno v6", "kind": "инструмент", "level": 1, "note": "песни целиком", "source": "journal 2026-10-09 (маршрут, пробы нет)"}, {"name": "ElevenLabs Music v2.5", "kind": "инструмент", "level": 1, "note": "музыка на лицензированных данных", "source": "tiers.md"}, {"name": "Lyria 3 Clip", "kind": "инструмент", "level": 1, "note": "клипы 30 с, $0,04", "source": "tiers.md"}, {"name": "ACE-Step / Stable Audio Open", "kind": "инструмент", "level": 1, "note": "открытая музыка и эффекты · уровень не проверен", "source": ""}], "gaps": [{"text": "Для производства приоритет низкий — только фон к роликам, сначала лицензия", "next": "Для производства приоритет низкий — только фон к роликам, сначала лицензия", "who": "бот — проба и замер", "effort": "S"}], "total": 4, "ok": 0, "mean": 1.0, "levelWord": "начато", "lv": 1, "gapsN": 1, "prev": null}, {"id": "local", "zone": "Локальные и открытые модели", "weight": 2, "items": [{"name": "«Цех» речи на ПК (GigaAM, faster-whisper, Silero, bge-m3)", "kind": "инструмент", "level": 2, "note": "распознавание, эмбеддинги локально", "source": "journal 2026-10-07 (GTX 1650 4 ГБ)"}, {"name": "Ollama", "kind": "инструмент", "level": 1, "note": "модель одной командой", "source": "journal 2026-10-07 «LLM не ставим»"}, {"name": "llama.cpp", "kind": "инструмент", "level": 1, "note": "движок GGUF: процессор, карта, Mac · уровень не проверен", "source": ""}, {"name": "vLLM", "kind": "инструмент", "level": 1, "note": "сервер под нагрузку, API как у OpenAI · уровень не проверен", "source": ""}, {"name": "Qwen3.6 27B / 35B-A3B", "kind": "инструмент", "level": 1, "note": "Apache-2.0, одна карта 24 ГБ", "source": "clients-rf.md"}, {"name": "GigaChat 3 Lightning / T-pro-it-2.1", "kind": "инструмент", "level": 1, "note": "русские открытые (MIT / Apache-2.0)", "source": "clients-rf.md"}, {"name": "Gemma 4 E4B / 12B", "kind": "инструмент", "level": 1, "note": "Apache-2.0, 8–12 ГБ", "source": "clients-rf.md"}], "gaps": [{"text": "Qwen3.6-35B-A3B или GigaChat Lightning на сервере клиента под NDA, замер на 20 документах", "next": "Qwen3.6-35B-A3B или GigaChat Lightning на сервере клиента под NDA, замер на 20 документах", "who": "бот — проба и замер", "effort": "M"}], "total": 7, "ok": 1, "mean": 1.14, "levelWord": "начато", "lv": 1, "gapsN": 1, "prev": null}, {"id": "rag", "zone": "Поиск, RAG, базы знаний", "weight": 2, "items": [{"name": "База на markdown + INDEX", "kind": "инструмент", "level": 3, "note": "поиск по хранилищу", "source": "INDEX.md, bin/vault-index.py"}, {"name": "Веб-поиск агентов", "kind": "инструмент", "level": 3, "note": "поиск с источниками", "source": "агенты researcher, lead-scout"}, {"name": "Context7 (MCP)", "kind": "инструмент", "level": 3, "note": "свежая документация библиотек", "source": ".mcp.json, journal 2026-10-09"}, {"name": "Эмбеддинги bge-m3 + RAG Сетевика", "kind": "инструмент", "level": 2, "note": "векторный поиск по переписке", "source": "projects/ai-communication-assistant.md"}, {"name": "Yandex AI Studio Vector Store", "kind": "инструмент", "level": 1, "note": "RAG-индексы, до 10 000 файлов · уровень не проверен", "source": ""}, {"name": "Эмбеддинги GigaChat", "kind": "инструмент", "level": 1, "note": "векторы текста", "source": "tiers.md"}, {"name": "pgvector / Qdrant", "kind": "инструмент", "level": 1, "note": "векторный поиск у себя · уровень не проверен", "source": ""}, {"name": "NotebookLM / deep research", "kind": "инструмент", "level": 1, "note": "ответы по источникам, многошаговый поиск", "source": "упоминания"}], "gaps": [{"text": "Yandex AI Studio Vector Store — не проверяли", "next": "на 20 отчётах клиента против полнотекстового поиска", "who": "бот — проба и замер", "effort": "M"}], "total": 8, "ok": 4, "mean": 1.88, "levelWord": "в работе", "lv": 2, "gapsN": 1, "prev": null}, {"id": "automation", "zone": "Автоматизация и интеграции", "weight": 3, "items": [{"name": "Telegram Bot API", "kind": "инструмент", "level": 3, "note": "боты, кнопки, потоковые ответы", "source": "bin/tg-send, плагин, свои боты"}, {"name": "Telethon (аккаунт Юлая)", "kind": "инструмент", "level": 3, "note": "чтение чатов, черновики", "source": "bin/draft-to-chat, bin/chat-archive"}, {"name": "MCP", "kind": "инструмент", "level": 3, "note": "подключение инструментов к агентам", "source": ".mcp.json (playwright, context7)"}, {"name": "cron + systemd", "kind": "инструмент", "level": 3, "note": "расписание и службы", "source": "bin/crontab.brain.txt"}, {"name": "n8n", "kind": "инструмент", "level": 1, "note": "сценарии и ИИ-агенты, узлы Telegram и MCP", "source": "упоминания"}, {"name": "MAX Bot API", "kind": "инструмент", "level": 1, "note": "боты MAX, публикует только юрлицо РФ · уровень не проверен", "source": ""}, {"name": "WhatsApp Business API", "kind": "инструмент", "level": 0, "note": "бизнес-переписка", "source": ""}, {"name": "Yandex MCP Hub", "kind": "инструмент", "level": 1, "note": "MCP-серверы с подтверждением и логами · уровень не проверен", "source": ""}, {"name": "Albato", "kind": "инструмент", "level": 1, "note": "российский конструктор интеграций · уровень не проверен", "source": ""}, {"name": "activepieces", "kind": "инструмент", "level": 1, "note": "открытая замена Zapier с ИИ-шагами, блоки как инструменты Claude", "source": "карусель teyhan"}], "gaps": [{"text": "Пилот: Заявки из мессенджеров (WhatsApp 0, MAX 0)", "next": "заявка из Telegram/MAX → n8n у себя → таблица или 1С; WhatsApp — руками", "who": "бот — n8n у себя; клиент — пример заявок", "effort": "M"}], "total": 10, "ok": 4, "mean": 1.7, "levelWord": "в работе", "lv": 2, "gapsN": 1, "prev": null}, {"id": "docs", "zone": "Документы и таблицы", "weight": 3, "items": [{"name": "Claude: картинки, PDF, JSON по схеме", "kind": "инструмент", "level": 3, "note": "чтение скринов и PDF, структурированный вывод", "source": "скрины постов (memory/read-all-images-in-posts.md); PDF — 2"}, {"name": "Word/docx по шаблону", "kind": "инструмент", "level": 1, "note": "сборка отчёта кодом", "source": "cases/geodesist-report.md 📄"}, {"name": "Excel/xlsx", "kind": "инструмент", "level": 2, "note": "таблицы и сметы кодом", "source": "прайс xlsx завода ЖБИ → прототип на 240 позиций (library/demo/stroy-centr-zayavka.html, "}, {"name": "1С:Распознавание первичных документов", "kind": "инструмент", "level": 0, "note": "счета, УПД, ТОРГ-12 → 1С со сверкой НДС", "source": ""}, {"name": "Yandex Vision OCR", "kind": "инструмент", "level": 1, "note": "печатный и рукописный текст, таблицы, PDF", "source": "tiers.md ocr"}, {"name": "GigaChat: JSON по схеме", "kind": "инструмент", "level": 1, "note": "chat_parse() по Pydantic", "source": ""}, {"name": "Mistral OCR 4", "kind": "инструмент", "level": 1, "note": "блоки с координатами, 170 языков · уровень не проверен", "source": ""}, {"name": "Docling", "kind": "инструмент", "level": 1, "note": "открытый разбор PDF и DOCX · уровень не проверен", "source": ""}], "gaps": [{"text": "Пилот: Отчёт в Word по шаблону (уровень 1)", "next": "сборка docx по шаблону кодом (python-docx/docxtpl), модель — только абзацы", "who": "клиент — шаблон и 2–3 готовых отчёта; бот — сборка кодом", "effort": "M"}, {"text": "Пилот: Сканы и PDF клиента → поля (уровень 1)", "next": "на 20 документах сравнить Yandex Vision OCR + LLM и Claude PDF (без ПД), для накладных — 1С:Распознавание первичных документов", "who": "клиент — 20 документов без персональных данных; бот — замер", "effort": "M"}, {"text": "Пилот: Смета в таблицах на номенклатуре + российская модель для данных клиента", "next": "xlsx кодом + YandexGPT/GigaChat на одном архиве с ПД (clients-rf)", "who": "клиент — прайс и архив заявок; бот — сравнение моделей", "effort": "M"}], "total": 8, "ok": 2, "mean": 1.25, "levelWord": "начато", "lv": 1, "gapsN": 3, "prev": null}, {"id": "vision", "zone": "Зрение и управление компьютером", "weight": 1, "items": [{"name": "Руки на ПК (Playwright, MCP)", "kind": "инструмент", "level": 3, "note": "клики и ввод в веб-сервисах", "source": "bin/pc-hands"}, {"name": "Бот-браузер (Chrome-профиль)", "kind": "инструмент", "level": 3, "note": "чтение X и Instagram", "source": "bin/bot-browser, bin/web-read"}, {"name": "Instagram через @SaveAsBot (bin/insta-fetch)", "kind": "инструмент", "level": 3, "note": "рилс и пост по ссылке: видео, подпись, кадры 3×3, расшифровка", "source": "projects/assistant-access.md «Instagram через @SaveAsBot»; разборы library/2026-10-12-reel"}, {"name": "Claude computer use", "kind": "инструмент", "level": 1, "note": "управление экраном", "source": "упоминания"}, {"name": "Claude in Chrome", "kind": "инструмент", "level": 1, "note": "агент в браузере пользователя", "source": "упоминания"}, {"name": "Browser Use", "kind": "инструмент", "level": 1, "note": "агент управляет браузером кодом · уровень не проверен", "source": ""}, {"name": "Ultralytics YOLO", "kind": "инструмент", "level": 0, "note": "подсчёт объектов на фото и видео", "source": ""}, {"name": "Sherpa RPA", "kind": "инструмент", "level": 1, "note": "российская роботизация с OCR Яндекса · уровень не проверен", "source": ""}], "gaps": [], "total": 8, "ok": 3, "mean": 1.62, "levelWord": "в работе", "lv": 2, "gapsN": 0, "prev": null}, {"id": "security", "zone": "Безопасность, данные, качество", "weight": 2, "items": [{"name": "Хуки защиты и бюджета", "kind": "инструмент", "level": 3, "note": "стоп опасных действий, лимиты", "source": "bin/guard-hook.py, bin/budget-hook.py"}, {"name": "Поиск секретов, бэкапы с учебным восстановлением", "kind": "инструмент", "level": 3, "note": "—", "source": "bin/secret-scan, bin/backup-drill"}, {"name": "Критик другой моделью", "kind": "инструмент", "level": 3, "note": "второе мнение", "source": "bin/critique, second-opinion"}, {"name": "Учёт расходов", "kind": "инструмент", "level": 3, "note": "траты по дням и задачам", "source": "bin/spend-signal, bin/economy-scan"}, {"name": "Бенч моделей, слепой тест", "kind": "инструмент", "level": 2, "note": "сравнение на наших задачах", "source": "models/bench/, bin/blind-test"}, {"name": "OWASP Top 10 для LLM и агентов", "kind": "инструмент", "level": 1, "note": "список угроз, prompt injection первым", "source": "исследование 57"}, {"name": "152-ФЗ (ред. 2026-07-26), 243-ФЗ об ИИ", "kind": "инструмент", "level": 1, "note": "ПД, уведомление РКН; «суверенные модели» с 2027-03-01", "source": "исследования 72, 115"}, {"name": "Отключение логов Yandex AI Studio", "kind": "инструмент", "level": 1, "note": "заголовок x-data-logging-enabled: false", "source": "clients-rf.md"}, {"name": "promptfoo", "kind": "инструмент", "level": 1, "note": "evals и red-team · уровень не проверен", "source": ""}, {"name": "Langfuse", "kind": "инструмент", "level": 1, "note": "трассировка, оценки, стоимость · уровень не проверен", "source": ""}], "gaps": [{"text": "promptfoo — не проверяли", "next": "проверка качества на 10 документах клиента", "who": "бот — проба и замер", "effort": "M"}], "total": 10, "ok": 5, "mean": 1.9, "levelWord": "в работе", "lv": 2, "gapsN": 1, "prev": null}, {"id": "ru", "zone": "Российские ИИ и 1С", "weight": 3, "items": [{"name": "Yandex AI Studio", "kind": "инструмент", "level": 1, "note": "YandexGPT, Qwen, агенты, Vector Store", "source": "clients-rf.md"}, {"name": "GigaChat API", "kind": "инструмент", "level": 1, "note": "вызов функций, JSON по схеме; 3 Ultra в API", "source": "clients-rf.md"}, {"name": "Cloud.ru Evolution", "kind": "инструмент", "level": 1, "note": "Foundation Models, AI Agents, Workflows, Managed RAG", "source": "clients-rf.md"}, {"name": "Рублёвые агрегаторы (Polza, ProxyAPI)", "kind": "инструмент", "level": 1, "note": "Claude и GPT по договору в РФ", "source": "catalog.yaml"}, {"name": "Связка 1С ↔ LLM (HTTP-сервисы, OData)", "kind": "инструмент", "level": 1, "note": "отчёты и данные 1С в модель", "source": "только в цене клиента по лесу"}, {"name": "1С:Напарник", "kind": "инструмент", "level": 1, "note": "помощник разработчика 1С (не бухгалтера) · уровень не проверен", "source": ""}, {"name": "Битрикс24 BitrixGPT", "kind": "инструмент", "level": 1, "note": "ответы в переписке, расшифровка звонков, агент «Код» · уровень не проверен", "source": ""}], "gaps": [{"text": "Пилот: 1С (уровень 1)", "next": "у клиента — конфигурация и есть ли OData/HTTP-сервисы; отчёт собирает код, модель пишет текст. Повод — конференция 1С ср 14.10 (events)", "who": "клиент — доступ к конфигурации; знакомые с конференции 1С", "effort": "L"}, {"text": "На конференции 1С 14.10 — какие конфигурации у малых производств Перми и открыты ли OData/HTTP-сервисы", "next": "На конференции 1С 14.10 — какие конфигурации у малых производств Перми и открыты ли OData/HTTP-сервисы", "who": "бот — проба и замер", "effort": "S"}], "total": 7, "ok": 0, "mean": 1.0, "levelWord": "начато", "lv": 1, "gapsN": 2, "prev": null}]};
+const M = D.meta, Z = D.zones;
+const W = ["пусто","начато","в работе","освоено"];
+const KN = {"знание":"знания","человек":"люди","инструмент":"инструменты","ресурс":"ресурсы"};
+const LVN = ["нет","слышали","пробовали / частично","освоено / есть"];
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const $ = id => document.getElementById(id);
+const dt = s => (s||"").split("-").reverse().join(".");
+const lvOf = m => m < .5 ? 0 : m < 1.5 ? 1 : m < 2.5 ? 2 : 3;
+const icon = k => `<svg aria-hidden="true"><use href="#k-${esc(k)}"/></svg>`;
+const plural = (n, a, b, c) => { const m = n % 10, h = n % 100; return m === 1 && h !== 11 ? a : m >= 2 && m <= 4 && (h < 10 || h >= 20) ? b : c; };
 
-const zones = ZONES.map((z,i)=>({...z,id:"z"+i}));
-document.getElementById("strip").innerHTML = zones.map(z=>
-  `<button type="button" data-id="${z.id}" title="${esc(z.zone)} — ${z.depth}" aria-label="${esc(z.zone)}: ${esc(z.status)}, ${z.depth} из 100"><span class="fill" style="height:${Math.max(4,z.depth)}%;background:${col(z.status)}"></span></button>`).join("");
-document.getElementById("striplabels").innerHTML = zones.map(z=>`<span>${esc(z.zone.split(/[ ,(]/)[0])}</span>`).join("");
+document.title = M.title;
+$("eyebrow").textContent = `${M.eyebrow || "Карта знаний"} · обновлено ${dt(M.updated)}`;
+$("title").textContent = M.title;
 
-const order = ["изучено","начато","пусто"];
-const sorted = [...zones].sort((a,b)=>order.indexOf(a.status)-order.indexOf(b.status)||b.depth-a.depth);
-document.getElementById("grid").innerHTML = sorted.map(z=>`
-  <article class="zone" id="${z.id}" data-status="${esc(z.status)}">
-    <button type="button" class="ztoggle" aria-expanded="false">
-    <div class="zhead"><h2>${esc(z.zone)}</h2><span class="status ${(ST[z.status]||ST["пусто"])[0]}">${esc(z.status)}</span></div>
-    <div class="meter"><div class="bar"><i style="width:${z.depth}%;background:${col(z.status)}"></i></div><span class="pct">${z.depth}%</span></div>
-    <span class="more">Подробнее ↓</span>
-    </button><div class="zbody">
-    ${z.known?.length?`<div><h3>Знаем</h3><ul>${z.known.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>`:""}
-    ${z.gaps?.length?`<div><h3>Не хватает</h3><ul class="gaps">${z.gaps.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>`:""}
-    ${z.sources?.length?`<div class="src">Откуда: ${z.sources.map(esc).join(" · ")}</div>`:""}
-  </div></article>`).join("");
+/* --- за 10 секунд --- */
+const T = M.totals;
+$("big").innerHTML = `${T.ok}<small> из ${T.total}</small>`;
+$("biglbl").textContent = "освоено · пунктов на уровне «пробовали» и выше";
+const P = M.prev;
+let delta;
+if (P) {
+  const k = T.gaps - P.gaps, d = T.ok - P.ok;
+  delta = `<span class="badge">${d >= 0 ? "+" : "−"}${Math.abs(d)} освоено с ${dt(P.date)}</span> ` +
+    (k > 0 ? `<span class="badge">+${k} ${plural(k,"новый пробел найден","новых пробела найдено","новых пробелов найдено")} — карта выросла</span>` : `<span class="muted" style="font-size:13px">пробелов ${T.gaps} (было ${P.gaps})</span>`);
+} else delta = `<span class="muted" style="font-size:13px">${T.gaps} ${plural(T.gaps,"пробел","пробела","пробелов")} на карте · новые пробелы — рост знания, а не провал</span>`;
+$("delta").innerHTML = delta;
+const F = M.five;
+$("five").innerHTML = [["goal","Цель",F.goal],["where","Где мы",F.where],["have","Что имеем",F.have],["miss","Чего не хватает",F.missing],["head","Куда двигаемся",F.heading]]
+  .map(([c,l,t]) => `<div class="${c}"><dt>${l}</dt><dd>${esc(t)}</dd></div>`).join("");
 
-const cnt = s => zones.filter(z=>!s||z.status===s).length;
-const filters = [["","Все",null],...order.map(s=>[s,s[0].toUpperCase()+s.slice(1),col(s)])];
-const fEl = document.getElementById("filters");
-fEl.innerHTML = filters.map(([s,l,c])=>`<button type="button" class="chip" data-s="${s}" aria-pressed="${s===""}">${c?`<span class="dot" style="background:${c}"></span>`:""}${l} <span class="n">${cnt(s)}</span></button>`).join("");
-let saved=""; try{saved=localStorage.getItem("avt-filter")||""}catch(e){}
-function apply(s){
-  fEl.querySelectorAll(".chip").forEach(b=>b.setAttribute("aria-pressed",b.dataset.s===s));
-  document.querySelectorAll(".zone").forEach(a=>a.hidden=!!s&&a.dataset.status!==s);
-  try{localStorage.setItem("avt-filter",s)}catch(e){}
+/* --- график хода: освоено и всего пунктов, одна шкала --- */
+(function chart(){
+  const H = M.history || [], w = 320, h = 96, pl = 6, pr = 34, pt = 14, pb = 18;
+  const max = Math.max(1, ...H.map(r => r.total));
+  const x = i => H.length < 2 ? (pl + w - pr) / 2 : pl + i * (w - pl - pr) / (H.length - 1);
+  const y = v => pt + (h - pt - pb) * (1 - v / max);
+  const line = (k, st) => H.length > 1 ? `<polyline fill="none" ${st} points="${H.map((r,i)=>`${x(i)},${y(r[k])}`).join(" ")}"/>` : "";
+  const last = H.length - 1, r = H[last] || {ok:0,total:0};
+  let s = `<line x1="${pl}" x2="${w-pr}" y1="${y(0)}" y2="${y(0)}" stroke="var(--line)"/>`;
+  s += line("total", `stroke="var(--muted)" stroke-width="1.5" stroke-dasharray="4 3"`);
+  s += line("ok", `stroke="var(--accent)" stroke-width="2"`);
+  H.forEach((q,i) => { s += `<circle cx="${x(i)}" cy="${y(q.ok)}" r="4" fill="var(--accent)" stroke="var(--surface)" stroke-width="2"><title>${dt(q.date)}: освоено ${q.ok} из ${q.total}, пробелов ${q.gaps}</title></circle>`; });
+  if (H.length) {
+    s += `<text x="${x(last)+8}" y="${y(r.ok)+4}" font-size="11" fill="var(--fg)" font-family="var(--f-mono)">${r.ok}</text>`;
+    s += `<text x="${x(last)+8}" y="${y(r.total)+4}" font-size="11" fill="var(--muted)" font-family="var(--f-mono)">${r.total}</text>`;
+    if (H.length > 1) s += `<text x="${x(0)}" y="${h-3}" font-size="10" fill="var(--muted)">${dt(H[0].date).slice(0,5)}</text>`;
+    s += `<text x="${x(last)}" y="${h-3}" font-size="10" fill="var(--muted)" text-anchor="${H.length>1?"end":"middle"}">${dt(r.date).slice(0,5)}</text>`;
+  }
+  const c = $("chart"); c.setAttribute("viewBox", `0 0 ${w} ${h}`);
+  c.setAttribute("aria-label", "Ход по снимкам: " + H.map(q => `${dt(q.date)} — ${q.ok} из ${q.total}`).join("; "));
+  c.innerHTML = s;
+  $("chartcap").textContent = H.length > 1 ? "Ход по снимкам: сплошная — освоено, пунктир — всего пунктов на карте"
+    : "Первый снимок. Линия хода появится после сборки в другой день.";
+})();
+
+/* --- тепловая сетка с фильтром по виду --- */
+const kindsPresent = Object.keys(KN).filter(k => Z.some(z => z.items.some(i => i.kind === k)));
+let kind = "";
+try { const s = localStorage.getItem("kmap-kind:" + M.title); if (kindsPresent.includes(s)) kind = s; } catch (e) {}
+$("legend").innerHTML = W.map((w,i) => `<span><i class="sw L${i}"></i>${w}</span>`).join("") + `<span>· размер — важность для цели</span>`;
+function stats(z) {
+  const it = z.items.filter(i => !kind || i.kind === kind);
+  const mean = it.length ? it.reduce((a,i) => a + i.level, 0) / it.length : 0;
+  return {it, ok: it.filter(i => i.level >= 2).length, n: it.length, lv: it.length ? lvOf(mean) : 0, mean};
 }
-fEl.addEventListener("click",e=>{const b=e.target.closest(".chip"); if(b) apply(b.dataset.s)});
-if(order.includes(saved)) apply(saved);
+function trend(z) {
+  if (!z.prev || kind) return "";
+  const d = z.ok - z.prev.ok;
+  return d > 0 ? `<span class="up">↑ ${z.prev.ok}→${z.ok}</span>` : d < 0 ? `<span class="down">↓ ${z.prev.ok}→${z.ok}</span>` : "";
+}
+function renderKinds() {
+  const el = $("kinds");
+  if (kindsPresent.length < 2) { el.innerHTML = `<span class="muted" style="font-size:13px">Все пункты — ${esc(KN[kindsPresent[0]] || "")}</span>`; return; }
+  el.innerHTML = [["", "Все"], ...kindsPresent.map(k => [k, KN[k]])].map(([k,l]) =>
+    `<button type="button" class="chip" data-k="${esc(k)}" aria-pressed="${k === kind}">${k ? icon(k).replace("<svg","<svg width=\"16\" height=\"16\"") : ""}${esc(l)} <span class="n muted">${Z.reduce((a,z) => a + z.items.filter(i => !k || i.kind === k).length, 0)}</span></button>`).join("");
+}
+function renderBands() {
+  const names = {3:"Главное для цели", 2:"Важно", 1:"Фон"};
+  $("bands").innerHTML = [3,2,1].filter(w => Z.some(z => z.weight === w)).map(w => {
+    const zs = Z.filter(z => z.weight === w).map(z => [z, stats(z)]).sort((a,b) => b[1].mean - a[1].mean);
+    return `<div class="band w${w}"><div class="lbl">${names[w]} · вес ${w}</div><div class="tiles">${zs.map(([z,s]) =>
+      `<button type="button" class="tile L${s.lv}${s.n ? "" : " dim"}" data-id="${esc(z.id)}" aria-label="${esc(z.zone)}: ${W[s.lv]}, ${s.ok} из ${s.n}"><b>${esc(z.zone)}</b><span class="tm"><span>${W[s.lv]}</span><span>${s.ok}/${s.n} ${trend(z)}</span></span></button>`).join("")}</div></div>`;
+  }).join("");
+}
 
-const ov=document.getElementById("overall");
-if(META.overall){ov.innerHTML=`<b>${esc(META.overall.value)}</b><span>${esc(META.overall.label)}</span>`}else ov.hidden=true;
-const byDepth=[...zones].sort((a,b)=>b.depth-a.depth);
-document.getElementById("rank").innerHTML=byDepth.map(z=>`<button type="button" data-id="${z.id}"><span>${esc(z.zone)}</span><span class="bar"><i style="display:block;height:100%;width:${z.depth}%;background:${col(z.status)}"></i></span><span class="pct">${z.depth}%</span></button>`).join("");
-function openZone(id){const el=document.getElementById(id); apply(""); el.classList.add("open"); el.querySelector(".ztoggle").setAttribute("aria-expanded","true");
-  el.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"start"});
-  el.classList.add("flash"); setTimeout(()=>el.classList.remove("flash"),1200);}
-document.getElementById("rank").addEventListener("click",e=>{const b=e.target.closest("button"); if(b) openZone(b.dataset.id)});
-document.getElementById("grid").addEventListener("click",e=>{const b=e.target.closest(".ztoggle"); if(!b||!matchMedia("(max-width:639px)").matches) return;
-  const a=b.closest(".zone"); const o=a.classList.toggle("open"); b.setAttribute("aria-expanded",o)});
-document.getElementById("strip").addEventListener("click",e=>{const b=e.target.closest("button"); if(b) openZone(b.dataset.id)});
+/* --- что дальше и куда двигаемся --- */
+$("top").innerHTML = (M.top || []).map(t => `<li><div><div class="t">${esc(t.text)}</div>
+  ${t.next && t.next !== t.text ? `<div class="st">→ ${esc(t.next)}</div>` : ""}<div class="why">${esc(t.zone)} · ${esc(t.why)}${t.who ? " · поможет: " + esc(t.who) : ""}</div></div></li>`).join("")
+  || `<li><div>Пробелов не записано</div></li>`;
+$("dirs").innerHTML = (M.directions || []).map(d => `<div class="dir"><div class="dh"><b>${esc(d.name)}</b><span class="stat ${d.draft ? "draft" : "s-" + esc(d.status)}">${esc(d.status)}</span></div>
+  ${d.gives ? `<p><span class="k">даёт</span>${esc(d.gives)}</p>` : ""}${d.costs ? `<p><span class="k">цена</span>${esc(d.costs)}</p>` : ""}
+  ${(d.needs||[]).length ? `<p><span class="k">закрывает</span>${d.needs.map(esc).join(" · ")}</p>` : ""}</div>`).join("");
+
+/* --- карточки зон --- */
+const desktop = matchMedia("(min-width:720px)");
+const order = [...Z].sort((a,b) => b.weight - a.weight || a.mean - b.mean);
+function renderCards() {
+  const openIds = new Set([...document.querySelectorAll(".zone.open")].map(e => e.id.slice(2)));
+  $("cards").innerHTML = order.map(z => {
+    const s = stats(z), have = s.it.filter(i => i.level >= 2).sort((a,b) => b.level - a.level), low = s.it.filter(i => i.level < 2);
+    const segs = [...s.it].sort((a,b) => b.level - a.level).map(i => `<i class="L${i.level}" title="${esc(i.name)}: ${LVN[i.level]}"></i>`).join("");
+    const item = i => `<li class="it">${icon(i.kind)}<span>${esc(i.name)} <span class="lv">· ${LVN[i.level]}</span>${i.note || i.source ? `<small>${esc([i.note, i.source && "источник: " + i.source].filter(Boolean).join(" · "))}</small>` : ""}</span></li>`;
+    const open = openIds.has(z.id) || (!openIds.size && desktop.matches);
+    return `<article class="zone${open ? " open" : ""}" id="c-${esc(z.id)}">
+    <button type="button" class="zt" aria-expanded="${open}">
+      <span class="zh"><h2>${esc(z.zone)}</h2><span class="lvl L${s.lv}">${W[s.lv]}</span></span>
+      <span class="segs" aria-hidden="true">${segs || '<i class="L0"></i>'}</span>
+      <span class="zm"><span>освоено ${s.ok} из ${s.n}</span><span>пробелов ${z.gapsN}</span><span>вес ${z.weight}</span>${z.prev && !kind ? `<span>было ${z.prev.ok}/${z.prev.total} → стало ${z.ok}/${z.total} ${trend(z)}</span>` : ""}</span>
+      <span class="more">Подробнее ↓</span>
+    </button>
+    <div class="zb">
+      <div><h3>Где мы</h3><div style="font-size:15px;margin-top:4px">${W[s.lv][0].toUpperCase() + W[s.lv].slice(1)}: ${s.ok} из ${s.n} ${plural(s.n,"пункта","пунктов","пунктов")} на уровне «пробовали» и выше${s.n ? `, средний уровень ${s.mean.toFixed(1).replace(".", ",")} из 3` : ""}.</div></div>
+      <div><h3>Что имеем</h3>${have.length ? `<ul>${have.map(item).join("")}</ul>` : `<div class="muted" style="font-size:14px;margin-top:4px">Пока ничего на уровне «пробовали».</div>`}
+        ${low.length ? `<details><summary>Слышали или нет — ${low.length}</summary><ul>${low.map(item).join("")}</ul></details>` : ""}</div>
+      ${(z.gaps||[]).length ? `<div><h3>Чего не хватает</h3><ul>${z.gaps.map(g => `<li class="gap"><span>${esc(g.text)}<span class="eff">${esc(g.effort)}</span></span>${g.next && g.next !== g.text ? `<span class="nx">→ ${esc(g.next)}</span>` : ""}${g.who ? `<span class="wh">Кто поможет: ${esc(g.who)}</span>` : ""}</li>`).join("")}</ul></div>` : ""}
+      ${(z.sources||[]).length ? `<div class="src">Откуда: ${z.sources.map(esc).join(" · ")}</div>` : ""}
+    </div></article>`;
+  }).join("");
+}
+function renderAll() { renderKinds(); renderBands(); renderCards(); }
+renderAll();
+
+$("kinds").addEventListener("click", e => { const b = e.target.closest(".chip"); if (!b) return; kind = b.dataset.k;
+  try { localStorage.setItem("kmap-kind:" + M.title, kind); } catch (er) {} renderAll(); });
+$("bands").addEventListener("click", e => { const b = e.target.closest(".tile"); if (!b) return;
+  const el = $("c-" + b.dataset.id); el.classList.add("open"); el.querySelector(".zt").setAttribute("aria-expanded", "true");
+  el.scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start"});
+  el.classList.add("flash"); setTimeout(() => el.classList.remove("flash"), 1200); });
+$("cards").addEventListener("click", e => { const b = e.target.closest(".zt"); if (!b) return;
+  const a = b.closest(".zone"); b.setAttribute("aria-expanded", a.classList.toggle("open")); });
+
+$("foot").innerHTML = `<p><b>Как читать.</b> Уровень пункта: 0 нет · 1 слышали · 2 пробовали или частично · 3 освоено или есть. Уровень зоны — средний по пунктам: «пусто» до 0,5 · «начато» до 1,5 · «в работе» до 2,5 · «освоено» выше. Главная цифра — сколько пунктов на уровне 2 и выше; процентов нет: новый пробел — это рост знания, а не провал.</p>
+<p><b>«Что дальше»</b> — по одному пробелу из зоны, порядок: вес зоны × (3 − уровень зоны), делённое на усилие (S — 1, M — 1,5, L — 2,5).</p>${M.footer ? `<p>${esc(M.footer)}</p>` : ""}`;
 </script>
 </body></html>
