@@ -49,6 +49,7 @@ h1{font:700 clamp(34px,7vw,56px)/1.05 var(--f-display);margin:0;letter-spacing:-
 .zone{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px;display:grid;gap:12px;align-content:start;min-width:0;scroll-margin-top:16px}
 .zone.flash{box-shadow:0 0 0 2px var(--accent)}
 .zhead{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.zbody{display:grid;gap:12px}
 .zone h2{font:600 19px/1.2 var(--f-body);margin:0}
 .status{font:500 12px/1 var(--f-mono);padding:5px 8px;border-radius:4px;white-space:nowrap}
 .s-done{background:var(--done-soft);color:var(--done)}
@@ -66,6 +67,33 @@ h1{font:700 clamp(34px,7vw,56px)/1.05 var(--f-display);margin:0;letter-spacing:-
 .next h2{font:700 20px/1.2 var(--f-display);margin:0}
 .next ol{margin:0;padding-left:22px;display:grid;gap:6px;max-width:70ch}
 footer{font-size:13px;color:var(--muted);max-width:70ch}
+
+.top{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center}
+.overall{display:grid;gap:2px;padding:12px 16px;border:1px solid var(--line);border-radius:10px;background:var(--surface);min-width:0}
+.overall b{font:700 40px/1 var(--f-display);font-variant-numeric:tabular-nums}
+.overall span{font:500 12px/1.3 var(--f-mono);color:var(--muted);max-width:16ch}
+.rank{display:none;gap:2px}
+.rank button{display:grid;grid-template-columns:1fr 64px auto;align-items:center;gap:10px;min-height:44px;padding:6px 4px;border:0;border-bottom:1px solid var(--line);background:none;color:var(--fg);font:500 15px/1.25 var(--f-body);text-align:left;cursor:pointer}
+.rank button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.rank .bar{display:block;height:6px;flex:none}
+.zone .ztoggle{all:unset;display:grid;gap:10px;cursor:default}
+.zone .ztoggle:focus-visible{outline:2px solid var(--accent);outline-offset:4px;border-radius:4px}
+.more{display:none;font:500 13px/1 var(--f-mono);color:var(--accent)}
+@media (max-width:639px){
+  .wrap{padding-block:20px 40px;gap:22px}
+  .top{grid-template-columns:1fr}
+  .overall{grid-template-columns:auto 1fr;align-items:center;gap:12px}
+  .overall span{max-width:none}
+  .strip,.strip-labels{display:none}
+  .rank{display:grid}
+  .grid{grid-template-columns:1fr;gap:10px}
+  .zone{padding:14px 16px;gap:10px}
+  .zone .ztoggle{cursor:pointer}
+  .zone:not(.open) .zbody{display:none}
+  .more{display:block}
+  .zone.open .more{display:none}
+  .lead{font-size:16px}
+}
 @media (prefers-reduced-motion:no-preference){.bar i,.strip .fill{transition:height .4s,width .4s}}
 </style>
 
@@ -74,10 +102,11 @@ footer{font-size:13px;color:var(--muted);max-width:70ch}
   <header>
     <div class="eyebrow">Что мы знаем об ИИ · сверка <span id="upd"></span></div>
     <h1>Карта ИИ</h1>
-    <p class="lead" id="summary"></p>
-    <div class="strata" aria-label="Доля изученного по направлениям">
+    <div class="top"><div class="overall" id="overall"></div><p class="lead" id="summary"></p></div>
+    <div class="strata" aria-label="Глубина изученности по зонам">
       <div class="strip" id="strip"></div>
       <div class="strip-labels" id="striplabels"></div>
+      <div class="rank" id="rank"></div>
     </div>
     <div class="counts" id="filters" role="group" aria-label="Фильтр по статусу"></div>
   </header>
@@ -89,12 +118,12 @@ footer{font-size:13px;color:var(--muted);max-width:70ch}
     <ol id="next"></ol>
   </section>
 
-  <footer>Высота столбика — доля инструментов направления, которые мы пробовали или используем в работе. «Изучено» — 50 % и больше, «начато» — 20–49 %, «пусто» — меньше 20 %. Шкала владения: знаем, что есть · пробовали · используем · владеем (учим или продаём — пока ни одного). Обновляется раз в месяц и при новинках.</footer>
+  <footer>Доля — сколько инструментов направления мы пробовали или используем в работе. «Изучено» — 50 % и больше, «начато» — 20–49 %, «пусто» — меньше 20 %. Шкала владения: знаем, что есть · пробовали · используем · владеем (учим или продаём — пока ни одного). Обновляется раз в месяц и при новинках.</footer>
 </div>
 
 <script>
-const ZONES = [{"zone": "Тексты и рассуждение", "status": "начато", "depth": 38, "known": ["Claude Opus 5.5 — используем", "GPT 6.1 Sol / GPT 6 Luna — используем", "Claude Haiku 5.5 — пробовали"], "gaps": ["Не пробовали: Claude Sonnet 5.5, Gemini 3.8 Flash / 4 Argon, DeepSeek V4.1 Flash / V4 Pro, YandexGPT Pro 5.1 / Alice AI LLM Flash, GigaChat 3.5 Ultra / Lightning"], "sources": ["3 из 8 инструментов пробовали", "исследование 117"]}, {"zone": "Агенты и вайбкодинг", "status": "изучено", "depth": 50, "known": ["Claude Code (агенты, навыки, хуки, `claude -p`) — используем", "Эталон (плагин sdd) — используем", "Hermes, OpenClaw — пробовали"], "gaps": ["Не пробовали: Claude Agent SDK / Managed Agents, OpenAI Codex CLI, Cursor 3"], "sources": ["3 из 6 инструментов пробовали", "исследование 117"]}, {"zone": "Голос", "status": "изучено", "depth": 62, "known": ["Deepgram Nova-3 — используем", "edge-tts — используем", "GigaAM v3 — пробовали", "Whisper / faster-whisper — пробовали", "Qwen3-TTS — пробовали"], "gaps": ["Не пробовали: Yandex SpeechKit / Realtime, ElevenLabs Eleven v4, OpenAI GPT-Realtime-2"], "sources": ["5 из 8 инструментов пробовали", "исследование 117"]}, {"zone": "Изображения", "status": "начато", "depth": 43, "known": ["GPT Image 2.5 — используем", "HTML-макеты моделью — используем", "Penpot (локально, MCP) — пробовали"], "gaps": ["Не пробовали: Nano Banana 2.1, Seedream 5.0 Pro, FLUX.2 klein / Qwen-Image-Edit, Kandinsky / Шедеврум"], "sources": ["3 из 7 инструментов пробовали", "исследование 117"]}, {"zone": "Видео и монтаж", "status": "пусто", "depth": 14, "known": ["ffmpeg + yt-dlp — используем"], "gaps": ["Не пробовали: Remotion, Veo 3.1, Kling 3.0 / 4.0 Flash, MiniMax H3 / Seedance 2.5, Descript Underlord, HeyGen / Kling Avatar"], "sources": ["1 из 7 инструментов пробовали", "исследование 117"]}, {"zone": "Музыка и звук", "status": "пусто", "depth": 0, "known": [], "gaps": ["Не пробовали: Suno v6, ElevenLabs Music v2.5, Lyria 3 Clip, ACE-Step / Stable Audio Open"], "sources": ["0 из 4 инструментов пробовали", "исследование 117"]}, {"zone": "Локальные и открытые модели", "status": "пусто", "depth": 14, "known": ["«Цех» речи на ПК (GigaAM, faster-whisper, Silero, bge-m3) — пробовали"], "gaps": ["Не пробовали: Ollama, llama.cpp, vLLM, Qwen3.6 27B / 35B-A3B, GigaChat 3 Lightning / T-pro-it-2.1, Gemma 4 E4B / 12B"], "sources": ["1 из 7 инструментов пробовали", "исследование 117"]}, {"zone": "Поиск, RAG, базы знаний", "status": "изучено", "depth": 50, "known": ["База на markdown + INDEX — используем", "Веб-поиск агентов — используем", "Context7 (MCP) — используем", "Эмбеддинги bge-m3 + RAG Сетевика — пробовали"], "gaps": ["Не пробовали: Yandex AI Studio Vector Store, Эмбеддинги GigaChat, pgvector / Qdrant, NotebookLM / deep research"], "sources": ["4 из 8 инструментов пробовали", "исследование 117"]}, {"zone": "Автоматизация и интеграции", "status": "начато", "depth": 44, "known": ["Telegram Bot API — используем", "Telethon (аккаунт Юлая) — используем", "MCP — используем", "cron + systemd — используем"], "gaps": ["Не пробовали: n8n, MAX Bot API, WhatsApp Business API, Yandex MCP Hub, Albato"], "sources": ["4 из 9 инструментов пробовали", "исследование 117"]}, {"zone": "Документы и таблицы", "status": "пусто", "depth": 12, "known": ["Claude: картинки, PDF, JSON по схеме — используем"], "gaps": ["Не пробовали: Word/docx по шаблону, Excel/xlsx, 1С:Распознавание первичных документов, Yandex Vision OCR, GigaChat: JSON по схеме, Mistral OCR 4, Docling"], "sources": ["1 из 8 инструментов пробовали", "исследование 117"]}, {"zone": "Зрение и управление компьютером", "status": "начато", "depth": 29, "known": ["Руки на ПК (Playwright, MCP) — используем", "Бот-браузер (Chrome-профиль) — используем"], "gaps": ["Не пробовали: Claude computer use, Claude in Chrome, Browser Use, Ultralytics YOLO, Sherpa RPA"], "sources": ["2 из 7 инструментов пробовали", "исследование 117"]}, {"zone": "Безопасность, данные, качество", "status": "изучено", "depth": 50, "known": ["Хуки защиты и бюджета — используем", "Поиск секретов, бэкапы с учебным восстановлением — используем", "Критик другой моделью — используем", "Учёт расходов — используем", "Бенч моделей, слепой тест — пробовали"], "gaps": ["Не пробовали: OWASP Top 10 для LLM и агентов, 152-ФЗ (ред. 2026-07-26), 243-ФЗ об ИИ, Отключение логов Yandex AI Studio, promptfoo, Langfuse"], "sources": ["5 из 10 инструментов пробовали", "исследование 117"]}, {"zone": "Российские ИИ и 1С", "status": "пусто", "depth": 0, "known": [], "gaps": ["Не пробовали: Yandex AI Studio, GigaChat API, Cloud.ru Evolution, Рублёвые агрегаторы (Polza, ProxyAPI), Связка 1С ↔ LLM (HTTP-сервисы, OData), 1С:Напарник, Битрикс24 BitrixGPT"], "sources": ["0 из 7 инструментов пробовали", "исследование 117"]}];
-const META = {"updated": "2026-10-11", "summary": "Из 96 инструментов в 13 направлениях пробовали или используем 32 — это 33 %. Сильнее всего голос, агенты, поиск и безопасность; пусто — музыка и российские ИИ с 1С, почти пусто — документы и видео.", "next": ["Отчёт в Word по шаблону — пилот Миши упирается прямо сюда", "Сканы и PDF клиента → поля: сравнить распознавание на 20 документах", "1С: какая конфигурация у клиента и есть ли выгрузка через OData/HTTP (повод — конференция 1С 14.10)", "Заявки из Telegram и MAX → таблица или 1С через n8n", "Смета в таблице на номенклатуре + российская модель на данных клиента"]};
+const ZONES = [{"zone": "Тексты и рассуждение", "status": "изучено", "depth": 58, "known": ["Claude Opus 5.5 — используем", "GPT 6.1 Sol / GPT 6 Luna — используем", "Claude Sonnet 5.5 — пробовали", "Claude Haiku 5.5 — пробовали", "DeepSeek V4.1 Flash / V4 Pro — пробовали", "Kimi K3 (Moonshot) — пробовали", "OpenRouter — пробовали"], "gaps": ["Не пробовали: Gemini 3.8 Flash / 4 Argon, YandexGPT Pro 5.1 / Alice AI LLM Flash, GigaChat 3.5 Ultra / Lightning, GLM-5.3 / Qwen3.8 Max / MiMo-V2.6-Pro, Microsoft-Decision-1"], "sources": ["7 из 12 пробовали", "исследование 117"]}, {"zone": "Агенты и вайбкодинг", "status": "начато", "depth": 43, "known": ["Claude Code (агенты, навыки, хуки, `claude -p`) — используем", "Эталон (плагин sdd) — используем", "Hermes, OpenClaw — пробовали"], "gaps": ["Не пробовали: Claude Agent SDK / Managed Agents, OpenAI Codex CLI, Cursor 3, zed.dev"], "sources": ["3 из 7 пробовали", "исследование 117"]}, {"zone": "Голос", "status": "начато", "depth": 45, "known": ["Deepgram Nova-3 — используем", "edge-tts — используем", "Whisper / faster-whisper — используем", "GigaAM v3 — пробовали", "Qwen3-TTS — пробовали"], "gaps": ["Не пробовали: Yandex SpeechKit / Realtime, ElevenLabs Eleven v4, OpenAI GPT-Realtime-2, Groq (Whisper, LLM), lobbystack, Google AI Edge Foresight"], "sources": ["5 из 11 пробовали", "исследование 117"]}, {"zone": "Изображения", "status": "начато", "depth": 43, "known": ["GPT Image 2.5 — используем", "HTML-макеты моделью — используем", "Penpot (локально, MCP) — пробовали"], "gaps": ["Не пробовали: Nano Banana 2.1, Seedream 5.0 Pro, FLUX.2 klein / Qwen-Image-Edit, Kandinsky / Шедеврум"], "sources": ["3 из 7 пробовали", "исследование 117"]}, {"zone": "Видео и монтаж", "status": "пусто", "depth": 11, "known": ["ffmpeg + yt-dlp — используем"], "gaps": ["Не пробовали: Remotion, Veo 3.1, Kling 3.0 / 4.0 Flash, MiniMax H3 / Seedance 2.5, Descript Underlord, HeyGen / Kling Avatar, Claude Motion, clip-forge / MoneyPrinterTurbo"], "sources": ["1 из 9 пробовали", "исследование 117"]}, {"zone": "Музыка и звук", "status": "пусто", "depth": 0, "known": [], "gaps": ["Не пробовали: Suno v6, ElevenLabs Music v2.5, Lyria 3 Clip, ACE-Step / Stable Audio Open"], "sources": ["0 из 4 пробовали", "исследование 117"]}, {"zone": "Локальные и открытые модели", "status": "пусто", "depth": 14, "known": ["«Цех» речи на ПК (GigaAM, faster-whisper, Silero, bge-m3) — пробовали"], "gaps": ["Не пробовали: Ollama, llama.cpp, vLLM, Qwen3.6 27B / 35B-A3B, GigaChat 3 Lightning / T-pro-it-2.1, Gemma 4 E4B / 12B"], "sources": ["1 из 7 пробовали", "исследование 117"]}, {"zone": "Поиск, RAG, базы знаний", "status": "изучено", "depth": 50, "known": ["База на markdown + INDEX — используем", "Веб-поиск агентов — используем", "Context7 (MCP) — используем", "Эмбеддинги bge-m3 + RAG Сетевика — пробовали"], "gaps": ["Не пробовали: Yandex AI Studio Vector Store, Эмбеддинги GigaChat, pgvector / Qdrant, NotebookLM / deep research"], "sources": ["4 из 8 пробовали", "исследование 117"]}, {"zone": "Автоматизация и интеграции", "status": "начато", "depth": 40, "known": ["Telegram Bot API — используем", "Telethon (аккаунт Юлая) — используем", "MCP — используем", "cron + systemd — используем"], "gaps": ["Не пробовали: n8n, MAX Bot API, WhatsApp Business API, Yandex MCP Hub, Albato, activepieces"], "sources": ["4 из 10 пробовали", "исследование 117"]}, {"zone": "Документы и таблицы", "status": "начато", "depth": 25, "known": ["Claude: картинки, PDF, JSON по схеме — используем", "Excel/xlsx — пробовали"], "gaps": ["Не пробовали: Word/docx по шаблону, 1С:Распознавание первичных документов, Yandex Vision OCR, GigaChat: JSON по схеме, Mistral OCR 4, Docling"], "sources": ["2 из 8 пробовали", "исследование 117"]}, {"zone": "Зрение и управление компьютером", "status": "начато", "depth": 38, "known": ["Руки на ПК (Playwright, MCP) — используем", "Бот-браузер (Chrome-профиль) — используем", "Instagram через @SaveAsBot (bin/insta-fetch) — используем"], "gaps": ["Не пробовали: Claude computer use, Claude in Chrome, Browser Use, Ultralytics YOLO, Sherpa RPA"], "sources": ["3 из 8 пробовали", "исследование 117"]}, {"zone": "Безопасность, данные, качество", "status": "изучено", "depth": 50, "known": ["Хуки защиты и бюджета — используем", "Поиск секретов, бэкапы с учебным восстановлением — используем", "Критик другой моделью — используем", "Учёт расходов — используем", "Бенч моделей, слепой тест — пробовали"], "gaps": ["Не пробовали: OWASP Top 10 для LLM и агентов, 152-ФЗ (ред. 2026-07-26), 243-ФЗ об ИИ, Отключение логов Yandex AI Studio, promptfoo, Langfuse"], "sources": ["5 из 10 пробовали", "исследование 117"]}, {"zone": "Российские ИИ и 1С", "status": "пусто", "depth": 0, "known": [], "gaps": ["Не пробовали: Yandex AI Studio, GigaChat API, Cloud.ru Evolution, Рублёвые агрегаторы (Polza, ProxyAPI), Связка 1С ↔ LLM (HTTP-сервисы, OData), 1С:Напарник, Битрикс24 BitrixGPT"], "sources": ["0 из 7 пробовали", "исследование 117"]}];
+const META = {"updated": "2026-10-12", "summary": "Из 108 инструментов в 13 направлениях пробовали или используем 38. Сильнее всего: тексты и рассуждение, поиск, rag, базы знаний, безопасность, данные, качество. Слабее всего: музыка и звук, российские ии и 1с, видео и монтаж.", "next": ["Отчёт в Word по шаблону", "Сканы и PDF клиента → поля", "1С", "Заявки из мессенджеров", "Смета в таблицах на номенклатуре + российская модель для данных клиента (Excel 2"], "overall": {"value": "35 %", "label": "изучено · 38 из 108 инструментов"}};
 const ST = {"изучено":["s-done","--done"],"начато":["s-part","--part"],"пусто":["s-empty","--empty"]};
 const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const col = st => `var(${(ST[st]||ST["пусто"])[1]})`;
@@ -111,12 +140,15 @@ const order = ["изучено","начато","пусто"];
 const sorted = [...zones].sort((a,b)=>order.indexOf(a.status)-order.indexOf(b.status)||b.depth-a.depth);
 document.getElementById("grid").innerHTML = sorted.map(z=>`
   <article class="zone" id="${z.id}" data-status="${esc(z.status)}">
+    <button type="button" class="ztoggle" aria-expanded="false">
     <div class="zhead"><h2>${esc(z.zone)}</h2><span class="status ${(ST[z.status]||ST["пусто"])[0]}">${esc(z.status)}</span></div>
-    <div class="meter"><div class="bar"><i style="width:${z.depth}%;background:${col(z.status)}"></i></div><span class="pct">${z.depth}/100</span></div>
+    <div class="meter"><div class="bar"><i style="width:${z.depth}%;background:${col(z.status)}"></i></div><span class="pct">${z.depth}%</span></div>
+    <span class="more">Подробнее ↓</span>
+    </button><div class="zbody">
     ${z.known?.length?`<div><h3>Знаем</h3><ul>${z.known.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>`:""}
     ${z.gaps?.length?`<div><h3>Не хватает</h3><ul class="gaps">${z.gaps.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>`:""}
     ${z.sources?.length?`<div class="src">Откуда: ${z.sources.map(esc).join(" · ")}</div>`:""}
-  </article>`).join("");
+  </div></article>`).join("");
 
 const cnt = s => zones.filter(z=>!s||z.status===s).length;
 const filters = [["","Все",null],...order.map(s=>[s,s[0].toUpperCase()+s.slice(1),col(s)])];
@@ -130,11 +162,17 @@ function apply(s){
 }
 fEl.addEventListener("click",e=>{const b=e.target.closest(".chip"); if(b) apply(b.dataset.s)});
 if(order.includes(saved)) apply(saved);
-document.getElementById("strip").addEventListener("click",e=>{
-  const b=e.target.closest("button"); if(!b) return; apply("");
-  const el=document.getElementById(b.dataset.id); el.scrollIntoView({behavior:"smooth",block:"start"});
-  el.classList.add("flash"); setTimeout(()=>el.classList.remove("flash"),1200);
-});
-</script>
 
+const ov=document.getElementById("overall");
+if(META.overall){ov.innerHTML=`<b>${esc(META.overall.value)}</b><span>${esc(META.overall.label)}</span>`}else ov.hidden=true;
+const byDepth=[...zones].sort((a,b)=>b.depth-a.depth);
+document.getElementById("rank").innerHTML=byDepth.map(z=>`<button type="button" data-id="${z.id}"><span>${esc(z.zone)}</span><span class="bar"><i style="display:block;height:100%;width:${z.depth}%;background:${col(z.status)}"></i></span><span class="pct">${z.depth}%</span></button>`).join("");
+function openZone(id){const el=document.getElementById(id); apply(""); el.classList.add("open"); el.querySelector(".ztoggle").setAttribute("aria-expanded","true");
+  el.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"start"});
+  el.classList.add("flash"); setTimeout(()=>el.classList.remove("flash"),1200);}
+document.getElementById("rank").addEventListener("click",e=>{const b=e.target.closest("button"); if(b) openZone(b.dataset.id)});
+document.getElementById("grid").addEventListener("click",e=>{const b=e.target.closest(".ztoggle"); if(!b||!matchMedia("(max-width:639px)").matches) return;
+  const a=b.closest(".zone"); const o=a.classList.toggle("open"); b.setAttribute("aria-expanded",o)});
+document.getElementById("strip").addEventListener("click",e=>{const b=e.target.closest("button"); if(b) openZone(b.dataset.id)});
+</script>
 </body></html>
