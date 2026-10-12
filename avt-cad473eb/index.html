@@ -73,9 +73,9 @@ footer{font-size:13px;color:var(--muted);max-width:70ch}
 .overall b{font:700 40px/1 var(--f-display);font-variant-numeric:tabular-nums}
 .overall span{font:500 12px/1.3 var(--f-mono);color:var(--muted);max-width:16ch}
 .rank{display:none;gap:2px}
-.rank button{display:grid;grid-template-columns:1fr 64px 2.6em;align-items:center;gap:10px;min-height:44px;padding:6px 4px;border:0;border-bottom:1px solid var(--line);background:none;color:var(--fg);font:500 15px/1.25 var(--f-body);text-align:left;cursor:pointer}
+.rank button{display:grid;grid-template-columns:1fr 64px auto;align-items:center;gap:10px;min-height:44px;padding:6px 4px;border:0;border-bottom:1px solid var(--line);background:none;color:var(--fg);font:500 15px/1.25 var(--f-body);text-align:left;cursor:pointer}
 .rank button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.rank .bar{height:6px}
+.rank .bar{display:block;height:6px;flex:none}
 .zone .ztoggle{all:unset;display:grid;gap:10px;cursor:default}
 .zone .ztoggle:focus-visible{outline:2px solid var(--accent);outline-offset:4px;border-radius:4px}
 .more{display:none;font:500 13px/1 var(--f-mono);color:var(--accent)}
