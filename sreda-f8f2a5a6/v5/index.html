@@ -362,8 +362,8 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .school .row-sub { white-space: normal; }
 .school-row { display: flex; align-items: center; gap: 12px; margin-top: 10px; font-size: var(--fs-meta); color: var(--mist); }
 .faces { display: inline-flex; flex: none; }
-.ini { width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; font-size: 11px; font-weight: 800; background: var(--tone-bg); color: var(--tone-fg); box-shadow: 0 0 0 2px var(--surface); }
-.ini + .ini { margin-left: -8px; }
+.ini { width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; font-size: 10.5px; font-weight: 800; letter-spacing: -.02em; background: var(--tone-bg); color: var(--tone-fg); box-shadow: 0 0 0 2px var(--surface); }
+.ini + .ini { margin-left: -5px; }
 .inbox { display: flex; align-items: center; gap: 12px; margin: 12px var(--gut) 0; padding: 12px 14px; border-radius: var(--r); background: var(--dawn-soft); cursor: pointer; }
 .inbox .row-sub { color: var(--text); opacity: .8; }
 
@@ -732,12 +732,12 @@ function ME() {
     ${grp('people', 'Муж в Боге', 'Группа по людям · 214 участников', 'users')}
     ${grp('ministry', 'Пророческий стол', 'Служение по записи · пт 12:00', 'sparkles')}
     ${grp('care', 'Молитвенный щит', 'Молитвенные нужды · 12 новых', 'shield')}
-    ${grp('records', 'Канал @dapportal', 'Новости и анонсы · 2 720 подписчиков', 'megaphone')}
+    ${grp('records', 'Канал @dapportal', 'Новости · 2 720 подписчиков', 'megaphone')}
   </div>
 
   <div class="inbox" role="button" tabindex="0" data-toast="Прототип: разбор заявок появится в рабочей версии">
     <span class="plaque tone-info">${icon('inbox')}</span>
-    <span class="row-main"><span class="row-title">7 новых заявок в группы</span><span class="row-sub">Германия, Литва, «Муж в Боге»</span></span>
+    <span class="row-main"><span class="row-title">7 новых заявок</span><span class="row-sub">Германия, Литва и ещё 3 группы</span></span>
     <span class="faces">${ini('АВ', 'land')}${ini('ЕС', 'care')}${ini('+5', 'info')}</span>
   </div>
   <p class="sample">Прототип · данные — пример</p>`;
