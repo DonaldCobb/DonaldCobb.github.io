@@ -181,12 +181,26 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 }
 .search .icon { color: var(--sea-text); }
 .sph .row-title { font-size: 18px; font-weight: 700; }
-.sph .count { font-size: var(--fs-body); font-weight: 600; color: var(--mist); min-width: 18px; text-align: right; }
-.newbie { display: flex; align-items: center; gap: 12px; margin: 16px var(--gut) 0; padding: 14px 16px; min-height: 56px; width: calc(100% - 32px);
-  border-radius: var(--r); border: 1.5px solid var(--stroke); }
-.newbie .icon { color: var(--signal); width: 26px; height: 26px; }
-.newbie b { font-weight: 700; display: block; }
-.newbie span { font-size: 14px; color: var(--mist); }
+/* круг 2: место под текст — хвост «число + шеврон» вплотную, иконка 44, зазоры 12 */
+.sph { gap: 12px; padding-right: 10px; }
+.sph .badge-ico { width: 44px; height: 44px; border-radius: 13px; background: var(--raised); color: var(--text); }
+.sph .badge-ico .icon { width: 28px; height: 28px; }
+.sph .row-title { white-space: nowrap; }
+.sph .tail { display: flex; align-items: center; gap: 2px; flex: none; }
+.sph .count { font-size: var(--fs-meta); font-weight: 600; color: var(--mist); text-align: right; }
+/* «С чего начать» — первая строка, единственная иконка цветом --signal */
+.sph.start .badge-ico { background: var(--signal-soft); color: var(--signal); }
+.sph.start .row-sub { white-space: normal; }
+
+/* активная вкладка — не только цветом: пилюля под иконкой */
+.tab .icon { width: 60px; height: 32px; padding: 2px 16px; border-radius: 999px; box-sizing: border-box; }
+.tab[aria-current="page"] .icon { background: var(--signal-soft); }
+.tab[aria-current="page"] span { font-weight: 750; }
+/* внутренние экраны: запас под кнопку «Закрыть» полноэкранного Telegram */
+.topbar { padding-top: calc(8px + var(--safe-t)); }
+/* обводки светлой темы ≥ 3:1 (3,6 к #eef3f7, 4,0 к белому) */
+@media (prefers-color-scheme: light) { :root:not([data-scheme="dark"]) { --stroke: #6b8195; } }
+:root[data-scheme="light"] { --stroke: #6b8195; }
 
 </style>
 </head>
@@ -372,6 +386,12 @@ document.addEventListener('DOMContentLoaded', () => {
   render();
 });
 
+/* A, круг 2 (критик): «С чего начать» первой строкой, «Служения по записи» — рука с сердцем, подписи ≤ 24 знаков */
+ICONS.handHeart = '<path d="M11 14h2a2 2 0 1 0 0-4h-3c-.6 0-1.1.2-1.4.6L3 16"/><path d="m7 20 1.6-1.4c.3-.4.8-.6 1.4-.6h4c1.1 0 2.1-.4 2.8-1.2l4.6-4.4a2 2 0 0 0-2.75-2.91l-4.2 3.9"/><path d="m2 15 6 6"/><path d="M19.5 8.5c.7-.7 1.5-1.6 1.5-2.7A2.73 2.73 0 0 0 16 4a2.78 2.78 0 0 0-5 1.8c0 1.2.8 2 1.5 2.8L16 12Z"/>';
+Object.assign(SPHERE.info, { name: 'С чего начать', hint: 'Группа для новеньких, конференции', lead: 'Группа для новеньких, конференции, новости' });
+Object.assign(SPHERE.ministry, { icon: 'handHeart' });
+Object.assign(SPHERE.people, { hint: 'Женщины, мужчины, дети' });
+SPHERES.unshift(...SPHERES.splice(SPHERES.findIndex(s => s.id === 'info'), 1));
 function HOME() {
   return `<header class="hero">
     <p class="hero-brand">${icon('compass')}Среда</p>
@@ -382,12 +402,11 @@ function HOME() {
   </header>
   <nav class="list" aria-label="Сферы">${SPHERES.map(s => {
     const items = inSphere(s.id);
-    return `<button class="row sph" data-go="sphere:${s.id}">
+    return `<button class="row sph${s.id === 'info' ? ' start' : ''}" data-go="sphere:${s.id}">
       <span class="badge-ico">${icon(s.icon)}</span>
       <span class="row-main"><span class="row-title">${s.name}</span><span class="row-sub">${s.hint}</span></span>
-      <span class="count">${items.length}</span>${icon('chev', 'chev')}</button>`;
+      <span class="tail"><span class="count">${items.length}</span>${icon('chev', 'chev')}</span></button>`;
   }).join('')}</nav>
-  <button class="newbie" data-go="place:contact">${icon('door')}<span><b>Не знаете, с чего начать?</b><span>Группа для новеньких подскажет</span></span></button>
   <p class="sample">Прототип · описания — пример</p>`;
 }
 
