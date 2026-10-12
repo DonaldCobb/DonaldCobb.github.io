@@ -100,7 +100,8 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 }
 .row + .row { border-top: 1px solid var(--line); }
 .row-main { flex: 1; min-width: 0; }
-.row-main, .row-title, .row-sub { display: block; }
+.row-main, .row-title, .row-sub, .row-entry { display: block; }
+.row-entry { margin-top: 4px; }
 .row-title { font-size: var(--fs-row); font-weight: 650; line-height: 1.25; }
 .row-sub { font-size: 14px; color: var(--mist); line-height: 1.35; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .chev { color: var(--mist); width: 20px; height: 20px; }
@@ -227,13 +228,13 @@ const WAVES = () => `<svg class="waves" viewBox="0 0 390 70" preserveAspectRatio
 const icon = (n, cls = '') => `<svg class="icon ${cls}" viewBox="0 0 24 24" aria-hidden="true">${ICONS[n] || ''}</svg>`;
 
 const SPHERES = [
-  { id: 'ministry', name: 'Служения по записи', short: 'Служения', icon: 'calendarCheck', lead: 'Слово, молитва, душепопечение — в назначенное время' },
-  { id: 'people', name: 'Группы по людям', short: 'Люди', icon: 'users', lead: 'Женщины, мужчины, молодёжь, дети' },
-  { id: 'land', name: 'Территории', short: 'Страны', icon: 'globe', lead: 'Группы стран и регионов' },
-  { id: 'care', name: 'Общение и поддержка', short: 'Общение', icon: 'chat', lead: 'Молитвенные нужды, свидетельства, просто общение' },
-  { id: 'study', name: 'Учёба', short: 'Учёба', icon: 'book', lead: 'Школа и библиотека' },
-  { id: 'records', name: 'Записи эфиров', short: 'Записи', icon: 'mic', lead: 'Пророчества и эфиры в записи' },
-  { id: 'info', name: 'Вход и новости', short: 'Вход', icon: 'megaphone', lead: 'С чего начать, конференции, новости' },
+  { id: 'ministry', hint: 'Слово, молитва, сны', name: 'Служения по записи', short: 'Служения', icon: 'calendarCheck', lead: 'Слово, молитва, душепопечение — в назначенное время' },
+  { id: 'people', hint: 'Женщины, мужчины, молодёжь', name: 'Группы по людям', short: 'Люди', icon: 'users', lead: 'Женщины, мужчины, молодёжь, дети' },
+  { id: 'land', hint: 'Россия, Европа, Америка', name: 'Территории', short: 'Страны', icon: 'globe', lead: 'Группы стран и регионов' },
+  { id: 'care', hint: 'Молитва, свидетельства', name: 'Общение и поддержка', short: 'Общение', icon: 'chat', lead: 'Молитвенные нужды, свидетельства, просто общение' },
+  { id: 'study', hint: 'Школа и библиотека', name: 'Учёба', short: 'Учёба', icon: 'book', lead: 'Школа и библиотека' },
+  { id: 'records', hint: 'Пророчества и эфиры', name: 'Записи эфиров', short: 'Записи', icon: 'mic', lead: 'Пророчества и эфиры в записи' },
+  { id: 'info', hint: 'С чего начать новичку', name: 'Вход и новости', short: 'Вход', icon: 'megaphone', lead: 'С чего начать, конференции, новости' },
 ];
 const SPHERE = Object.fromEntries(SPHERES.map(s => [s.id, s]));
 
@@ -283,8 +284,8 @@ const countWord = id => id === 'land' ? plural(inSphere(id).length, 'регио�
 
 const placeRow = p => `<button class="row" data-go="place:${p.id}">
   <span class="badge-ico">${icon(p.icon)}</span>
-  <span class="row-main"><span class="row-title">${p.name}</span><span class="row-sub" style="display:block">${p.line}</span></span>
-  ${entryTag(p.entry)}</button>`;
+  <span class="row-main"><span class="row-title">${p.name}</span><span class="row-sub">${p.line}</span><span class="row-entry">${entryTag(p.entry)}</span></span>
+  ${icon('chev', 'chev')}</button>`;
 
 /* ===== Экраны за тапом ===== */
 function SPHERE_SCREEN(id) {
