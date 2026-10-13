@@ -32,5 +32,5 @@ function show(){A._i=i;save();document.getElementById('cnt').textContent=Math.mi
  const q=D.q[i];card.innerHTML='<div class="n">Вопрос '+(i+1)+'</div><p class="q"></p><p class="hint"></p><textarea placeholder="Твоими словами — как удобно"></textarea>';
  card.querySelector('.q').textContent=q.t;card.querySelector('.hint').textContent=q.h||'';const ta=card.querySelector('textarea');ta.value=A[i]||'';ta.oninput=()=>{A[i]=ta.value;save()};
  document.getElementById('back').onclick=()=>{if(i>0){i--;show()}};document.getElementById('next').onclick=()=>{i++;show()}}
-document.title=D.title;show();if(window.Telegram&&Telegram.WebApp){const tg=Telegram.WebApp;tg.ready();tg.expand();try{tg.isFullscreen&&tg.exitFullscreen&&tg.exitFullscreen()}catch(e){}try{tg.disableVerticalSwipes&&tg.disableVerticalSwipes()}catch(e){}}
+document.title=D.title;show();if(window.Telegram&&Telegram.WebApp){const tg=Telegram.WebApp;tg.ready();tg.expand();try{tg.isFullscreen&&tg.exitFullscreen&&tg.exitFullscreen()}catch(e){}try{tg.enableVerticalSwipes&&tg.enableVerticalSwipes()}catch(e){}}
 </script></body></html>
