@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<title>7000+ — Неделя v2</title>
+<script>try{var t=new URLSearchParams(location.search).get('theme');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-scheme',t)}catch(e){}</script>
+<style>
+:root{
+--bg:#F4F6FB;--surface:#FFFFFF;--surface-2:#E8ECF6;--text:#0B1230;--hint:#485372;--line:#D3DAEA;
+--gold:#D6A530;--gold-ink:#1B1405;--gold-text:#7A5200;--sky:#1D5CA3;--sky-soft:#E1EBF8;
+--sample-bg:#F6ECCF;--sample-ink:#5F4200;
+/* шапка-небо: тёмная в обеих темах, как аватарка */
+--hero-bg:#0A1022;--hero-glow:#1D4478;--hero-text:#F1F3FA;--hero-hint:#B4BED6;--hero-gold:#EBC05A;--hero-line:#33406A;
+--hero-edge:transparent;--muted-bg:#E8ECF6;--muted-ink:#485372;
+--ui:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+--serif:"Iowan Old Style","PT Serif",Georgia,"DejaVu Serif",serif;
+/* четыре ступени кегля: подпись · текст · заголовок · время */
+--fs-1:13px;--fs-2:16px;--fs-3:20px;--fs-4:48px;
+--r-block:20px;--r-btn:14px;--gut:16px;--tap:48px;color-scheme:light;}
+@media (prefers-color-scheme:dark){:root:not([data-scheme="light"]){--bg:#070B18;--surface:#0F1730;--surface-2:#17224A;--text:#EEF1F9;--hint:#A5AFCB;--line:#2A3560;
+--gold:#E6B94F;--gold-ink:#1B1405;--gold-text:#EBC05A;--sky:#7FB2EE;--sky-soft:#142447;
+--sample-bg:#3A3015;--sample-ink:#F0D58A;--hero-edge:#34437A;--muted-bg:#17224A;--muted-ink:#A5AFCB;color-scheme:dark;}}
+:root[data-scheme="dark"]{--bg:#070B18;--surface:#0F1730;--surface-2:#17224A;--text:#EEF1F9;--hint:#A5AFCB;--line:#2A3560;
+--gold:#E6B94F;--gold-ink:#1B1405;--gold-text:#EBC05A;--sky:#7FB2EE;--sky-soft:#142447;
+--sample-bg:#3A3015;--sample-ink:#F0D58A;--hero-edge:#34437A;--muted-bg:#17224A;--muted-ink:#A5AFCB;color-scheme:dark;}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:var(--fs-2)/1.45 var(--ui);-webkit-font-smoothing:antialiased}
+a{color:var(--sky)}
+main{max-width:1240px;margin:0 auto;padding:28px 16px 48px}
+h1{font:700 32px/1.1 var(--serif);margin:14px 0 8px}
+.lead{color:var(--hint);max-width:62ch;margin:0 0 18px}
+.sample{display:inline-block;font-size:var(--fs-1);font-weight:600;padding:4px 10px;border-radius:8px;background:var(--muted-bg);color:var(--muted-ink)}
+.theme{display:inline-flex;border-radius:12px;box-shadow:inset 0 0 0 1.5px var(--line);overflow:hidden;margin-bottom:26px}
+.theme button{min-height:44px;padding:0 18px;border:0;background:var(--surface);color:var(--text);font:600 15px var(--ui);cursor:pointer}
+.theme button[aria-pressed="true"]{background:var(--text);color:var(--bg)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:36px 24px}
+.v{display:flex;flex-direction:column;align-items:center}
+.ph{--s:.74;width:calc(390px*var(--s));height:calc(844px*var(--s));border-radius:calc(44px*var(--s));overflow:hidden;
+ box-shadow:0 0 0 calc(10px*var(--s)) #10162b,0 0 0 calc(11px*var(--s)) #3a4466,0 18px 40px rgba(0,0,0,.28);background:var(--bg)}
+.ph iframe{width:390px;height:844px;border:0;transform:scale(var(--s));transform-origin:0 0;display:block}
+.cap{width:calc(390px*.74);margin-top:24px}
+.cap h2{font:700 var(--fs-3)/1.2 var(--ui);margin:0 0 4px;display:flex;align-items:center;gap:10px}
+.cap h2 i{font:700 var(--fs-2)/1 var(--serif);font-style:normal;width:32px;height:32px;border-radius:10px;background:var(--surface-2);color:var(--text);display:grid;place-items:center}
+.cap p{margin:6px 0 0;font-size:15px;color:var(--hint)}
+.cap a{display:inline-block;margin-top:8px;font-weight:700;min-height:32px;font-size:15px}
+.foot{margin-top:36px;color:var(--hint);font-size:14px;max-width:72ch}
+@media (max-width:420px){.ph{--s:.8}.cap{width:calc(390px*.8)}}
+</style>
+</head>
+<body>
+<main>
+<span class="sample">Прототип · данные на экранах — пример</span>
+<h1>7000+ · «Неделя», полный прототип v2</h1>
+<p class="lead">Вариант А целиком: главный экран с правками, деталь созвона, Уроки, пустой поиск, Лента и Доступ. Нижнее меню внутри телефонов работает — можно ходить по разделам. Логики нет, только вид.</p>
+<div class="theme" role="group" aria-label="Тема"><button type="button" data-t="" aria-pressed="true">Как в телефоне</button><button type="button" data-t="light" aria-pressed="false">Светлая</button><button type="button" data-t="dark" aria-pressed="false">Тёмная</button></div>
+<div class="grid">
+ <section class="v"><div class="ph"><iframe src="week.html" title="Главный: «Неделя»"></iframe></div>
+  <div class="cap"><h2><i>1</i> Главный: «Неделя»</h2><p>Время у вас крупно, Москва мелко. Золото — «Напомнить за час»; Zoom приглушён до 18:45. Под карточкой — пропущенная запись, «Продолжить» и взнос (строка видна, только когда нужна).</p><a href="week.html" target="_top">Открыть отдельно</a></div></section>
+ <section class="v"><div class="ph"><iframe src="call.html" title="Деталь созвона"></iframe></div>
+  <div class="cap"><h2><i>2</i> Деталь созвона</h2><p>Открывается тапом по названию. Как проходит встреча, вопрос письменно, календарь.</p><a href="call.html" target="_top">Открыть отдельно</a></div></section>
+ <section class="v"><div class="ph"><iframe src="lessons.html" title="Уроки"></iframe></div>
+  <div class="cap"><h2><i>3</i> Уроки</h2><p>Поиск, темы одной прокручиваемой строкой, «Продолжить», курс по блокам с замком «откроется после взноса».</p><a href="lessons.html" target="_top">Открыть отдельно</a></div></section>
+ <section class="v"><div class="ph"><iframe src="lessons-empty.html" title="Пустое состояние"></iframe></div>
+  <div class="cap"><h2><i>4</i> Пустое состояние</h2><p>Поиск без результата: что искали, подсказки одним тапом, «Спросить у редакторов».</p><a href="lessons-empty.html" target="_top">Открыть отдельно</a></div></section>
+ <section class="v"><div class="ph"><iframe src="feed.html" title="Лента"></iframe></div>
+  <div class="cap"><h2><i>5</i> Лента</h2><p>Анонсы, новые записи с меткой, объявления. Без «Маячка»: всё важное и так в одном месте.</p><a href="feed.html" target="_top">Открыть отдельно</a></div></section>
+ <section class="v"><div class="ph"><iframe src="access.html" title="Доступ"></iframe></div>
+  <div class="cap"><h2><i>6</i> Доступ</h2><p>Какие блоки открыты и что ждёт взноса. Только показ: оплаты в приложении нет, реквизиты — у организатора.</p><a href="access.html" target="_top">Открыть отдельно</a></div></section>
+</div>
+<p class="foot">Цвета и характер — с аватарки сообщества: золото на ночном небе; золотом отмечено только действие. Даты, числа и названия — пример. <a href="../">Три варианта v1</a></p>
+</main>
+<script>
+function setT(t){
+ document.querySelectorAll('.theme button').forEach(function(x){x.setAttribute('aria-pressed',x.dataset.t===t)});
+ if(t)document.documentElement.setAttribute('data-scheme',t);else document.documentElement.removeAttribute('data-scheme');
+ document.querySelectorAll('iframe').forEach(function(f){var u=f.getAttribute('src').split('?')[0];f.src=t?u+'?theme='+t:u});
+}
+try{var q=new URLSearchParams(location.search).get('theme');if(q==='dark'||q==='light')setT(q)}catch(e){}
+document.querySelectorAll('.theme button').forEach(function(b){b.addEventListener('click',function(){
+ var t=b.dataset.t;
+ document.querySelectorAll('.theme button').forEach(function(x){x.setAttribute('aria-pressed',x===b)});
+ if(t)document.documentElement.setAttribute('data-scheme',t);else document.documentElement.removeAttribute('data-scheme');
+ document.querySelectorAll('iframe').forEach(function(f){var u=f.getAttribute('src').split('?')[0];f.src=t?u+'?theme='+t:u});
+})});
+</script>
+</body>
+</html>

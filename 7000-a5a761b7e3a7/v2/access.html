@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<title>7000+ — Доступ</title>
+<script>try{var t=new URLSearchParams(location.search).get('theme');if(t==='dark'||t==='light'){document.documentElement.setAttribute('data-scheme',t);document.addEventListener('DOMContentLoaded',function(){document.querySelectorAll('a[href$=".html"]').forEach(function(a){a.setAttribute('href',a.getAttribute('href')+'?theme='+t)})})}}catch(e){}</script>
+<style>
+:root{
+--bg:#F4F6FB;--surface:#FFFFFF;--surface-2:#E8ECF6;--text:#0B1230;--hint:#485372;--line:#D3DAEA;
+--gold:#D6A530;--gold-ink:#1B1405;--gold-text:#7A5200;--sky:#1D5CA3;--sky-soft:#E1EBF8;
+--sample-bg:#F6ECCF;--sample-ink:#5F4200;
+/* шапка-небо: тёмная в обеих темах, как аватарка */
+--hero-bg:#0A1022;--hero-glow:#1D4478;--hero-text:#F1F3FA;--hero-hint:#B4BED6;--hero-gold:#EBC05A;--hero-line:#33406A;
+--hero-edge:transparent;--muted-bg:#E8ECF6;--muted-ink:#485372;
+--ui:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+--serif:"Iowan Old Style","PT Serif",Georgia,"DejaVu Serif",serif;
+/* четыре ступени кегля: подпись · текст · заголовок · время */
+--fs-1:13px;--fs-2:16px;--fs-3:20px;--fs-4:48px;
+--r-block:20px;--r-btn:14px;--gut:16px;--tap:48px;color-scheme:light;}
+@media (prefers-color-scheme:dark){:root:not([data-scheme="light"]){--bg:#070B18;--surface:#0F1730;--surface-2:#17224A;--text:#EEF1F9;--hint:#A5AFCB;--line:#2A3560;
+--gold:#E6B94F;--gold-ink:#1B1405;--gold-text:#EBC05A;--sky:#7FB2EE;--sky-soft:#142447;
+--sample-bg:#3A3015;--sample-ink:#F0D58A;--hero-edge:#34437A;--muted-bg:#17224A;--muted-ink:#A5AFCB;color-scheme:dark;}}
+:root[data-scheme="dark"]{--bg:#070B18;--surface:#0F1730;--surface-2:#17224A;--text:#EEF1F9;--hint:#A5AFCB;--line:#2A3560;
+--gold:#E6B94F;--gold-ink:#1B1405;--gold-text:#EBC05A;--sky:#7FB2EE;--sky-soft:#142447;
+--sample-bg:#3A3015;--sample-ink:#F0D58A;--hero-edge:#34437A;--muted-bg:#17224A;--muted-ink:#A5AFCB;color-scheme:dark;}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--text);font:var(--fs-2)/1.4 var(--ui);-webkit-font-smoothing:antialiased;
+ -webkit-text-size-adjust:100%;overscroll-behavior:none}
+a{color:inherit;text-decoration:none}
+.app{height:100dvh;max-width:480px;margin:0 auto;display:flex;flex-direction:column;background:var(--bg)}
+.scroll{flex:1;overflow-y:auto;overflow-x:hidden;padding:0 var(--gut) 28px;-webkit-overflow-scrolling:touch}
+svg.i{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+button{font:inherit;color:inherit;cursor:pointer}
+h1,h2,h3,p,ul,ol{margin:0;padding:0}
+ul,ol{list-style:none}
+.top{display:flex;align-items:center;gap:12px;padding:calc(10px + env(safe-area-inset-top)) var(--gut) 10px;min-height:64px}
+.mark{width:44px;height:44px;border-radius:13px;background:var(--hero-bg);display:grid;place-items:center;flex:none;
+ box-shadow:inset 0 0 0 1px var(--hero-line)}
+.mark svg{width:34px;height:34px}
+.brand{flex:1;min-width:0}
+.brand b{display:block;font:700 var(--fs-3)/1.15 var(--serif);letter-spacing:.01em}
+.brand span{display:block;font-size:var(--fs-1);color:var(--hint);margin-top:2px}
+.icon-btn{width:var(--tap);height:var(--tap);border-radius:50%;border:1px solid var(--line);background:var(--surface);
+ display:grid;place-items:center;position:relative;color:var(--text);flex:none}
+.icon-btn .dot{position:absolute;top:11px;right:12px;width:10px;height:10px;border-radius:50%;background:var(--sky);
+ box-shadow:0 0 0 2px var(--surface)}
+.back{display:inline-flex;align-items:center;gap:6px;min-height:var(--tap);padding:0 12px 0 6px;margin-left:-6px;border-radius:12px;
+ font-weight:600;color:var(--sky)}
+.sample{display:inline-block;margin:2px 0 14px;font-size:var(--fs-1);font-weight:600;padding:4px 10px;border-radius:8px;
+ background:var(--muted-bg);color:var(--muted-ink)}
+.btn{display:flex;align-items:center;justify-content:center;gap:10px;min-height:52px;padding:0 20px;border-radius:var(--r-btn);
+ border:0;font-weight:700;font-size:var(--fs-2);width:100%}
+.btn-gold{background:var(--gold);color:var(--gold-ink)}
+.btn-line{background:var(--surface);color:var(--text);box-shadow:inset 0 0 0 1.5px var(--line)}
+.btn-wait{background:rgba(255,255,255,.06);color:var(--hero-hint);box-shadow:inset 0 0 0 1px var(--hero-line);justify-content:flex-start;
+ padding:8px 18px;cursor:default}
+.btn-wait .tx{display:flex;flex-direction:column;align-items:flex-start;line-height:1.2}
+.btn-wait small{font-size:var(--fs-1);font-weight:500}
+h2.sec{font:700 var(--fs-3)/1.2 var(--ui);margin:26px 0 12px;display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+h2.sec small{font-size:var(--fs-1);font-weight:500;color:var(--hint)}
+/* единственная тёмная карточка экрана; в тёмной теме — край 1 px */
+.sky{position:relative;overflow:hidden;border-radius:24px;background-color:var(--hero-bg);color:var(--hero-text);
+ box-shadow:inset 0 0 0 1px var(--hero-edge);
+ background-image:
+  radial-gradient(1.2px 1.2px at 18% 22%,#fff 60%,transparent 62%),
+  radial-gradient(1px 1px at 72% 14%,#fff 60%,transparent 62%),
+  radial-gradient(1.4px 1.4px at 88% 46%,#fff 60%,transparent 62%),
+  radial-gradient(1px 1px at 38% 78%,#fff 60%,transparent 62%),
+  radial-gradient(120% 90% at 100% 0%,var(--hero-glow) 0%,transparent 60%)}
+.sky .hint{color:var(--hero-hint)}
+.eyebrow{display:flex;align-items:center;gap:8px;font-size:var(--fs-1);font-weight:700;color:var(--hero-hint);letter-spacing:.02em}
+.eyebrow svg{width:18px;height:18px}
+.tag{display:inline-block;font-size:var(--fs-1);font-weight:700;line-height:1.2;padding:2px 8px;border-radius:999px;background:var(--sky-soft);color:var(--sky);white-space:nowrap}
+.chips{display:flex;gap:8px;margin:12px calc(-1*var(--gut)) 0;padding:0 var(--gut);overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;display:inline-flex;align-items:center;min-height:44px;padding:0 16px;border-radius:999px;border:0;background:var(--surface-2);
+ font-size:var(--fs-2);font-weight:600;color:var(--text);white-space:nowrap}
+.chip.on{background:var(--text);color:var(--bg)}
+.bar{display:block;height:6px;border-radius:3px;background:var(--surface-2);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--sky)}
+.list{border-radius:var(--r-block);background:var(--surface);box-shadow:inset 0 0 0 1px var(--line);overflow:hidden}
+.list>li+li{border-top:1px solid var(--line)}
+.row{display:flex;align-items:center;gap:14px;min-height:64px;padding:12px 14px}
+.row .ic{width:40px;height:40px;border-radius:12px;background:var(--sky-soft);color:var(--sky);display:grid;place-items:center;flex:none}
+.row .ic svg{width:22px;height:22px}
+.row .tx{flex:1;min-width:0}
+.row .tx b{font-weight:700}
+.row .tx .m{display:block;font-size:var(--fs-1);color:var(--hint);margin-top:3px}
+.row .go{color:var(--hint);display:flex;align-items:center;gap:2px;font-size:var(--fs-1);font-weight:700}
+.row .go.lnk{color:var(--sky)}
+.row .go svg{width:20px;height:20px}
+.tabbar{display:grid;grid-template-columns:repeat(5,1fr);background:var(--surface);border-top:1px solid var(--line);
+ padding:6px 4px calc(6px + env(safe-area-inset-bottom))}
+.tab{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-height:58px;border:0;background:none;
+ font-size:var(--fs-1);font-weight:600;color:var(--hint);position:relative}
+.tab svg.i{width:28px;height:28px}
+.tab[aria-current="page"]{color:var(--text);font-weight:700}
+.tab[aria-current="page"]::before{content:"";position:absolute;top:-7px;left:26%;right:26%;height:3px;border-radius:0 0 3px 3px;background:var(--text)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+.sum{padding:16px;border-radius:var(--r-block);background:var(--surface);box-shadow:inset 0 0 0 1px var(--line)}
+.sum .h{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.sum .h b{font:700 var(--fs-3)/1.2 var(--serif)}
+.sum .h span{font-size:var(--fs-1);color:var(--hint)}
+.seg{display:grid;grid-template-columns:repeat(6,1fr);gap:4px;margin-top:12px}
+.seg i{height:8px;border-radius:4px;background:var(--surface-2)}
+.seg i.on{background:var(--sky)}
+.sum p{font-size:var(--fs-1);color:var(--hint);margin-top:10px}
+.st{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;flex:none;background:var(--surface-2);color:var(--hint)}
+.st.ok{background:var(--sky-soft);color:var(--sky)}
+.st svg{width:22px;height:22px}
+.how{margin-top:12px;padding:16px;border-radius:var(--r-block);background:var(--surface);box-shadow:inset 0 0 0 1px var(--line)}
+.how li{display:flex;gap:10px;align-items:flex-start;padding:6px 0}
+.how li svg{width:20px;height:20px;color:var(--hint);margin-top:1px}
+.how .btn{margin-top:12px}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><symbol id="i-calendar" viewBox="0 0 24 24"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M16 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/></symbol><symbol id="i-library" viewBox="0 0 24 24"><path d="m16 6 4 14"/><path d="M12 6v14"/><path d="M8 8v12"/><path d="M4 4v16"/></symbol><symbol id="i-newspaper" viewBox="0 0 24 24"><path d="M15 18h-5"/><path d="M18 14h-8"/><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-4 0v-9a2 2 0 0 1 2-2h2"/><rect width="8" height="4" x="10" y="6" rx="1"/></symbol><symbol id="i-key" viewBox="0 0 24 24"><path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"/><circle cx="16.5" cy="7.5" r=".5" fill="currentColor"/></symbol><symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></symbol><symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol><symbol id="i-play" viewBox="0 0 24 24"><polygon points="6 3 20 12 6 21 6 3"/></symbol><symbol id="i-video" viewBox="0 0 24 24"><path d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5"/><rect x="2" y="6" width="14" height="12" rx="2"/></symbol><symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></symbol><symbol id="i-bell" viewBox="0 0 24 24"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></symbol><symbol id="i-chev" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol><symbol id="i-lock" viewBox="0 0 24 24"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol><symbol id="i-login" viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" x2="3" y1="12" y2="12"/></symbol><symbol id="i-mic" viewBox="0 0 24 24"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></symbol><symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 17v5"/><path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"/></symbol><symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></symbol><symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol><symbol id="i-folder" viewBox="0 0 24 24"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></symbol><symbol id="i-radio" viewBox="0 0 24 24"><path d="M4.9 19.1C1 15.2 1 8.8 4.9 4.9"/><path d="M7.8 16.2c-2.3-2.3-2.3-6.1 0-8.5"/><circle cx="12" cy="12" r="2"/><path d="M16.2 7.8c2.3 2.3 2.3 6.1 0 8.5"/><path d="M19.1 4.9C23 8.8 23 15.1 19.1 19"/></symbol><symbol id="i-megaphone" viewBox="0 0 24 24"><path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></symbol><symbol id="i-wallet" viewBox="0 0 24 24"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></symbol><symbol id="i-sprout" viewBox="0 0 24 24"><path d="M7 20h10"/><path d="M10 20c5.5-2.5.8-6.4 3-10"/><path d="M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4 0 5.5.8z"/><path d="M14.1 6a7 7 0 0 0-1.1 4c1.9-.1 3.3-.6 4.3-1.4 1-1 1.6-2.3 1.7-4.6-2.7.1-4 1-4.9 2z"/></symbol><symbol id="i-back" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></symbol><symbol id="i-search-x" viewBox="0 0 24 24"><path d="m13.5 8.5-5 5"/><path d="m8.5 8.5 5 5"/><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol><symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol><symbol id="i-message" viewBox="0 0 24 24"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></symbol><symbol id="i-circle-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></symbol><symbol id="i-pen" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.376 3.622a1 1 0 0 1 3.002 3.002L7.368 18.635a2 2 0 0 1-.855.506l-2.872.838a.5.5 0 0 1-.62-.62l.838-2.872a2 2 0 0 1 .506-.854z"/></symbol><symbol id="i-history" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l4 2"/></symbol><symbol id="i-cal-plus" viewBox="0 0 24 24"><path d="M8 2v4"/><path d="M16 2v4"/><path d="M21 13V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h8"/><path d="M3 10h18"/><path d="M16 19h6"/><path d="M19 16v6"/></symbol><symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></symbol><symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></symbol></defs></svg>
+<div class="app">
+<header class="top"><div class="mark"><svg viewBox="0 0 64 64" fill="none" stroke="var(--hero-gold)" stroke-width="3.2" stroke-linejoin="round" aria-hidden="true"><rect x="14" y="14" width="36" height="36"/><rect x="14" y="14" width="36" height="36" transform="rotate(45 32 32)"/><circle cx="32" cy="32" r="12" stroke-width="2.6"/><ellipse cx="32" cy="32" rx="5" ry="12" stroke-width="2"/><path d="M20 32h24M22.5 26h19M22.5 38h19" stroke-width="2"/></svg></div>
+<div class="brand"><b>Доступ</b><span>блоки и взносы</span></div><a class="icon-btn" href="feed.html" aria-label="Лента: есть новое"><svg class="i" aria-hidden="true"><use href="#i-bell"/></svg><span class="dot"></span></a></header>
+<main class="scroll">
+<span class="sample">Прототип · данные — пример</span>
+
+<section class="sum" aria-label="Мой доступ">
+  <div class="h"><b>Курс 2026</b><span>открыто 3 блока из 6</span></div>
+  <div class="seg" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i></div>
+  <p>Архивы сонма и воскресные служения открыты всем участникам.</p>
+</section>
+
+<h2 class="sec">Блоки и взносы <small>только показ</small></h2>
+<ul class="list">
+  <li><div class="row"><span class="st ok"><svg class="i" aria-hidden="true"><use href="#i-circle-check"/></svg></span><span class="tx"><b>Блоки 1–3</b><span class="m">взнос отмечен организатором</span></span></div></li>
+  <li><div class="row"><span class="st"><svg class="i" aria-hidden="true"><use href="#i-wallet"/></svg></span><span class="tx"><b>Блок 4</b><span class="m">занятия 25–32 · взнос до 25.10</span></span><span class="tag">ждёт</span></div></li>
+  <li><div class="row"><span class="st"><svg class="i" aria-hidden="true"><use href="#i-lock"/></svg></span><span class="tx"><b>Блоки 5–6</b><span class="m">откроются позже</span></span></div></li>
+  <li><div class="row"><span class="st"><svg class="i" aria-hidden="true"><use href="#i-folder"/></svg></span><span class="tx"><b>Прошлые курсы</b><span class="m">девять курсов · по запросу</span></span></div></li>
+</ul>
+
+<h2 class="sec">Как внести взнос</h2>
+<section class="how">
+  <ul>
+    <li><svg class="i" aria-hidden="true"><use href="#i-info"/></svg><span>Взнос — 12&nbsp;000&nbsp;₽ за полгода (150&nbsp;€ вне СНГ), можно по блокам.</span></li>
+    <li><svg class="i" aria-hidden="true"><use href="#i-message"/></svg><span>Реквизиты присылает организатор. В приложении оплаты нет.</span></li>
+    <li><svg class="i" aria-hidden="true"><use href="#i-circle-check"/></svg><span>После отметки организатора блок откроется сам — здесь и в «Уроках».</span></li>
+  </ul>
+  <a class="btn btn-line" href="#"><svg class="i" aria-hidden="true"><use href="#i-message"/></svg> Написать организатору</a>
+</section>
+
+</main>
+<nav class="tabbar" aria-label="Разделы"><a class="tab" href="week.html"><svg class="i" aria-hidden="true"><use href="#i-calendar"/></svg><span>Неделя</span></a><a class="tab" href="lessons.html"><svg class="i" aria-hidden="true"><use href="#i-library"/></svg><span>Уроки</span></a><a class="tab" href="feed.html"><svg class="i" aria-hidden="true"><use href="#i-newspaper"/></svg><span>Лента</span></a><a class="tab" href="access.html" aria-current="page"><svg class="i" aria-hidden="true"><use href="#i-key"/></svg><span>Доступ</span></a><span class="tab" aria-disabled="true" title="В следующем круге"><svg class="i" aria-hidden="true"><use href="#i-user"/></svg><span>Профиль</span></span></nav>
+</div>
+</body>
+</html>
