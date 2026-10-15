@@ -6,7 +6,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="dark light">
 <title>Школа Шаповала v3 — Спросить</title>
-<script>try{var q=new URLSearchParams(location.search),t=q.get('theme');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-scheme',t)}catch(e){}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Onest:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>:root{--bg:#0F0F0F;--surface:#1A1A1A;--surface-2:#252525;--text:#F1F1F1;--hint:#AAAAAA;--line:#272727;--line-strong:#3D3D3D;
 --accent:#C8A75C;--on-accent:#0F0F0F;--accent-text:#D2B46C;--accent-soft:#2A2416;--red-text:#FF4E6A;--shadow:rgba(0,0,0,.5);
@@ -472,7 +471,40 @@ h1.aq{font:800 24px/1.2 var(--ui);margin:6px 0 6px}
 .prof-row{display:flex;gap:10px;margin-top:14px}
 .prof-row .btn{flex:1;padding:0 10px}
 .events li a{display:contents}
+
+html{background:var(--bg)}
+@view-transition{navigation:auto}
+::view-transition-old(root),::view-transition-new(root){animation-duration:.12s}
+body{overscroll-behavior:none}
+.app{height:100dvh;height:var(--tg-viewport-stable-height,100dvh);position:relative}
+.composer input{flex:1;min-width:0;border:0;background:none;font:400 16px/1.3 var(--ui);color:var(--text);padding:0;outline:none}
+.composer input::placeholder{color:var(--hint);opacity:1}
+.composer:focus-within{box-shadow:inset 0 0 0 2px var(--accent)}
+.composer .send{border:0;cursor:pointer}
+.composer:focus-within .send{background:var(--accent);color:var(--on-accent)}
+.toast{position:absolute;left:50%;bottom:calc(84px + env(safe-area-inset-bottom));transform:translate(-50%,8px);max-width:calc(100% - 32px);width:max-content;
+ padding:12px 16px;border-radius:14px;background:var(--text);color:var(--bg);font:600 14.5px/1.35 var(--ui);text-align:center;
+ box-shadow:0 8px 24px rgba(0,0,0,.35);opacity:0;pointer-events:none;transition:opacity .16s,transform .16s;z-index:50}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+.list li:not(:has(a)),.books li{cursor:pointer}
+/* в Telegram «Назад» — системная кнопка в шапке, своя стрелка не нужна */
+.in-tg .bk .back,.in-tg .bk .bt{display:none}
+.in-tg .bk{justify-content:flex-end;min-height:8px;padding-top:4px;padding-bottom:0}
 </style>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script>(function(){var d=document.documentElement,t=null,fr=false,S=window.SHP=window.SHP||{};
+try{fr=window.self!==window.top}catch(e){fr=true}S.framed=fr;
+try{t=new URLSearchParams(location.search).get('theme')}catch(e){}
+if(t==='dark'||t==='light'){if(!fr)try{localStorage.setItem('shp3-theme',t)}catch(e){}}else{try{t=localStorage.getItem('shp3-theme')}catch(e){}}
+if(t==='light')d.setAttribute('data-scheme','light');
+var TG=window.Telegram&&Telegram.WebApp;if(!TG||!TG.platform||TG.platform==='unknown')return;
+S.tg=TG;d.classList.add('in-tg');
+S.paint=function(){try{var cs=getComputedStyle(d),bg=cs.getPropertyValue('--bg').trim(),nv=cs.getPropertyValue('--nav').trim();
+if(TG.isVersionAtLeast('6.1')){TG.setHeaderColor(bg);TG.setBackgroundColor(bg)}if(TG.isVersionAtLeast('7.10')&&TG.setBottomBarColor)TG.setBottomBarColor(nv)}catch(e){}};
+S.paint();
+document.addEventListener('DOMContentLoaded',function(){try{TG.ready();TG.expand();if(TG.isVersionAtLeast('7.7'))TG.disableVerticalSwipes()}catch(e){}S.paint();
+var b=document.body.getAttribute('data-back');if(TG.BackButton){if(b){TG.BackButton.show();TG.BackButton.onClick(function(){S.back(b)})}else TG.BackButton.hide()}});
+})();</script>
 </head>
 <body class="v-a">
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></symbol><symbol id="i-ask" viewBox="0 0 24 24"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></symbol><symbol id="i-list-checks" viewBox="0 0 24 24"><path d="m3 17 2 2 4-4"/><path d="m3 7 2 2 4-4"/><path d="M13 6h8"/><path d="M13 12h8"/><path d="M13 18h8"/></symbol><symbol id="i-clapper" viewBox="0 0 24 24"><path d="M20.2 6 3 11l-.9-2.4c-.3-1.1.3-2.2 1.3-2.5l13.5-4c1.1-.3 2.2.3 2.5 1.3Z"/><path d="m6.2 5.3 3.1 3.9"/><path d="m12.4 3.4 3.1 4"/><path d="M3 11h18v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/></symbol><symbol id="i-flame" viewBox="0 0 24 24"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></symbol><symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol><symbol id="i-grid" viewBox="0 0 24 24"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></symbol><symbol id="i-bookmark" viewBox="0 0 24 24"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></symbol><symbol id="i-more" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></symbol><symbol id="i-play" viewBox="0 0 24 24"><polygon points="6 3 20 12 6 21 6 3"/></symbol><symbol id="i-pause" viewBox="0 0 24 24"><rect x="14" y="4" width="4" height="16" rx="1"/><rect x="6" y="4" width="4" height="16" rx="1"/></symbol><symbol id="i-graduation-cap" viewBox="0 0 24 24"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></symbol><symbol id="i-chev" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol><symbol id="i-back" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol><symbol id="i-quote" viewBox="0 0 24 24"><path d="M16 3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2 1 1 0 0 1 1 1v1a2 2 0 0 1-2 2 1 1 0 0 0-1 1v2a1 1 0 0 0 1 1 6 6 0 0 0 6-6V5a2 2 0 0 0-2-2z"/><path d="M5 3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2 1 1 0 0 1 1 1v1a2 2 0 0 1-2 2 1 1 0 0 0-1 1v2a1 1 0 0 0 1 1 6 6 0 0 0 6-6V5a2 2 0 0 0-2-2z"/></symbol><symbol id="i-file-text" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></symbol><symbol id="i-video" viewBox="0 0 24 24"><path d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5"/><rect x="2" y="6" width="14" height="12" rx="2"/></symbol><symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></symbol><symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol><symbol id="i-share" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" x2="15.42" y1="13.51" y2="17.49"/><line x1="15.41" x2="8.59" y1="6.51" y2="10.49"/></symbol><symbol id="i-arrow-up" viewBox="0 0 24 24"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></symbol><symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol><symbol id="i-book" viewBox="0 0 24 24"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></symbol><symbol id="i-external" viewBox="0 0 24 24"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></symbol><symbol id="i-heart" viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></symbol><symbol id="i-heart-hand" viewBox="0 0 24 24"><path d="M11 14h2a2 2 0 1 0 0-4h-3c-.6 0-1.1.2-1.4.6L3 16"/><path d="m7 20 1.6-1.4c.3-.4.8-.6 1.4-.6h4c1.1 0 2.1-.4 2.8-1.2l4.6-4.4a2 2 0 0 0-2.75-2.91l-4.2 3.9"/><path d="m2 15 6 6"/><path d="M19.5 8.5c.7-.7 1.5-1.6 1.5-2.7A2.73 2.73 0 0 0 16 4a2.78 2.78 0 0 0-5 1.8c0 1.2.8 2 1.5 2.8L16 12Z"/></symbol><symbol id="i-flag" viewBox="0 0 24 24"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" x2="4" y1="22" y2="15"/></symbol><symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></symbol><symbol id="i-map-pin" viewBox="0 0 24 24"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></symbol><symbol id="i-library" viewBox="0 0 24 24"><path d="m16 6 4 14"/><path d="M12 6v14"/><path d="M8 8v12"/><path d="M4 4v16"/></symbol><symbol id="i-tv" viewBox="0 0 24 24"><rect width="20" height="15" x="2" y="7" rx="2" ry="2"/><polyline points="17 2 12 7 7 2"/></symbol><symbol id="i-headphones" viewBox="0 0 24 24"><path d="M3 14h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a9 9 0 0 1 18 0v7a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3"/></symbol><symbol id="i-send" viewBox="0 0 24 24"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/><path d="m21.854 2.147-10.94 10.939"/></symbol><symbol id="i-message" viewBox="0 0 24 24"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></symbol><symbol id="i-calendar" viewBox="0 0 24 24"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></symbol><symbol id="i-award" viewBox="0 0 24 24"><path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526"/><circle cx="12" cy="8" r="6"/></symbol><symbol id="i-lock" viewBox="0 0 24 24"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol><symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></symbol><symbol id="i-house" viewBox="0 0 24 24"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></symbol><symbol id="i-history" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l4 2"/></symbol><symbol id="i-moon" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></symbol><symbol id="i-sunrise" viewBox="0 0 24 24"><path d="M12 2v8"/><path d="m4.93 10.93 1.41 1.41"/><path d="M2 18h2"/><path d="M20 18h2"/><path d="m19.07 10.93-1.41 1.41"/><path d="M22 22H2"/><path d="m8 6 4-4 4 4"/><path d="M16 18a4 4 0 0 0-8 0"/></symbol><symbol id="i-circle-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></symbol><symbol id="i-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></symbol><symbol id="i-rotate-ccw" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></symbol><symbol id="i-rotate-cw" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></symbol><symbol id="i-plus" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5v14"/></symbol><symbol id="i-audio-lines" viewBox="0 0 24 24"><path d="M2 10v3"/><path d="M6 6v11"/><path d="M10 3v18"/><path d="M14 8v7"/><path d="M18 5v13"/><path d="M22 10v3"/></symbol><symbol id="i-corner" viewBox="0 0 24 24"><polyline points="15 10 20 15 15 20"/><path d="M4 4v7a4 4 0 0 0 4 4h12"/></symbol><symbol id="i-skip" viewBox="0 0 24 24"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" x2="19" y1="5" y2="19"/></symbol><symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol><symbol id="i-sparkles" viewBox="0 0 24 24"><path d="M9.94 14.06 4 20"/><path d="m14 4 1.5 3.5L19 9l-3.5 1.5L14 14l-1.5-3.5L9 9l3.5-1.5z"/><path d="M5 3v4"/><path d="M3 5h4"/></symbol><symbol id="i-search-x" viewBox="0 0 24 24"><path d="m13.5 8.5-5 5"/><path d="m8.5 8.5 5 5"/><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol><symbol id="i-pencil" viewBox="0 0 24 24"><path d="M21.17 6.81a1 1 0 0 0-3.98-3.98L3.84 16.17a2 2 0 0 0-.5.83l-1.32 4.35a.5.5 0 0 0 .62.62l4.35-1.32a2 2 0 0 0 .83-.5z"/></symbol><symbol id="i-bookmark-fill" viewBox="0 0 24 24"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z" fill="currentColor"/></symbol><symbol id="i-bell" viewBox="0 0 24 24"><path d="M10.27 21a2 2 0 0 0 3.46 0"/><path d="M3.26 15.33A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.67C19.41 13.96 18 12.5 18 8A6 6 0 0 0 6 8c0 4.5-1.41 5.96-2.74 7.33"/></symbol><symbol id="i-contrast" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 18a6 6 0 0 0 0-12v12z"/></symbol></defs></svg>
@@ -489,7 +521,7 @@ h1.aq{font:800 24px/1.2 var(--ui);margin:6px 0 6px}
 
 <p class="note foot">Прототип · цитаты, названия и минуты — дословно из базы бота; прогресс и история — пример.</p>
 </main>
-<div class="dock"><div class="composer focus"><span>Спросите своими словами…</span><a class="send" href="a-answer-loading.html" aria-label="Спросить"><svg class="i" aria-hidden="true"><use href="#i-arrow-up"/></svg></a></div></div>
+<div class="dock"><form class="composer" action="a-answer-loading.html" method="get"><input type="text" placeholder="Спросите своими словами…" aria-label="Спросите своими словами…" enterkeyhint="send" autocomplete="off"><button class="send" type="submit" aria-label="Спросить"><svg class="i" aria-hidden="true"><use href="#i-arrow-up"/></svg></button></form></div>
 <nav class="tabbar" style="grid-template-columns:repeat(4,1fr)" aria-label="Разделы"><a class="tab" href="a.html"><span class="ind"><svg class="i" aria-hidden="true"><use href="#i-house"/></svg></span><span>Главная</span></a><a class="tab" href="a-ask.html" aria-current="page"><span class="ind"><svg class="i" aria-hidden="true"><use href="#i-ask"/></svg></span><span>Спросить</span></a><a class="tab" href="a-courses.html"><span class="ind"><svg class="i" aria-hidden="true"><use href="#i-graduation-cap"/></svg></span><span>Курсы</span></a><a class="tab" href="a-me.html"><span class="ind"><svg class="i" aria-hidden="true"><use href="#i-bookmark"/></svg></span><span>Моё</span></a></nav>
 </div>
 <script>(function(){var bs=document.querySelectorAll('[data-tab]');if(!bs.length)return;
@@ -497,5 +529,33 @@ function go(n){bs.forEach(function(b){var on=b.dataset.tab===n;b.setAttribute('a
 document.querySelectorAll('.panel').forEach(function(p){p.classList.toggle('on',p.id==='p-'+n)})}
 bs.forEach(function(b){b.addEventListener('click',function(){go(b.dataset.tab)})});
 var t=null;try{t=new URLSearchParams(location.search).get('tab')}catch(e){}if(t)go(t);})();</script>
+<script>(function(){var S=window.SHP=window.SHP||{},d=document.documentElement,SOON='В прототипе пока нет';
+S.back=function(fb){var ok=false;try{ok=history.length>1&&!!document.referrer&&new URL(document.referrer).origin===location.origin}catch(e){}
+if(ok)history.back();else location.replace(fb)};
+var to=document.createElement('div');to.className='toast';to.setAttribute('role','status');to.setAttribute('aria-live','polite');
+(document.querySelector('.app')||document.body).appendChild(to);var tm;
+function toast(s){to.textContent=s;to.classList.add('on');clearTimeout(tm);tm=setTimeout(function(){to.classList.remove('on')},1900);
+try{S.tg&&S.tg.HapticFeedback&&S.tg.HapticFeedback.impactOccurred('light')}catch(e){}}S.toast=toast;
+function icon(el,n){var u=el.querySelector('use');if(u)u.setAttribute('href','#i-'+n)}
+function theme(t){if(t==='light')d.setAttribute('data-scheme','light');else d.removeAttribute('data-scheme');
+try{localStorage.setItem('shp3-theme',t)}catch(e){}document.querySelectorAll('[data-theme]').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.theme===t)});S.paint&&S.paint()}
+var cur=d.getAttribute('data-scheme')==='light'?'light':'dark';document.querySelectorAll('[data-theme]').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.theme===cur)});
+var SPD=['1×','1,25×','1,5×','2×'];
+document.addEventListener('click',function(ev){var el=ev.target.closest('a,button,.list li,.books li');if(!el)return;
+if(el.matches('a.back')){ev.preventDefault();S.back(el.getAttribute('href'));return}
+if(el.tagName==='A'){if(el.getAttribute('href')==='#'){ev.preventDefault();toast(el.dataset.soon||SOON)}return}
+if(el.tagName==='BUTTON'){if(el.dataset.tab||el.type==='submit')return;
+ if(el.dataset.theme){theme(el.dataset.theme);return}
+ if(el.getAttribute('role')==='switch'){var on=el.getAttribute('aria-checked')!=='true';el.setAttribute('aria-checked',on);toast(on?'Слово на сегодня — включено':'Слово на сегодня — выключено');return}
+ var l=el.getAttribute('aria-label')||el.textContent.trim();
+ if(/^Сохран/.test(l)){var sv=el.dataset.sv?el.dataset.sv==='1':/Сохранено/.test(el.getAttribute('aria-label')||'');sv=!sv;el.dataset.sv=sv?'1':'0';
+  icon(el,sv?'bookmark-fill':'bookmark');if(el.hasAttribute('aria-label'))el.setAttribute('aria-label',sv?'Сохранено':'Сохранить цитату');toast(sv?'Сохранено в «Моё»':'Убрано из «Моё»');return}
+ if(/^Не его голос/.test(l)){toast('Спасибо — сверим цитату с записью');return}
+ if(el.classList.contains('big')||el.classList.contains('pp')){var pl=/Играть/.test(l);icon(el,pl?'pause':'play');el.setAttribute('aria-label',pl?'Пауза':'Играть');return}
+ if(el.classList.contains('spd')){var i=(SPD.indexOf(el.textContent.trim())+1)%SPD.length;el.textContent=SPD[i];el.setAttribute('aria-label','Скорость '+SPD[i]);return}
+ toast(/Поделиться/.test(l)?'Поделиться — в прототипе пока нет':SOON);return}
+toast(SOON)});
+var nx=document.body.getAttribute('data-next');if(nx&&!S.framed)setTimeout(function(){location.replace(nx)},2400);
+})();</script>
 </body>
 </html>
