@@ -4,60 +4,67 @@
 <meta charset="utf-8">
 <meta name="robots" content="noindex,nofollow">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="color-scheme" content="light dark">
-<title>Школа Шаповала — варианты</title>
+<meta name="color-scheme" content="dark light">
+<title>Школа Царства — v3</title>
 <script>try{var q=new URLSearchParams(location.search),t=q.get('theme');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-scheme',t)}catch(e){}</script>
-<style>:root{--bg:#F3F3EF;--surface:#FFFFFF;--text:#16170F;--hint:#55574B;--line:#D9DACF;--accent:#43561F;--on-accent:#FFFFFF;--accent-text:#3D4F1B;--sample-bg:#E9EADF;--sample-ink:#3D3F33;--ui:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;--frame:#111111;--frame-edge:#3A3A3A;color-scheme:light;}@media (prefers-color-scheme:dark){:root:not([data-scheme="light"]){--bg:#0E0F0B;--surface:#1A1B16;--text:#F1F1EA;--hint:#B0B2A4;--line:#30322A;--accent:#B9CF7E;--on-accent:#18200A;--accent-text:#C4D88E;--sample-bg:#24251F;--sample-ink:#D8D9CD;color-scheme:dark;}}:root[data-scheme="dark"]{--bg:#0E0F0B;--surface:#1A1B16;--text:#F1F1EA;--hint:#B0B2A4;--line:#30322A;--accent:#B9CF7E;--on-accent:#18200A;--accent-text:#C4D88E;--sample-bg:#24251F;--sample-ink:#D8D9CD;color-scheme:dark;}
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800;900&family=Onest:wght@400;600;700&display=swap" rel="stylesheet">
+<style>:root{--bg:#0F0F0F;--surface:#1A1A1A;--text:#F1F1F1;--hint:#AAAAAA;--line:#2A2A2A;--accent:#C8A75C;--on-accent:#0F0F0F;--accent-text:#D2B46C;--sample-bg:#1F1F1F;--sample-ink:#BDBDBD;--ui:"Onest",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;--disp:"Montserrat",Arial,sans-serif;--frame:#111111;--frame-edge:#3A3A3A;color-scheme:dark;}:root[data-scheme="light"]{--bg:#F2F0E6;--surface:#FFFFFF;--text:#0F0F0F;--hint:#5C5A50;--line:#DCD9CA;--accent:#0F0F0F;--on-accent:#F2F0E6;--accent-text:#6E5A1F;--sample-bg:#E6E3D5;--sample-ink:#3D3B33;color-scheme:light;}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--text);font:16px/1.45 var(--ui);-webkit-font-smoothing:antialiased}
 main{max-width:1240px;margin:0 auto;padding:28px 16px 48px}
-h1{font:700 32px/1.12 Georgia,"DejaVu Serif",serif;margin:14px 0 8px}
-.lead{color:var(--hint);font-size:16px;max-width:62ch;margin:0 0 18px}
+h1{font:900 34px/1.02 var(--disp);text-transform:uppercase;letter-spacing:-.01em;margin:14px 0 10px}
+.lead{color:var(--hint);font-size:16px;max-width:64ch;margin:0 0 18px}
 .sample{display:inline-block;font-size:13px;font-weight:600;padding:5px 10px;border-radius:8px;background:var(--sample-bg);color:var(--sample-ink)}
 .theme{display:inline-flex;border-radius:12px;box-shadow:inset 0 0 0 1.5px var(--line);overflow:hidden;margin-bottom:26px}
 .theme button{min-height:44px;padding:0 16px;border:0;background:var(--surface);color:var(--text);font:600 15px var(--ui);cursor:pointer}
 .theme button[aria-pressed="true"]{background:var(--accent);color:var(--on-accent)}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:36px 24px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:36px 24px}
 .v{display:flex;flex-direction:column;align-items:center}
-.ph{--s:.78;width:calc(390px*var(--s));height:calc(844px*var(--s));border-radius:calc(44px*var(--s));overflow:hidden;
+.ph{--s:.74;width:calc(390px*var(--s));height:calc(844px*var(--s));border-radius:calc(44px*var(--s));overflow:hidden;
  box-shadow:0 0 0 calc(10px*var(--s)) var(--frame),0 0 0 calc(11px*var(--s)) var(--frame-edge),0 18px 40px rgba(0,0,0,.25);background:var(--bg)}
 .ph iframe{width:390px;height:844px;border:0;transform:scale(var(--s));transform-origin:0 0;display:block}
-.cap{width:calc(390px*.78);margin-top:26px}
-.cap h2{font:700 20px/1.2 var(--ui);margin:0 0 4px;display:flex;align-items:center;gap:10px}
-.cap h2 i{font:700 19px/1 Georgia,serif;font-style:normal;width:38px;height:38px;border-radius:12px;background:var(--accent);color:var(--on-accent);display:grid;place-items:center;flex:none}
-.cap .k{font-size:14px;font-weight:700;color:var(--accent-text)}
-.cap p{margin:6px 0 0;font-size:15px}
-.cap .s{color:var(--hint)}
-.cap nav{display:flex;flex-wrap:wrap;gap:4px 14px;margin-top:10px}
-.cap a{display:inline-flex;align-items:center;min-height:36px;font-weight:700;color:var(--accent-text);font-size:15px}
+.cap{width:calc(390px*.74);margin-top:22px}
+.cap h2{font:900 20px/1 var(--disp);text-transform:uppercase;margin:0 0 6px}
+.cap p{margin:4px 0 0;font-size:15px;color:var(--hint)}
+.cap a{display:inline-flex;align-items:center;min-height:44px;font-weight:700;color:var(--accent-text);font-size:15px}
+.app-link{display:inline-flex;align-items:center;min-height:48px;padding:0 18px;border-radius:999px;background:var(--accent);color:var(--on-accent);font-weight:700;text-decoration:none;margin:0 0 14px}
 .foot{margin-top:36px;color:var(--hint);font-size:14px;max-width:72ch}
+.foot a{color:var(--accent-text);font-weight:700}
 @media (max-width:420px){.ph{--s:.8}.cap{width:calc(390px*.8)}}
 </style>
 </head>
 <body>
 <main>
-<span class="sample">Прототип · цитаты дословно из проповедей, остальное — пример</span>
-<h1>Школа Шаповала · три варианта мини-аппа</h1>
-<p class="lead">Один вопрос — «что он говорит об этом и где послушать» — в трёх настроениях и с тремя главными экранами. В каждом варианте ещё три экрана: ответ с вкладками «Цитаты · Видео · Конспект», «Планы и курсы» и «О служении». Кнопки только показывают вид.</p>
-<div class="theme" role="group" aria-label="Тема"><button type="button" data-t="" aria-pressed="true">Как в телефоне</button><button type="button" data-t="light" aria-pressed="false">Светлая</button><button type="button" data-t="dark" aria-pressed="false">Тёмная</button></div>
+<span class="sample">Прототип v3 · вариант «Канал», доработан по UX · цитаты дословно, остальное — пример</span>
+<h1>Школа Царства · v3</h1>
+<p class="lead">Вариант «Канал» целиком: отдельный экран вопроса, ответ с кнопкой «Смотреть с минуты» у каждой цитаты, плеер с главами, состояния «ищем» и «не нашли», курсы с деталью школы, раздел «Моё». Кнопки только показывают вид.</p>
+<p><a class="app-link" href="a.html">Открыть как приложение →</a></p>
+<div class="theme" role="group" aria-label="Тема"><button type="button" data-t="dark" aria-pressed="true">Тёмная</button><button type="button" data-t="light" aria-pressed="false">Светлая</button></div>
 <div class="grid">
-<section class="v"><div class="ph"><iframe src="a.html" title="Вариант А" loading="lazy"></iframe></div>
-<div class="cap"><h2><i>А</i> Утро — тёплый и светлый</h2><p class="k">Слово на сегодня и строка вопроса</p><p>Сверху цитата дня крупно, под ней — поле вопроса с примерами и мой план. Цвет — олива и елей.</p><p class="s">Ответ: цитаты списком с полосой слева, «Смотреть с минуты» у каждой.</p>
-<nav><a href="a.html">Главный</a><a href="a-answer.html">Ответ</a><a href="a-plans.html">Планы</a><a href="a-about.html">О служении</a></nav></div></section><section class="v"><div class="ph"><iframe src="b.html" title="Вариант Б" loading="lazy"></iframe></div>
-<div class="cap"><h2><i>Б</i> Строго — минимализм</h2><p class="k">Строка вопроса и темы-каталог</p><p>Главное — большое поле вопроса; ниже восемь тем с числом проповедей. Чёрное, белое и красная закладка.</p><p class="s">Ответ: вкладки-подчёркивания, цитаты без рамок, крупный шрифт Onest.</p>
-<nav><a href="b.html">Главный</a><a href="b-answer.html">Ответ</a><a href="b-plans.html">Планы</a><a href="b-about.html">О служении</a></nav></div></section><section class="v"><div class="ph"><iframe src="c.html" title="Вариант В" loading="lazy"></iframe></div>
-<div class="cap"><h2><i>В</i> Кино — тёмный</h2><p class="k">Лента проповедей и плеер</p><p>Сверху «Продолжить» с минутой, ниже серии и афиши проповедей. Свет проектора на тёмном.</p><p class="s">Ответ открывается на вкладке «Видео»: плеер и моменты по вопросу.</p>
-<nav><a href="c.html">Главный</a><a href="c-answer.html">Ответ</a><a href="c-plans.html">Планы</a><a href="c-about.html">О служении</a></nav></div></section>
+<section class="v"><div class="ph"><iframe src="a.html" title="Главная" loading="lazy"></iframe></div>
+<div class="cap"><h2>Главная</h2><p>Вопрос, примеры, «Продолжить», слово на сегодня, KD 2026, темы, новые выпуски</p><a href="a.html">Открыть экран</a></div></section><section class="v"><div class="ph"><iframe src="a-ask.html" title="Спросить" loading="lazy"></iframe></div>
+<div class="cap"><h2>Спросить</h2><p>Отдельный экран вопроса: поле у пальца, примеры, недавние</p><a href="a-ask.html">Открыть экран</a></div></section><section class="v"><div class="ph"><iframe src="a-answer.html" title="Ответ · Цитаты" loading="lazy"></iframe></div>
+<div class="cap"><h2>Ответ · Цитаты</h2><p>Вопрос → его слова; у каждой цитаты «Смотреть с минуты», сохранить, поделиться, «не его голос»; связка бота — ниже</p><a href="a-answer.html">Открыть экран</a></div></section><section class="v"><div class="ph"><iframe src="a-answer-play.html" title="Ответ · видео" loading="lazy"></iframe></div>
+<div class="cap"><h2>Ответ · видео</h2><p>«Смотреть с 1:15:50» — плеер прилипает сверху, цитата подсвечена «звучит сейчас»</p><a href="a-answer-play.html">Открыть экран</a></div></section><section class="v"><div class="ph"><iframe src="a-answer.html?tab=chap" title="Ответ · Главы" loading="lazy"></iframe></div>
+<div class="cap"><h2>Ответ · Главы</h2><p>Главы по вопросу, сгруппированы по проповедям</p><a href="a-answer.html?tab=chap">Открыть экран</a></div></section><section class="v"><div class="ph"><iframe src="a-answer-loading.html" title="Ищем ответ" loading="lazy"></iframe></div>
+<div class="cap"><h2>Ищем ответ</h2><p>Шаги поиска и скелет цитат</p><a href="a-answer-loading.html">Открыть экран</a></div></section><section class="v"><div class="ph"><iframe src="a-answer-empty.html" title="Не нашли" loading="lazy"></iframe></div>
+<div class="cap"><h2>Не нашли</h2><p>Честно: его слов нет — спросить иначе или тема</p><a href="a-answer-empty.html">Открыть экран</a></div></section><section class="v"><div class="ph"><iframe src="a-watch.html" title="Проповедь" loading="lazy"></iframe></div>
+<div class="cap"><h2>Проповедь</h2><p>«Продолжить» с главной: плеер, главы, конспект, дальше в серии</p><a href="a-watch.html">Открыть экран</a></div></section><section class="v"><div class="ph"><iframe src="a-courses.html" title="Курсы" loading="lazy"></iframe></div>
+<div class="cap"><h2>Курсы</h2><p>Продолжить школу, планы с кольцом прогресса, онлайн-школы, подкаст</p><a href="a-courses.html">Открыть экран</a></div></section><section class="v"><div class="ph"><iframe src="a-course.html" title="Школа №2" loading="lazy"></iframe></div>
+<div class="cap"><h2>Школа №2</h2><p>Все 12 блоков: прослушан · сейчас · впереди</p><a href="a-course.html">Открыть экран</a></div></section><section class="v"><div class="ph"><iframe src="a-me.html" title="Моё" loading="lazy"></iframe></div>
+<div class="cap"><h2>Моё</h2><p>Сохранённые цитаты, мои вопросы, настройки</p><a href="a-me.html">Открыть экран</a></div></section><section class="v"><div class="ph"><iframe src="a-about.html" title="О служении" loading="lazy"></iframe></div>
+<div class="cap"><h2>О служении</h2><p>С главной: кто он, события, книги, направления</p><a href="a-about.html">Открыть экран</a></div></section>
 </div>
-<p class="foot">Цитаты, названия проповедей, даты и минуты — из базы бота «Школа Шаповала». Школы, события и книги — пересказ сайта shapovalministries.com на 15.10.2026. Прогресс, планы и счёт тем — пример для выбора вида.</p>
+<p class="foot">Цитаты, названия проповедей, даты, минуты и блоки школы №2 — из базы бота «Школа Царства». Школы, события и книги — пересказ shapovalministries.com на 15.10.2026. Прогресс, планы, история вопросов и «похожие вопросы» — пример. Фото спикера не используем — обложки только типографикой. Прошлые версии — <a href="../v2/">v2</a>, <a href="../">v1</a>.</p>
 </main>
 <script>
-document.querySelectorAll('.theme button').forEach(function(b){b.addEventListener('click',function(){
- var t=b.dataset.t;
- document.querySelectorAll('.theme button').forEach(function(x){x.setAttribute('aria-pressed',x===b)});
- if(t)document.documentElement.setAttribute('data-scheme',t);else document.documentElement.removeAttribute('data-scheme');
- document.querySelectorAll('iframe').forEach(function(f){var u=f.getAttribute('src').split('?')[0];f.src=t?u+'?theme='+t:u});
-})});
+function setT(t){document.querySelectorAll('.theme button').forEach(function(x){x.setAttribute('aria-pressed',x.dataset.t===t)});
+ if(t==='light')document.documentElement.setAttribute('data-scheme','light');else document.documentElement.removeAttribute('data-scheme');
+ document.querySelectorAll('iframe').forEach(function(f){var u=f.getAttribute('src');var b=u.split('?')[0],q=u.indexOf('?')>0?u.split('?')[1]:'';
+ q=q.replace(/(^|&)theme=[^&]*/,'');var s=(q?q+'&':'')+'theme='+t;f.src=b+'?'+s});}
+document.querySelectorAll('.theme button').forEach(function(b){b.addEventListener('click',function(){setT(b.dataset.t)})});
+(function(){var t='dark';try{var q=new URLSearchParams(location.search).get('theme');if(q==='light')t=q}catch(e){}setT(t)})();
 </script>
 </body>
 </html>
