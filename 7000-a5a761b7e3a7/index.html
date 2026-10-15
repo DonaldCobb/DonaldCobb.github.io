@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<title>7000+ — варианты</title>
+<script>try{var t=new URLSearchParams(location.search).get('theme');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-scheme',t)}catch(e){}</script>
+<style>
+:root{
+--bg:#F4F6FB;--surface:#FFFFFF;--surface-2:#E8ECF6;--text:#0B1230;--hint:#485372;--line:#D3DAEA;
+--gold:#D6A530;--gold-ink:#1B1405;--gold-text:#7A5200;--sky:#1D5CA3;--sky-soft:#E1EBF8;
+--sample-bg:#F6ECCF;--sample-ink:#5F4200;
+/* шапка-небо: тёмная в обеих темах, как аватарка */
+--hero-bg:#0A1022;--hero-glow:#1D4478;--hero-text:#F1F3FA;--hero-hint:#B4BED6;--hero-gold:#EBC05A;--hero-line:#33406A;
+--ui:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+--serif:"Iowan Old Style","PT Serif",Georgia,"DejaVu Serif",serif;
+--fs-meta:13px;--fs-body:15px;--fs-title:19px;--fs-display:56px;
+--r-block:20px;--r-btn:14px;--gut:16px;--tap:48px;color-scheme:light;}
+@media (prefers-color-scheme:dark){:root:not([data-scheme="light"]){--bg:#070B18;--surface:#0F1730;--surface-2:#17224A;--text:#EEF1F9;--hint:#A5AFCB;--line:#2A3560;
+--gold:#E6B94F;--gold-ink:#1B1405;--gold-text:#EBC05A;--sky:#7FB2EE;--sky-soft:#142447;
+--sample-bg:#3A3015;--sample-ink:#F0D58A;color-scheme:dark;}}
+:root[data-scheme="dark"]{--bg:#070B18;--surface:#0F1730;--surface-2:#17224A;--text:#EEF1F9;--hint:#A5AFCB;--line:#2A3560;
+--gold:#E6B94F;--gold-ink:#1B1405;--gold-text:#EBC05A;--sky:#7FB2EE;--sky-soft:#142447;
+--sample-bg:#3A3015;--sample-ink:#F0D58A;color-scheme:dark;}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.45 var(--ui);-webkit-font-smoothing:antialiased}
+main{max-width:1240px;margin:0 auto;padding:28px 16px 48px}
+h1{font:700 34px/1.1 var(--serif);margin:14px 0 8px}
+.lead{color:var(--hint);font-size:16px;max-width:60ch;margin:0 0 18px}
+.sample{display:inline-block;font-size:13px;font-weight:600;padding:5px 10px;border-radius:8px;background:var(--sample-bg);color:var(--sample-ink)}
+.theme{display:inline-flex;gap:0;border-radius:12px;box-shadow:inset 0 0 0 1.5px var(--line);overflow:hidden;margin-bottom:26px}
+.theme button{min-height:44px;padding:0 18px;border:0;background:var(--surface);color:var(--text);font:600 15px var(--ui);cursor:pointer}
+.theme button[aria-pressed="true"]{background:var(--gold);color:var(--gold-ink)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:36px 24px}
+.v{display:flex;flex-direction:column;align-items:center}
+.ph{--s:.78;width:calc(390px*var(--s));height:calc(844px*var(--s));border-radius:calc(44px*var(--s));overflow:hidden;
+ box-shadow:0 0 0 calc(10px*var(--s)) #10162b,0 0 0 calc(11px*var(--s)) #3a4466,0 18px 40px rgba(0,0,0,.28);background:var(--bg)}
+.ph iframe{width:390px;height:844px;border:0;transform:scale(var(--s));transform-origin:0 0;display:block}
+.cap{width:calc(390px*.78);margin-top:26px}
+.cap h2{font:700 21px/1.2 var(--ui);margin:0 0 4px;display:flex;align-items:center;gap:10px}
+.cap h2 i{font:700 20px/1 var(--serif);font-style:normal;width:38px;height:38px;border-radius:12px;background:var(--gold);color:var(--gold-ink);display:grid;place-items:center}
+.cap p{margin:6px 0 0;font-size:15px}
+.cap .s{color:var(--hint)}
+.cap a{display:inline-block;margin-top:10px;font-weight:700;color:var(--sky);min-height:32px;font-size:15px}
+.foot{margin-top:36px;color:var(--hint);font-size:14px;max-width:70ch}
+@media (max-width:420px){.ph{--s:.8}.cap{width:calc(390px*.8)}}
+</style>
+</head>
+<body>
+<main>
+<span class="sample">Прототип · данные на экране — пример</span>
+<h1>7000+ · главный экран, три варианта</h1>
+<p class="lead">Один и тот же вопрос — «где мне быть и что смотреть» — решён тремя разными раскладками. Кнопки внутри только показывают вид, логики пока нет.</p>
+<div class="theme" role="group" aria-label="Тема"><button type="button" data-t="" aria-pressed="true">Как в телефоне</button><button type="button" data-t="light" aria-pressed="false">Светлая</button><button type="button" data-t="dark" aria-pressed="false">Тёмная</button></div>
+<div class="grid">
+ <section class="v"><div class="ph"><iframe src="a.html" title="Вариант А" loading="lazy"></iframe></div>
+  <div class="cap"><h2><i>А</i> Неделя и ближайший созвон</h2>
+  <p>Главное — время и кнопка «Войти в Zoom». Неделя из трёх встреч по их ритму: пятница, суббота, воскресенье.</p>
+  <p class="s">Решает: «когда встреча и где ссылка» — без поиска по закрепам.</p><a href="a.html">Открыть отдельно</a></div></section>
+ <section class="v"><div class="ph"><iframe src="b.html" title="Вариант Б" loading="lazy"></iframe></div>
+  <div class="cap"><h2><i>Б</i> Библиотека уроков</h2>
+  <p>Крупный поиск, быстрые темы, «Продолжить просмотр» и курс по блокам. Закрытый блок показывает замок.</p>
+  <p class="s">Решает: «где запись урока» — за один тап вместо папок и таблицы.</p><a href="b.html">Открыть отдельно</a></div></section>
+ <section class="v"><div class="ph"><iframe src="c.html" title="Вариант В" loading="lazy"></iframe></div>
+  <div class="cap"><h2><i>В</i> Лента общины</h2>
+  <p>«Маячок» вверху: расписание, архив и вопрос. Ниже — анонсы, новые записи и объявления одним потоком.</p>
+  <p class="s">Решает: «что нового и ничего не потерять» — ссылки больше не дублируются.</p><a href="c.html">Открыть отдельно</a></div></section>
+</div>
+<p class="foot">Цвета и характер — с аватарки сообщества: золото на ночном небе. Названия, даты и числа на экранах — пример для выбора раскладки.</p>
+</main>
+<script>
+document.querySelectorAll('.theme button').forEach(function(b){b.addEventListener('click',function(){
+ var t=b.dataset.t;
+ document.querySelectorAll('.theme button').forEach(function(x){x.setAttribute('aria-pressed',x===b)});
+ if(t)document.documentElement.setAttribute('data-scheme',t);else document.documentElement.removeAttribute('data-scheme');
+ document.querySelectorAll('iframe').forEach(function(f){var u=f.getAttribute('src').split('?')[0];f.src=t?u+'?theme='+t:u});
+})});
+</script>
+</body>
+</html>
