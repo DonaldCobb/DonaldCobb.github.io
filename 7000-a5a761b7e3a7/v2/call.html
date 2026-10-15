@@ -6,6 +6,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="light dark">
 <title>7000+ — Созвон</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=PT+Serif:wght@700&text=7000%2B&display=swap">
+<script src="https://telegram.org/js/telegram-web-app.js"></script><script>(function(){var TG=window.Telegram&&Telegram.WebApp;if(!TG||!TG.platform||TG.platform==='unknown')return;var d=document.documentElement,q=null;try{q=new URLSearchParams(location.search).get('theme')}catch(e){}d.classList.add('in-tg');function paint(){try{var cs=getComputedStyle(d),bg=cs.getPropertyValue('--bg').trim(),sf=cs.getPropertyValue('--surface').trim();if(TG.isVersionAtLeast('6.1')){TG.setHeaderColor(bg);TG.setBackgroundColor(bg)}if(TG.isVersionAtLeast('7.10')&&TG.setBottomBarColor)TG.setBottomBarColor(sf)}catch(e){}}function scheme(){if(!q)d.setAttribute('data-scheme',TG.colorScheme==='dark'?'dark':'light')}scheme();document.addEventListener('DOMContentLoaded',function(){try{TG.ready();TG.expand();if(TG.isVersionAtLeast('7.7'))TG.disableVerticalSwipes()}catch(e){}paint();var b=document.body.getAttribute('data-back');if(b&&TG.BackButton){TG.BackButton.show();TG.BackButton.onClick(function(){location.href=b})}});TG.onEvent('themeChanged',function(){scheme();paint()})})();</script>
 <script>try{var t=new URLSearchParams(location.search).get('theme');if(t==='dark'||t==='light'){document.documentElement.setAttribute('data-scheme',t);document.addEventListener('DOMContentLoaded',function(){document.querySelectorAll('a[href$=".html"]').forEach(function(a){a.setAttribute('href',a.getAttribute('href')+'?theme='+t)})})}}catch(e){}</script>
 <style>
 :root{
@@ -15,11 +17,14 @@
 /* шапка-небо: тёмная в обеих темах, как аватарка */
 --hero-bg:#0A1022;--hero-glow:#1D4478;--hero-text:#F1F3FA;--hero-hint:#B4BED6;--hero-gold:#EBC05A;--hero-line:#33406A;
 --hero-edge:transparent;--muted-bg:#E8ECF6;--muted-ink:#485372;
---ui:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
---serif:"Iowan Old Style","PT Serif",Georgia,"DejaVu Serif",serif;
+/* шрифты (Юлай msg 6562): всё без засечек — Onest; засечки только у слова-логотипа «7000+» в шапке */
+--ui:"Onest",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+--serif:"PT Serif","Iowan Old Style",Georgia,serif;
 /* четыре ступени кегля: подпись · текст · заголовок · время */
 --fs-1:13px;--fs-2:16px;--fs-3:20px;--fs-4:48px;
---r-block:20px;--r-btn:14px;--gut:16px;--tap:48px;color-scheme:light;}
+--r-block:20px;--r-btn:14px;--gut:16px;--tap:48px;color-scheme:light;
+--safe-t:max(env(safe-area-inset-top,0px),calc(var(--tg-safe-area-inset-top,0px) + var(--tg-content-safe-area-inset-top,0px)));
+--safe-b:max(env(safe-area-inset-bottom,0px),var(--tg-safe-area-inset-bottom,0px));}
 @media (prefers-color-scheme:dark){:root:not([data-scheme="light"]){--bg:#070B18;--surface:#0F1730;--surface-2:#17224A;--text:#EEF1F9;--hint:#A5AFCB;--line:#2A3560;
 --gold:#E6B94F;--gold-ink:#1B1405;--gold-text:#EBC05A;--sky:#7FB2EE;--sky-soft:#142447;
 --sample-bg:#3A3015;--sample-ink:#F0D58A;--hero-edge:#34437A;--muted-bg:#17224A;--muted-ink:#A5AFCB;color-scheme:dark;}}
@@ -32,18 +37,19 @@ html,body{height:100%}
 body{margin:0;background:var(--bg);color:var(--text);font:var(--fs-2)/1.4 var(--ui);-webkit-font-smoothing:antialiased;
  -webkit-text-size-adjust:100%;overscroll-behavior:none}
 a{color:inherit;text-decoration:none}
-.app{height:100dvh;max-width:480px;margin:0 auto;display:flex;flex-direction:column;background:var(--bg)}
+.app{height:100dvh;height:var(--tg-viewport-stable-height,100dvh);max-width:480px;margin:0 auto;display:flex;flex-direction:column;background:var(--bg)}
 .scroll{flex:1;overflow-y:auto;overflow-x:hidden;padding:0 var(--gut) 28px;-webkit-overflow-scrolling:touch}
 svg.i{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
 button{font:inherit;color:inherit;cursor:pointer}
 h1,h2,h3,p,ul,ol{margin:0;padding:0}
 ul,ol{list-style:none}
-.top{display:flex;align-items:center;gap:12px;padding:calc(10px + env(safe-area-inset-top)) var(--gut) 10px;min-height:64px}
+.top{display:flex;align-items:center;gap:12px;padding:calc(10px + var(--safe-t)) var(--gut) 10px;min-height:64px}
 .mark{width:44px;height:44px;border-radius:13px;background:var(--hero-bg);display:grid;place-items:center;flex:none;
  box-shadow:inset 0 0 0 1px var(--hero-line)}
 .mark svg{width:34px;height:34px}
 .brand{flex:1;min-width:0}
-.brand b{display:block;font:700 var(--fs-3)/1.15 var(--serif);letter-spacing:.01em}
+.brand b{display:block;font:700 var(--fs-3)/1.15 var(--ui);letter-spacing:.01em}
+.brand b.logo{font-family:var(--serif)}
 .brand span{display:block;font-size:var(--fs-1);color:var(--hint);margin-top:2px}
 .icon-btn{width:var(--tap);height:var(--tap);border-radius:50%;border:1px solid var(--line);background:var(--surface);
  display:grid;place-items:center;position:relative;color:var(--text);flex:none}
@@ -95,7 +101,7 @@ h2.sec small{font-size:var(--fs-1);font-weight:500;color:var(--hint)}
 .row .go.lnk{color:var(--sky)}
 .row .go svg{width:20px;height:20px}
 .tabbar{display:grid;grid-template-columns:repeat(5,1fr);background:var(--surface);border-top:1px solid var(--line);
- padding:6px 4px calc(6px + env(safe-area-inset-bottom))}
+ padding:6px 4px calc(6px + var(--safe-b))}
 .tab{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-height:58px;border:0;background:none;
  font-size:var(--fs-1);font-weight:600;color:var(--hint);position:relative}
 .tab svg.i{width:28px;height:28px}
@@ -105,7 +111,7 @@ h2.sec small{font-size:var(--fs-1);font-weight:500;color:var(--hint)}
 
 .hero{padding:20px 20px 22px}
 .hero .when{display:flex;align-items:baseline;gap:10px;margin-top:12px}
-.hero .when .t{font:700 var(--fs-4)/1 var(--serif);letter-spacing:-.01em}
+.hero .when .t{font:700 var(--fs-4)/1 var(--ui);letter-spacing:-.01em}
 .hero .when .z{font-size:var(--fs-2);font-weight:600;color:var(--hero-hint)}
 .hero .msk{font-size:var(--fs-1);color:var(--hero-hint);margin-top:6px}
 .hero h1{font:700 var(--fs-3)/1.25 var(--ui);margin-top:16px}
@@ -121,7 +127,7 @@ h2.sec small{font-size:var(--fs-1);font-weight:500;color:var(--hint)}
 .steps li{display:grid;grid-template-columns:36px 1fr;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
 .steps li:last-child{border-bottom:0}
 .steps li::before{counter-increment:s;content:counter(s);width:36px;height:36px;border-radius:50%;background:var(--surface-2);
- display:grid;place-items:center;font:700 var(--fs-2)/1 var(--serif)}
+ display:grid;place-items:center;font:700 var(--fs-2)/1 var(--ui)}
 .steps b{display:block}
 .steps span{display:block;font-size:var(--fs-1);color:var(--hint);margin-top:2px}
 .more{display:grid;gap:10px;margin-top:18px}
@@ -129,7 +135,7 @@ h2.sec small{font-size:var(--fs-1);font-weight:500;color:var(--hint)}
 .note svg{width:18px;height:18px;margin-top:1px}
 </style>
 </head>
-<body>
+<body data-back="week.html">
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><symbol id="i-calendar" viewBox="0 0 24 24"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M16 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/></symbol><symbol id="i-library" viewBox="0 0 24 24"><path d="m16 6 4 14"/><path d="M12 6v14"/><path d="M8 8v12"/><path d="M4 4v16"/></symbol><symbol id="i-newspaper" viewBox="0 0 24 24"><path d="M15 18h-5"/><path d="M18 14h-8"/><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-4 0v-9a2 2 0 0 1 2-2h2"/><rect width="8" height="4" x="10" y="6" rx="1"/></symbol><symbol id="i-key" viewBox="0 0 24 24"><path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"/><circle cx="16.5" cy="7.5" r=".5" fill="currentColor"/></symbol><symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></symbol><symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol><symbol id="i-play" viewBox="0 0 24 24"><polygon points="6 3 20 12 6 21 6 3"/></symbol><symbol id="i-video" viewBox="0 0 24 24"><path d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5"/><rect x="2" y="6" width="14" height="12" rx="2"/></symbol><symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></symbol><symbol id="i-bell" viewBox="0 0 24 24"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></symbol><symbol id="i-chev" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol><symbol id="i-lock" viewBox="0 0 24 24"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol><symbol id="i-login" viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" x2="3" y1="12" y2="12"/></symbol><symbol id="i-mic" viewBox="0 0 24 24"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></symbol><symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 17v5"/><path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"/></symbol><symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></symbol><symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol><symbol id="i-folder" viewBox="0 0 24 24"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></symbol><symbol id="i-radio" viewBox="0 0 24 24"><path d="M4.9 19.1C1 15.2 1 8.8 4.9 4.9"/><path d="M7.8 16.2c-2.3-2.3-2.3-6.1 0-8.5"/><circle cx="12" cy="12" r="2"/><path d="M16.2 7.8c2.3 2.3 2.3 6.1 0 8.5"/><path d="M19.1 4.9C23 8.8 23 15.1 19.1 19"/></symbol><symbol id="i-megaphone" viewBox="0 0 24 24"><path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></symbol><symbol id="i-wallet" viewBox="0 0 24 24"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></symbol><symbol id="i-sprout" viewBox="0 0 24 24"><path d="M7 20h10"/><path d="M10 20c5.5-2.5.8-6.4 3-10"/><path d="M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4 0 5.5.8z"/><path d="M14.1 6a7 7 0 0 0-1.1 4c1.9-.1 3.3-.6 4.3-1.4 1-1 1.6-2.3 1.7-4.6-2.7.1-4 1-4.9 2z"/></symbol><symbol id="i-back" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></symbol><symbol id="i-search-x" viewBox="0 0 24 24"><path d="m13.5 8.5-5 5"/><path d="m8.5 8.5 5 5"/><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol><symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol><symbol id="i-message" viewBox="0 0 24 24"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></symbol><symbol id="i-circle-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></symbol><symbol id="i-pen" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.376 3.622a1 1 0 0 1 3.002 3.002L7.368 18.635a2 2 0 0 1-.855.506l-2.872.838a.5.5 0 0 1-.62-.62l.838-2.872a2 2 0 0 1 .506-.854z"/></symbol><symbol id="i-history" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l4 2"/></symbol><symbol id="i-cal-plus" viewBox="0 0 24 24"><path d="M8 2v4"/><path d="M16 2v4"/><path d="M21 13V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h8"/><path d="M3 10h18"/><path d="M16 19h6"/><path d="M19 16v6"/></symbol><symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></symbol><symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></symbol><symbol id="i-map-pin" viewBox="0 0 24 24"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></symbol><symbol id="i-languages" viewBox="0 0 24 24"><path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/></symbol><symbol id="i-moon" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></symbol><symbol id="i-badge-check" viewBox="0 0 24 24"><path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/><path d="m9 12 2 2 4-4"/></symbol></defs></svg>
 <div class="app">
 <header class="top"><a class="back" href="week.html"><svg class="i" aria-hidden="true"><use href="#i-back"/></svg> Неделя</a>
