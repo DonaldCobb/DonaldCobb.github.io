@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="ru" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Сокол · логика пульта</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="common.css">
+<link rel="stylesheet" href="real.css">
+<style>
+:root{color-scheme:light}
+body{min-height:0}
+.lg{width:100%;max-width:480px;margin:0 auto;padding:16px 16px 48px;display:flex;flex-direction:column;gap:28px}
+.lg h1{font-size:22px;line-height:1.25;font-weight:600}
+.intro{display:flex;flex-direction:column;gap:10px}
+.intro p{color:var(--muted);font-size:15px}
+.intro .legend{margin-top:2px}
+.step{display:flex;flex-direction:column;gap:12px}
+.step__h{display:flex;align-items:center;gap:10px}
+.step__n{width:28px;height:28px;border-radius:50%;background:var(--accent);color:var(--on-accent);display:flex;align-items:center;justify-content:center;font-weight:600;flex:none}
+.step__h h2{font-size:19px;font-weight:600;line-height:1.2}
+.step__t{margin-left:auto;color:var(--muted);font-size:12px;white-space:nowrap;text-align:right}
+.snap{overflow:hidden}
+.snap>*:not(.snap__src){zoom:.84}
+.snap .card__head .iconbtn{display:none}
+.snap .card__head h2{font-size:18px}
+.snap .tm--lg{font-size:24px}
+.snap__top{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 12px;border-bottom:1px solid var(--line)}
+.snap .counters{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin:0;width:100%;padding:8px 12px}
+.snap .counter{flex-direction:column-reverse;align-items:flex-start;gap:2px;padding:6px 8px;min-height:52px;background:var(--bg);font-size:12px;line-height:1.2;white-space:normal}
+.snap .counter b{font-size:20px}
+.snap .phone-only{display:revert}.snap .desk-only{display:none!important}
+.snap .cam{padding:8px 12px}
+.snap .cam .frame{border-radius:var(--radius-control)}
+.snap .sub{display:flex;align-items:center;gap:8px;min-height:40px;padding:6px 12px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--bg)}
+.snap .sub h2{font-size:14px;font-weight:600}
+.snap .rows>li+li{border-top:1px solid var(--line)}
+.snap .row{position:relative;width:100%;border:0;background:none;text-align:left;display:grid;grid-template-columns:16px auto minmax(0,1fr) auto;grid-template-areas:"mk plate plate tm" ". type in st";row-gap:6px;column-gap:10px;padding:10px 12px;font-size:14px;min-height:0;align-items:center}
+.snap .row--att::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--warn)}
+.snap .row--sel{background:var(--surface-2)}
+.snap .row .mk,.snap .row .mkx{grid-area:mk;align-self:center}
+.snap .row .thumb,.snap .row .c-att,.snap .c-type span{display:none}
+.snap .c-plate{grid-area:plate;display:flex;align-items:center;gap:6px;color:var(--muted)}
+.snap .c-type{grid-area:type;display:flex;flex-direction:column;line-height:1.25;min-width:0}
+.snap .c-type b{font-weight:600}
+.snap .c-in{grid-area:in;color:var(--muted);font-variant-numeric:tabular-nums}
+.snap .c-st{grid-area:st;text-align:right;display:flex;flex-direction:column;align-items:flex-end;line-height:1.25;min-width:0}
+.snap .c-st small{color:var(--muted);font-size:12px;text-align:right;white-space:normal}
+.snap .c-tm{grid-area:tm;text-align:right}
+.snap .card{border:0;border-radius:0;padding:12px;display:flex;flex-direction:column;gap:12px}
+.snap .card__head{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.snap .card__head h2{font-size:20px;font-weight:600}
+.snap .card__head .iconbtn{margin-left:auto;margin-right:-8px}
+.snap .card__timer{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.snap .card__media{display:grid;grid-template-columns:1fr;gap:12px}
+.snap .card__media figcaption{margin-top:4px;color:var(--muted);font-size:12px;font-weight:500}
+.snap .crop--lg{width:100%;height:48px}
+.snap .note{color:var(--muted);font-size:12px;margin-top:6px;line-height:1.35}
+.snap .note b{color:var(--warn);font-weight:600}
+.snap .actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.snap .actions .btn{flex:1 1 auto}
+.snap__src{padding:8px 12px;border-top:1px dashed var(--control-line);color:var(--muted);font-size:12px;line-height:1.4;background:var(--bg)}
+.frame--down .frame__img{filter:grayscale(1) brightness(.35)}
+.frame__badge--warn{background:var(--warn-soft);color:var(--warn);border:1px solid var(--warn)}
+.frame--down::after{display:none}
+.down{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;text-align:center;padding:24px 12px 28px;color:#fff}
+.down b{font-size:16px;font-weight:600}.down span{font-size:12px}
+.reason{padding:10px 12px;border-top:1px solid var(--line)}
+.reason__t{font-size:12px;color:var(--muted);font-weight:500;margin-bottom:6px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.tl{list-style:none;margin:0;padding:8px 12px 12px;display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--muted)}
+.tl li{display:flex;gap:8px}.tl b{color:var(--text);font-variant-numeric:tabular-nums;flex:none}
+.health{width:100%;border-collapse:collapse;font-size:12px;border-top:1px solid var(--line)}
+.health caption{text-align:left;padding:10px 12px 4px;color:var(--muted);font-weight:500}
+.health th,.health td{text-align:left;padding:6px 12px;vertical-align:top}
+.health th{color:var(--muted);font-weight:500}
+.health tbody tr{border-top:1px solid var(--line)}
+.tabel{padding:10px 12px 12px;display:flex;flex-direction:column;gap:8px;border-top:1px solid var(--line)}
+.tabel__h{display:flex;align-items:center;gap:10px}
+.tabel__l{font-size:13px}
+.tabel__flag{font-size:13px;color:var(--muted)}
+.tabel__flag--on{color:var(--warn);font-weight:600;background:var(--warn-soft);border:1px solid var(--warn);border-radius:4px;padding:6px 8px}
+.export{padding:12px;border-top:1px solid var(--line)}
+.snap .rows--done .row{padding:10px 12px}
+.logic{margin:0;border:1px solid var(--line);border-radius:var(--radius);background:var(--surface);overflow:hidden}
+.logic>div{padding:10px 12px}
+.logic>div+div{border-top:1px solid var(--line)}
+.logic .sys{background:var(--surface-2)}
+.logic dt{font-size:12px;font-weight:600;color:var(--muted);margin-bottom:3px}
+.logic dd{margin:0;font-size:15px;line-height:1.45}
+.check{display:flex;flex-direction:column;gap:14px;padding-top:4px}
+.check h2{font-size:20px;font-weight:600}
+.check>p{color:var(--muted);font-size:15px}
+.q{border:1px solid var(--line);border-radius:var(--radius);background:var(--surface);padding:12px;display:flex;flex-direction:column;gap:8px}
+.q h3{font-size:16px;font-weight:600;line-height:1.3;display:flex;gap:10px}
+.q__n{width:24px;height:24px;border-radius:50%;border:2px solid var(--text);display:flex;align-items:center;justify-content:center;font-size:13px;flex:none}
+.q__now{font-size:14px;color:var(--muted);line-height:1.45}
+.q__now b{color:var(--text);font-weight:600}
+.q__v{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;font-size:15px;line-height:1.4}
+.q__v li{padding:8px 10px;background:var(--bg);border-radius:4px}
+.credits{padding:4px 0 0}
+</style>
+</head>
+<body>
+<!--SPRITE-->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-sheet" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M8 13h2"/><path d="M14 13h2"/><path d="M8 17h2"/><path d="M14 17h2"/></symbol>
+  <symbol id="i-report" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+  <symbol id="i-pencil" viewBox="0 0 24 24"><path d="M21.17 6.81a1 1 0 0 0-3.98-3.98L3.84 16.17a2 2 0 0 0-.5.83l-1.32 4.35a.5.5 0 0 0 .62.62l4.35-1.32a2 2 0 0 0 .83-.5z"/><path d="m15 5 4 4"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
+  <symbol id="i-video" viewBox="0 0 24 24"><path d="m16 13 5.22 3.48a.5.5 0 0 0 .78-.42V7.87a.5.5 0 0 0-.75-.43L16 10.5"/><rect x="2" y="6" width="14" height="12" rx="2"/></symbol>
+  <symbol id="i-in" viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><path d="m10 17 5-5-5-5"/><path d="M15 12H3"/></symbol>
+  <symbol id="i-out" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></symbol>
+  <symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></symbol>
+  <symbol id="i-scan" viewBox="0 0 24 24"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><rect x="7" y="9" width="10" height="6" rx="1"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+  <symbol id="i-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+  <symbol id="i-merge" viewBox="0 0 24 24"><path d="m8 6 4-4 4 4"/><path d="M12 2v10.3a4 4 0 0 1-1.17 2.87L4 22"/><path d="m20 22-5-5"/></symbol>
+  <symbol id="i-split" viewBox="0 0 24 24"><path d="M16 3h5v5"/><path d="M8 3H3v5"/><path d="M12 22v-8.3a4 4 0 0 0-1.17-2.87L3 3"/><path d="m15 9 6-6"/></symbol>
+  <symbol id="i-back" viewBox="0 0 24 24"><path d="M19 20 9 12l10-8z"/><path d="M5 19V5"/></symbol>
+  <symbol id="i-map" viewBox="0 0 24 24"><path d="M14.11 5.55a2 2 0 0 0 1.79 0l3.66-1.83A1 1 0 0 1 21 4.62v12.76a1 1 0 0 1-.55.9l-4.55 2.27a2 2 0 0 1-1.79 0l-4.21-2.1a2 2 0 0 0-1.79 0l-3.66 1.83A1 1 0 0 1 3 19.38V6.62a1 1 0 0 1 .55-.9l4.55-2.27a2 2 0 0 1 1.79 0z"/><path d="M15 5.76v15"/><path d="M9 3.24v15"/></symbol>
+  <symbol id="i-pause" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M10 15V9"/><path d="M14 15V9"/></symbol>
+</svg>
+<!--/SPRITE-->
+<main class="lg">
+  <header class="intro">
+    <h1>Как работает пульт «Сокола» — проход за день</h1>
+    <p>Пять шагов одного рабочего дня. Проверяем только логику: что видит человек, что решила система и по какому правилу, что делает человек. Внешний вид — потом.</p>
+    <p>Кадры и строки взяты из прототипа A (r19-a); время, рамки и числа подогнаны под шаг. Под каждым снимком написано, что из него есть в r19-a, а что дорисовано по описанию. Где правила нет — так и сказано. «Рейс» — один заезд на площадку: от въезда до выезда.</p>
+    <span class="legend"><span><i class="mk mk--move"></i>в движении</span><span><i class="mk mk--idle"></i>стоит</span><span><i class="mk mk--unseen"></i>не видно</span><span><svg class="ic ic--s"><use href="#i-pencil"/></svg>введено вручную</span></span>
+  </header>
+<section class="step" id="s1">
+  <header class="step__h"><span class="step__n">1</span><h2>Утро — сводка</h2><span class="step__t">08:05</span></header>
+  <div class="win snap board"><div class="snap__top"><div class="site"><b>Жилой дом, секция Б</b><span>Смена 08:00–20:00</span></div><div class="clock"><b>08:05</b><span>Пермь, UTC+5</span></div></div><nav class="counters" aria-label="Счётчики смены"><button type="button" class="counter">на площадке <b>1</b></button><button type="button" class="counter">не видно <b>0</b></button><button type="button" class="counter">номер не прочитан <b>0</b></button><button type="button" class="counter">подтвердить <b>0</b></button></nav><section class="cam" aria-label="Камера 1"><div class="frame frame--real"><img class="frame__img" src="img/cam1.webp" alt="Кадр камеры 1" loading="lazy" decoding="async" title="Кадр 0:27 из ролика «Building site Ljubljana 2». Sounds of Changes, CC BY 3.0, Wikimedia Commons"><span class="frame__badge frame__badge--l"><svg class="ic ic--s"><use href="#i-video"/></svg>Камера 1 · Въезд</span><span class="frame__badge frame__badge--r">видно</span><div class="box" style="left:65%;top:26%;width:34%;height:44%"><span class="box__id">4 · экскаватор</span></div><div class="gate" style="left:4%;top:88%;width:92%"></div><span class="frame__cap" title="Кадр 0:27 из ролика «Building site Ljubljana 2». Sounds of Changes, CC BY 3.0, Wikimedia Commons">Фото: Sounds of Changes, CC BY 3.0</span><span class="frame__time">08:05:27</span></div></section><section class="cam" aria-label="Камера 2"><div class="frame frame--real"><img class="frame__img" src="img/cam2.webp" alt="Кадр камеры 2" loading="lazy" decoding="async" title="Кадр 0:03 из ролика «Retenční nádrž Libušská, čištění vtoku». ŠJů, CC BY 4.0, Wikimedia Commons"><span class="frame__badge frame__badge--l"><svg class="ic ic--s"><use href="#i-video"/></svg>Камера 2 · Общий план</span><span class="frame__badge frame__badge--r">видно</span><div class="gate" style="left:4%;top:88%;width:92%"></div><span class="frame__cap" title="Кадр 0:03 из ролика «Retenční nádrž Libušská, čištění vtoku». ŠJů, CC BY 4.0, Wikimedia Commons">Фото: ŠJů, CC BY 4.0</span><span class="frame__time">08:05:03</span></div></section><div class="sub"><h2>Машины на площадке</h2><span class="muted num">1</span></div><ul class="rows"><li><button type="button" class="row">
+        <span class="mk mk--move" title="в движении"></span>
+        <span class="thumb"><img src="img/exc-in.webp" alt="Кадр" loading="lazy" decoding="async" title="Кадр 0:17 из ролика «Building site Ljubljana 2». Sounds of Changes, CC BY 3.0, Wikimedia Commons"><span class="fn" aria-hidden="true">1</span></span>
+        <span class="c-plate"><span class="plate"><span class="plate__n">4821 РМ</span><span class="plate__r">59</span></span><svg class="ic ic--s" aria-label="введено вручную"><use href="#i-pencil"/></svg></span>
+        <span class="c-type"><b>Экскаватор</b><span>колёсный</span></span>
+        <span class="c-in"><span class="phone-only">въехал </span>07:46</span>
+        <span class="c-st"><span class="st">в движении, на месте</span></span>
+        <span class="c-tm"><span class="tm">19<small>мин</small></span></span>
+        <span class="c-att"></span>
+      </button></li></ul><p class="snap__src">Собрано из r19-a: те же кадры и строка экскаватора; время и счётчики утра подогнаны под шаг.</p></div>
+  <dl class="logic">
+    <div><dt>Что видит оператор</dt><dd>Четыре счётчика: на площадке 1, остальные 0. Обе камеры «видно». В списке один экскаватор — «в движении, на месте», 19 мин.</dd></div>
+    <div class="sys"><dt>Что сделала система и по какому правилу</dt><dd>Записала экскаватор в 07:46: он пересёк линию въезда и пробыл внутри не меньше 3 с. «В движении» — рамка сдвигается или внутри неё меняется не меньше 2 % кадра за 2 с, поэтому копающий на месте экскаватор не «стоит». Люди и легковые только считаются, в часы техники не идут.</dd></div>
+    <div><dt>Что делает оператор</dt><dd>Смотрит счётчики и камеры. Пока везде нули и «видно» — нажимать нечего.</dd></div>
+  </dl>
+</section>
+<section class="step" id="s2">
+  <header class="step__h"><span class="step__n">2</span><h2>Машина заехала</h2><span class="step__t">14:33:04</span></header>
+  <div class="win snap board"><div class="snap__top"><div class="site"><b>Жилой дом, секция Б</b><span>Смена 08:00–20:00</span></div><div class="clock"><b>14:40</b><span>Пермь, UTC+5</span></div></div><nav class="counters" aria-label="Счётчики смены"><button type="button" class="counter">на площадке <b>8</b></button><button type="button" class="counter counter--warn">не видно <b>1</b></button><button type="button" class="counter counter--warn">номер не прочитан <b>1</b></button><button type="button" class="counter counter--warn">подтвердить <b>3</b></button></nav><div class="sub"><h2>Было: сразу после въезда</h2></div><ul class="rows"><li><button type="button" class="row row--att">
+        <span class="mk mk--move" title="в движении"></span>
+        <span class="thumb"><img src="img/plate-dmp.webp" alt="Кадр" loading="lazy" decoding="async" title="Кадр 0:17 из ролика «Building site Ljubljana 2». Sounds of Changes, CC BY 3.0, Wikimedia Commons"><span class="fn" aria-hidden="true">1</span></span>
+        <span class="c-plate"><span class="noplate">номер не читается</span></span>
+        <span class="c-type"><b>Самосвал</b><span>введите номер</span></span>
+        <span class="c-in"><span class="phone-only">въехал </span>14:33</span>
+        <span class="c-st"><span class="st">в движении</span></span>
+        <span class="c-tm"><span class="tm">7<small>мин</small></span></span>
+        <span class="c-att"><svg class="ic" aria-label="ждёт подтверждения"><use href="#i-help"/></svg></span>
+      </button></li></ul><section class="win card" aria-labelledby="card-t">
+      <div class="card__head">
+        <span class="mk mk--move" title="в движении"></span>
+        <h2 id="card-t">Самосвал</h2>
+        <span class="noplate">номер не читается</span>
+        <button class="iconbtn" type="button" aria-label="Закрыть карточку"><svg class="ic"><use href="#i-x"/></svg></button>
+      </div>
+      <div class="card__timer">
+        <span class="tm tm--lg">7<small>мин</small></span>
+        <span class="muted">на площадке, въехал 14:33:04, выезда ещё нет</span>
+      </div>
+      <div class="card__media">
+        <figure>
+          <div class="frame frame--real"><img class="frame__img" src="img/dmp-in.webp" alt="Кадр въезда" loading="lazy" decoding="async" title="Кадр 0:04 из ролика «Building site Ljubljana 2». Sounds of Changes, CC BY 3.0, Wikimedia Commons">
+            <div class="box box--sel" style="left:1%;top:16%;width:65%;height:68%"><span class="box__id">31</span></div>
+            <span class="frame__cap" title="Кадр 0:04 из ролика «Building site Ljubljana 2». Sounds of Changes, CC BY 3.0, Wikimedia Commons">Фото: Sounds of Changes, CC BY 3.0</span>
+          </div>
+          <figcaption>Въезд 14:33:04 · камера 1</figcaption>
+        </figure>
+        <figure>
+          <div class="crop crop--lg"><img src="img/plate-dmp.webp" alt="Вырезка таблички" loading="lazy" decoding="async" title="Кадр 0:17 из ролика «Building site Ljubljana 2». Sounds of Changes, CC BY 3.0, Wikimedia Commons"><span class="crop__cap">номер размыт для показа</span></div>
+          <p class="note"><b>Не читается:</b> номер на кадре размыт (в показе лица и номера размыты). Номер вводит оператор по вырезке, в журнале — «введено вручную».</p>
+        </figure>
+      </div>
+      <div>
+        <label class="label" for="plate-in">Номер</label>
+        <div class="field field--focus" id="plate-in">Е 615 ХР 159<span class="caret"></span></div>
+        <div class="actions">
+          <button class="btn btn--primary btn--lg" type="button"><svg class="ic"><use href="#i-check"/></svg>Подтвердить номер</button>
+          <button class="btn btn--lg" type="button">Номера не видно</button>
+        </div>
+      </div>
+      </section><div class="sub"><h2>Стало: после «Подтвердить номер»</h2></div><ul class="rows"><li><button type="button" class="row">
+        <span class="mk mk--move" title="в движении"></span>
+        <span class="thumb"><img src="img/plate-dmp.webp" alt="Кадр" loading="lazy" decoding="async" title="Кадр 0:17 из ролика «Building site Ljubljana 2». Sounds of Changes, CC BY 3.0, Wikimedia Commons"><span class="fn" aria-hidden="true">1</span></span>
+        <span class="c-plate"><span class="plate"><span class="plate__n">Е 615 ХР</span><span class="plate__r">159</span></span><svg class="ic ic--s" aria-label="введено вручную"><use href="#i-pencil"/></svg></span>
+        <span class="c-type"><b>Самосвал</b><span>введите номер</span></span>
+        <span class="c-in"><span class="phone-only">въехал </span>14:33</span>
+        <span class="c-st"><span class="st">в движении</span></span>
+        <span class="c-tm"><span class="tm">7<small>мин</small></span></span>
+        <span class="c-att"></span>
+      </button></li></ul><p class="snap__src">Из r19-a: строка, карточка с кадром въезда и вырезкой (номер размыт). Строка «Стало» дорисована по описанию: после ввода — табличка и значок «введено вручную»; счётчики после ввода: «номер не прочитан» 1 → 0, «подтвердить» 3 → 2.</p></div>
+  <dl class="logic">
+    <div><dt>Что видит оператор</dt><dd>Новая строка «Самосвал — номер не читается» с идущим таймером (7 мин). В карточке — кадр въезда, размытая вырезка таблички и поле для номера.</dd></div>
+    <div class="sys"><dt>Что сделала система и по какому правилу</dt><dd>Засчитала въезд в 14:33:04: машина пересекла линию въезда и пробыла внутри не меньше 3 с (строка появляется не позже чем через 5 с). Номер сама не читает — читателя номеров по умолчанию нет, на показе номер вводит человек; без ввода — «номер не читается». Введённый номер пишется в журнал как «введено вручную».</dd></div>
+    <div><dt>Что делает оператор</dt><dd>Смотрит вырезку, вводит номер и жмёт «Подтвердить номер». Если номера не видно — «Номера не видно»: машина получит имя «Самосвал без номера № N» и кадр кузова.</dd></div>
+  </dl>
+</section>
+<section class="step" id="s3">
+  <header class="step__h"><span class="step__n">3</span><h2>Простой дольше порога</h2><span class="step__t">14:40</span></header>
+  <div class="win snap board"><div class="snap__top"><div class="site"><b>Жилой дом, секция Б</b><span>Смена 08:00–20:00</span></div><div class="clock"><b>14:40</b><span>Пермь, UTC+5</span></div></div><nav class="counters" aria-label="Счётчики смены"><button type="button" class="counter">на площадке <b>8</b></button><button type="button" class="counter counter--warn">не видно <b>1</b></button><button type="button" class="counter counter--warn">номер не прочитан <b>1</b></button><button type="button" class="counter counter--warn">подтвердить <b>3</b></button></nav><div class="sub"><h2>Для сравнения: не «стоит»</h2></div><ul class="rows"><li><button type="button" class="row">
+        <span class="mk mk--move" title="в движении"></span>
+        <span class="thumb"><img src="img/exc-in.webp" alt="Кадр" loading="lazy" decoding="async" title="Кадр 0:17 из ролика «Building site Ljubljana 2». Sounds of Changes, CC BY 3.0, Wikimedia Commons"><span class="fn" aria-hidden="true">1</span></span>
+        <span class="c-plate"><span class="plate"><span class="plate__n">4821 РМ</span><span class="plate__r">59</span></span><svg class="ic ic--s" aria-label="введено вручную"><use href="#i-pencil"/></svg></span>
+        <span class="c-type"><b>Экскаватор</b><span>колёсный</span></span>
+        <span class="c-in"><span class="phone-only">въехал </span>07:46</span>
+        <span class="c-st"><span class="st">в движении, на месте</span></span>
+        <span class="c-tm"><span class="tm">6<small>ч</small>54<small>мин</small></span></span>
+        <span class="c-att"></span>
+      </button></li></ul><div class="sub"><h2>«Стоит» — три машины</h2></div><ul class="rows"><li><button type="button" class="row">
+        <span class="mk mk--idle" title="стоит"></span>
+        <span class="thumb"><img src="img/haf-in.webp" alt="Кадр" loading="lazy" decoding="async" title="Кадр 0:04 из ролика «Hafriyat kamyonuna yükleme yapan kepçe videosu». Satirdan kahraman, CC BY-SA 4.0, Wikimedia Commons"><span class="fn" aria-hidden="true">7</span></span>
+        <span class="c-plate"><span class="plate"><span class="plate__n">Н 774 СА</span><span class="plate__r">159</span></span><svg class="ic ic--s" aria-label="введено вручную"><use href="#i-pencil"/></svg></span>
+        <span class="c-type"><b>Самосвал</b><span>под погрузкой</span></span>
+        <span class="c-in"><span class="phone-only">въехал </span>14:12</span>
+        <span class="c-st"><span class="st">стоит 3 мин</span></span>
+        <span class="c-tm"><span class="tm">28<small>мин</small></span></span>
+        <span class="c-att"></span>
+      </button></li><li><button type="button" class="row">
+        <span class="mk mk--idle" title="стоит"></span>
+        <span class="thumb"><img src="img/mix-in.webp" alt="Кадр" loading="lazy" decoding="async" title="Кадр 0:01 из ролика «Cement mixer truck in Bangalore (2025)». Gpkp, CC BY-SA 4.0, Wikimedia Commons"><span class="fn" aria-hidden="true">4</span></span>
+        <span class="c-plate"><span class="plate"><span class="plate__n">В 905 ХА</span><span class="plate__r">159</span></span><svg class="ic ic--s" aria-label="введено вручную"><use href="#i-pencil"/></svg></span>
+        <span class="c-type"><b>Бетоновоз</b><span>миксер</span></span>
+        <span class="c-in"><span class="phone-only">въехал </span>14:21</span>
+        <span class="c-st"><span class="st">стоит 6 мин</span></span>
+        <span class="c-tm"><span class="tm">19<small>мин</small></span></span>
+        <span class="c-att"></span>
+      </button></li><li><button type="button" class="row">
+        <span class="mk mk--idle" title="стоит"></span>
+        <span class="thumb"><img src="img/trk2-th.webp" alt="Кадр" loading="lazy" decoding="async" title="Кадр 0:03 из ролика «Retenční nádrž Libušská, čištění vtoku». ŠJů, CC BY 4.0, Wikimedia Commons"><span class="fn" aria-hidden="true">2</span></span>
+        <span class="c-plate"><span class="plate"><span class="plate__n">Т 317 ОР</span><span class="plate__r">159</span></span><svg class="ic ic--s" aria-label="введено вручную"><use href="#i-pencil"/></svg></span>
+        <span class="c-type"><b>Самосвал</b><span>под погрузкой у экскаватора</span></span>
+        <span class="c-in"><span class="phone-only">въехал </span>11:20</span>
+        <span class="c-st"><span class="st">стоит 38 мин</span><small>причина не указана</small></span>
+        <span class="c-tm"><span class="tm">3<small>ч</small>20<small>мин</small></span></span>
+        <span class="c-att"></span>
+      </button></li></ul><div class="reason"><p class="reason__t">Т 317 ОР · причина простоя</p><div class="chips"><span class="chip">нет фронта</span><span class="chip">ждём бетон</span><span class="chip">поломка</span></div></div><ol class="tl"><li><b>14:02</b> машина перестала двигаться, внутри рамки тоже тихо</li><li><b>14:04</b> прошло 2 мин — состояние стало «стоит»</li><li><b>14:40</b> сейчас: «стоит 38 мин», счёт идёт с 14:02</li></ol><p class="snap__src">Из r19-a: четыре строки как есть. Дорисовано по описанию: кнопки причин (три примера из описания) и три отметки времени для Т 317 ОР.</p></div>
+  <dl class="logic">
+    <div><dt>Что видит оператор</dt><dd>Три строки с кольцом «стоит» (3, 6 и 38 мин); у самой долгой подпись «причина не указана». Жёлтым простой не выделен — жёлтый только у «не видно» и «подтверди».</dd></div>
+    <div class="sys"><dt>Что сделала система и по какому правилу</dt><dd>Назвала «стоит» только после 2 минут без сдвига и без движения внутри рамки; до этого держится прежнее состояние. Счёт идёт с начала неподвижности, поэтому 38 мин, а не 36. Простой остаётся в «подтверждено камерой».</dd></div>
+    <div><dt>Что делает оператор</dt><dd>По желанию ставит причину одним касанием. Примеры в описании: «нет фронта», «ждём бетон», «поломка»; полный список причин — правило не задано.</dd></div>
+  </dl>
+</section>
+<section class="step" id="s4">
+  <header class="step__h"><span class="step__n">4</span><h2>Камера не видит</h2><span class="step__t">14:41</span></header>
+  <div class="win snap board"><div class="snap__top"><div class="site"><b>Жилой дом, секция Б</b><span>Смена 08:00–20:00</span></div><div class="clock"><b>14:41</b><span>Пермь, UTC+5</span></div></div><nav class="counters" aria-label="Счётчики смены"><button type="button" class="counter">на площадке <b>8</b></button><button type="button" class="counter counter--warn">не видно <b>3</b></button><button type="button" class="counter counter--warn">номер не прочитан <b>1</b></button><button type="button" class="counter counter--warn">подтвердить <b>3</b></button></nav><section class="cam" aria-label="Камера 2"><div class="frame frame--real frame--down"><img class="frame__img" src="img/cam2.webp" alt="Кадр камеры 2" loading="lazy" decoding="async" title="Кадр 0:03 из ролика «Retenční nádrž Libušská, čištění vtoku». ŠJů, CC BY 4.0, Wikimedia Commons"><span class="frame__badge frame__badge--l"><svg class="ic ic--s"><use href="#i-video"/></svg>Камера 2 · Общий план</span><span class="frame__badge frame__badge--r frame__badge--warn">камера недоступна</span><div class="down"><b>Камера недоступна</b><span>нет кадров с 14:40:03 · переподключение 1 → 2 → 4 → 8 с</span></div><span class="frame__cap" title="Кадр 0:03 из ролика «Retenční nádrž Libušská, čištění vtoku». ŠJů, CC BY 4.0, Wikimedia Commons">Фото: ŠJů, CC BY 4.0</span><span class="frame__time">14:40:03</span></div></section><div class="sub"><h2>Машины камеры 2</h2><span class="muted num">2</span></div><ul class="rows"><li><button type="button" class="row row--att">
+        <span class="mk mk--unseen" title="не видно"></span>
+        <span class="thumb"><img src="img/trk2-th.webp" alt="Кадр" loading="lazy" decoding="async" title="Кадр 0:03 из ролика «Retenční nádrž Libušská, čištění vtoku». ŠJů, CC BY 4.0, Wikimedia Commons"><span class="fn" aria-hidden="true">2</span></span>
+        <span class="c-plate"><span class="plate"><span class="plate__n">Т 317 ОР</span><span class="plate__r">159</span></span><svg class="ic ic--s" aria-label="введено вручную"><use href="#i-pencil"/></svg></span>
+        <span class="c-type"><b>Самосвал</b><span>под погрузкой у экскаватора</span></span>
+        <span class="c-in"><span class="phone-only">въехал </span>11:20</span>
+        <span class="c-st"><span class="st st--unseen">не видно 1 мин</span><small>не подтверждено, в расчёт не идёт</small></span>
+        <span class="c-tm"><span class="tm">3<small>ч</small>21<small>мин</small></span></span>
+        <span class="c-att"></span>
+      </button></li><li><button type="button" class="row row--att">
+        <span class="mk mk--unseen" title="не видно"></span>
+        <span class="thumb"><img src="img/mini-in.webp" alt="Кадр" loading="lazy" decoding="async" title="Кадр 0:03 из ролика «Retenční nádrž Libušská, čištění vtoku». ŠJů, CC BY 4.0, Wikimedia Commons"><span class="fn" aria-hidden="true">2</span></span>
+        <span class="c-plate"><span class="plate"><span class="plate__n">5607 УК</span><span class="plate__r">59</span></span><svg class="ic ic--s" aria-label="введено вручную"><use href="#i-pencil"/></svg></span>
+        <span class="c-type"><b>Экскаватор</b><span>малый</span></span>
+        <span class="c-in"><span class="phone-only">въехал </span>14:29</span>
+        <span class="c-st"><span class="st st--unseen">не видно 1 мин</span><small>не подтверждено, в расчёт не идёт</small></span>
+        <span class="c-tm"><span class="tm">12<small>мин</small></span></span>
+        <span class="c-att"></span>
+      </button></li></ul><table class="health"><caption>Что ещё считается «камера не в порядке»</caption><thead><tr><th>Что с камерой</th><th>Когда фиксируем</th></tr></thead><tbody><tr><td>Нет кадров</td><td>дольше 3 с; надпись не позже чем через 10 с</td></tr><tr><td>Кадр застыл</td><td>дольше 60 с (тихая сцена с шумом — не застыл)</td></tr><tr><td>Темно</td><td>средняя яркость ниже 20, дольше 10 с</td></tr><tr><td>Объектив закрыт или размыт</td><td>мало деталей дольше 30 с</td></tr><tr><td>Камеру сдвинули, засвет</td><td>после показа</td></tr></tbody></table><p class="snap__src">Условный пример по правилам: в r19-a такого состояния нет. Взяты кадр камеры 2 и две её машины (7 и 22) из r19-a, счётчик «не видно» 1 → 3.</p></div>
+  <dl class="logic">
+    <div><dt>Что видит оператор</dt><dd>У камеры 2 надпись «камера недоступна», вместо кадра — тёмная заглушка. Обе её машины — «не видно 1 мин», таймеры на площадке идут, счётчик «не видно» вырос с 1 до 3.</dd></div>
+    <div class="sys"><dt>Что сделала система и по какому правилу</dt><dd>Нет кадров дольше 3 с — камера «недоступна» (надпись не позже чем через 10 с), переподключается через 1, 2, 4, 8 с. Пока она не в порядке, все её машины «не видно», время идёт в «спорный интервал». Остальные надписи (кадр застыл, темно, объектив закрыт) — свои, их текст в описании не задан.</dd></div>
+    <div><dt>Что делает оператор</dt><dd>Ничего не нажимает: когда поток вернётся, система продолжит сама. Что делать при долгом сбое — правило не задано (вопрос 5).</dd></div>
+  </dl>
+</section>
+<section class="step" id="s5">
+  <header class="step__h"><span class="step__n">5</span><h2>Конец дня</h2><span class="step__t">рапорт за смену</span></header>
+  <div class="win snap board"><div class="snap__top"><div class="site"><b>Жилой дом, секция Б</b><span>Смена 08:00–20:00</span></div><div class="clock"><b>конец смены</b><span>Пермь, UTC+5</span></div></div><div class="sub"><h2>Рейсы: выехали за смену</h2><span class="muted num">4</span></div><ul class="rows rows--done"><li><button type="button" class="row">
+        <svg class="ic ic--s mkx muted" aria-label="выехал"><use href="#i-out"/></svg>
+        <span class="thumb"><img src="img/kem-out.webp" alt="Кадр" loading="lazy" decoding="async" title="Кадр 0:14 из ролика «Excavator digging land and loading truck». KEmel49, CC BY-SA 4.0, Wikimedia Commons"><span class="fn" aria-hidden="true">6</span></span>
+        <span class="c-plate"><span class="plate"><span class="plate__n">Х 731 АМ</span><span class="plate__r">159</span></span></span>
+        <span class="c-type"><b>Самосвал</b></span>
+        <span class="c-in"><span class="phone-only">въехал </span>09:31</span>
+        <span class="c-st"><span class="st">выехал 10:02</span></span>
+        <span class="c-tm"><span class="tm tm--done">31<small>мин</small></span></span>
+        <span class="c-att"></span>
+      </button></li><li><button type="button" class="row">
+        <svg class="ic ic--s mkx muted" aria-label="выехал"><use href="#i-out"/></svg>
+        <span class="thumb"><img src="img/unk-in.webp" alt="Кадр" loading="lazy" decoding="async" title="Кадр 0:14 из ролика «2018-05-07 Ein Muldenkipper im Steinbruch Unterbalbach». Triplec85, CC BY-SA 4.0, Wikimedia Commons"><span class="fn" aria-hidden="true">10</span></span>
+        <span class="c-plate"><span class="plate"><span class="plate__n">С 446 НЕ</span><span class="plate__r">159</span></span></span>
+        <span class="c-type"><b>Самосвал</b></span>
+        <span class="c-in"><span class="phone-only">въехал </span>12:10</span>
+        <span class="c-st"><span class="st">выехал 12:58</span></span>
+        <span class="c-tm"><span class="tm tm--done">48<small>мин</small></span></span>
+        <span class="c-att"></span>
+      </button></li><li><button type="button" class="row row--att">
+        <svg class="ic ic--s mkx muted" aria-label="выехал"><use href="#i-out"/></svg>
+        <span class="thumb"><img src="img/ober-out.webp" alt="Кадр" loading="lazy" decoding="async" title="Кадр 0:01 из ролика «Excavator loading a dump truck, Oberlech 321, 6764 Lech am Arlberg, Austria». KaiKemmann, CC BY-SA 4.0, Wikimedia Commons"><span class="fn" aria-hidden="true">9</span></span>
+        <span class="c-plate"><span class="plate"><span class="plate__n">У 352 КС</span><span class="plate__r">159</span></span></span>
+        <span class="c-type"><b>Самосвал</b><span>выезд без въезда</span></span>
+        <span class="c-in muted">нет</span>
+        <span class="c-st"><span class="st">выехал 13:41</span><small>въезда в журнале нет</small></span>
+        <span class="c-tm"><span class="tm tm--done">не посчитано</span></span>
+        <span class="c-att"><svg class="ic" aria-label="ждёт подтверждения"><use href="#i-help"/></svg></span>
+      </button></li><li><button type="button" class="row">
+        <svg class="ic ic--s mkx muted" aria-label="выехал"><use href="#i-out"/></svg>
+        <span class="thumb"><img src="img/wien-out.webp" alt="Кадр" loading="lazy" decoding="async" title="Кадр 1:31 из ролика «1050 Wien, U4 Station Pilgramgasse Baustelle Wienfluss-Kanal Bagger 03 2023-10-05». Hangman&#x27;sDeath, CC0, Wikimedia Commons"><span class="fn" aria-hidden="true">8</span></span>
+        <span class="c-plate"><span class="plate"><span class="plate__n">О 218 ВК</span><span class="plate__r">159</span></span></span>
+        <span class="c-type"><b>Самосвал</b></span>
+        <span class="c-in"><span class="phone-only">въехал </span>12:53</span>
+        <span class="c-st"><span class="st">выехал 14:05</span></span>
+        <span class="c-tm"><span class="tm tm--done">1<small>ч</small>12<small>мин</small></span></span>
+        <span class="c-att"></span>
+      </button></li></ul><div class="sub"><h2>Табель «заявлено ↔ видели»</h2></div><div class="tabel"><div class="tabel__h"><span class="plate"><span class="plate__n">Х 731 АМ</span><span class="plate__r">159</span></span><b>Самосвал</b></div><dl class="split"><div><dt>Подтверждено камерой</dt><dd>31 мин (0,52 ч)</dd></div><div><dt>Спорный интервал</dt><dd>0 мин</dd></div></dl><p class="tabel__l">Заявлено (ввёл оператор, число-пример): <b>1,00 ч</b> · разница <b>0,48 ч</b></p><p class="tabel__flag tabel__flag--on">⚠ расхождение больше спорного: 0,48 &gt; 0 + 0,25</p></div><div class="tabel"><div class="tabel__h"><span class="plate"><span class="plate__n">О 218 ВК</span><span class="plate__r">159</span></span><b>Самосвал</b></div><dl class="split"><div><dt>Подтверждено камерой</dt><dd>1 ч 12 мин (1,20 ч)</dd></div><div><dt>Спорный интервал</dt><dd>0 мин</dd></div></dl><p class="tabel__l">Заявлено (ввёл оператор, число-пример): <b>1,20 ч</b> · разница <b>0,00 ч</b></p><p class="tabel__flag">без флага</p></div><div class="tabel"><div class="tabel__h"><span class="plate"><span class="plate__n">Е 482 КМ</span><span class="plate__r">159</span></span><b>Самосвал</b></div><dl class="split"><div><dt>Подтверждено камерой</dt><dd>26 мин (0,43 ч)</dd></div><div><dt>Спорный интервал</dt><dd>16 мин (0,27 ч)</dd></div></dl><p class="tabel__l">Заявлено (ввёл оператор, число-пример): <b>0,80 ч</b> · разница <b>0,37 ч</b></p><p class="tabel__flag">без флага: 0,37 не больше 0,27 + 0,25 = 0,52</p><p class="note">Ещё на площадке по данным 14:40; «не видно 16 мин» целиком в спорном.</p></div><div class="export"><button class="btn btn--block" type="button"><svg class="ic"><use href="#i-sheet"/></svg>Выгрузить смену в Excel</button><p class="note">Excel (листы «Рейсы» и «Табель»), CSV (UTF-8, разделитель «;») и JSON — за день или декаду; печать в PDF. Кадров с людьми в выгрузке нет, только вырезки номера и кузова. Рядом с машиной — отметка «Сверено: имя, время».</p></div><p class="snap__src">Из r19-a: четыре строки «Выехали за смену» и кнопка выгрузки. Табель и «Сверено» в r19-a не нарисованы — дорисованы по описанию; числа «подтверждено» и «спорный» пересчитаны из r19-a, «заявлено» — пример для проверки флага.</p></div>
+  <dl class="logic">
+    <div><dt>Что видит оператор</dt><dd>Рейсы (въехал, выехал, на площадке), по каждой машине — «подтверждено камерой» и «спорный интервал», заявленные часы, разница. У первой машины горит флаг расхождения. У У 352 КС «въезда в журнале нет, не посчитано».</dd></div>
+    <div class="sys"><dt>Что сделала система и по какому правилу</dt><dd>Разница = заявлено подрядчиком − подтверждено камерой; флаг — если она больше спорного + 0,25 ч. «Не видно» и неувиденный выезд — в спорном. Выезд без въезда — часы не считает, ставит вопрос. Деньги не считает и часы сама не правит: решает человек.</dd></div>
+    <div><dt>Что делает оператор</dt><dd>Вводит «заявлено» по каждой машине, сверяет с путевым листом, ставит «Сверено» (отметка, часы не меняются) и выгружает Excel, CSV или JSON за день или декаду.</dd></div>
+  </dl>
+</section>
+  <section class="check" id="check">
+    <h2>Проверь логику</h2>
+    <p>Пять мест, где правило спорное или не задано. Ответь буквами: например, 1А, 2Б, 3А, 4Б, 5А. Свой вариант тоже подойдёт.</p>
+    <div class="q"><h3><span class="q__n">1</span>Заехала снова через 2 минуты — это новый рейс?</h3><p class="q__now"><b>Сейчас по правилу:</b> Выезд закрывает рейс: машина пересекла линию выезда и пробыла снаружи не меньше 3 с. Заехала опять — новый въезд, новый рейс, склейки нет. Если развернулась в воротах быстрее 3 с — ни выезда, ни въезда.</p><ul class="q__v"><li><b>А.</b> Всегда новый рейс (как сейчас); часы по машине в табеле всё равно складываются за день.</li><li><b>Б.</b> Если вернулась быстро — тот же рейс. Сколько минут «быстро» — не задано, нужно назвать число.</li><li><b>В.</b> Два рейса в журнале, но в табеле и рапорте — одна строка машины за день (так в табеле уже сейчас).</li></ul></div><div class="q"><h3><span class="q__n">2</span>Вопрос «Тот же?» висит без ответа — что с часами?</h3><p class="q__now"><b>Сейчас по правилу:</b> Пока оператор не ответит «Та же» или «Другая», машина «не видно», время идёт в спорный интервал. Срока ответа нет. Разрыв до 2 мин и один кандидат — склеивается сама; до 10 мин или два кандидата — вопрос; дольше 10 мин — вернувшаяся считается новой машиной.</p><ul class="q__v"><li><b>А.</b> Ждать ответа без срока (как сейчас).</li><li><b>Б.</b> Через N минут без ответа считать «Другая» и закрыть вопрос; N не задано.</li><li><b>В.</b> Напоминать оператору, как и когда — не задано; 10 минут — оставить или менять — не задано.</li></ul></div><div class="q"><h3><span class="q__n">3</span>Простой входит в «подтверждено камерой». С чем сверять подрядчика?</h3><p class="q__now"><b>Сейчас по правилу:</b> «Подтверждено» = в движении + стоит. В табеле одна цифра подтверждённых часов (с простоем); в рапорте «в движении» и «стоит» отдельно.</p><ul class="q__v"><li><b>А.</b> Сверять со всем временем на площадке (как в табеле сейчас).</li><li><b>Б.</b> Сверять только с «в движении»; простой — в отдельную колонку табеля.</li><li><b>В.</b> Показывать в табеле обе цифры рядом, выбор оператора.</li></ul></div><div class="q"><h3><span class="q__n">4</span>Один порог простоя в 2 минуты на все машины — верно?</h3><p class="q__now"><b>Сейчас по правилу:</b> Один порог: 2 минуты без сдвига и без движения внутри рамки, одинаково для самосвала в очереди под погрузкой и для экскаватора. После порога — кольцо «стоит» без цвета; причину ставит человек.</p><ul class="q__v"><li><b>А.</b> Как сейчас.</li><li><b>Б.</b> Добавить второй, длинный порог с жёлтой подсветкой «стоит долго»; число не задано.</li><li><b>В.</b> Разный порог по типу техники (самосвал в очереди — дольше); числа не заданы.</li></ul></div><div class="q"><h3><span class="q__n">5</span>Камера легла надолго — кто об этом узнаёт?</h3><p class="q__now"><b>Сейчас по правилу:</b> Только надпись «камера недоступна» на экране; машины камеры «не видно», время — в спорный интервал. Оповещения нет, срока, когда это становится тревогой, нет.</p><ul class="q__v"><li><b>А.</b> Только надпись (как сейчас).</li><li><b>Б.</b> Сообщение прорабу, если камера «недоступна» дольше N минут; N и способ не заданы.</li><li><b>В.</b> Оператор может отметить, что машина была на площадке («видел сам»); кнопки в описании нет.</li></ul></div>
+  </section>
+  <details class="credits" open><summary>Кадры: открытые ролики Wikimedia Commons, лица и номера размыты. Авторы и лицензии:</summary><ol><li><b>1</b> Sounds of Changes, CC BY 3.0 — <a href="https://commons.wikimedia.org/wiki/File:Building_site_Ljubljana_2.webm" target="_blank" rel="noopener">«Building site Ljubljana 2»</a>, Wikimedia Commons</li><li><b>2</b> ŠJů, CC BY 4.0 — <a href="https://commons.wikimedia.org/wiki/File:Retenční_nádrž_Libušská,_čištění_vtoku.webm" target="_blank" rel="noopener">«Retenční nádrž Libušská, čištění vtoku»</a>, Wikimedia Commons</li><li><b>3</b> Sounds of Changes, CC BY 3.0 — <a href="https://commons.wikimedia.org/wiki/File:Building_site_on_the_Igriška_and_Erjavčeva_street.webm" target="_blank" rel="noopener">«Building site on the Igriška and Erjavčeva street»</a>, Wikimedia Commons</li><li><b>4</b> Gpkp, CC BY-SA 4.0 — <a href="https://commons.wikimedia.org/wiki/File:Cement_mixer_truck_in_Bangalore_(2025).webm" target="_blank" rel="noopener">«Cement mixer truck in Bangalore (2025)»</a>, Wikimedia Commons</li><li><b>5</b> Cjp24, CC BY-SA 4.0 — <a href="https://commons.wikimedia.org/wiki/File:Volvo_FH_500_(video).webm" target="_blank" rel="noopener">«Volvo FH 500 (video)»</a>, Wikimedia Commons</li><li><b>6</b> KEmel49, CC BY-SA 4.0 — <a href="https://commons.wikimedia.org/wiki/File:Excavator_digging_land_and_loading_truck.webm" target="_blank" rel="noopener">«Excavator digging land and loading truck»</a>, Wikimedia Commons</li><li><b>7</b> Satirdan kahraman, CC BY-SA 4.0 — <a href="https://commons.wikimedia.org/wiki/File:Hafriyat_kamyonuna_yükleme_yapan_kepçe_videosu.webm" target="_blank" rel="noopener">«Hafriyat kamyonuna yükleme yapan kepçe videosu»</a>, Wikimedia Commons</li><li><b>8</b> Hangman&#x27;sDeath, CC0 — <a href="https://commons.wikimedia.org/wiki/File:1050_Wien,_U4_Station_Pilgramgasse_Baustelle_Wienfluss-Kanal_Bagger_03_2023-10-05.webm" target="_blank" rel="noopener">«1050 Wien, U4 Station Pilgramgasse Baustelle Wienfluss-Kanal Bagger 03 2023-10-05»</a>, Wikimedia Commons</li><li><b>9</b> KaiKemmann, CC BY-SA 4.0 — <a href="https://commons.wikimedia.org/wiki/File:Excavator_loading_a_dump_truck,_Oberlech_321,_6764_Lech_am_Arlberg,_Austria.webm" target="_blank" rel="noopener">«Excavator loading a dump truck, Oberlech 321, 6764 Lech am Arlberg, Austria»</a>, Wikimedia Commons</li><li><b>10</b> Triplec85, CC BY-SA 4.0 — <a href="https://commons.wikimedia.org/wiki/File:2018-05-07_Ein_Muldenkipper_im_Steinbruch_Unterbalbach.webm" target="_blank" rel="noopener">«2018-05-07 Ein Muldenkipper im Steinbruch Unterbalbach»</a>, Wikimedia Commons</li></ol></details>
+</main>
+</body>
+</html>
