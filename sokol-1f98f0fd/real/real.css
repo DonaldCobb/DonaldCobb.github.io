@@ -1,0 +1,23 @@
+/* «Сокол» real: настоящие кадры (открытые ролики Wikimedia Commons) в окнах прототипа 19.10.
+   Стиль варианта не меняется: только картинка внутри кадра, подписи авторов и читаемость подписей поверх фото. */
+.frame--real::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 36px; background: linear-gradient(transparent, rgba(0,0,0,.62)); pointer-events: none; z-index: 1; }
+.frame__img, .thumb > img, .crop > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+.frame--real .box { z-index: 2; }
+.frame--real .frame__badge { z-index: 3; }
+.frame--real .frame__cap { z-index: 2; right: 72px; color: #fff; font-size: 10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.frame--real .frame__time { z-index: 2; color: #fff; }
+.frame--real .gate { z-index: 2; border-top-color: #fff; }
+.frame--real .gate span { color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,.8); }
+.thumb, .crop { position: relative; overflow: hidden; }
+.crop__cap { position: absolute; right: 4px; bottom: 3px; padding: 0 4px; border-radius: 3px; background: rgba(0,0,0,.6); color: #fff; font-size: 10px; font-weight: 500; line-height: 14px; }
+.fn { position: absolute; right: 2px; bottom: 2px; min-width: 13px; height: 13px; padding: 0 3px; border-radius: 7px; background: rgba(0,0,0,.62); color: #fff; font-size: 9px; font-weight: 600; line-height: 13px; text-align: center; pointer-events: none; }
+.pip { position: absolute; left: 8px; bottom: 26px; width: 30%; aspect-ratio: 16 / 9; border: 2px solid #fff; border-radius: 4px; overflow: hidden; z-index: 3; box-shadow: 0 2px 8px rgba(0,0,0,.4); }
+.pip img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.pip__label { position: absolute; left: 4px; top: 4px; padding: 1px 5px; border-radius: 3px; background: rgba(0,0,0,.65); color: #fff; font-size: 10px; font-weight: 600; white-space: nowrap; }
+.cell .c-plate { display: flex; align-items: center; gap: 6px; color: var(--muted); }
+.lane__who > .ic { color: var(--muted); flex: none; }
+.credits { padding: 4px 16px 16px; background: var(--surface); color: var(--muted); font-size: var(--fs-12); line-height: 1.5; }
+.credits summary { cursor: pointer; font-weight: 500; }
+.credits ol { list-style: none; margin: 6px 0 0; padding: 0; display: grid; gap: 2px; }
+.credits li b { display: inline-flex; min-width: 16px; height: 16px; align-items: center; justify-content: center; border-radius: 8px; background: var(--muted); color: var(--surface); font-size: 10px; font-weight: 600; margin-right: 4px; padding: 0 4px; }
+.credits a { color: inherit; }
