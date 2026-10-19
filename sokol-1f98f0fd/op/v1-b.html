@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="ru" data-theme="light" data-device="laptop">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Сокол B «Камера и смена»</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="common.css">
+<style>
+/* Вариант B «Камера и смена»: сверху камера и карточка выбранной машины,
+   снизу полоса смены — строка на машину, отрезки «едет / стоит / не видно»
+   по оси времени с линией «сейчас». */
+.b { flex: 1; display: grid; grid-template-columns: 576px minmax(0, 1fr); gap: var(--gap); padding: var(--gap); align-items: start; }
+
+.cam__head { display: flex; align-items: center; gap: 8px; min-height: 48px; padding: 6px 8px 6px 12px; border-bottom: 1px solid var(--line); }
+.seg-ctl { display: inline-flex; border: 1px solid var(--control-line); border-radius: var(--radius-control); overflow: hidden; }
+.seg-ctl button { min-height: 32px; padding: 0 12px; border: 0; background: var(--surface); font-weight: 500; white-space: nowrap; }
+.seg-ctl button + button { border-left: 1px solid var(--control-line); }
+.seg-ctl button[aria-pressed="true"] { background: var(--accent); color: var(--on-accent); }
+.cam__head .btn { margin-left: auto; min-height: 32px; }
+.cam .frame { border-radius: 0; }
+
+.card { padding: 14px 16px 16px; display: flex; flex-direction: column; gap: 12px; height: 100%; }
+.card__head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.card__head h2 { font-size: var(--fs-20); font-weight: 600; }
+.card__head .muted { font-weight: 400; }
+.card__timer { margin-left: auto; display: flex; align-items: baseline; gap: 8px; }
+.card__body { display: grid; grid-template-columns: 200px minmax(0, 1fr) 200px; gap: 16px; }
+.card__body figcaption, .cap { margin-top: 4px; color: var(--muted); font-size: var(--fs-12); font-weight: 500; }
+.crop--b { width: 100%; height: 36px; margin-bottom: 8px; }
+.status { margin-top: 4px; color: var(--muted); font-size: var(--fs-12); }
+.actions { display: flex; gap: 8px; margin-top: 8px; }
+.actions .btn { flex: 1 1 auto; }
+.idle h3 { font-size: var(--fs-14); font-weight: 600; }
+.idle p { color: var(--muted); font-size: var(--fs-12); margin: 2px 0 8px; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip--wide { width: 100%; justify-content: space-between; margin-top: 8px; }
+.visit { display: grid; grid-template-columns: minmax(0, 1fr) 336px; gap: 16px; align-items: end; }
+.ticks { position: relative; height: 16px; margin-top: 4px; color: var(--muted); font-size: var(--fs-12); font-variant-numeric: tabular-nums; }
+.ticks span { position: absolute; top: 0; transform: translateX(-50%); white-space: nowrap; }
+.ticks span:first-child { transform: none; }
+.ticks span:last-child { transform: translateX(-100%); }
+
+/* Полоса смены */
+.lanes { grid-column: 1 / -1; }
+.lanes .win__head { gap: 16px; }
+.lane, .axis { display: grid; grid-template-columns: 288px minmax(0, 1fr) 120px; column-gap: 16px; align-items: center; padding: 0 16px; }
+.axis { height: 26px; border-bottom: 1px solid var(--line); }
+.axis__scale { position: relative; height: 100%; }
+.axis__scale span { position: absolute; top: 5px; transform: translateX(-50%); color: var(--muted); font-size: var(--fs-12); font-variant-numeric: tabular-nums; }
+.axis__scale span:first-child { transform: none; }
+.axis__scale span:last-child { transform: translateX(-100%); }
+.axis__scale .now-l { color: var(--text); font-weight: 600; }
+.axis .r { text-align: right; color: var(--muted); font-size: var(--fs-12); }
+.lane { position: relative; min-height: 38px; width: 100%; border: 0; background: none; text-align: left; }
+.lanes li + li .lane { border-top: 1px solid var(--line); }
+.lane__who { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.lane__who .plate { height: 26px; }
+.lane__who em { font-style: normal; color: var(--muted); font-size: var(--fs-12); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.lane__track { position: relative; height: 38px; }
+.lane__track .band { position: absolute; left: 0; right: 0; top: 12px; background: none; }
+.future { position: absolute; top: 0; bottom: 0; left: 83.33%; right: 0; background: var(--surface-2); }
+.now { position: absolute; top: 0; bottom: 0; left: 83.33%; width: 2px; margin-left: -1px; background: var(--text); }
+.lane .tm { text-align: right; font-size: var(--fs-16); }
+.split dt { white-space: nowrap; }
+.lane .tm small { font-size: var(--fs-12); }
+.lane--att::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--warn); }
+.lane--sel { background: var(--surface-2); }
+.lane--sel::after { content: ""; position: absolute; right: 0; top: 0; bottom: 0; width: 3px; background: var(--text); }
+.lane--sel .future { background: var(--bg); }
+.pin { position: absolute; top: 9px; width: 0; height: 20px; border-left: 2px dashed var(--warn); }
+.lanes .sub { display: flex; align-items: center; gap: 8px; height: 36px; padding: 0 16px; border-top: 1px solid var(--line); background: var(--bg); }
+.lanes .sub h2 { font-size: var(--fs-14); font-weight: 600; }
+
+@media (max-width: 640px) {
+  .b { grid-template-columns: minmax(0, 1fr); padding: 12px; gap: 12px; }
+  .cam__head { flex-wrap: wrap; }
+  .cam__head .btn { margin-left: 0; }
+  .seg-ctl button { min-height: 44px; }
+  .card__timer { margin-left: 0; width: 100%; }
+  .card__body { grid-template-columns: minmax(0, 1fr); }
+  .card__body figure { display: none; }
+  .visit { grid-template-columns: minmax(0, 1fr); }
+  .actions { flex-wrap: wrap; }
+  .lanes .win__head { flex-wrap: wrap; padding: 8px 12px; gap: 8px; }
+  .axis { display: none; }
+  .lane { grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "who tm" "track track"; row-gap: 2px; padding: 8px 12px; }
+  .lane__who { grid-area: who; }
+  .lane .tm { grid-area: tm; }
+  .lane__track { grid-area: track; height: 22px; }
+  .lane__track .band { top: 4px; }
+}
+</style>
+</head>
+<body class="has-thumbbar">
+<!--SPRITE-->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-sheet" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M8 13h2"/><path d="M14 13h2"/><path d="M8 17h2"/><path d="M14 17h2"/></symbol>
+  <symbol id="i-report" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+  <symbol id="i-pencil" viewBox="0 0 24 24"><path d="M21.17 6.81a1 1 0 0 0-3.98-3.98L3.84 16.17a2 2 0 0 0-.5.83l-1.32 4.35a.5.5 0 0 0 .62.62l4.35-1.32a2 2 0 0 0 .83-.5z"/><path d="m15 5 4 4"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
+  <symbol id="i-video" viewBox="0 0 24 24"><path d="m16 13 5.22 3.48a.5.5 0 0 0 .78-.42V7.87a.5.5 0 0 0-.75-.43L16 10.5"/><rect x="2" y="6" width="14" height="12" rx="2"/></symbol>
+  <symbol id="i-in" viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><path d="m10 17 5-5-5-5"/><path d="M15 12H3"/></symbol>
+  <symbol id="i-out" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></symbol>
+  <symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></symbol>
+  <symbol id="i-scan" viewBox="0 0 24 24"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><rect x="7" y="9" width="10" height="6" rx="1"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+  <symbol id="i-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+  <symbol id="i-merge" viewBox="0 0 24 24"><path d="m8 6 4-4 4 4"/><path d="M12 2v10.3a4 4 0 0 1-1.17 2.87L4 22"/><path d="m20 22-5-5"/></symbol>
+  <symbol id="i-split" viewBox="0 0 24 24"><path d="M16 3h5v5"/><path d="M8 3H3v5"/><path d="M12 22v-8.3a4 4 0 0 0-1.17-2.87L3 3"/><path d="m15 9 6-6"/></symbol>
+  <symbol id="i-back" viewBox="0 0 24 24"><path d="M19 20 9 12l10-8z"/><path d="M5 19V5"/></symbol>
+  <symbol id="i-map" viewBox="0 0 24 24"><path d="M14.11 5.55a2 2 0 0 0 1.79 0l3.66-1.83A1 1 0 0 1 21 4.62v12.76a1 1 0 0 1-.55.9l-4.55 2.27a2 2 0 0 1-1.79 0l-4.21-2.1a2 2 0 0 0-1.79 0l-3.66 1.83A1 1 0 0 1 3 19.38V6.62a1 1 0 0 1 .55-.9l4.55-2.27a2 2 0 0 1 1.79 0z"/><path d="M15 5.76v15"/><path d="M9 3.24v15"/></symbol>
+  <symbol id="i-pause" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M10 15V9"/><path d="M14 15V9"/></symbol>
+</svg>
+<!--/SPRITE-->
+<header class="top">
+  <div class="brand"><svg class="ic ic--l"><use href="#i-scan"/></svg>Сокол</div>
+  <div class="site"><b>Жилой дом, секция Б</b><span>Смена 08:00–20:00</span></div>
+  <nav class="counters" aria-label="Счётчики смены">
+    <button type="button" class="counter">на площадке <b>8</b></button>
+    <button type="button" class="counter counter--warn">не видно <b>1</b></button>
+    <button type="button" class="counter counter--warn">номер не прочитан <b>1</b></button>
+    <button type="button" class="counter counter--warn">подтвердить <b>3</b></button>
+  </nav>
+  <div class="top__end">
+    <span class="live desk-only">Живой режим</span>
+    <div class="clock"><b>14:40</b><span>Пермь, UTC+5<span class="desk-only"> · данные 2 с назад</span></span></div>
+    <span class="sample desk-only">Пример: данные выдуманы</span>
+  </div>
+</header>
+
+<main class="b">
+  <section class="win cam" aria-label="Окно камеры">
+    <div class="cam__head">
+      <div class="seg-ctl" role="group" aria-label="Камера">
+        <button type="button" aria-pressed="true">Камера 1<span class="desk-only"> · Въезд</span></button>
+        <button type="button" aria-pressed="false">Камера 2<span class="desk-only"> · Общий план</span></button>
+      </div>
+      <button class="btn" type="button"><svg class="ic ic--s"><use href="#i-back"/></svg>К въезду 11:20</button>
+    </div>
+    <div class="frame">
+      <span class="frame__badge frame__badge--l">видно</span>
+      <span class="frame__badge frame__badge--r"><svg class="ic ic--s"><use href="#i-video"/></svg>рамки треков</span>
+      <div class="box box--unseen" style="left:36%;top:22%;width:12%;height:19%"><span class="box__id">12<span class="desk-only"> · не видно</span></span></div>
+      <div class="box box--sel" style="left:56%;top:24%;width:30%;height:47%"><span class="box__id">7 · автокран</span></div>
+      <div class="box" style="left:7%;top:47%;width:27%;height:34%"><span class="box__id">31<span class="desk-only"> · самосвал</span></span></div>
+      <div class="box" style="left:37%;top:56%;width:15%;height:22%"><span class="box__id">22</span></div>
+      <div class="gate" style="left:4%;top:89%;width:92%"></div>
+      <span class="frame__cap">кадр камеры 1</span>
+      <span class="frame__time">14:40:12</span>
+    </div>
+  </section>
+
+  <section class="win card" aria-labelledby="card-t">
+    <div class="card__head">
+      <span class="mk mk--idle" title="стоит"></span>
+      <h2 id="card-t">Автокран <span class="muted">25 т</span></h2>
+      <span class="plate"><span class="plate__n">Т 317 ОР</span><span class="plate__r">159</span></span>
+      <div class="card__timer"><span class="tm tm--lg">3<small>ч</small>20<small>мин</small></span><span class="muted">на площадке</span></div>
+      <button class="iconbtn desk-only" type="button" aria-label="Закрыть карточку"><svg class="ic"><use href="#i-x"/></svg></button>
+    </div>
+    <div class="card__body">
+      <figure>
+        <div class="frame">
+          <div class="box box--sel" style="left:16%;top:22%;width:66%;height:58%"><span class="box__id">7</span></div>
+          <span class="frame__cap">кадр камеры 1</span>
+        </div>
+        <figcaption>Въезд 11:20:14. Выезда ещё нет</figcaption>
+      </figure>
+      <div>
+        <div class="crop crop--b">вырезка таблички</div>
+        <label class="label" for="plate-b">Номер</label>
+        <div class="field" id="plate-b">Т 317 ОР 159</div>
+        <p class="status">Введено вручную в 11:22. Сверьте с вырезкой.</p>
+        <div class="actions">
+          <button class="btn btn--primary" type="button"><svg class="ic ic--s"><use href="#i-check"/></svg>Подтвердить</button>
+          <button class="btn" type="button"><svg class="ic ic--s"><use href="#i-pencil"/></svg>Исправить</button>
+        </div>
+      </div>
+      <div class="idle">
+        <h3>Стоит 38 мин, с 14:02</h3>
+        <p>Причина простоя</p>
+        <div class="chips">
+          <button class="chip" type="button">нет фронта</button>
+          <button class="chip" type="button">ждём бетон</button>
+          <button class="chip" type="button">поломка</button>
+        </div>
+        <button class="chip chip--wide" type="button">Подрядчик: не выбран<svg class="ic ic--s"><use href="#i-down"/></svg></button>
+      </div>
+    </div>
+    <div class="visit">
+      <div>
+        <div class="band" aria-label="Визит автокрана с 11:20">
+          <span class="seg seg--move" style="left:0%;width:5.4%"></span>
+          <span class="seg seg--idle" style="left:5.4%;width:17.2%"></span>
+          <span class="seg seg--move" style="left:22.6%;width:47.6%"></span>
+          <span class="seg seg--unseen" style="left:70.2%;width:6%"></span>
+          <span class="seg seg--move" style="left:76.2%;width:4.8%"></span>
+          <span class="seg seg--idle" style="left:81%;width:19%"></span>
+        </div>
+        <div class="ticks"><span style="left:0">11:20</span><span style="left:20%">12:00</span><span style="left:50%">13:00</span><span style="left:70.2%">не видно 12 мин</span><span style="left:100%">14:40</span></div>
+      </div>
+      <dl class="split">
+        <div><dt>Подтверждено камерой</dt><dd>3 ч 08 мин</dd></div>
+        <div><dt>Спорный интервал</dt><dd class="warnv">12 мин</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="win lanes" aria-labelledby="lanes-t">
+    <div class="win__head">
+      <h1 class="win__title" id="lanes-t">Смена по машинам</h1>
+      <span class="win__meta desk-only">показано 08:00–16:00</span>
+      <span class="sample phone-only">Пример</span>
+      <span class="legend desk-only"><span><i class="mk mk--move"></i>в движении</span><span><i class="mk mk--idle"></i>стоит</span><span><i class="mk mk--unseen"></i>не видно</span></span>
+      <div class="win__end desk-only">
+        <button class="btn" type="button"><svg class="ic"><use href="#i-report"/></svg>Рапорт за смену</button>
+        <button class="btn" type="button"><svg class="ic"><use href="#i-sheet"/></svg>Выгрузить смену в Excel</button>
+      </div>
+    </div>
+    <div class="axis" aria-hidden="true">
+      <span class="muted small">На площадке сейчас: 8</span>
+      <div class="axis__scale">
+        <span style="left:0">08:00</span><span style="left:12.5%">09</span><span style="left:25%">10</span><span style="left:37.5%">11</span><span style="left:50%">12</span><span style="left:62.5%">13</span><span style="left:75%">14</span><span class="now-l" style="left:83.33%">14:40</span><span style="left:100%">16:00</span>
+      </div>
+      <span class="r">На площадке</span>
+    </div>
+    <ul>
+      <li><button type="button" class="lane">
+        <span class="lane__who"><i class="mk mk--move"></i><span class="plate"><span class="plate__n">4821 РМ</span><span class="plate__r">59</span></span><em>Экскаватор, 07:46</em></span>
+        <span class="lane__track"><span class="future"></span><span class="band"><span class="seg seg--move" style="left:0;width:27.08%"></span><span class="seg seg--idle" style="left:27.08%;width:6.25%"></span><span class="seg seg--move" style="left:33.33%;width:50%"></span></span><span class="now"></span></span>
+        <span class="tm">6<small>ч</small>54<small>мин</small></span>
+      </button></li>
+      <li><button type="button" class="lane">
+        <span class="lane__who"><i class="mk mk--idle"></i><span class="plate"><span class="plate__n">К 093 ТМ</span><span class="plate__r">159</span></span><em>Легковая, не в часах</em></span>
+        <span class="lane__track"><span class="future"></span><span class="band"><span class="seg seg--idle" style="left:13.54%;width:69.79%"></span></span><span class="now"></span></span>
+        <span class="tm">5<small>ч</small>35<small>мин</small></span>
+      </button></li>
+      <li><button type="button" class="lane lane--sel" aria-pressed="true">
+        <span class="lane__who"><i class="mk mk--idle"></i><span class="plate"><span class="plate__n">Т 317 ОР</span><span class="plate__r">159</span></span><em>Автокран, 11:20</em></span>
+        <span class="lane__track"><span class="future"></span><span class="band"><span class="seg seg--move" style="left:41.67%;width:2.29%"></span><span class="seg seg--idle" style="left:43.96%;width:7.08%"></span><span class="seg seg--move" style="left:51.04%;width:19.79%"></span><span class="seg seg--unseen" style="left:70.83%;width:2.5%"></span><span class="seg seg--move" style="left:73.33%;width:2.09%"></span><span class="seg seg--idle" style="left:75.42%;width:7.91%"></span></span><span class="now"></span></span>
+        <span class="tm">3<small>ч</small>20<small>мин</small></span>
+      </button></li>
+      <li><button type="button" class="lane lane--att">
+        <span class="lane__who"><i class="mk mk--unseen"></i><span class="plate"><span class="plate__n">Е 482 КМ</span><span class="plate__r">159</span></span><em>Самосвал, 13:58</em></span>
+        <span class="lane__track"><span class="future"></span><span class="band"><span class="seg seg--move" style="left:74.58%;width:5.42%"></span><span class="seg seg--unseen" style="left:80%;width:3.33%"></span></span><span class="now"></span></span>
+        <span class="tm">42<small>мин</small></span>
+      </button></li>
+      <li><button type="button" class="lane">
+        <span class="lane__who"><i class="mk mk--idle"></i><span class="plate"><span class="plate__n">Н 774 СА</span><span class="plate__r">159</span></span><em>Самосвал, 14:12</em></span>
+        <span class="lane__track"><span class="future"></span><span class="band"><span class="seg seg--move" style="left:77.5%;width:5.21%"></span><span class="seg seg--idle" style="left:82.71%;width:0.62%"></span></span><span class="now"></span></span>
+        <span class="tm">28<small>мин</small></span>
+      </button></li>
+      <li><button type="button" class="lane">
+        <span class="lane__who"><i class="mk mk--idle"></i><span class="plate"><span class="plate__n">В 905 ХА</span><span class="plate__r">159</span></span><em>Бетоновоз, 14:21</em></span>
+        <span class="lane__track"><span class="future"></span><span class="band"><span class="seg seg--move" style="left:79.38%;width:2.7%"></span><span class="seg seg--idle" style="left:82.08%;width:1.25%"></span></span><span class="now"></span></span>
+        <span class="tm">19<small>мин</small></span>
+      </button></li>
+      <li><button type="button" class="lane">
+        <span class="lane__who"><i class="mk mk--move"></i><span class="plate"><span class="plate__n">М 560 УК</span><span class="plate__r">159</span></span><em>Самосвал, 14:29</em></span>
+        <span class="lane__track"><span class="future"></span><span class="band"><span class="seg seg--move" style="left:81.04%;width:2.29%"></span></span><span class="now"></span></span>
+        <span class="tm">11<small>мин</small></span>
+      </button></li>
+      <li><button type="button" class="lane lane--att">
+        <span class="lane__who"><i class="mk mk--move"></i><span class="noplate">номер не читается</span><em>Самосвал, 14:33</em></span>
+        <span class="lane__track"><span class="future"></span><span class="band"><span class="seg seg--move" style="left:81.88%;width:1.45%"></span></span><span class="now"></span></span>
+        <span class="tm">7<small>мин</small></span>
+      </button></li>
+    </ul>
+    <div class="sub"><h2>Выехали за смену</h2><span class="muted num">4</span></div>
+    <ul>
+      <li><button type="button" class="lane">
+        <span class="lane__who"><svg class="ic ic--s muted"><use href="#i-out"/></svg><span class="plate"><span class="plate__n">Х 731 АМ</span><span class="plate__r">159</span></span><em>Самосвал, 09:31 → 10:02</em></span>
+        <span class="lane__track"><span class="future"></span><span class="band"><span class="seg seg--move" style="left:18.96%;width:1.04%"></span><span class="seg seg--idle" style="left:20%;width:4.5%"></span><span class="seg seg--move" style="left:24.5%;width:0.92%"></span></span><span class="now"></span></span>
+        <span class="tm tm--done">31<small>мин</small></span>
+      </button></li>
+      <li><button type="button" class="lane">
+        <span class="lane__who"><svg class="ic ic--s muted"><use href="#i-out"/></svg><span class="plate"><span class="plate__n">С 446 НЕ</span><span class="plate__r">159</span></span><em>Бетоновоз, 12:10 → 12:58</em></span>
+        <span class="lane__track"><span class="future"></span><span class="band"><span class="seg seg--move" style="left:52.08%;width:1.42%"></span><span class="seg seg--idle" style="left:53.5%;width:7.5%"></span><span class="seg seg--move" style="left:61%;width:1.08%"></span></span><span class="now"></span></span>
+        <span class="tm tm--done">48<small>мин</small></span>
+      </button></li>
+      <li><button type="button" class="lane lane--att">
+        <span class="lane__who"><svg class="ic ic--s muted"><use href="#i-out"/></svg><span class="plate"><span class="plate__n">У 352 КС</span><span class="plate__r">159</span></span><em>Выезд 13:41 без въезда</em></span>
+        <span class="lane__track"><span class="future"></span><span class="pin" style="left:71.04%"></span><span class="now"></span></span>
+        <span class="tm tm--done">не посчитано</span>
+      </button></li>
+      <li><button type="button" class="lane">
+        <span class="lane__who"><svg class="ic ic--s muted"><use href="#i-out"/></svg><span class="plate"><span class="plate__n">О 218 ВК</span><span class="plate__r">159</span></span><em>Самосвал, 12:53 → 14:05</em></span>
+        <span class="lane__track"><span class="future"></span><span class="band"><span class="seg seg--move" style="left:61.04%;width:1.96%"></span><span class="seg seg--idle" style="left:63%;width:11.5%"></span><span class="seg seg--move" style="left:74.5%;width:1.54%"></span></span><span class="now"></span></span>
+        <span class="tm tm--done">1<small>ч</small>12<small>мин</small></span>
+      </button></li>
+    </ul>
+    <div class="win__end phone-only" style="padding:12px">
+      <button class="btn btn--block" type="button"><svg class="ic"><use href="#i-sheet"/></svg>Выгрузить смену в Excel</button>
+    </div>
+  </section>
+</main>
+
+<footer class="limits">
+  <span>Номер — по вырезке, вводит оператор; уход из кадра — не выезд; спорное подтверждает человек.</span>
+  <span>Пунктир — «не подтверждено, в расчёт не идёт».</span>
+  <span class="sample phone-only">Пример: данные выдуманы</span>
+</footer>
+
+<div class="thumbbar">
+  <button class="btn btn--primary" type="button"><svg class="ic"><use href="#i-help"/></svg>Подтвердить: 3</button>
+</div>
+</body>
+</html>

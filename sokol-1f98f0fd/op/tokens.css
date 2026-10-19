@@ -1,0 +1,102 @@
+/* Токены прототипа «Сокол» — значения из design.md §1.
+   Имена первой группы — из кита плагина (sdd), чтобы одобренный вариант
+   переехал в prototype/002-console/ без переименований; ниже — свои
+   токены предмета: кадр, табличка, рамка трека, янтарь «внимание».
+   Hex — только здесь. Светлая тема первой (проектор), тёмная — по §1,
+   на снимках не проверялась: файлы вариантов держат data-theme="light". */
+
+:root {
+  /* Палитра §1 */
+  --bg: #F3F4F6;             /* фон страницы */
+  --surface: #FFFFFF;        /* окна */
+  --surface-2: #ECEEF1;      /* выбранная строка, будущее на полосе смены */
+  --text: #14171A;           /* текст и «живое»: сплошная точка, идущий таймер */
+  --muted: #565C66;          /* вторичный текст, «стоит» — кольцо */
+  --line: #D5D8DD;           /* разделители, смысла не несут */
+  --control-line: #858B94;   /* рамка поля и кнопки — ≥ 3:1 к поверхности */
+  --accent: #14171A;         /* одно действие на экране — тёмная кнопка, синего нет */
+  --on-accent: #FFFFFF;
+  --danger: #8F5200;         /* опасного действия на пульте нет; ошибка камеры — янтарём */
+  --warn: #8F5200;           /* внимание: «подтверди», «не видно», камера не в порядке */
+  --warn-soft: #FBF1E1;      /* подложка под янтарный текст (5,5:1) */
+
+  /* Предмет */
+  --frame: #D9DCE1;          /* серая заглушка кадра камеры */
+  --frame-ink: #3D434B;      /* подписи на кадре (7:1) */
+  --plate: #FFFFFF;          /* номерной знак — белая табличка в обеих темах */
+  --plate-ink: #0B0C0E;      /* знаки таблички */
+  --track: #14171A;          /* рамка трека поверх кадра */
+  --on-track: #FFFFFF;       /* номер трека на ярлыке рамки */
+
+  /* Типографика §1: одна гарнитура, три веса */
+  --font-display: "Golos Text", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-text: "Golos Text", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --weight-display: 600;
+  --fs-base: 14px;           /* пульт; телефон — 16 (перекрытие в common.css) */
+  --fs-12: 12px;
+  --fs-14: 14px;
+  --fs-16: 16px;
+  --fs-20: 20px;             /* таймер в строке машины */
+  --fs-28: 28px;             /* таймер в раскрытой карточке */
+  --fs-40: 40px;
+
+  /* Плотность и геометрия §1 */
+  --space: 8px;
+  --gap: 16px;               /* промежуток между окнами */
+  --row: 56px;               /* строка машины */
+  --radius: 8px;             /* окна */
+  --radius-control: 4px;     /* кнопки, поля, таблички */
+  --shadow: none;            /* линии 1 px вместо теней */
+  --dur: 160ms;              /* раскрытие строки */
+
+  /* Числовой пол — не менять */
+  --measure: 68ch;
+  --target: 44px;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0F1114;
+    --surface: #171A1E;
+    --surface-2: #20242A;
+    --text: #ECEEF1;
+    --muted: #A9B0BA;
+    --line: #2A2F35;
+    --control-line: #6B727C;
+    --accent: #ECEEF1;
+    --on-accent: #0F1114;
+    --danger: #F0B451;
+    --warn: #F0B451;
+    --warn-soft: #2B2213;
+    --frame: #2A2F36;
+    --frame-ink: #C3C9D1;
+    --plate: #FFFFFF;
+    --plate-ink: #0B0C0E;
+    --track: #ECEEF1;
+    --on-track: #0F1114;
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  --bg: #0F1114;
+  --surface: #171A1E;
+  --surface-2: #20242A;
+  --text: #ECEEF1;
+  --muted: #A9B0BA;
+  --line: #2A2F35;
+  --control-line: #6B727C;
+  --accent: #ECEEF1;
+  --on-accent: #0F1114;
+  --danger: #F0B451;
+  --warn: #F0B451;
+  --warn-soft: #2B2213;
+  --frame: #2A2F36;
+  --frame-ink: #C3C9D1;
+  --plate: #FFFFFF;
+  --plate-ink: #0B0C0E;
+  --track: #ECEEF1;
+  --on-track: #0F1114;
+  color-scheme: dark;
+}

@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="ru" data-theme="light" data-device="laptop">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Сокол A «Табло»</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="common.css">
+<style>
+/* Вариант A «Табло»: строка на машину на две трети ширины,
+   справа — живая камера и карточка выбранной строки. */
+.a { flex: 1; display: grid; grid-template-columns: minmax(0, 1fr) 440px; gap: var(--gap); padding: var(--gap); align-items: start; }
+
+.board .cols, .board .row {
+  display: grid;
+  grid-template-columns: 16px 72px 156px minmax(0, 1fr) 52px 236px 116px 20px;
+  column-gap: 12px; align-items: center; padding: 0 16px;
+}
+.board .cols { height: 32px; border-bottom: 1px solid var(--line); color: var(--muted); font-size: var(--fs-12); font-weight: 500; }
+.cols .r { text-align: right; }
+.rows > li + li { border-top: 1px solid var(--line); }
+.row { position: relative; width: 100%; min-height: var(--row); border: 0; background: none; text-align: left; }
+.row--att::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--warn); }
+.row--sel { background: var(--surface-2); }
+.row--sel::after { content: ""; position: absolute; right: 0; top: 0; bottom: 0; width: 3px; background: var(--text); }
+.c-plate { display: flex; align-items: center; gap: 6px; color: var(--muted); }
+.c-type { display: flex; flex-direction: column; line-height: 1.25; min-width: 0; }
+.c-type b { font-weight: 600; }
+.c-type span { color: var(--muted); font-size: var(--fs-12); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.c-in { font-variant-numeric: tabular-nums; }
+.c-st { display: flex; flex-direction: column; line-height: 1.25; min-width: 0; }
+.c-st small { color: var(--muted); font-size: var(--fs-12); white-space: nowrap; }
+.c-tm { text-align: right; }
+.c-att { color: var(--warn); }
+.rows--done .row { min-height: 48px; }
+.rows--done .c-plate .plate { opacity: 1; }
+.sub { display: flex; align-items: center; gap: 8px; height: 40px; padding: 0 16px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: var(--bg); }
+.sub h2 { font-size: var(--fs-14); font-weight: 600; }
+
+.side { display: flex; flex-direction: column; gap: var(--gap); position: sticky; top: calc(56px + var(--gap)); }
+.cam .frame { border-radius: 0; }
+.card { padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+.card__head { display: flex; align-items: center; gap: 10px; }
+.card__head h2 { font-size: var(--fs-20); font-weight: 600; }
+.card__head .iconbtn { margin-left: auto; margin-right: -8px; }
+.card__timer { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.card__media { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.card__media figcaption { margin-top: 4px; color: var(--muted); font-size: var(--fs-12); font-weight: 500; }
+.crop--lg { width: 100%; height: 48px; }
+.note { color: var(--muted); font-size: var(--fs-12); margin-top: 6px; line-height: 1.35; }
+.note b { color: var(--warn); font-weight: 600; }
+.actions { display: flex; gap: 8px; margin-top: 8px; }
+.actions .btn { flex: 1 1 auto; }
+.ticks { display: flex; justify-content: space-between; margin-top: 4px; color: var(--muted); font-size: var(--fs-12); font-variant-numeric: tabular-nums; }
+
+@media (max-width: 640px) {
+  .a { grid-template-columns: minmax(0, 1fr); padding: 12px; gap: 12px; }
+  .actions { flex-wrap: wrap; }
+  .card__head { flex-wrap: wrap; }
+  .board .win__head { padding: 8px 12px; }
+  .board .row {
+    grid-template-columns: 16px auto minmax(0, 1fr) auto;
+    grid-template-areas: "mk plate plate tm" ".  type in st";
+    row-gap: 6px; column-gap: 10px; padding: 10px 12px; font-size: var(--fs-14);
+  }
+  .row .mk, .row .mkx { grid-area: mk; align-self: center; }
+  .row .thumb, .row .c-att, .c-type span { display: none; }
+  .c-plate { grid-area: plate; }
+  .c-type { grid-area: type; }
+  .c-in { grid-area: in; color: var(--muted); }
+  .c-st { grid-area: st; text-align: right; align-items: flex-end; }
+  .c-st small { white-space: normal; text-align: right; }
+  .c-tm { grid-area: tm; }
+  .rows--done .row { min-height: 0; }
+  .side { position: static; }
+  .card__media { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body class="has-thumbbar">
+<!--SPRITE-->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-sheet" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M8 13h2"/><path d="M14 13h2"/><path d="M8 17h2"/><path d="M14 17h2"/></symbol>
+  <symbol id="i-report" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+  <symbol id="i-pencil" viewBox="0 0 24 24"><path d="M21.17 6.81a1 1 0 0 0-3.98-3.98L3.84 16.17a2 2 0 0 0-.5.83l-1.32 4.35a.5.5 0 0 0 .62.62l4.35-1.32a2 2 0 0 0 .83-.5z"/><path d="m15 5 4 4"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
+  <symbol id="i-video" viewBox="0 0 24 24"><path d="m16 13 5.22 3.48a.5.5 0 0 0 .78-.42V7.87a.5.5 0 0 0-.75-.43L16 10.5"/><rect x="2" y="6" width="14" height="12" rx="2"/></symbol>
+  <symbol id="i-in" viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><path d="m10 17 5-5-5-5"/><path d="M15 12H3"/></symbol>
+  <symbol id="i-out" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></symbol>
+  <symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></symbol>
+  <symbol id="i-scan" viewBox="0 0 24 24"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><rect x="7" y="9" width="10" height="6" rx="1"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+  <symbol id="i-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+  <symbol id="i-merge" viewBox="0 0 24 24"><path d="m8 6 4-4 4 4"/><path d="M12 2v10.3a4 4 0 0 1-1.17 2.87L4 22"/><path d="m20 22-5-5"/></symbol>
+  <symbol id="i-split" viewBox="0 0 24 24"><path d="M16 3h5v5"/><path d="M8 3H3v5"/><path d="M12 22v-8.3a4 4 0 0 0-1.17-2.87L3 3"/><path d="m15 9 6-6"/></symbol>
+  <symbol id="i-back" viewBox="0 0 24 24"><path d="M19 20 9 12l10-8z"/><path d="M5 19V5"/></symbol>
+  <symbol id="i-map" viewBox="0 0 24 24"><path d="M14.11 5.55a2 2 0 0 0 1.79 0l3.66-1.83A1 1 0 0 1 21 4.62v12.76a1 1 0 0 1-.55.9l-4.55 2.27a2 2 0 0 1-1.79 0l-4.21-2.1a2 2 0 0 0-1.79 0l-3.66 1.83A1 1 0 0 1 3 19.38V6.62a1 1 0 0 1 .55-.9l4.55-2.27a2 2 0 0 1 1.79 0z"/><path d="M15 5.76v15"/><path d="M9 3.24v15"/></symbol>
+  <symbol id="i-pause" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M10 15V9"/><path d="M14 15V9"/></symbol>
+</svg>
+<!--/SPRITE-->
+<header class="top">
+  <div class="brand"><svg class="ic ic--l"><use href="#i-scan"/></svg>Сокол</div>
+  <div class="site"><b>Жилой дом, секция Б</b><span>Смена 08:00–20:00</span></div>
+  <nav class="counters" aria-label="Счётчики смены">
+    <button type="button" class="counter">на площадке <b>8</b></button>
+    <button type="button" class="counter counter--warn">не видно <b>1</b></button>
+    <button type="button" class="counter counter--warn">номер не прочитан <b>1</b></button>
+    <button type="button" class="counter counter--warn">подтвердить <b>3</b></button>
+  </nav>
+  <div class="top__end">
+    <span class="live desk-only">Живой режим</span>
+    <div class="clock"><b>14:40</b><span>Пермь, UTC+5<span class="desk-only"> · данные 2 с назад</span></span></div>
+    <span class="sample desk-only">Пример: данные выдуманы</span>
+  </div>
+</header>
+
+<main class="a">
+  <section class="win board" aria-labelledby="board-t">
+    <div class="win__head">
+      <h1 class="win__title" id="board-t">Машины на площадке</h1>
+      <span class="win__meta desk-only">сейчас 8, выехали 4</span>
+      <span class="sample phone-only">Пример</span>
+      <div class="win__end desk-only">
+        <button class="btn" type="button"><svg class="ic"><use href="#i-report"/></svg>Рапорт за смену</button>
+        <button class="btn" type="button"><svg class="ic"><use href="#i-sheet"/></svg>Выгрузить смену в Excel</button>
+      </div>
+    </div>
+    <div class="cols desk-only" aria-hidden="true">
+      <span></span><span>Кадр</span><span>Номер</span><span>Техника</span><span>Въехал</span><span>Состояние</span><span class="r">На площадке</span><span></span>
+    </div>
+    <ul class="rows">
+      <li><button type="button" class="row">
+        <span class="mk mk--move" title="в движении"></span>
+        <span class="thumb">кадр 1</span>
+        <span class="c-plate"><span class="plate"><span class="plate__n">4821 РМ</span><span class="plate__r">59</span></span><svg class="ic ic--s" aria-label="введено вручную"><use href="#i-pencil"/></svg></span>
+        <span class="c-type"><b>Экскаватор</b><span>гусеничный</span></span>
+        <span class="c-in"><span class="phone-only">въехал </span>07:46</span>
+        <span class="c-st"><span class="st">в движении, на месте</span></span>
+        <span class="c-tm"><span class="tm">6<small>ч</small>54<small>мин</small></span></span>
+        <span class="c-att"></span>
+      </button></li>
+      <li><button type="button" class="row">
+        <span class="mk mk--idle" title="стоит"></span>
+        <span class="thumb">кадр 1</span>
+        <span class="c-plate"><span class="plate"><span class="plate__n">К 093 ТМ</span><span class="plate__r">159</span></span><svg class="ic ic--s" aria-label="введено вручную"><use href="#i-pencil"/></svg></span>
+        <span class="c-type"><b>Легковая</b><span>в часы техники не идёт</span></span>
+        <span class="c-in"><span class="phone-only">въехал </span>09:05</span>
+        <span class="c-st"><span class="st">стоит</span></span>
+        <span class="c-tm"><span class="tm">5<small>ч</small>35<small>мин</small></span></span>
+        <span class="c-att"></span>
+      </button></li>
+      <li><button type="button" class="row">
+        <span class="mk mk--idle" title="стоит"></span>
+        <span class="thumb">кадр 1</span>
+        <span class="c-plate"><span class="plate"><span class="plate__n">Т 317 ОР</span><span class="plate__r">159</span></span><svg class="ic ic--s" aria-label="введено вручную"><use href="#i-pencil"/></svg></span>
+        <span class="c-type"><b>Автокран</b><span>25 т</span></span>
+        <span class="c-in"><span class="phone-only">въехал </span>11:20</span>
+        <span class="c-st"><span class="st">стоит 38 мин</span><small>причина не указана</small></span>
+        <span class="c-tm"><span class="tm">3<small>ч</small>20<small>мин</small></span></span>
+        <span class="c-att"></span>
+      </button></li>
+      <li><button type="button" class="row row--att">
+        <span class="mk mk--unseen" title="не видно"></span>
+        <span class="thumb">кадр 1</span>
+        <span class="c-plate"><span class="plate"><span class="plate__n">Е 482 КМ</span><span class="plate__r">159</span></span><svg class="ic ic--s" aria-label="введено вручную"><use href="#i-pencil"/></svg></span>
+        <span class="c-type"><b>Самосвал</b><span>вопрос «Тот же?»</span></span>
+        <span class="c-in"><span class="phone-only">въехал </span>13:58</span>
+        <span class="c-st"><span class="st st--unseen">не видно 16 мин</span><small>не подтверждено, в расчёт не идёт</small></span>
+        <span class="c-tm"><span class="tm">42<small>мин</small></span></span>
+        <span class="c-att"><svg class="ic" aria-label="ждёт подтверждения"><use href="#i-help"/></svg></span>
+      </button></li>
+      <li><button type="button" class="row">
+        <span class="mk mk--idle" title="стоит"></span>
+        <span class="thumb">кадр 1</span>
+        <span class="c-plate"><span class="plate"><span class="plate__n">Н 774 СА</span><span class="plate__r">159</span></span><svg class="ic ic--s" aria-label="введено вручную"><use href="#i-pencil"/></svg></span>
+        <span class="c-type"><b>Самосвал</b><span>под погрузкой</span></span>
+        <span class="c-in"><span class="phone-only">въехал </span>14:12</span>
+        <span class="c-st"><span class="st">стоит 3 мин</span></span>
+        <span class="c-tm"><span class="tm">28<small>мин</small></span></span>
+        <span class="c-att"></span>
+      </button></li>
+      <li><button type="button" class="row">
+        <span class="mk mk--idle" title="стоит"></span>
+        <span class="thumb">кадр 1</span>
+        <span class="c-plate"><span class="plate"><span class="plate__n">В 905 ХА</span><span class="plate__r">159</span></span><svg class="ic ic--s" aria-label="введено вручную"><use href="#i-pencil"/></svg></span>
+        <span class="c-type"><b>Бетоновоз</b><span>миксер 9 м³</span></span>
+        <span class="c-in"><span class="phone-only">въехал </span>14:21</span>
+        <span class="c-st"><span class="st">стоит 6 мин</span></span>
+        <span class="c-tm"><span class="tm">19<small>мин</small></span></span>
+        <span class="c-att"></span>
+      </button></li>
+      <li><button type="button" class="row">
+        <span class="mk mk--move" title="в движении"></span>
+        <span class="thumb">кадр 1</span>
+        <span class="c-plate"><span class="plate"><span class="plate__n">М 560 УК</span><span class="plate__r">159</span></span><svg class="ic ic--s" aria-label="введено вручную"><use href="#i-pencil"/></svg></span>
+        <span class="c-type"><b>Самосвал</b><span>с грунтом</span></span>
+        <span class="c-in"><span class="phone-only">въехал </span>14:29</span>
+        <span class="c-st"><span class="st">в движении</span></span>
+        <span class="c-tm"><span class="tm">11<small>мин</small></span></span>
+        <span class="c-att"></span>
+      </button></li>
+      <li><button type="button" class="row row--att row--sel" aria-pressed="true">
+        <span class="mk mk--move" title="в движении"></span>
+        <span class="thumb">вырезка</span>
+        <span class="c-plate"><span class="noplate">номер не читается</span></span>
+        <span class="c-type"><b>Самосвал</b><span>введите номер</span></span>
+        <span class="c-in"><span class="phone-only">въехал </span>14:33</span>
+        <span class="c-st"><span class="st">в движении</span></span>
+        <span class="c-tm"><span class="tm">7<small>мин</small></span></span>
+        <span class="c-att"><svg class="ic" aria-label="ждёт подтверждения"><use href="#i-help"/></svg></span>
+      </button></li>
+    </ul>
+
+    <div class="sub"><h2>Выехали за смену</h2><span class="muted num">4</span></div>
+    <ul class="rows rows--done">
+      <li><button type="button" class="row">
+        <svg class="ic ic--s mkx muted" aria-label="выехал"><use href="#i-out"/></svg>
+        <span class="thumb">кадр 1</span>
+        <span class="c-plate"><span class="plate"><span class="plate__n">Х 731 АМ</span><span class="plate__r">159</span></span></span>
+        <span class="c-type"><b>Самосвал</b></span>
+        <span class="c-in"><span class="phone-only">въехал </span>09:31</span>
+        <span class="c-st"><span class="st">выехал 10:02</span></span>
+        <span class="c-tm"><span class="tm tm--done">31<small>мин</small></span></span>
+        <span class="c-att"></span>
+      </button></li>
+      <li><button type="button" class="row">
+        <svg class="ic ic--s mkx muted" aria-label="выехал"><use href="#i-out"/></svg>
+        <span class="thumb">кадр 1</span>
+        <span class="c-plate"><span class="plate"><span class="plate__n">С 446 НЕ</span><span class="plate__r">159</span></span></span>
+        <span class="c-type"><b>Бетоновоз</b></span>
+        <span class="c-in"><span class="phone-only">въехал </span>12:10</span>
+        <span class="c-st"><span class="st">выехал 12:58</span></span>
+        <span class="c-tm"><span class="tm tm--done">48<small>мин</small></span></span>
+        <span class="c-att"></span>
+      </button></li>
+      <li><button type="button" class="row row--att">
+        <svg class="ic ic--s mkx muted" aria-label="выехал"><use href="#i-out"/></svg>
+        <span class="thumb">кадр 1</span>
+        <span class="c-plate"><span class="plate"><span class="plate__n">У 352 КС</span><span class="plate__r">159</span></span></span>
+        <span class="c-type"><b>Самосвал</b><span>выезд без въезда</span></span>
+        <span class="c-in muted">нет</span>
+        <span class="c-st"><span class="st">выехал 13:41</span><small>въезда в журнале нет</small></span>
+        <span class="c-tm"><span class="tm tm--done">не посчитано</span></span>
+        <span class="c-att"><svg class="ic" aria-label="ждёт подтверждения"><use href="#i-help"/></svg></span>
+      </button></li>
+      <li><button type="button" class="row">
+        <svg class="ic ic--s mkx muted" aria-label="выехал"><use href="#i-out"/></svg>
+        <span class="thumb">кадр 1</span>
+        <span class="c-plate"><span class="plate"><span class="plate__n">О 218 ВК</span><span class="plate__r">159</span></span></span>
+        <span class="c-type"><b>Самосвал</b></span>
+        <span class="c-in"><span class="phone-only">въехал </span>12:53</span>
+        <span class="c-st"><span class="st">выехал 14:05</span></span>
+        <span class="c-tm"><span class="tm tm--done">1<small>ч</small>12<small>мин</small></span></span>
+        <span class="c-att"></span>
+      </button></li>
+    </ul>
+    <div class="win__end phone-only" style="padding:12px">
+      <button class="btn btn--block" type="button"><svg class="ic"><use href="#i-sheet"/></svg>Выгрузить смену в Excel</button>
+    </div>
+  </section>
+
+  <aside class="side">
+    <section class="win cam" aria-label="Камера 1, въезд">
+      <div class="frame">
+        <span class="frame__badge frame__badge--l"><svg class="ic ic--s"><use href="#i-video"/></svg>Камера 1 · Въезд</span>
+        <span class="frame__badge frame__badge--r">видно</span>
+        <div class="box box--unseen" style="left:37%;top:20%;width:13%;height:20%"><span class="box__id">12 · не видно</span></div>
+        <div class="box" style="left:57%;top:24%;width:27%;height:44%"><span class="box__id">7 · автокран</span></div>
+        <div class="box box--sel" style="left:9%;top:44%;width:31%;height:38%"><span class="box__id">31 · самосвал</span></div>
+        <div class="gate" style="left:4%;top:88%;width:92%"></div>
+        <span class="frame__cap">кадр камеры 1</span>
+        <span class="frame__time">14:40:12</span>
+      </div>
+    </section>
+
+    <section class="win card" aria-labelledby="card-t">
+      <div class="card__head">
+        <span class="mk mk--move" title="в движении"></span>
+        <h2 id="card-t">Самосвал</h2>
+        <span class="noplate">номер не читается</span>
+        <button class="iconbtn" type="button" aria-label="Закрыть карточку"><svg class="ic"><use href="#i-x"/></svg></button>
+      </div>
+      <div class="card__timer">
+        <span class="tm tm--lg">7<small>мин</small></span>
+        <span class="muted">на площадке, въехал 14:33:08, выезда ещё нет</span>
+      </div>
+      <div class="card__media">
+        <figure>
+          <div class="frame">
+            <div class="box box--sel" style="left:22%;top:22%;width:54%;height:52%"><span class="box__id">31</span></div>
+            <span class="frame__cap">кадр камеры 1</span>
+          </div>
+          <figcaption>Въезд 14:33:08</figcaption>
+        </figure>
+        <figure>
+          <div class="crop crop--lg">вырезка таблички</div>
+          <p class="note"><b>Не читается:</b> табличка в грязи. Номер вводит оператор по вырезке, в журнале — «введено вручную».</p>
+        </figure>
+      </div>
+      <div>
+        <label class="label" for="plate-in">Номер</label>
+        <div class="field field--focus" id="plate-in">Е 615 ХР 159<span class="caret"></span></div>
+        <div class="actions">
+          <button class="btn btn--primary btn--lg" type="button"><svg class="ic"><use href="#i-check"/></svg>Подтвердить номер</button>
+          <button class="btn btn--lg" type="button">Номера не видно</button>
+        </div>
+      </div>
+      <div>
+        <div class="band" aria-label="в движении с 14:33"><span class="seg seg--move" style="left:0;width:100%"></span></div>
+        <div class="ticks"><span>въехал 14:33</span><span>в движении</span><span>сейчас 14:40</span></div>
+        <dl class="split" style="margin-top:10px">
+          <div><dt>Подтверждено камерой</dt><dd>7 мин</dd></div>
+          <div><dt>Спорный интервал</dt><dd>0 мин</dd></div>
+        </dl>
+      </div>
+    </section>
+  </aside>
+</main>
+
+<footer class="limits">
+  <span class="legend"><span><i class="mk mk--move"></i>в движении</span><span><i class="mk mk--idle"></i>стоит</span><span><i class="mk mk--unseen"></i>не видно</span><span><svg class="ic ic--s"><use href="#i-pencil"/></svg>введено вручную</span></span>
+  <span>Номер — по вырезке, вводит оператор; уход из кадра — не выезд; спорное подтверждает человек.</span>
+  <span class="sample phone-only">Пример: данные выдуманы</span>
+</footer>
+
+<div class="thumbbar">
+  <button class="btn btn--primary" type="button"><svg class="ic"><use href="#i-help"/></svg>Подтвердить: 3</button>
+</div>
+</body>
+</html>
