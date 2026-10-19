@@ -1,0 +1,78 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"><title>Референсы пульта</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+:root{--bg:#f4f4f2;--card:#fff;--ink:#111;--muted:#666;--yes:#1f9d55;--no:#d93636;--acc:#2f6bff}
+*{box-sizing:border-box}body{font-family:system-ui,-apple-system,sans-serif;margin:0;background:var(--bg);color:var(--ink);padding-bottom:84px}
+header{display:flex;align-items:center;gap:8px;padding:14px 16px 6px}h1{font-size:19px;margin:0;flex:1}
+.mode{border:0;background:#111;color:#fff;border-radius:10px;padding:8px 12px;font:600 14px system-ui}
+p.hint{margin:0;padding:0 16px 8px;color:var(--muted);font-size:13px}
+.g{columns:2 150px;gap:10px;padding:10px}
+figure{break-inside:avoid;margin:0 0 10px;background:var(--card);border-radius:14px;overflow:hidden;position:relative;border:3px solid transparent}
+figure.yes{border-color:var(--yes)}figure.no{border-color:var(--no);opacity:.75}
+figure img{width:100%;display:block;cursor:zoom-in}
+.num{position:absolute;top:8px;left:8px;background:#111;color:#fff;font-weight:700;border-radius:8px;padding:2px 9px;font-size:13px}
+.vote{display:flex;gap:6px;padding:8px}
+.vote button{flex:1;border:1px solid #ddd;background:#fff;border-radius:10px;padding:8px 4px;font:600 13px system-ui}
+.vote .y.on{background:var(--yes);color:#fff;border-color:var(--yes)}.vote .n.on{background:var(--no);color:#fff;border-color:var(--no)}
+textarea{width:calc(100% - 16px);margin:0 8px 8px;border:1px solid #ddd;border-radius:8px;padding:7px;font:inherit;font-size:14px;min-height:36px;resize:vertical}
+.bar{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid #e5e5e5;padding:10px 16px;display:flex;gap:8px;align-items:center;z-index:5}
+.bar button{border:0;border-radius:12px;padding:12px;font:600 15px system-ui}
+#send{flex:1;background:var(--acc);color:#fff}#copy{background:#eee}
+#cnt{font-size:12px;color:var(--muted);min-width:70px}
+/* просмотр по одной */
+#viewer{position:fixed;inset:0;background:#0b0b0b;display:none;flex-direction:column;z-index:10}
+#viewer.open{display:flex}
+#vtop{display:flex;align-items:center;color:#fff;padding:10px 14px;gap:10px}
+#vtop b{flex:1;font-size:16px}#vtop button{background:#222;color:#fff;border:0;border-radius:10px;padding:8px 12px;font:600 14px system-ui}
+#vimgwrap{flex:1;display:flex;align-items:center;justify-content:center;overflow:auto;touch-action:pan-y pinch-zoom}
+#vimg{max-width:100%;max-height:100%;object-fit:contain}
+#vpanel{background:#161616;padding:10px 12px 14px}
+#vpanel .vote button{background:#222;color:#fff;border-color:#333;padding:12px 4px;font-size:15px}
+#vpanel textarea{width:100%;margin:8px 0 0;background:#222;color:#fff;border-color:#333}
+#vnav{display:flex;gap:8px;margin-top:8px}#vnav button{flex:1;background:#2a2a2a;color:#fff;border:0;border-radius:10px;padding:11px;font:600 14px system-ui}
+</style></head><body>
+<header><h1>Пульт «Сокола» · <span id="tot"></span></h1><button class="mode" id="one">По одной ▶</button></header>
+<p class="hint">Нажми на картинку — откроется крупно, листай свайпом. «Нравится / Не нравится» сразу открывает поле для пары слов.</p>
+<div class="g" id="g"></div>
+<div class="bar"><span id="cnt"></span><button id="copy">Копировать</button><button id="send">Отправить боту</button></div>
+<div id="viewer"><div id="vtop"><b id="vtitle"></b><button id="vclose">Сетка ✕</button></div>
+<div id="vimgwrap"><img id="vimg" alt=""></div>
+<div id="vpanel"><div class="vote"><button class="y" id="vy">👍 Нравится</button><button class="n" id="vn">👎 Не нравится</button></div>
+<textarea id="vta" placeholder="почему — пара слов"></textarea>
+<div id="vnav"><button id="vprev">◀ Назад</button><button id="vnext">Дальше ▶</button></div></div></div>
+<script>
+const URLS=["img/r01.webp", "img/r02.webp", "img/r03.webp", "img/r04.webp", "img/r05.webp", "img/r06.webp", "img/r07.webp", "img/r08.webp", "img/r09.webp", "img/r10.webp", "img/r11.webp", "img/r12.webp", "img/r13.webp", "img/r14.webp", "img/r15.webp"]; const KEY='refs-sokol-pult-v1';
+let st={};try{st=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}};
+const g=document.getElementById('g'); document.getElementById('tot').textContent=URLS.length;
+URLS.forEach((u,i)=>{const n=i+1;const f=document.createElement('figure');f.dataset.n=n;
+f.innerHTML=`<img loading="lazy" src="${u}"><span class="num">${n}</span><div class="vote"><button class="y">👍 Нравится</button><button class="n">👎 Нет</button></div><textarea placeholder="почему — пара слов"></textarea>`;
+g.appendChild(f);
+const ta=f.querySelector('textarea');ta.value=(st[n]||{}).c||'';
+f.querySelector('img').onclick=()=>openV(i);
+f.querySelector('.y').onclick=()=>{vote(n,'yes');ta.focus()};
+f.querySelector('.n').onclick=()=>{vote(n,'no');ta.focus()};
+ta.oninput=()=>{st[n]={...(st[n]||{}),c:ta.value};save();paint()};});
+function vote(n,v){const s=st[n]||{};s.v=(s.v===v?undefined:v);st[n]=s;save();paint()}
+function paint(){let y=0,no=0;document.querySelectorAll('figure').forEach(f=>{const s=st[f.dataset.n]||{};f.classList.toggle('yes',s.v==='yes');f.classList.toggle('no',s.v==='no');
+f.querySelector('.y').classList.toggle('on',s.v==='yes');f.querySelector('.n').classList.toggle('on',s.v==='no');if(s.v==='yes')y++;if(s.v==='no')no++});
+document.getElementById('cnt').textContent=`👍 ${y} · 👎 ${no}`; if(cur>=0) paintV()}
+let cur=-1;const V=document.getElementById('viewer'),vimg=document.getElementById('vimg'),vta=document.getElementById('vta');
+function openV(i){cur=i;V.classList.add('open');showV()}
+function showV(){const n=cur+1;vimg.src=URLS[cur];document.getElementById('vtitle').textContent=`${n} из ${URLS.length}`;vta.value=(st[n]||{}).c||'';paintV()}
+function paintV(){const s=st[cur+1]||{};document.getElementById('vy').classList.toggle('on',s.v==='yes');document.getElementById('vn').classList.toggle('on',s.v==='no')}
+document.getElementById('vy').onclick=()=>{vote(cur+1,'yes');vta.focus()};
+document.getElementById('vn').onclick=()=>{vote(cur+1,'no');vta.focus()};
+vta.oninput=()=>{const n=cur+1;st[n]={...(st[n]||{}),c:vta.value};save();const f=document.querySelector(`figure[data-n="${n}"] textarea`);if(f)f.value=vta.value};
+const go=d=>{cur=(cur+d+URLS.length)%URLS.length;showV()};
+document.getElementById('vnext').onclick=()=>go(1);document.getElementById('vprev').onclick=()=>go(-1);
+document.getElementById('vclose').onclick=()=>{V.classList.remove('open');cur=-1;paint()};
+document.getElementById('one').onclick=()=>openV(0);
+let x0=null;const w=document.getElementById('vimgwrap');w.addEventListener('touchstart',e=>{x0=e.touches[0].clientX},{passive:true});
+w.addEventListener('touchend',e=>{if(x0===null)return;const dx=e.changedTouches[0].clientX-x0;if(Math.abs(dx)>50)go(dx<0?1:-1);x0=null});
+function text(){const L=[];URLS.forEach((u,i)=>{const n=i+1,s=st[n];if(s&&(s.v||s.c))L.push(n+' '+(s.v==='yes'?'👍':s.v==='no'?'👎':'·')+(s.c?' — '+s.c.trim():''))});return 'Референсы пульта «Сокола»:\n'+(L.join('\n')||'ничего не отмечено')}
+document.getElementById('copy').onclick=async()=>{try{await navigator.clipboard.writeText(text());alert('Скопировано — вставь в чат с ботом')}catch(e){prompt('Скопируй:',text())}};
+document.getElementById('send').onclick=()=>{const t=text();const tg=window.Telegram&&Telegram.WebApp;if(tg&&tg.initData&&tg.sendData&&tg.initDataUnsafe&&!tg.initDataUnsafe.query_id){try{tg.sendData(t.slice(0,4000));return}catch(e){}}const u='https://t.me/share/url?url='+encodeURIComponent(' ')+'&text='+encodeURIComponent(t);if(tg&&tg.openTelegramLink)tg.openTelegramLink(u);else location.href=u};
+
+paint(); if(window.Telegram&&Telegram.WebApp){Telegram.WebApp.ready();Telegram.WebApp.expand()}
+</script></body></html>
