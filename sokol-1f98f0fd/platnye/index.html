@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Сокол: как сделаны платные системы</title>
+<style>
+:root{--bg:#f7f7f5;--surface:#fff;--ink:#1b1c1e;--muted:#5d6168;--line:#dfe1e4;--soft:#f0f1f3;
+--rec:#1d4ed8;--rec-bg:#e6eeff;--best:#8a5a00;--best-bg:#fbf0d3;--best-line:#d9a42a;--out:#6b6f76;--out-bg:#eceef0;
+--res:#33363b;--res-bg:#e9eaec;--yes:#16794a;--yes-bg:#e3f4ea;--no:#b42318;--no-bg:#fde8e6;--part:#8a5a00;--sticky:#fff;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121315;--surface:#1b1d20;--ink:#e8e9eb;--muted:#a3a7ae;--line:#33363b;--soft:#23262a;
+--rec:#8fb0ff;--rec-bg:#1d2a4a;--best:#f0c25c;--best-bg:#3a2e12;--best-line:#a9801f;--out:#9a9ea5;--out-bg:#2a2d31;--res:#d7d9dc;--res-bg:#2c2f33;
+--yes:#5fd39a;--yes-bg:#173326;--no:#ff8a80;--no-bg:#3d1d1a;--part:#f0c25c;--sticky:#1b1d20;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#121315;--surface:#1b1d20;--ink:#e8e9eb;--muted:#a3a7ae;--line:#33363b;--soft:#23262a;
+--rec:#8fb0ff;--rec-bg:#1d2a4a;--best:#f0c25c;--best-bg:#3a2e12;--best-line:#a9801f;--out:#9a9ea5;--out-bg:#2a2d31;--res:#d7d9dc;--res-bg:#2c2f33;
+--yes:#5fd39a;--yes-bg:#173326;--no:#ff8a80;--no-bg:#3d1d1a;--part:#f0c25c;--sticky:#1b1d20;color-scheme:dark}
+*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;overflow-wrap:break-word}
+main{max-width:780px;margin:0 auto;padding:18px 16px 48px}
+h1{font-size:24px;line-height:1.2;margin:0 0 4px;letter-spacing:-.01em}
+h2{font-size:20px;line-height:1.3;margin:0 0 8px;display:flex;align-items:center;gap:10px}
+h2 .ic{flex:none;display:flex;color:var(--rec)}h2 .ic svg{width:28px;height:28px}
+h3{font-size:16px;margin:14px 0 6px}
+p{margin:6px 0}
+a{color:var(--rec)}
+.sub{color:var(--muted);font-size:14px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px;margin:14px 0}
+.top{border-left:4px solid var(--rec)}
+.ten{list-style:none;margin:4px 0 0;padding:0}
+.ten li{display:flex;gap:10px;padding:8px 0;border-top:1px solid var(--line);font-size:16px;line-height:1.4}
+.ten li:first-child{border-top:0}
+.ten .k{flex:none;width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;background:var(--rec-bg);color:var(--rec)}.ten .k svg{width:18px;height:18px}
+.ten b{font-weight:700}
+.kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:12px 0 0}
+.kpi div{background:var(--soft);border-radius:10px;padding:8px 6px;text-align:center}
+.kpi .v{display:block;font-size:22px;font-weight:700;line-height:1.1}
+.kpi .l{display:block;font-size:12px;color:var(--muted);line-height:1.3;margin-top:2px}
+.kpi .v.red{color:var(--no)}
+.chip{display:inline-block;font-size:12px;font-weight:700;line-height:18px;padding:1px 8px;border-radius:999px;white-space:nowrap;vertical-align:1px}
+.chip.yes{color:var(--yes);background:var(--yes-bg)}
+.chip.part{color:var(--best);background:var(--best-bg)}
+.chip.no{color:var(--no);background:var(--no-bg)}
+.chip.chk{color:var(--rec);background:var(--rec-bg)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 10px;font-size:13px;color:var(--muted);margin:6px 0 10px;align-items:center}
+.bar{display:flex;height:12px;border-radius:6px;overflow:hidden;margin:8px 0 4px;background:var(--soft)}
+.bar span{display:block;height:100%}
+.ideas{list-style:none;margin:0;padding:0}
+.idea{padding:10px 0;border-top:1px solid var(--line)}
+.idea:first-child{border-top:0}
+.idea .it{display:flex;gap:8px;font-size:16px;line-height:1.35}
+.idea .n{flex:none;width:22px;height:22px;border-radius:50%;background:var(--soft);border:1px solid var(--line);font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:1px}
+.idea .meta{font-size:14px;color:var(--muted);margin:4px 0 0 30px;line-height:1.4}
+.idea .lbl{font-weight:600}
+.tw{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:8px -16px;padding:0 16px;max-width:calc(100% + 32px)}
+.hint{font-size:13px;color:var(--muted);margin:2px 0 0}
+table{border-collapse:separate;border-spacing:0;font-size:13px;line-height:1.4}
+th,td{text-align:left;vertical-align:top;padding:7px 9px;border-bottom:1px solid var(--line)}
+thead th{font-size:12px;color:var(--muted);font-weight:600;white-space:nowrap;background:var(--soft)}
+tbody th{font-weight:600}
+table th:first-child{position:sticky;left:0;background:var(--sticky);z-index:1;box-shadow:1px 0 0 var(--line)}
+thead th:first-child{background:var(--soft)}
+.st{min-width:1080px}.st th:first-child{min-width:120px;max-width:140px}.st td{min-width:150px}.st td:nth-child(3){min-width:260px}
+.st td.src{color:var(--muted);min-width:170px}
+tr.dim th,tr.dim td{color:var(--out)}
+.warn{color:var(--part);font-weight:700}
+.near{border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:12px 0;background:var(--surface)}
+.near h3{margin:0 0 4px;font-size:17px}
+.near .tag{font-size:13px;color:var(--muted);margin:0 0 6px}
+.near ul{margin:6px 0;padding-left:20px}.near li{margin:3px 0;font-size:15px}
+.near .take{background:var(--rec-bg);border-radius:8px;padding:8px 10px;font-size:14px;margin-top:8px}
+.near .take b{color:var(--rec)}
+.flow{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:14px;margin:6px 0}
+.flow span{background:var(--soft);border:1px solid var(--line);border-radius:8px;padding:3px 8px}
+.flow i{font-style:normal;color:var(--muted)}
+.seg{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:13px;color:var(--muted);margin:4px 0 0}
+.seg i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:4px;vertical-align:-1px}
+.try{list-style:none;margin:0;padding:0}
+.try li{padding:9px 0;border-top:1px solid var(--line);font-size:15px}
+.try li:first-child{border-top:0}
+.try .d{display:block;font-size:14px;color:var(--muted)}
+.holes{padding-left:20px;margin:4px 0}.holes li{margin:6px 0;font-size:15px}
+.open{font-size:15px;background:var(--soft);border-radius:10px;padding:10px 12px;margin:14px 0}
+.toc{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 0}.toc a{font-size:13px;text-decoration:none;padding:3px 10px;border:1px solid var(--line);border-radius:999px;background:var(--surface);color:var(--ink)}
+footer{color:var(--muted);font-size:13px;margin-top:28px}
+</style></head>
+<body><main>
+<header>
+<h1>«Сокол»: как сделаны платные системы</h1>
+<p class="sub">Исследование 199 · открыто 20.10.2026 · заявок не оставляли</p>
+</header>
+
+<section class="card top" id="main">
+<h2><span class="ic"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg></span>Главное за 10 секунд</h2>
+<ul class="ten">
+<li><span class="k"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span><span><b>Код у всех закрыт.</b> Смотреть можно только экраны, брошюры и пробные версии.</span></li>
+<li><span class="k"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h4l2-3h6l2 3h4v12H3z"/><circle cx="12" cy="13.5" r="3.5"/></svg></span><span><b>Учёт техники по камерам продают небольшие компании</b> — Industrial AI, VNEXIA, Tolveet. Точность и цены — только на словах, кейса «было → стало» нет ни у кого.</span></li>
+<li><span class="k"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 6h12v10H2zM14 9h4l3 3v4h-7"/><circle cx="6" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></svg></span><span><b>Рейсы и простои крупные считают датчиком в машине</b> (Komatsu, Cat, Hilti). Камеры — только у ворот и у погрузки.</span></li>
+<li><span class="k"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 4h8v5a4 4 0 0 1-8 0zM8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4M12 13v4M8 21h8M10 17h4"/></svg></span><span><b>Лучший образец пульта — Komatsu Fleet:</b> полоса времени по машинам и таблица рейсов.</span></li>
+<li><span class="k"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg></span><span><b>Ближе всего к «Соколу» — TRASSIR КПП стройки и Industrial AI:</b> подрядчик, накладная, кадр к рейсу.</span></li>
+</ul>
+<div class="kpi">
+<div><span class="v">8</span><span class="l">российских</span></div>
+<div><span class="v">10</span><span class="l">мировых</span></div>
+<div><span class="v">4</span><span class="l">пробных без продавца</span></div>
+<div><span class="v red">0</span><span class="l">кейсов «было → стало»</span></div>
+</div>
+<nav class="toc"><a href="#take">Что берём</a><a href="#ru">Россия</a><a href="#world">Мир</a><a href="#near">Три ближайших</a><a href="#try">Посмотреть</a><a href="#holes">Не проверено</a></nav>
+</section>
+
+<section class="card" id="take">
+<h2><span class="ic"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 6h10M10 12h10M10 18h10M3.5 6l1.5 1.5L8 4.5M3.5 12l1.5 1.5L8 10.5M3.5 18l1.5 1.5L8 16.5"/></svg></span>Что берём в пульт «Сокола»</h2>
+<p class="sub">Идеей, не копией. Статус — по спекам «Сокола» на 20.10: что записано в план, а не что уже работает.</p>
+<div class="legend"><span class="chip yes">в спеке</span> 3 <span class="chip part">частично</span> 5 <span class="chip no">нет</span> 2 <span class="chip chk">проверить</span> 2</div>
+<ol class="ideas"><li class="idea"><div class="it"><span class="n">1</span><b>Подрядчик — группа номеров со своим цветом и флагом «ждём сегодня» из расписания</b></div><div class="meta"><span class="lbl">Откуда:</span> TRASSIR КПП стройки; цвет групп — Macroscop, Eocortex, Vocord, «Линия», Ivideon</div><div class="meta"><span class="chip part">частично</span> у визита есть выбор «чей» (подрядчик); групп с цветом и расписания «ждём» нет</div></li><li class="idea"><div class="it"><span class="n">2</span><b>Время подрядчика по сменам — отчёт сам уходит на почту в конце смены</b></div><div class="meta"><span class="lbl">Откуда:</span> TRASSIR КПП стройки; автоотчёты на почту — норма рынка</div><div class="meta"><span class="chip part">частично</span> рапорт за смену, выгрузка Excel · CSV · JSON и печать — в спеке 005; рассылки на почту нет; сумма по подрядчику — проверить</div></li><li class="idea"><div class="it"><span class="n">3</span><b>Ручной допуск неизвестной машины — только с причиной, запись в журнал</b></div><div class="meta"><span class="lbl">Откуда:</span> Vocord (ручной допуск в журнале), Macroscop (ручная правка только с причиной)</div><div class="meta"><span class="chip no">нет</span> ближайшее — ответы оператора новой строкой с отметкой «оператор» (005)</div></li><li class="idea"><div class="it"><span class="n">4</span><b>Клик по проезду — видео на этот момент</b></div><div class="meta"><span class="lbl">Откуда:</span> Macroscop: двойной клик по номеру открывает архив</div><div class="meta"><span class="chip yes">в спеке</span> нажатие на строку машины перематывает окно камеры к секунде события (06-ui, 005)</div></li><li class="idea"><div class="it"><span class="n">5</span><b>Экран «инцидент»: время и место → видео, номер, пропуск, действия охраны</b></div><div class="meta"><span class="lbl">Откуда:</span> TRASSIR, журнал инцидентов</div><div class="meta"><span class="chip no">нет</span> после показа в плане — тревога в Telegram с номером и клипом 10–20 с (10-after-show)</div></li><li class="idea"><div class="it"><span class="n">6</span><b>Связка «накладная ↔ выезд ↔ кадр загрузки»</b></div><div class="meta"><span class="lbl">Откуда:</span> TRASSIR (охрана выбирает накладную на выезде); SiteGate — фото накладной; Industrial AI — фото каждого ковша</div><div class="meta"><span class="chip part">частично</span> кадры кузова и номера на въезде и выезде — в схеме; накладной нет</div></li><li class="idea"><div class="it"><span class="n">7</span><b>Список подрядчиков из Excel заказчика читается на лету, без импорта</b></div><div class="meta"><span class="lbl">Откуда:</span> TRASSIR: внешние списки из MSSQL или текстового файла</div><div class="meta"><span class="chip chk">проверить</span> в спеках не нашёл</div></li><li class="idea"><div class="it"><span class="n">8</span><b>Полоса времени по каждой машине с цветами состояний</b></div><div class="meta"><span class="lbl">Откуда:</span> Komatsu Fleet: погрузка, выгрузка, едет гружёной, едет пустой, простой</div><div class="meta"><span class="chip yes">в спеке</span> полоса смены «в движении / стоит / не видно» в карточке визита (06-ui); состояния погрузки и выгрузки — нет</div></li><li class="idea"><div class="it"><span class="n">9</span><b>Таблица рейсов с кадром на каждый рейс</b></div><div class="meta"><span class="lbl">Откуда:</span> Komatsu Fleet (таблица рейсов), Industrial AI (кадр со временем к рейсу)</div><div class="meta"><span class="chip yes">в спеке</span> рапорт за смену: строка на машину с рейсами и кадрами (005)</div></li><li class="idea"><div class="it"><span class="n">10</span><b>Кнопки «удалить / исправить событие» и «пересчитать»</b></div><div class="meta"><span class="lbl">Откуда:</span> Komatsu Fleet: ошибочный рейс удаляют на полосе, после правки зоны — «Пересчитать»</div><div class="meta"><span class="chip part">частично</span> исправление — новая строка, прежняя сохраняется (004); «Та же» сливает визиты; отдельной кнопки «пересчитать» — проверить</div></li><li class="idea"><div class="it"><span class="n">11</span><b>Причина простоя сама: «ждёт самосвал», «маневрирует», «затор»</b></div><div class="meta"><span class="lbl">Откуда:</span> ISARC 2020 (статья)</div><div class="meta"><span class="chip part">частично</span> причину ставит оператор: нет фронта, ждём бетон, поломка, другое; сама по соседним машинам — нет</div></li><li class="idea"><div class="it"><span class="n">12</span><b>Неделя сверки с журналом КПП до запуска</b></div><div class="meta"><span class="lbl">Откуда:</span> Industrial AI: неделю сверяют с весами и бумажным журналом</div><div class="meta"><span class="chip chk">проверить</span> есть отметка «Сверено» и табель «заявлено ↔ видели»; недели сверки перед запуском в спеках не нашёл</div></li></ol>
+</section>
+
+<section class="card" id="ru">
+<h2><span class="ic"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s7-6.2 7-12a7 7 0 0 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></svg></span>Россия</h2>
+<p>Журнал проездов у Macroscop, Eocortex, Vocord, «Линии» и Ivideon устроен одинаково — это норма рынка: база номеров с группами, три отчёта (распознавание, въезд-выезд, машины на территории), автоотчёты на почту, Excel или CSV. Логику стройки, а не парковки, описывает только TRASSIR.</p>
+<p class="hint">Таблица листается вбок →</p>
+<div class="tw" tabindex="0" role="region" aria-label="таблица, листается вбок"><table class="st"><thead><tr><th>Система</th><th>Как узнаёт технику</th><th>Что показывает</th><th>Цена</th><th>Пробная · демо</th><th>Источник</th></tr></thead><tbody><tr><th scope="row">TRASSIR</th><td>номер, UHF-метка, QR</td><td>КПП стройки: пул номеров и водителей подрядчика, техника по расписанию, накладная с кадрами загрузки, время по сменам, журнал инцидентов. Parking: въезд, выезд, длительность</td><td>Parking — 12 200 ₽ за территорию, минимум 2 модуля AutoTRASSIR-30; «Автовесовая» с выгрузкой в 1С — 34 880 ₽</td><td>VMS бесплатно и без срока: 8 камер, архив 1 день, Windows, без аналитики. Для КПП стройки цен, демо и скриншотов нет</td><td class="src"><a href="https://www.dssl.ru/l/gg-solutions-skud-i-videonablyudenie-dlya-parkovok-i-kpp-stroitelnyh-obektov/" target="_blank" rel="noopener">DSSL, КПП стройки</a> · <a href="https://www.dssl.ru/products/trassir-parking/" target="_blank" rel="noopener">TRASSIR Parking</a> · <a href="https://trassir.ru/news/poprobuyte-trassir-vms-besplatno-i-bez-ogranicheniy-po-vremeni-na-test/" target="_blank" rel="noopener">бесплатная VMS</a> · <a href="http://varplink.com/product/cctv_software-trassir-intelligent-modules/autotrassir-30-avtovesovaya-upravlenie-otgruzkoy-produkcii" target="_blank" rel="noopener">Автовесовая (varpLiNK)</a> · <a href="https://confluence.trassir.com/pages/viewpage.action?pageId=61112677" target="_blank" rel="noopener">списки AutoTRASSIR (11.03.2025)</a></td></tr><tr><th scope="row">Macroscop (Пермь)</th><td>номер: символ ≥ 30 px, крен ≤ 5°, режим «Паркинг» до 20 км/ч. «Спецтранспорт» — скорая, пожарные, полиция, не стройка</td><td>группы с цветом; отчёт «Учёт времени въезда и выезда» с фильтром по зонам, CSV и Excel; двойной клик по номеру → архив; ручная правка числа мест только с причиной. Стройки на 360, 400 и 4 камеры («Дедал», Пермь) — без результатов</td><td>в прежних исследованиях 183 и 196</td><td>14 дней, все функции, форма на сайте</td><td class="src"><a href="https://doc.macroscop.com/analytics/lpr-complete/overview.htm" target="_blank" rel="noopener">номера</a> · <a href="https://doc.macroscop.com/analytics/lpr/client/report-inout.htm" target="_blank" rel="noopener">отчёт въезд/выезд</a> · <a href="https://doc.macroscop.com/analytics/lpr/client/lpr-panel.htm" target="_blank" rel="noopener">панель номеров</a> · <a href="https://doc.macroscop.com/analytics/lpr-complete/requirements.htm" target="_blank" rel="noopener">требования</a> · <a href="https://pro.macroscop.com/demo-version" target="_blank" rel="noopener">пробная</a> · <a href="https://macroscop.com/resheniya/stroitelstvo" target="_blank" rel="noopener">стройка</a> · <a href="https://macroscop.com/produkty/programma-dlya-ip-kamer/obnaruzhenie-spectransporta" target="_blank" rel="noopener">спецтранспорт</a></td></tr><tr><th scope="row">Eocortex</th><td>номер, марка (около 70), цвет, тип; «спецтехника» — один класс (92 % по словам вендора), экскаватор от самосвала не отличает</td><td>группы с флагами «перехват» и «открыть шлагбаум»; база номеров в CSV; три отчёта: распознавание, въезд-выезд, число машин на территории</td><td>не нашёл <span class="warn" title="один источник, старая страница или по выдаче поиска">⚠</span></td><td>номера — 60 дней на 4 камеры через менеджера; на виртуальной машине не работает</td><td class="src"><a href="https://doc.eocortex.com/analytics/lpr/overview.htm" target="_blank" rel="noopener">номера</a> · <a href="https://doc.eocortex.com/analytics/lpr/client/db.htm" target="_blank" rel="noopener">база номеров</a> · <a href="https://doc.eocortex.com/features/lpr-complete-trial.htm" target="_blank" rel="noopener">пробная</a></td></tr><tr><th scope="row">Vocord ParkingControl</th><td>номер: камера от 1 Мп, наклон ≤ 30°</td><td>пропуска постоянные, разовые, интервальные; охранник добавляет машину прямо на КПП; ручной допуск отмечается в журнале; больше 10 фильтров отчётов; счётчик «на территории»; контроль длительности</td><td>по запросу</td><td>не упомянута</td><td class="src"><a href="https://www.vocord.ru/products/vocord-parkingcontrol/" target="_blank" rel="noopener">Vocord ParkingControl</a></td></tr><tr><th scope="row">Axxon / «Интеллект»</th><td>номер; при стандартной лицензии событие — не раньше чем через 30 с <span class="warn" title="один источник, старая страница или по выдаче поиска">⚠</span> (старая документация)</td><td>списки и реакции, ведение списков через API</td><td>«Интеллект», номера до 20 км/ч — 26 000 ₽ (tinko, без даты)</td><td>Free до 4 камер — без поиска по номерам</td><td class="src"><a href="https://docs.axxonsoft.com/confluence/spaces/one20en/pages/246486828/Activating+the+Axxon+One+Free+license" target="_blank" rel="noopener">Free</a> · <a href="https://docs.axxonsoft.com/confluence/spaces/one20en/pages/246486819/Types+of+licenses" target="_blank" rel="noopener">лицензии</a> · <a href="https://docs.itvgroup.ru/confluence/pages/viewpage.action?pageId=168660645" target="_blank" rel="noopener">онлайн-распознавание</a> · <a href="https://www.tinko.ru/catalog/product/296229/" target="_blank" rel="noopener">tinko</a></td></tr><tr><th scope="row">Ivideon</th><td>номер, в облаке; номера хранятся 90 дней</td><td>белые и чёрные списки, CSV, отчёты по числу машин и времени пребывания; API на странице нет</td><td>690–1 490 ₽ за камеру в месяц</td><td>7 дней облака; для номеров не указана, есть кнопка «Демонстрация»</td><td class="src"><a href="https://ru.ivideon.com/anpr/" target="_blank" rel="noopener">Ivideon ANPR</a> · <a href="https://www.cnews.ru/news/line/2026-04-08_ivideon_otkryla_probnyj_dostup" target="_blank" rel="noopener">CNews (08.04.2026)</a></td></tr><tr><th scope="row">«Линия»</th><td>номер: от 1280×720, номер ≥ 10 % ширины кадра, от 12 к/с</td><td>реакции HTTP, Telegram, e-mail; поиск по маске (*777)</td><td>—</td><td>демо до 16 камер без архива (около 2019 г. <span class="warn" title="один источник, старая страница или по выдаче поиска">⚠</span>)</td><td class="src"><a href="https://devline.ru/moduli/opredeleniye-avtomobilnykh-nomerov/" target="_blank" rel="noopener">номера</a> · <a href="https://devline.ru/news/id-278.html" target="_blank" rel="noopener">демо</a></td></tr><tr class="dim"><th scope="row">«Видеоглаз»</th><td>—</td><td>продавец, не разработчик; «НомерОК» без новостей с 2016 г. <span class="warn" title="один источник, старая страница или по выдаче поиска">⚠</span></td><td>—</td><td>—</td><td class="src"><a href="https://videoglaz.ru/nomerok" target="_blank" rel="noopener">НомерОК</a></td></tr></tbody></table></div>
+</section>
+
+<section class="card" id="world">
+<h2><span class="ic"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.5 3 14.5 0 18M12 3c-3 3.5-3 14.5 0 18"/></svg></span>Мир</h2>
+<p>Камеры у ворот и погрузки, датчики — в машине. Обход стройки камерой 360° (Buildots, OpenSpace, Doxel) — другой рынок, здесь не разбирали.</p>
+<p class="hint">Таблица листается вбок →</p>
+<div class="tw" tabindex="0" role="region" aria-label="таблица, листается вбок"><table class="st"><thead><tr><th>Система</th><th>Как узнаёт технику</th><th>Что показывает</th><th>Цена</th><th>Пробная · демо</th><th>Источник</th></tr></thead><tbody><tr><th scope="row">Komatsu Smart Construction Fleet</th><td>смартфон или блок от аккумулятора в машине, координаты раз в 3 с</td><td>рейсы, время цикла, доля простоя, отчёт за смену</td><td><span class="warn" title="один источник, старая страница или по выдаче поиска">⚠</span> 980 иен в месяц — только по выдаче поиска</td><td>90 дней бесплатно</td><td class="src"><a href="https://smartconstruction.io/wp-content/uploads/2025/04/SC_Fleet_EENSB18000_2503.pdf" target="_blank" rel="noopener">брошюра Fleet (03.2025, PDF)</a> · <a href="https://smartconstruction.mykomatsu.komatsu/Products/Detail/52438f82-e97c-4b79-94b4-eded80e2875c" target="_blank" rel="noopener">магазин, 90 дней</a> · <a href="https://jp.smartconstruction.com/en/smart-construction-fleet" target="_blank" rel="noopener">Fleet, Япония</a></td></tr><tr><th scope="row">OxBlue</th><td>камеры, для ИИ ≥ 8 Мп</td><td>активность, 11 типов техники, оповещение о приезде</td><td>$200–2000+ в месяц (FAQ OxBlue)</td><td>живые камеры без ИИ</td><td class="src"><a href="https://www.oxblue.com/ai-reference-page" target="_blank" rel="noopener">справка по ИИ</a> · <a href="https://www.oxblue.com/projects/demo" target="_blank" rel="noopener">демо</a> · <a href="https://www.oxblue.com/pricing" target="_blank" rel="noopener">цены</a></td></tr><tr><th scope="row">viAct</th><td>камеры ≥ 2 Мп, блок viMAC в кабине</td><td>журнал событий, оповещения с видео; среди 12 кейсов ни одного про простои или самосвалы</td><td>фиксированной нет (FAQ); в каталогах — $100–200 за камеру и модуль в месяц</td><td>«Free Trial», 14 дней <span class="warn" title="один источник, старая страница или по выдаче поиска">⚠</span> по каталогам</td><td class="src"><a href="https://www.viact.ai/vihub" target="_blank" rel="noopener">viHUB</a> · <a href="https://www.viact.ai/case-studies" target="_blank" rel="noopener">кейсы</a> · <a href="https://softwarefinder.com/construction/viact" target="_blank" rel="noopener">каталог с ценами</a> · <a href="https://www.youtube.com/watch?v=aid73ybU9vA" target="_blank" rel="noopener">ролик</a></td></tr><tr><th scope="row">Industrial AI (Австралия)</th><td>камеры у ворот, погрузки и весов</td><td>карточка рейса с фото каждого ковша</td><td>не опубликована</td><td>по заявке</td><td class="src"><a href="https://industrialai.au/solutions/mining-quarry" target="_blank" rel="noopener">карьеры (2026)</a> · <a href="https://industrialai.au/blog/automated-truck-counting-quarry" target="_blank" rel="noopener">счёт самосвалов (16.10.2026)</a></td></tr><tr><th scope="row">Tolveet</th><td>чтение номеров (RFID по желанию), больше 10 типов машин</td><td>въезды и выезды, время на площадке, укрыт ли кузов</td><td>не опубликована</td><td>по заявке</td><td class="src"><a href="https://www.tolveet.com/gate_control" target="_blank" rel="noopener">Tolveet</a></td></tr><tr><th scope="row">VNEXIA</th><td>камеры у въезда</td><td>счёт по типам машин, пиковые дни</td><td>не опубликована</td><td>по заявке</td><td class="src"><a href="https://vnexia.com/products/truck-counting/" target="_blank" rel="noopener">VNEXIA</a></td></tr><tr><th scope="row">Ailytics</th><td>уже стоящие камеры наблюдения</td><td>«использование техники», без подробностей</td><td><span class="warn" title="один источник, старая страница или по выдаче поиска">⚠</span> $99 и $199, страница около двух лет назад</td><td>по заявке</td><td class="src"><a href="https://datadrivenaec.com/tools/ailytics" target="_blank" rel="noopener">Ailytics (каталог)</a></td></tr><tr><th scope="row">Hilti ON!Track, Cat VisionLink</th><td>телематика в машине</td><td>часы работы, холостой ход, двигатель выключен; рейсы и циклы</td><td>у дилера</td><td>—</td><td class="src">страницы Hilti и Cat отдали 403; Hilti — по выдаче поиска <span class="warn" title="один источник, старая страница или по выдаче поиска">⚠</span></td></tr><tr><th scope="row">SiteGate (Великобритания)</th><td>охранник фотографирует накладную на телефон</td><td>журнал поставок, PDF за смену</td><td>£14.99–249 в месяц</td><td>7 дней</td><td class="src"><a href="https://sitegatehq.com/" target="_blank" rel="noopener">SiteGate</a></td></tr><tr><th scope="row">Versatile</th><td>датчик под крюком крана</td><td>—</td><td>не опубликована</td><td>—</td><td class="src"><a href="https://www.versatile.ai/solutions" target="_blank" rel="noopener">Versatile</a> · <a href="https://www.youtube.com/playlist?list=PLzFh_2LtwzcHlEYbjHhtDNnYq54cAWYE6" target="_blank" rel="noopener">ролики Versatile</a></td></tr></tbody></table></div>
+</section>
+
+<section class="card" id="near">
+<h2><span class="ic"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg></span>Три ближайших и логика простоя</h2>
+
+<div class="near">
+<h3>TRASSIR · КПП стройки</h3>
+<p class="tag">Россия · номер, UHF-метка, QR · <a href="https://www.dssl.ru/l/gg-solutions-skud-i-videonablyudenie-dlya-parkovok-i-kpp-stroitelnyh-obektov/" target="_blank" rel="noopener">DSSL, КПП стройки</a></p>
+<ul>
+<li>За подрядчиком закреплён пул номеров и водителей.</li>
+<li>Ожидаемая техника въезжает по расписанию.</li>
+<li>На выезде охрана выбирает накладную, к ней прикрепляются кадры загрузки.</li>
+<li>Время подрядчика суммируется по сменам.</li>
+<li>Журнал инцидентов: время и объект → видео, номер, пропуск, действия охраны.</li>
+<li>Списки бывают внешние — читаются на лету из MSSQL или текстового файла (<a href="https://confluence.trassir.com/pages/viewpage.action?pageId=61112677" target="_blank" rel="noopener">списки AutoTRASSIR (11.03.2025)</a>).</li>
+</ul>
+<p class="sub">Цен, демо и скриншотов КПП стройки нет. Ролики — <a href="https://rutube.ru/channel/41641043/" target="_blank" rel="noopener">канал DSSL на RuTube</a>, таймкоды не проверены.</p>
+<div class="take"><b>Берём:</b> подрядчик как группа номеров, накладная ↔ выезд ↔ кадр, экран «инцидент», время по сменам.</div>
+</div>
+
+<div class="near">
+<h3>Komatsu Smart Construction Fleet · как устроен отчёт</h3>
+<p class="tag">Япония · датчик в машине, не камера · <a href="https://smartconstruction.io/wp-content/uploads/2025/04/SC_Fleet_EENSB18000_2503.pdf" target="_blank" rel="noopener">брошюра Fleet (03.2025, PDF)</a></p>
+<ul>
+<li><b>Шапка:</b> период, смены 06:00–22:00, число погрузок, среднее время цикла, доля простоя в %.</li>
+<li><b>Поток:</b></li>
+</ul>
+<div class="flow"><span>точка погрузки</span><i>→</i><span>точка выгрузки</span></div>
+<ul>
+<li><b>Полоса времени</b> по каждой машине с цветами: погрузка, выгрузка, едет гружёной, едет пустой, простой.</li>
+<li><b>Таблица рейсов:</b> машина, номер круга, время, где грузилась, где выгружалась, км.</li>
+<li>Зоны погрузки и выгрузки задаёт человек; зона может ездить вместе с экскаватором.</li>
+<li>Ошибочный рейс удаляют на полосе времени; после правки зоны — кнопка «Пересчитать».</li>
+</ul>
+<div class="take"><b>Берём:</b> полосу времени, таблицу рейсов, «удалить / пересчитать».</div>
+</div>
+
+<div class="near">
+<h3>Industrial AI</h3>
+<p class="tag">Австралия · камеры у ворот, погрузки и весов · <a href="https://industrialai.au/solutions/mining-quarry" target="_blank" rel="noopener">карьеры (2026)</a> · <a href="https://industrialai.au/blog/automated-truck-counting-quarry" target="_blank" rel="noopener">счёт самосвалов (16.10.2026)</a></p>
+<ul>
+<li>К каждому рейсу сохраняется кадр со временем; рейс пишется в момент выезда.</li>
+<li>Карточка рейса — с фото каждого ковша.</li>
+<li>До запуска счёт неделю сверяют с весами и бумажным журналом.</li>
+<li>Цена не опубликована, демо по заявке.</li>
+</ul>
+<div class="take"><b>Берём:</b> кадр к каждому рейсу и неделю сверки с журналом КПП до запуска.</div>
+</div>
+
+<div class="near">
+<h3>Логика простоя · ISARC 2020</h3>
+<p class="tag">научная статья, не продукт · <a href="https://www.iaarc.org/publications/fulltext/ISARC_2020_Paper_280.pdf" target="_blank" rel="noopener">ISARC 2020 (PDF)</a></p>
+<ul>
+<li>Экскаватор «стоит», если за 100 кадров сдвинулся меньше чем на 7 px.</li>
+<li>Причину ищут рядом: самосвала нет → «ждёт самосвал»; самосвал едет → «маневрирует»; самосвалов больше трёх → «затор».</li>
+<li>На 62 минутах видео простой — 60 % времени, из них 74 % — ожидание самосвала:</li>
+</ul>
+<div class="bar" role="img" aria-label="Из 62 минут: работа 40 %, простой 60 %, из простоя 74 % — ожидание самосвала"><span style="width:40%;background:var(--yes)"></span><span style="width:44.4%;background:var(--no)"></span><span style="width:15.6%;background:var(--best-line)"></span></div><div class="seg"><span><i style="background:var(--yes)"></i>работа 40 %</span><span><i style="background:var(--no)"></i>ждёт самосвал ≈ 44 %</span><span><i style="background:var(--best-line)"></i>прочий простой ≈ 16 %</span></div><p class="sub">≈ — расчёт страницы: 60 % простоя × 74 % ожидания самосвала.</p>
+<p class="sub">Ошибка 1,2–3,1 %, но проверено на одном ролике. Свежее по теме — <a href="https://arxiv.org/abs/2506.00904" target="_blank" rel="noopener">arXiv 2506.00904 (06.2025)</a>.</p>
+<div class="take"><b>Берём:</b> причину простоя по соседним машинам — подсказкой оператору.</div>
+</div>
+</section>
+
+<section class="card" id="try">
+<h2><span class="ic"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></span>Где посмотреть самому</h2>
+<h3>Пробные без продавца</h3>
+<ul class="try">
+<li><a href="https://smartconstruction.mykomatsu.komatsu/Products/Detail/52438f82-e97c-4b79-94b4-eded80e2875c" target="_blank" rel="noopener">Komatsu Fleet — 90 дней бесплатно</a><span class="d">нужен смартфон или блок в машине; пульт виден и в <a href="https://smartconstruction.io/wp-content/uploads/2025/04/SC_Fleet_EENSB18000_2503.pdf" target="_blank" rel="noopener">брошюра Fleet (03.2025, PDF)</a></span></li>
+<li><a href="https://sitegatehq.com/" target="_blank" rel="noopener">SiteGate — 7 дней</a><span class="d">журнал поставок по фото накладной, PDF за смену</span></li>
+<li><a href="https://pro.macroscop.com/demo-version" target="_blank" rel="noopener">Macroscop — 14 дней, все функции</a><span class="d">форма на сайте; экраны — в документации: <a href="https://doc.macroscop.com/analytics/lpr/client/report-inout.htm" target="_blank" rel="noopener">отчёт въезд/выезд</a>, <a href="https://doc.macroscop.com/analytics/lpr/client/lpr-panel.htm" target="_blank" rel="noopener">панель номеров</a></span></li>
+<li><a href="https://trassir.ru/news/poprobuyte-trassir-vms-besplatno-i-bez-ogranicheniy-po-vremeni-na-test/" target="_blank" rel="noopener">TRASSIR VMS — бесплатно, без срока</a><span class="d">8 камер, архив 1 день, Windows, без аналитики; входят ли номера AutoTRASSIR — источники расходятся</span></li>
+</ul>
+<h3>Демо по заявке</h3>
+<ul class="try">
+<li><a href="https://www.dssl.ru/l/gg-solutions-skud-i-videonablyudenie-dlya-parkovok-i-kpp-stroitelnyh-obektov/" target="_blank" rel="noopener">TRASSIR КПП стройки (DSSL)</a><span class="d">в источнике демо и скриншотов нет — только заявка в DSSL; временную лицензию на аналитику к бесплатной VMS даёт менеджер</span></li>
+<li><a href="https://www.viact.ai/vihub" target="_blank" rel="noopener">viAct</a><span class="d">«Free Trial» 14 дней <span class="warn" title="один источник, старая страница или по выдаче поиска">⚠</span> по каталогам; есть <a href="https://www.youtube.com/watch?v=aid73ybU9vA" target="_blank" rel="noopener">ролик</a></span></li>
+<li>Ещё по заявке: Eocortex (60 дней на 4 камеры через менеджера), <a href="https://www.tolveet.com/gate_control" target="_blank" rel="noopener">Tolveet</a>, <a href="https://vnexia.com/products/truck-counting/" target="_blank" rel="noopener">VNEXIA</a>, Industrial AI, Ailytics; OxBlue — <a href="https://www.oxblue.com/projects/demo" target="_blank" rel="noopener">демо</a> живых камер без ИИ.</li>
+</ul>
+</section>
+
+<section class="card" id="holes">
+<h2><span class="ic"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.3 9.2a2.8 2.8 0 0 1 5.4 1c0 1.9-2.7 2.3-2.7 4.1"/><circle cx="12" cy="17.3" r=".6"/></svg></span>Не проверено</h2>
+<ol class="holes"><li>Цена Eocortex; цены Versatile, Industrial AI, VNEXIA, Tolveet не опубликованы.</li><li>Цена Komatsu в Японии (980 иен — только по выдаче поиска): страница магазина дважды не открылась.</li><li>Сайт ITV («Авто-Интеллект», прайс) дважды не открылся.</li><li>Входит ли AutoTRASSIR (номера) в бесплатную демо — источники расходятся.</li><li>Пробная версия номеров у Ivideon.</li><li>viAct: «Free Trial» 14 дней — только по каталогам; текст их статьи про самосвалы — на сайте только заголовок.</li><li>Справка Hilti и страницы Cat — 403, состояния Hilti — по выдаче поиска.</li><li>Таймкоды экранов в роликах (RuTube DSSL, YouTube): нужен просмотр человеком.</li><li>Скриншоты Macroscop: адреса картинок собраны из путей документации, сами картинки не открывались.</li><li>Axxon: задержка 30 с — по старой документации Next 4.4.6.</li><li>«Линия»: условия демо — новость около 2019 г.; «Видеоглаз» — без новостей с 2016 г.</li><li>Eocortex — бывшая международная марка Macroscop: только по tadviser.</li><li>Независимые строительные кейсы с цифрами «было → стало» — не найдены ни у кого.</li><li>ISARC 2020: ошибка 1,2–3,1 % проверена на одном ролике.</li><li>Статусы «в спеке» — по документам «Сокола» на 20.10, а не по проверке работающего пульта.</li></ol>
+</section>
+
+<p class="open"><b>Для контраста — открытый код</b> (исследование 198): готовой открытой системы под стройку нет — ни учёта въездов с номерами, ни подсчёта рейсов самосвалов по видео; ближе всего по каркасу <a href="https://github.com/yihong1120/Construction-Hazard-Detection" target="_blank" rel="noopener">Construction-Hazard-Detection</a>, но AGPL-3.0 — только как образец.</p>
+
+<footer>Источники: исследование 199 (угол А — Россия, угол Б — мир) и 198, 20.10.2026; ссылки на страницы производителей — в таблицах и карточках, открыты 20.10.2026, даты на большинстве страниц не указаны. ⚠ — один источник, старая страница или по выдаче поиска. Картинки с чужих сайтов не встраивали. Также упомянут <a href="https://www.earthcam.net/press-release/earthcam-expands-ai-capabilities-to-enhance-construction-safety/" target="_blank" rel="noopener">EarthCam (06.06.2023)</a> — старше двух лет.</footer>
+</main></body></html>
