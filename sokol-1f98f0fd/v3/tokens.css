@@ -1,0 +1,105 @@
+/* «Сокол» v3 — токены трёх прототипов (большой экран, прораб, руководитель).
+   Основа — design.md §1 проекта (монохром, янтарь только за вниманием,
+   состояние — формой). Hex — только здесь. Страницы берут цвета переменными.
+
+   Бренд заказчика — ОДНА НАСТРОЙКА: блок :root[data-brand="client"] ниже
+   (имя знака, цвет знака, акцент кнопок). По умолчанию — нейтральный «Сокол».
+   Включить: <html data-brand="client"> или ?brand=client в адресе. */
+
+:root {
+  /* Палитра §1 — светлая */
+  --bg: #F3F4F6;
+  --surface: #FFFFFF;
+  --surface-2: #ECEEF1;
+  --surface-3: #E2E5E9;
+  --text: #14171A;
+  --muted: #565C66;          /* вторичный текст, «стоит» (кольцо) — 6,6:1 на поверхности */
+  --line: #D5D8DD;
+  --control-line: #858B94;   /* рамка поля и кнопки, ≥ 3:1 */
+  --accent: #14171A;         /* одно главное действие — тёмная кнопка */
+  --on-accent: #FFFFFF;
+  --warn: #8F5200;           /* внимание: «подтверди», «сомнительно», «не видно» */
+  --warn-soft: #FBF1E1;
+  --on-warn: #FFFFFF;
+
+  /* Предмет */
+  --frame: #D9DCE1;
+  --frame-ink: #3D434B;
+  --plate: #FFFFFF;          /* номер — белая табличка в обеих темах */
+  --plate-ink: #0B0C0E;
+  --plate-line: #0B0C0E;
+  --track: #FFFFFF;          /* рамка трека поверх кадра — светлая на видео в обеих темах */
+  --track-ink: #0B0C0E;
+  --scrim: rgba(11, 12, 14, .66);  /* подложка подписи на кадре */
+  --on-scrim: #FFFFFF;
+
+  /* Подрядчики — цвет малой площади (точка, полоса), не фон и не текст (ADR «Подрядчики цветом») */
+  --c-own: #6B717A;          /* своя техника — серая полоска: «по умолчанию», синего в палитре нет */
+  --c-rent: #7A5C9E;         /* аренда */
+  --c-sub: #2F7D5B;          /* подрядчик */
+
+  /* 3D-сцена */
+  --scene-ground: #E6E8EB;
+  --scene-grid: #C9CDD3;
+  --scene-build: #BFC4CB;
+  --scene-pit: #D2D5DA;
+
+  /* Бренд: нейтральный — знак «Сокол» монохромом */
+  --brand: #14171A;
+  --on-brand: #FFFFFF;
+  --brand-name: "Сокол";
+
+  /* Типографика: одна гарнитура Golos Text (OFL) */
+  --font: "Golos Text", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --fs-12: 12px; --fs-14: 14px; --fs-16: 16px; --fs-20: 20px;
+  --fs-28: 28px; --fs-40: 40px; --fs-56: 56px; --fs-88: 88px;
+
+  --space: 8px; --gap: 16px;
+  --radius: 8px; --radius-control: 6px;
+  --dur: 160ms;
+  --target: 44px;
+  color-scheme: light;
+}
+
+/* Тёмная — «диспетчерская» */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0F1114; --surface: #171A1E; --surface-2: #20242A; --surface-3: #2A2F36;
+    --text: #ECEEF1; --muted: #A9B0BA; --line: #2A2F35; --control-line: #6B727C;
+    --accent: #ECEEF1; --on-accent: #0F1114;
+    --warn: #F0B451; --warn-soft: #2B2213; --on-warn: #0F1114;
+    --frame: #2A2F36; --frame-ink: #C3C9D1;
+    --c-own: #8A919B; --c-rent: #B9A0DA; --c-sub: #6CC39A;
+    --scene-ground: #1B1F24; --scene-grid: #2C3239; --scene-build: #3A414A; --scene-pit: #14171B;
+    --brand: #ECEEF1; --on-brand: #0F1114;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0F1114; --surface: #171A1E; --surface-2: #20242A; --surface-3: #2A2F36;
+  --text: #ECEEF1; --muted: #A9B0BA; --line: #2A2F35; --control-line: #6B727C;
+  --accent: #ECEEF1; --on-accent: #0F1114;
+  --warn: #F0B451; --warn-soft: #2B2213; --on-warn: #0F1114;
+  --frame: #2A2F36; --frame-ink: #C3C9D1;
+  --c-own: #8A919B; --c-rent: #B9A0DA; --c-sub: #6CC39A;
+  --scene-ground: #1B1F24; --scene-grid: #2C3239; --scene-build: #3A414A; --scene-pit: #14171B;
+  --brand: #ECEEF1; --on-brand: #0F1114;
+  color-scheme: dark;
+}
+
+/* ===== Бренд заказчика — одна настройка (пример цвета; настоящий знак и цвет даст заказчик) ===== */
+:root[data-brand="client"] {
+  --brand: #7A2E3A;
+  --on-brand: #FFFFFF;
+  --accent: #7A2E3A;
+  --on-accent: #FFFFFF;
+  --brand-name: "Знак заказчика";
+}
+:root[data-brand="client"][data-theme="dark"] {
+  --brand: #E3A1AC; --on-brand: #0F1114; --accent: #E3A1AC; --on-accent: #0F1114;
+}
+@media (prefers-color-scheme: dark) {
+  :root[data-brand="client"]:not([data-theme="light"]) {
+    --brand: #E3A1AC; --on-brand: #0F1114; --accent: #E3A1AC; --on-accent: #0F1114;
+  }
+}

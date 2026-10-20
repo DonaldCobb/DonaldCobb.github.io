@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Сокол · три экрана</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="tokens.css">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0}
+h1,h2,p,ul{margin:0}
+ul{padding:0;list-style:none}
+body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:var(--fs-16);line-height:1.45;-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums}
+:focus-visible{outline:2px solid var(--text);outline-offset:2px}
+.wrap{max-width:1120px;margin:0 auto;padding:40px 16px 56px}
+.top{display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap;padding-bottom:24px;border-bottom:1px solid var(--line)}
+.top h1{font-size:var(--fs-40);line-height:1.1;font-weight:600;letter-spacing:-.01em}
+.tag{font-size:var(--fs-14);color:var(--muted);border:1px solid var(--line);border-radius:var(--radius-control);padding:2px 8px;white-space:nowrap}
+.lead{max-width:62ch;margin-top:16px;color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:32px}
+.card{display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;color:inherit;text-decoration:none}
+.card:hover{border-color:var(--control-line)}
+.card:first-child{grid-column:1 / -1;display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr)}
+.shot{background:var(--surface-2);display:flex;align-items:center;justify-content:center;aspect-ratio:16/10;overflow:hidden;border-bottom:1px solid var(--line)}
+.card:first-child .shot{aspect-ratio:16/9;border-bottom:0;border-right:1px solid var(--line)}
+.shot img{display:block;width:100%;height:100%;object-fit:cover;object-position:top center}
+.shot--phone img{width:auto;height:92%;object-fit:contain;border-radius:12px;border:1px solid var(--line)}
+.body{display:flex;flex-direction:column;gap:8px;padding:16px 16px 20px}
+.card:first-child .body{padding:24px;justify-content:center}
+.who{font-size:var(--fs-14);color:var(--muted)}
+.card h2{font-size:var(--fs-20);font-weight:600;line-height:1.25}
+.card:first-child h2{font-size:var(--fs-28)}
+.look{display:flex;flex-direction:column;gap:4px;font-size:var(--fs-14);margin-top:4px}
+.look li{padding-left:16px;position:relative}
+.look li::before{content:"";position:absolute;left:0;top:.6em;width:6px;height:6px;border-radius:50%;background:var(--text)}
+.go{margin-top:auto;padding-top:12px;font-weight:500;display:inline-flex;align-items:center;gap:8px;min-height:var(--target)}
+.go svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.notes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:40px;padding-top:24px;border-top:1px solid var(--line);font-size:var(--fs-14);color:var(--muted)}
+.notes b{display:block;color:var(--text);font-weight:600;margin-bottom:4px}
+code{white-space:nowrap;font-family:inherit;background:var(--surface-2);border-radius:4px;padding:0 4px;color:var(--text)}
+@media (max-width:860px){
+  .grid,.notes{grid-template-columns:1fr}
+  .card:first-child{display:flex}
+  .card:first-child .shot{border-right:0;border-bottom:1px solid var(--line)}
+  .card:first-child .body{padding:16px 16px 20px}
+  .top h1{font-size:var(--fs-28)}
+}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <header>
+    <div class="top">
+      <h1>«Сокол» — три экрана</h1>
+      <span class="tag">прототип v3 · 21.10.2026 · вид без логики</span>
+    </div>
+    <p class="lead">Одна смена одной площадки на трёх экранах: большой экран на показе, телефон прораба, телефон руководителя. Цифры здесь — пример. Кадры взяты из открытых роликов Wikimedia Commons, лица и номера на них размыты.</p>
+  </header>
+
+  <div class="grid">
+    <a class="card" href="a-pokaz.html">
+      <div class="shot"><img src="thumb/a-pokaz.jpg" alt="Большой экран: две камеры, площадка в объёме, цифры смены" width="960" height="540" loading="lazy"></div>
+      <div class="body">
+        <p class="who">Для зала на показе · экран 1920×1080</p>
+        <h2>Большой экран показа</h2>
+        <ul class="look">
+          <li>«Камеры»: видео крупно, рамки и номера на кадре</li>
+          <li>Справа — что ждёт ответа и события смены</li>
+          <li>«Журнал» одной кнопкой: цифры с кадрами, площадка в 3D, рапорт к акту</li>
+        </ul>
+        <p class="go">Открыть во весь экран <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></p>
+      </div>
+    </a>
+    <a class="card" href="b-prorab.html">
+      <div class="shot shot--phone"><img src="thumb/b-prorab.jpg" alt="Телефон прораба: что сейчас на площадке" width="390" height="844" loading="lazy"></div>
+      <div class="body">
+        <p class="who">Для прораба · телефон</p>
+        <h2>Что сейчас на площадке</h2>
+        <ul class="look">
+          <li>Кто стоит, кто в движении, кто уехал</li>
+          <li>«Та же машина?» — ответ одним касанием</li>
+          <li>Причина простоя — одним касанием</li>
+        </ul>
+        <p class="go">Открыть <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></p>
+      </div>
+    </a>
+    <a class="card" href="c-rukovoditel.html">
+      <div class="shot shot--phone"><img src="thumb/c-rukovoditel.jpg" alt="Телефон руководителя: четыре числа смены" width="390" height="844" loading="lazy"></div>
+      <div class="body">
+        <p class="who">Для руководителя · телефон</p>
+        <h2>Смена в четырёх числах</h2>
+        <ul class="look">
+          <li>Часы техники, простой в рублях, человеко-часы, инциденты</li>
+          <li>Неделя по дням</li>
+          <li>Видео — только по касанию, выгрузка в акт</li>
+        </ul>
+        <p class="go">Открыть <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></p>
+      </div>
+    </a>
+  </div>
+
+  <div class="notes">
+    <p><b>Как смотреть</b>Большой экран — на компьютере во весь экран (F11). Клавиши: J — «Журнал», 1 и 2 — камеры, T — тема. Телефоны лучше открывать с телефона.</p>
+    <p><b>Настройки в адресе</b><code>?theme=light</code> или <code>?theme=dark</code> — тема, <code>?brand=client</code> — знак и цвет заказчика (меняется одной настройкой).</p>
+    <p><b>Кадры</b>Номер автора стоит на каждом кадре, список авторов, лицензий и ссылок — внизу страницы (на большом экране — кнопка «Лицензии и ссылки»). Люди всегда размыты, на кадрах стоит метка «лица скрыты».</p>
+  </div>
+</main>
+</body>
+</html>

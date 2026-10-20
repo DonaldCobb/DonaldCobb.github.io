@@ -1,0 +1,1148 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Сокол · Прораб</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="tokens.css">
+<style>
+/* Телефон прораба. Смелое место — табло «7 машин: …» на «Площадке»; всё остальное тихо.
+   Цвета — только переменными из tokens.css. Состояние — формой: точка, кольцо, пунктирное кольцо. */
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; }
+h1, h2, h3, p, ul, ol, figure, dl, dd { margin: 0; }
+ul, ol { padding: 0; list-style: none; }
+button { font: inherit; color: inherit; background: none; border: 0; padding: 0; margin: 0; text-align: inherit; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+svg { display: block; }
+img { display: block; }
+[hidden] { display: none !important; }
+
+body {
+  background: var(--bg); color: var(--text);
+  font-family: var(--font); font-size: var(--fs-16); line-height: 1.4;
+  -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: 100%;
+}
+.num, time { font-variant-numeric: tabular-nums; }
+.muted { color: var(--muted); }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+:focus-visible { outline: 2px solid var(--text); outline-offset: 2px; }
+.ic { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+.ic--s { width: 16px; height: 16px; }
+.ic--l { width: 24px; height: 24px; }
+
+.app { max-width: 430px; margin: 0 auto; min-height: 100vh; padding-bottom: calc(80px + env(safe-area-inset-bottom)); }
+[data-screen] { animation: in var(--dur) ease-out; }
+@keyframes in { from { opacity: 0; } to { opacity: 1; } }
+
+/* ---------- Шапка экрана ---------- */
+.bar {
+  position: sticky; top: 0; z-index: 5;
+  display: flex; align-items: center; gap: 8px;
+  min-height: 56px; padding: 6px 8px 6px 16px;
+  background: var(--surface); border-bottom: 1px solid var(--line);
+}
+.bar__t { font-size: var(--fs-20); font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.bar__m { color: var(--muted); white-space: nowrap; }
+.bar__end { margin-left: auto; display: flex; align-items: center; gap: 4px; flex: none; }
+.bar--back { padding-left: 4px; }
+.brandmark {
+  display: inline-flex; align-items: center; height: 32px; padding: 0 10px; flex: none;
+  border-radius: var(--radius-control); background: var(--brand); color: var(--on-brand);
+  font-size: var(--fs-16); font-weight: 600; white-space: nowrap;
+}
+.brandmark::before { content: var(--brand-name); }
+.site-name { font-weight: 600; line-height: 1.2; min-width: 0; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+:root[data-brand="client"] .brandmark { height: 28px; padding: 0 8px; font-size: var(--fs-14); }
+.iconbtn { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: var(--radius-control); color: var(--text); flex: none; }
+.iconbtn .ic { width: 24px; height: 24px; }
+.back { display: inline-flex; align-items: center; gap: 2px; min-height: 44px; padding: 0 10px 0 4px; border-radius: var(--radius-control); font-weight: 500; flex: none; }
+.back .ic { width: 24px; height: 24px; }
+.sample {
+  display: inline-flex; align-items: center; height: 28px; padding: 0 8px;
+  border: 1px solid var(--line); border-radius: var(--radius-control);
+  color: var(--muted); font-size: var(--fs-14); font-weight: 500; white-space: nowrap; flex: none;
+}
+
+/* ---------- Табло (смелое место) ---------- */
+.board { padding: 12px 16px 16px; background: var(--surface); border-bottom: 1px solid var(--line); }
+.board__top { display: flex; align-items: center; gap: 8px; min-height: 28px; color: var(--muted); font-size: var(--fs-14); }
+.board__top .sample { margin-left: auto; }
+.live { width: 10px; height: 10px; border-radius: 50%; background: var(--text); animation: live 2.4s ease-in-out infinite; flex: none; }
+@keyframes live { 0%, 100% { opacity: 1; } 50% { opacity: .3; } }
+.board__head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-top: 10px; }
+.board h1 { font-size: var(--fs-40); font-weight: 600; line-height: 1.1; letter-spacing: -0.01em; }
+.board__now { text-align: right; white-space: nowrap; color: var(--muted); }
+.board__now b { color: var(--text); font-size: var(--fs-28); font-weight: 500; font-variant-numeric: tabular-nums; margin-left: 6px; }
+.tally { margin-top: 8px; }
+.tally li { display: grid; grid-template-columns: 24px auto minmax(0, 1fr); align-items: center; column-gap: 10px; min-height: 42px; font-size: min(var(--fs-28), calc((100vw - 92px) / 10.6)); line-height: 1.2; letter-spacing: -0.01em; white-space: nowrap; }
+.tally li b { font-weight: 600; font-variant-numeric: tabular-nums; min-width: 16px; }
+.tally .mk { width: 20px; height: 20px; border-width: 3px; margin: 0 2px; }
+.tally .mk--move { border: 0; }
+.tally .q-mark { width: 24px; height: 24px; color: var(--warn); }
+.people { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+.people b { font-weight: 600; font-variant-numeric: tabular-nums; }
+.people .faces-w { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); }
+.people .split { margin-left: auto; color: var(--muted); font-size: var(--fs-14); font-variant-numeric: tabular-nums; }
+
+/* ---------- Отметки состояния ---------- */
+.mk { display: inline-block; width: 12px; height: 12px; border-radius: 50%; flex: none; }
+.mk--move { background: var(--text); }
+.mk--idle { border: 2px solid var(--muted); }
+.mk--unseen { border: 2px dashed var(--muted); }
+
+/* ---------- Плашка «Нужен ваш ответ» ---------- */
+.need { margin-top: 12px; border: 1px solid var(--warn); border-left-width: 4px; border-radius: var(--radius); background: var(--warn-soft); }
+.need__h { display: flex; align-items: center; gap: 10px; padding: 10px 12px 4px; }
+.need__h .ic { color: var(--warn); }
+.need__t { font-size: var(--fs-20); font-weight: 600; }
+.need__n { margin-left: auto; font-size: var(--fs-28); font-weight: 600; line-height: 1.1; color: var(--warn); font-variant-numeric: tabular-nums; }
+.need__l { padding: 0 0 4px; }
+.need__l li:not([hidden]) ~ li { border-top: 1px solid var(--line); }
+.need__a { display: flex; align-items: center; gap: 8px; width: 100%; min-height: 48px; padding: 0 8px 0 12px; font-weight: 500; }
+.need__a > span:first-child { flex: 1; min-width: 0; }
+.need__a .ic { color: var(--warn); }
+.need__ok { display: none; color: var(--muted); font-size: var(--fs-14); font-weight: 500; white-space: nowrap; }
+.need__a.ok > span:first-child { color: var(--muted); }
+.need__a.ok .need__ok { display: inline; }
+.need__a.ok .ic { color: var(--muted); }
+
+/* ---------- Группы и строки машин ---------- */
+.grp { margin-top: 24px; }
+.grp__h { display: flex; align-items: center; gap: 10px; padding: 0 16px 8px; font-size: var(--fs-16); font-weight: 600; }
+.grp__h .n { color: var(--muted); font-weight: 500; font-variant-numeric: tabular-nums; }
+.grp__h .q-mark { width: 20px; height: 20px; color: var(--warn); }
+.grp__h.w { color: var(--warn); }
+.rows { background: var(--surface); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.rows > li + li { border-top: 1px solid var(--line); }
+.row {
+  position: relative; display: grid; grid-template-columns: 96px minmax(0, 1fr) auto; column-gap: 12px; align-items: center;
+  width: 100%; min-height: 78px; padding: 12px 16px 12px 20px;
+}
+.row::before { content: ""; position: absolute; left: 0; top: 12px; bottom: 12px; width: 4px; border-radius: 0 2px 2px 0; background: var(--line); }
+.row[data-own="own"]::before, .srow[data-own="own"]::before { background: var(--c-own); }
+.row[data-own="rent"]::before, .srow[data-own="rent"]::before { background: var(--c-rent); }
+.row[data-own="sub"]::before, .srow[data-own="sub"]::before { background: var(--c-sub); }
+.row__who { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; min-width: 0; }
+.row__what { font-size: var(--fs-14); color: var(--muted); line-height: 1.3; }
+.row__what.gone { color: var(--muted); }
+.when { text-align: right; white-space: nowrap; align-self: center; }
+.when b { display: block; font-size: var(--fs-20); font-weight: 600; line-height: 1.2; font-variant-numeric: tabular-nums; }
+.when b small { font-size: var(--fs-14); font-weight: 500; color: var(--muted); margin-left: 2px; }
+.when span { font-size: var(--fs-14); color: var(--muted); }
+.when.dim b { color: var(--muted); }
+.when.w span { color: var(--warn); font-weight: 500; }
+
+/* Табличка номера и бортовой */
+.plate {
+  display: inline-flex; align-items: stretch; height: 28px; flex: none;
+  border: 2px solid var(--plate-line); border-radius: 4px; background: var(--plate); color: var(--plate-ink);
+  font-size: var(--fs-14); font-weight: 600; line-height: 1; white-space: nowrap; font-variant-numeric: tabular-nums;
+}
+.plate__n { display: flex; align-items: center; padding: 0 6px; letter-spacing: .03em; }
+.plate__r { display: flex; align-items: center; padding: 0 5px; border-left: 2px solid var(--plate-line); }
+.plate__q { color: var(--plate-ink); }
+.plate--lg { height: 40px; font-size: var(--fs-20); }
+.plate--lg .plate__n { padding: 0 10px; }
+.plate--lg .plate__r { padding: 0 8px; font-size: var(--fs-16); }
+.bort {
+  display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 8px; flex: none;
+  border: 2px solid var(--text); border-radius: 4px; font-weight: 600; white-space: nowrap; font-variant-numeric: tabular-nums;
+}
+.bort small { font-size: var(--fs-14); font-weight: 500; color: var(--muted); }
+.bort--lg { height: 40px; font-size: var(--fs-20); padding: 0 12px; }
+.bort--lg small { font-size: var(--fs-16); }
+
+.tag {
+  display: inline-flex; align-items: center; gap: 4px; min-height: 24px; padding: 1px 6px;
+  border-radius: 4px; font-size: var(--fs-14); font-weight: 500; white-space: nowrap; line-height: 1.2;
+}
+.tag--warn { color: var(--warn); background: var(--warn-soft); border: 1px solid var(--warn); }
+.tag--muted { color: var(--muted); border: 1px solid var(--line); }
+
+/* ---------- Кадры ---------- */
+.th { position: relative; display: block; width: 96px; aspect-ratio: 16 / 9; border-radius: var(--radius-control); overflow: hidden; background: var(--frame); flex: none; }
+.th > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.th--stale { outline: 2px dashed var(--muted); outline-offset: -2px; }
+.th--stale > img { opacity: .55; }
+.th__t {
+  position: absolute; left: 0; right: 0; bottom: 0; display: flex; align-items: center; gap: 5px;
+  height: 20px; padding: 0 5px; background: var(--scrim); color: var(--on-scrim);
+  font-size: var(--fs-14); font-weight: 500; line-height: 20px; white-space: nowrap; font-variant-numeric: tabular-nums;
+}
+.th .fnb { top: 3px; right: 3px; bottom: auto; min-width: 20px; height: 20px; padding: 0 5px; border-radius: 10px; line-height: 20px; }
+.frame { position: relative; overflow: hidden; aspect-ratio: 16 / 9; width: 100%; background: var(--frame); border-radius: var(--radius-control); }
+.frame > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.cap {
+  position: absolute; left: 0; bottom: 0; display: flex; align-items: center; height: 26px; padding: 0 8px;
+  background: var(--scrim); color: var(--on-scrim); border-top-right-radius: 4px;
+  font-size: var(--fs-14); font-weight: 500; white-space: nowrap; font-variant-numeric: tabular-nums;
+}
+.fnb {
+  position: absolute; right: 6px; bottom: 6px; min-width: 22px; height: 22px; padding: 0 6px;
+  border-radius: 11px; background: var(--scrim); color: var(--on-scrim);
+  font-size: var(--fs-14); font-weight: 600; line-height: 22px; text-align: center;
+}
+.faces {
+  position: absolute; right: 34px; bottom: 0; display: inline-flex; align-items: center; gap: 6px;
+  height: 26px; padding: 0 8px; border-radius: 4px 4px 0 0; background: var(--scrim); color: var(--on-scrim);
+  font-size: var(--fs-14); font-weight: 500; white-space: nowrap;
+}
+.box { position: absolute; border: 2px solid var(--track); border-radius: 2px; }
+.box__id {
+  position: absolute; left: -2px; bottom: 100%; margin-bottom: 2px; display: flex; align-items: center;
+  height: 24px; padding: 0 6px; border-radius: 2px; background: var(--scrim); color: var(--on-scrim);
+  font-size: var(--fs-14); font-weight: 500; white-space: nowrap;
+}
+.box__id--in { bottom: auto; top: 0; left: 0; margin: 0; border-radius: 0 0 2px 0; }
+.box__id--below { bottom: auto; top: 100%; margin: 2px 0 0; }
+.box__id--warn { background: var(--warn); color: var(--on-warn); }
+
+/* ---------- Окна, кнопки ---------- */
+.win { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); }
+.pad { padding: 0 16px; }
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: 48px; padding: 0 16px; border: 1px solid var(--control-line); border-radius: var(--radius-control);
+  background: var(--surface); color: var(--text); font-weight: 500; white-space: nowrap;
+}
+.btn--primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.btn--block { width: 100%; }
+.btn--xl { min-height: 56px; font-size: var(--fs-20); font-weight: 600; }
+.btn[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.linkrow {
+  display: flex; align-items: center; gap: 12px; width: 100%; min-height: 52px; padding: 8px 16px;
+  color: var(--text); font-weight: 500;
+}
+.linkrow .ic { color: var(--muted); }
+.linkrow span { flex: 1; }
+.linkrow small { display: block; color: var(--muted); font-size: var(--fs-14); font-weight: 400; }
+.legend { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 16px; color: var(--muted); font-size: var(--fs-14); }
+.legend > span { display: inline-flex; align-items: center; gap: 6px; }
+.sw { display: inline-block; width: 4px; height: 16px; border-radius: 2px; }
+.sw--own { background: var(--c-own); } .sw--rent { background: var(--c-rent); } .sw--sub { background: var(--c-sub); }
+.foot { margin-top: 24px; padding: 12px 16px 8px; border-top: 1px solid var(--line); }
+.foot .legend { margin-bottom: 8px; }
+.credits-btn { display: flex; align-items: center; gap: 10px; width: 100%; min-height: 48px; color: var(--muted); font-size: var(--fs-14); text-align: left; }
+.credits-btn b { color: var(--text); font-weight: 500; }
+
+/* ---------- Вопросы ---------- */
+.intro { padding: 16px 16px 0; color: var(--muted); }
+.qs { display: grid; gap: 12px; padding: 16px 16px 0; }
+.q { overflow: hidden; scroll-margin-top: 72px; }
+.q.flash { outline: 2px solid var(--warn); outline-offset: 2px; }
+.q__h { display: flex; align-items: center; gap: 10px; padding: 14px 14px 0; }
+.q__h .ic { color: var(--warn); }
+.q__h h2 { font-size: var(--fs-20); font-weight: 600; line-height: 1.25; }
+.q__h .t { margin-left: auto; color: var(--muted); font-size: var(--fs-14); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.q__b { padding: 10px 14px 14px; display: grid; gap: 12px; }
+.q__line { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: var(--fs-16); }
+.q__say { line-height: 34px; }
+.q__say .plate { vertical-align: middle; margin: 0 2px; }
+.nw { white-space: nowrap; }
+.pair { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.pair figcaption { margin-top: 6px; font-size: var(--fs-14); color: var(--muted); line-height: 1.3; }
+.zoom { position: relative; aspect-ratio: 1 / 1; overflow: hidden; border-radius: var(--radius-control); background: var(--frame); }
+.zoom > img { position: absolute; max-width: none; height: auto; }
+.zoom .fnb { top: 6px; bottom: auto; }
+.scene { margin-top: 8px; }
+.scene .th { width: 96px; }
+.note { font-size: var(--fs-14); color: var(--muted); }
+.ans { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.ans .btn { min-height: 52px; font-size: var(--fs-16); }
+.chips { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.chip {
+  display: flex; align-items: center; justify-content: center; min-height: 48px; padding: 6px 10px;
+  border: 1px solid var(--control-line); border-radius: var(--radius-control); background: var(--surface);
+  font-weight: 500; text-align: center; line-height: 1.25;
+}
+.chip--wide { grid-column: 1 / -1; }
+.chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.stand { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 12px; align-items: center; }
+.stand .th { width: 120px; }
+.crop { position: relative; width: 100%; height: 64px; overflow: hidden; border-radius: var(--radius-control); background: var(--frame); }
+.crop > img { position: absolute; width: 1024px; max-width: none; height: 576px; left: -400px; top: -232px; }
+.crop .cap { height: 24px; }
+.stamp { display: none; align-items: center; gap: 8px; padding: 10px 14px; border-top: 1px solid var(--line); background: var(--surface-2); font-weight: 600; }
+.stamp .ic { color: var(--text); }
+.stamp span { font-weight: 400; color: var(--muted); }
+.q.done .stamp { display: flex; }
+.q.done .q__b { display: none; }
+.q.done .q__h { padding-bottom: 12px; }
+.q.done .q__h .ic { color: var(--muted); }
+.q.done { border-color: var(--control-line); }
+.empty-link { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; min-height: 52px; margin-top: 8px; color: var(--muted); font-weight: 500; text-decoration: underline; text-underline-offset: 3px; }
+
+/* ---------- Лента ---------- */
+.segctl { display: grid; grid-template-columns: repeat(3, 1fr); margin: 12px 16px 0; border: 1px solid var(--control-line); border-radius: var(--radius-control); overflow: hidden; background: var(--surface); }
+.segctl button { display: flex; align-items: center; justify-content: center; min-height: 44px; font-weight: 500; }
+.segctl button + button { border-left: 1px solid var(--control-line); }
+.segctl button[aria-pressed="true"] { background: var(--accent); color: var(--on-accent); }
+.feed { margin-top: 12px; background: var(--surface); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.ev { display: grid; grid-template-columns: 52px minmax(0, 1fr) 96px; column-gap: 12px; padding: 12px 16px; align-items: start; }
+.ev + .ev { border-top: 1px solid var(--line); }
+.ev__t { font-size: var(--fs-20); font-weight: 600; line-height: 1.3; }
+.ev__b { display: grid; gap: 4px; min-width: 0; }
+.ev__h { display: flex; align-items: center; gap: 6px; font-weight: 600; }
+.ev__h .ic { color: var(--muted); }
+.ev__m { font-size: var(--fs-14); color: var(--muted); line-height: 1.3; }
+.ev__l { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.ev--wide { grid-template-columns: 52px minmax(0, 1fr); }
+.ev--wide .frame { margin-top: 6px; }
+.ev--inc .ev__h .ic { color: var(--text); }
+.ev--off .ev__t, .ev--off .ev__h { color: var(--muted); }
+.ev .btn { min-height: 44px; justify-self: start; }
+
+/* ---------- Смена ---------- */
+.rp { background: var(--surface); border-bottom: 1px solid var(--line); padding: 4px 16px 16px; }
+.rp__row { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding-top: 14px; }
+.rp__row h2 { font-size: var(--fs-16); font-weight: 500; }
+.rp__v { font-size: var(--fs-20); font-weight: 600; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.rp__v small { font-size: var(--fs-16); font-weight: 500; color: var(--muted); margin-left: 4px; }
+.rp__v--xl { font-size: var(--fs-40); line-height: 1.1; }
+.rp__v--l { font-size: var(--fs-28); line-height: 1.15; }
+.rp__sub { display: flex; justify-content: space-between; gap: 12px; margin-top: 2px; font-size: var(--fs-14); color: var(--muted); }
+.rp__sub b { color: var(--text); font-size: var(--fs-20); font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.rp hr { border: 0; border-top: 1px solid var(--line); margin: 14px 0 0; }
+.bar3 { position: relative; display: flex; gap: 2px; height: 24px; margin-top: 10px; }
+.bar3 > span { height: 100%; border-radius: 3px; }
+.s-move { background: var(--text); }
+.s-idle { border: 2px solid var(--muted); background: var(--surface); }
+.s-unseen { border: 2px dashed var(--muted); background: repeating-linear-gradient(135deg, var(--muted) 0 1.5px, transparent 1.5px 5px); }
+.rp .legend { margin-top: 8px; font-size: var(--fs-14); }
+.rp .legend b { color: var(--text); font-weight: 600; font-variant-numeric: tabular-nums; }
+.proof { display: flex; align-items: center; gap: 10px; margin-top: 10px; }
+.proof p { font-size: var(--fs-14); color: var(--muted); line-height: 1.35; }
+.proof .th + .th { margin-left: -4px; }
+.kv { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 0; row-gap: 0; margin-top: 6px; }
+.kv dt, .kv dd { padding: 10px 0; border-top: 1px solid var(--line); }
+.kv dt { color: var(--text); }
+.kv dt small { display: block; color: var(--muted); font-size: var(--fs-14); }
+.kv dd { padding-left: 12px; text-align: right; font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.kv dd small { display: block; color: var(--muted); font-size: var(--fs-14); font-weight: 400; }
+.export { padding: 16px 0 6px; }
+.export p { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 8px; color: var(--muted); font-size: var(--fs-14); }
+.srow { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 12px; row-gap: 4px; padding: 12px 16px 12px 20px; }
+.srow::before { content: ""; position: absolute; left: 0; top: 12px; bottom: 12px; width: 4px; border-radius: 0 2px 2px 0; background: var(--line); }
+.srow__who { display: flex; align-items: center; gap: 8px; min-width: 0; flex-wrap: wrap; }
+.srow__who em { font-style: normal; color: var(--muted); font-size: var(--fs-14); }
+.srow__h { font-size: var(--fs-20); font-weight: 600; text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.srow__h small { font-size: var(--fs-14); font-weight: 500; color: var(--muted); margin-left: 2px; }
+.srow__d { grid-column: 1 / -1; font-size: var(--fs-14); color: var(--muted); font-variant-numeric: tabular-nums; }
+.srow__ok { grid-column: 1 / -1; display: flex; align-items: center; gap: 6px; font-size: var(--fs-14); font-weight: 500; }
+.srow__ok.no { color: var(--muted); font-weight: 400; }
+.srow__ok .ic { width: 16px; height: 16px; }
+.srow .ic-out { width: 16px; height: 16px; color: var(--muted); }
+.acc { padding: 12px 16px 0; color: var(--muted); font-size: var(--fs-14); }
+
+/* ---------- Машина ---------- */
+.mhead { padding: 16px; background: var(--surface); border-bottom: 1px solid var(--line); }
+.mstate { display: flex; align-items: center; gap: 14px; }
+.mstate .mk { width: 24px; height: 24px; border-width: 3px; }
+.mstate h2 { font-size: var(--fs-40); font-weight: 600; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.msince { margin-top: 6px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.mwho { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+.own { display: inline-flex; align-items: center; gap: 8px; color: var(--text); }
+.mframe { padding: 16px 16px 0; }
+.mframe figcaption { margin-top: 6px; color: var(--muted); font-size: var(--fs-14); }
+.sec { padding: 20px 16px 0; }
+.sec > h3 { display: flex; align-items: center; gap: 10px; font-size: var(--fs-16); font-weight: 600; margin-bottom: 10px; }
+.band { position: relative; height: 32px; border-radius: 4px; background: var(--surface); border: 1px solid var(--line); overflow: hidden; }
+.seg { position: absolute; top: 5px; bottom: 5px; border-radius: 2px; }
+.seg--move { background: var(--text); }
+.seg--idle { border: 2px solid var(--muted); background: var(--surface); }
+.seg--unseen { border: 2px dashed var(--muted); background: repeating-linear-gradient(135deg, var(--muted) 0 1.5px, transparent 1.5px 5px); }
+.future { position: absolute; top: 0; bottom: 0; right: 0; display: flex; align-items: center; justify-content: center; background: var(--surface-2); color: var(--muted); font-size: var(--fs-14); }
+.nowline { position: absolute; top: 0; bottom: 0; width: 2px; margin-left: -1px; background: var(--text); }
+.ticks { position: relative; height: 20px; margin-top: 4px; color: var(--muted); font-size: var(--fs-14); font-variant-numeric: tabular-nums; }
+.ticks span { position: absolute; top: 0; transform: translateX(-50%); white-space: nowrap; }
+.ticks span:first-child { transform: none; }
+.ticks span:last-child { transform: translateX(-100%); }
+.ticks .now { color: var(--text); font-weight: 600; }
+.sec .legend { margin-top: 8px; }
+.sec .kv { margin-top: 10px; }
+.mact { display: grid; gap: 8px; padding: 20px 16px 0; }
+.verify { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 52px; }
+.verify b { font-weight: 600; }
+.verify .no { color: var(--muted); }
+
+/* ---------- Камеры ---------- */
+.cam { margin: 16px 16px 0; overflow: hidden; }
+.cam__h { display: flex; align-items: center; gap: 8px; min-height: 52px; padding: 8px 12px; }
+.cam__h h2 { font-size: var(--fs-16); font-weight: 600; }
+.cam__h .ok { margin-left: auto; display: inline-flex; align-items: center; gap: 6px; color: var(--muted); font-size: var(--fs-14); white-space: nowrap; }
+.cam .frame { border-radius: 0; }
+.cam__n { display: flex; align-items: flex-start; gap: 8px; padding: 10px 12px 12px; color: var(--muted); font-size: var(--fs-14); }
+.cam__n .ic { margin-top: 1px; }
+.blind { position: absolute; left: 0; top: 0; bottom: 0; width: 7%; border-right: 2px dashed var(--track); background: repeating-linear-gradient(135deg, var(--scrim) 0 3px, transparent 3px 8px); }
+
+/* ---------- Пусто ---------- */
+.empty { display: flex; flex-direction: column; align-items: flex-start; gap: 14px; padding: 48px 24px 0; }
+.empty__ic { display: flex; align-items: center; justify-content: center; width: 72px; height: 72px; border: 2px solid var(--line); border-radius: 50%; color: var(--muted); }
+.empty__ic .ic { width: 36px; height: 36px; }
+.empty h2 { font-size: var(--fs-28); font-weight: 600; }
+.empty p { color: var(--muted); max-width: 32ch; }
+.empty .btn { margin-top: 8px; }
+
+/* ---------- Кадры ---------- */
+.credits { padding: 16px; }
+.credits > p { color: var(--muted); }
+.credits ol { margin-top: 12px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); }
+.credits li { display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 8px; padding: 10px 12px; }
+.credits li + li { border-top: 1px solid var(--line); }
+.credits li > b { margin-top: 10px; display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius: 12px; background: var(--text); color: var(--surface); font-size: var(--fs-14); font-weight: 600; }
+.credits a { display: flex; align-items: center; min-height: 44px; color: var(--text); text-decoration: underline; text-underline-offset: 3px; overflow-wrap: anywhere; }
+.credits li span { color: var(--muted); font-size: var(--fs-14); }
+
+/* ---------- Нижнее меню ---------- */
+.tabs {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 20;
+  display: grid; grid-template-columns: repeat(4, 1fr); max-width: 430px; margin: 0 auto;
+  padding-bottom: env(safe-area-inset-bottom);
+  background: var(--surface); border-top: 1px solid var(--line);
+}
+.tab { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; min-height: 66px; color: var(--muted); font-size: var(--fs-14); font-weight: 500; }
+.tab .ic { width: 28px; height: 28px; }
+.tab[aria-current="page"] { color: var(--text); font-weight: 600; }
+.tab[aria-current="page"]::before { content: ""; position: absolute; top: -1px; left: 26%; right: 26%; height: 3px; border-radius: 0 0 2px 2px; background: var(--text); }
+.badge {
+  position: absolute; top: 5px; left: calc(50% + 6px); min-width: 22px; height: 22px; padding: 0 6px;
+  border-radius: 11px; background: var(--warn); color: var(--on-warn);
+  font-size: var(--fs-14); font-weight: 600; line-height: 22px; text-align: center; font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Лист снизу, тост ---------- */
+.veil { position: fixed; inset: 0; z-index: 30; background: var(--scrim); width: 100%; }
+.sheet {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 31; max-width: 430px; margin: 0 auto;
+  padding: 8px 16px calc(16px + env(safe-area-inset-bottom));
+  background: var(--surface); border-top: 1px solid var(--line); border-radius: var(--radius) var(--radius) 0 0;
+  animation: up var(--dur) ease-out;
+}
+@keyframes up { from { transform: translateY(24px); opacity: 0; } to { transform: none; opacity: 1; } }
+.sheet__h { display: flex; align-items: center; gap: 8px; min-height: 52px; }
+.sheet__h h2 { font-size: var(--fs-20); font-weight: 600; }
+.sheet__h .iconbtn { margin-left: auto; }
+.sheet > p { color: var(--muted); margin-bottom: 12px; }
+.opt { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-top: 1px solid var(--line); }
+.opt > div { flex: 1; min-width: 0; }
+.opt p { color: var(--muted); font-size: var(--fs-14); }
+.opt--col { flex-direction: column; align-items: stretch; }
+.switch { position: relative; width: 60px; height: 44px; flex: none; }
+.switch::before { content: ""; position: absolute; left: 4px; right: 4px; top: 8px; bottom: 8px; border: 2px solid var(--control-line); border-radius: 14px; background: var(--surface-2); }
+.switch::after { content: ""; position: absolute; left: 10px; top: 14px; width: 16px; height: 16px; border-radius: 50%; background: var(--muted); transition: transform var(--dur); }
+.switch[aria-pressed="true"]::before { background: var(--accent); border-color: var(--accent); }
+.switch[aria-pressed="true"]::after { transform: translateX(20px); background: var(--on-accent); }
+.seg3 { display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid var(--control-line); border-radius: var(--radius-control); overflow: hidden; }
+.seg3 button { display: flex; align-items: center; justify-content: center; gap: 6px; min-height: 48px; font-weight: 500; }
+.seg3 button + button { border-left: 1px solid var(--control-line); }
+.seg3 button[aria-pressed="true"] { background: var(--accent); color: var(--on-accent); }
+.xrow { display: grid; grid-template-columns: 24px minmax(0, 1fr); gap: 12px; align-items: center; width: 100%; min-height: 64px; padding: 10px 12px; margin-top: 8px; border: 1px solid var(--control-line); border-radius: var(--radius-control); }
+.xrow b { display: block; font-size: var(--fs-16); font-weight: 600; }
+.xrow span { color: var(--muted); font-size: var(--fs-14); }
+.sheet .nopeople { display: flex; align-items: center; gap: 8px; margin-top: 12px; color: var(--muted); font-size: var(--fs-14); }
+.toast {
+  position: fixed; left: 16px; right: 16px; bottom: calc(80px + env(safe-area-inset-bottom)); z-index: 40;
+  max-width: 398px; margin: 0 auto; padding: 12px 14px; border-radius: var(--radius);
+  background: var(--text); color: var(--bg); font-weight: 500;
+  opacity: 0; visibility: hidden; transition: opacity var(--dur), visibility var(--dur);
+}
+.toast.on { opacity: 1; visibility: visible; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-site" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="8" rx="1"/><path d="M17 14v7"/><path d="M7 14v7"/><path d="M17 3v3"/><path d="M7 3v3"/><path d="M10 14 2.3 6.3"/><path d="m14 6 7.7 7.7"/><path d="m8 6 8 8"/></symbol>
+  <symbol id="i-q" viewBox="0 0 24 24"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></symbol>
+  <symbol id="i-feed" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l4 2"/></symbol>
+  <symbol id="i-shift" viewBox="0 0 24 24"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></symbol>
+  <symbol id="i-cctv" viewBox="0 0 24 24"><path d="M16.75 12h3.632a1 1 0 0 1 .894 1.447l-2.034 4.069a1 1 0 0 1-1.708.134l-2.124-2.97"/><path d="M17.106 9.053a1 1 0 0 1 .447 1.341l-3.106 6.211a1 1 0 0 1-1.342.447L3.61 12.3a2.92 2.92 0 0 1-1.3-3.91L3.69 5.6a2.92 2.92 0 0 1 3.92-1.3z"/><path d="M2 19h3.76a2 2 0 0 0 1.8-1.1L9 15"/><path d="M2 21v-4"/><path d="M7 9h.01"/></symbol>
+  <symbol id="i-more" viewBox="0 0 24 24"><path d="M21 4h-7"/><path d="M10 4H3"/><path d="M21 12h-9"/><path d="M8 12H3"/><path d="M21 20h-5"/><path d="M12 20H3"/><path d="M14 2v4"/><path d="M8 10v4"/><path d="M16 18v4"/></symbol>
+  <symbol id="i-back" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+  <symbol id="i-eyeoff" viewBox="0 0 24 24"><path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49"/><path d="M14.084 14.158a3 3 0 0 1-4.242-4.242"/><path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143"/><path d="m2 2 20 20"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+  <symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+  <symbol id="i-in" viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><path d="m10 17 5-5-5-5"/><path d="M15 12H3"/></symbol>
+  <symbol id="i-out" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></symbol>
+  <symbol id="i-ban" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m4.9 4.9 14.2 14.2"/></symbol>
+  <symbol id="i-pause" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M10 15V9"/><path d="M14 15V9"/></symbol>
+  <symbol id="i-merge" viewBox="0 0 24 24"><path d="m8 6 4-4 4 4"/><path d="M12 2v10.3a4 4 0 0 1-1.17 2.87L4 22"/><path d="m20 22-5-5"/></symbol>
+  <symbol id="i-scan" viewBox="0 0 24 24"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><rect x="7" y="9" width="10" height="6" rx="1"/></symbol>
+  <symbol id="i-download" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/></symbol>
+  <symbol id="i-sheet" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M8 13h2"/><path d="M14 13h2"/><path d="M8 17h2"/><path d="M14 17h2"/></symbol>
+  <symbol id="i-report" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><polygon points="6 3 20 12 6 21 6 3"/></symbol>
+  <symbol id="i-image" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
+  <symbol id="i-clipcheck" viewBox="0 0 24 24"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></symbol>
+  <symbol id="i-monitor" viewBox="0 0 24 24"><rect width="20" height="14" x="2" y="3" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></symbol>
+</svg>
+
+<div class="app">
+
+<!-- ============ 1. Площадка ============ -->
+<section data-screen="site" aria-label="Площадка">
+  <header class="bar">
+    <span class="brandmark" role="img" aria-label="Знак"></span>
+    <span class="site-name" title="Жилой дом, секция Б">Жилой дом, секция&nbsp;Б</span>
+    <div class="bar__end">
+      <button class="iconbtn" type="button" data-go="cams" aria-label="Камеры"><svg class="ic"><use href="#i-cctv"/></svg></button>
+      <button class="iconbtn" type="button" data-open="sh-more" aria-label="Ещё: знак заказчика и тема"><svg class="ic"><use href="#i-more"/></svg></button>
+    </div>
+  </header>
+
+  <div class="board">
+    <div class="board__top"><i class="live" aria-hidden="true"></i><span>в эфире</span><span class="sample">Пример на открытых роликах</span></div>
+    <div class="board__head">
+      <h1>7 машин:</h1>
+      <p class="board__now">сейчас<b>14:40</b></p>
+    </div>
+    <ul class="tally" aria-label="7 машин: 1 номер под вопросом, 2 стоят, 1 не видно, 3 в движении">
+      <li class="w"><svg class="ic q-mark"><use href="#i-help"/></svg><b>1</b><span>номер под вопросом,</span></li>
+      <li><i class="mk mk--idle"></i><b>2</b><span>стоят,</span></li>
+      <li><i class="mk mk--unseen"></i><b>1</b><span>не видно,</span></li>
+      <li><i class="mk mk--move"></i><b>3</b><span>в движении</span></li>
+    </ul>
+    <div class="need" role="group" aria-label="Нужен ваш ответ">
+      <p class="need__h"><svg class="ic ic--l"><use href="#i-q"/></svg><span class="need__t">Нужен ваш ответ</span><b class="need__n">3</b></p>
+      <ul class="need__l">
+        <li><button class="need__a" type="button" data-go="questions" data-q="q-same"><span>Тот же? Е&nbsp;482&nbsp;КМ</span><span class="need__ok">отвечено ✓</span><svg class="ic"><use href="#i-chev"/></svg></button></li>
+        <li><button class="need__a" type="button" data-go="questions" data-q="q-idle"><span>Почему стоит борт 12</span><span class="need__ok">отвечено ✓</span><svg class="ic"><use href="#i-chev"/></svg></button></li>
+        <li><button class="need__a" type="button" data-go="questions" data-q="q-plate"><span>Номер У&nbsp;352&nbsp;К?</span><span class="need__ok">отвечено ✓</span><svg class="ic"><use href="#i-chev"/></svg></button></li>
+      </ul>
+    </div>
+    <p class="people"><svg class="ic"><use href="#i-users"/></svg><span>Людей <b>14</b></span><span class="faces-w"><svg class="ic ic--s"><use href="#i-eyeoff"/></svg>лица скрыты</span><span class="split">6 на К1, 8 на К2</span></p>
+  </div>
+
+  <div class="grp">
+    <h2 class="grp__h w"><svg class="ic q-mark"><use href="#i-help"/></svg>Номер под вопросом <span class="n">1</span></h2>
+    <ul class="rows">
+      <li><button class="row" type="button" data-go="questions" data-q="q-plate">
+        <span class="th"><img src="img/unk-in.webp" alt="Самосвал с сомнительным номером" title="Фото: Triplec85, CC BY-SA 4.0, Wikimedia Commons"><span class="th__t">14:36 · К1</span><span class="fnb">6</span></span>
+        <span class="row__who"><span class="plate"><span class="plate__n">У 352 К<span class="plate__q">?</span></span><span class="plate__r">159</span></span><span class="tag tag--warn" data-wait="q-plate" data-done="номер подтверждён">сомнительно, 2 из 5</span><span class="row__what">Самосвал? Нет в списке площадки</span></span>
+        <span class="when"><b>4<small>мин</small></b><span>на площадке</span></span>
+      </button></li>
+    </ul>
+  </div>
+
+  <div class="grp">
+    <h2 class="grp__h"><i class="mk mk--idle"></i>Стоят <span class="n">2</span></h2>
+    <ul class="rows">
+      <li><button class="row" type="button" data-own="rent" data-go="machine">
+        <span class="th"><img src="img/mini-in.webp" alt="Мини-экскаватор 12" title="Фото: ŠJů, CC BY 4.0, Wikimedia Commons"><span class="th__t">14:28 · К2</span><span class="fnb">2</span></span>
+        <span class="row__who"><span class="bort"><small>борт</small>12</span><span class="row__what">Мини-экскаватор, аренда</span><span class="tag tag--warn" data-wait="q-idle" data-done="причина указана">причина?</span></span>
+        <span class="when"><b>12<small>мин</small></b><span>стоит</span></span>
+      </button></li>
+      <li><button class="row" type="button" data-own="sub" data-toast="В прототипе подробно раскрыт мини-экскаватор «12»">
+        <span class="th"><img src="img/mix-in.webp" alt="Автобетоносмеситель С 446 НЕ" title="Фото: Gpkp, CC BY-SA 4.0, Wikimedia Commons"><span class="th__t">14:22 · К1</span><span class="fnb">4</span></span>
+        <span class="row__who"><span class="plate"><span class="plate__n">С 446 НЕ</span><span class="plate__r">159</span></span><span class="row__what">Бетоносмеситель, подрядчик, ждёт разгрузки</span></span>
+        <span class="when"><b>18<small>мин</small></b><span>стоит</span></span>
+      </button></li>
+    </ul>
+  </div>
+
+  <div class="grp">
+    <h2 class="grp__h"><i class="mk mk--unseen"></i>Не видно <span class="n">1</span></h2>
+    <ul class="rows">
+      <li><button class="row" type="button" data-own="sub" data-go="questions" data-q="q-same">
+        <span class="th th--stale"><img src="img/trk2-cam2.webp" alt="Самосвал Е 482 КМ, последний кадр" title="Фото: ŠJů, CC BY 4.0, Wikimedia Commons"><span class="th__t">14:30 · К2</span><span class="fnb">2</span></span>
+        <span class="row__who"><span class="plate"><span class="plate__n">Е 482 КМ</span><span class="plate__r">159</span></span><span class="row__what">Самосвал, за отвалом. Последний кадр 14:30</span></span>
+        <span class="when dim"><b>10<small>мин</small></b><span>не видно</span></span>
+      </button></li>
+    </ul>
+  </div>
+
+  <div class="grp">
+    <h2 class="grp__h"><i class="mk mk--move"></i>В движении <span class="n">3</span></h2>
+    <ul class="rows">
+      <li><button class="row" type="button" data-own="sub" data-toast="В прототипе подробно раскрыт мини-экскаватор «12»">
+        <span class="th"><img src="img/dmp-in.webp" alt="Самосвал О 218 ВК на въезде" title="Фото: Sounds of Changes, CC BY 3.0, Wikimedia Commons"><span class="th__t">14:31 · К1</span><span class="fnb">1</span></span>
+        <span class="row__who"><span class="plate"><span class="plate__n">О 218 ВК</span><span class="plate__r">159</span></span><span class="row__what">Самосвал, подрядчик, рейс 5</span></span>
+        <span class="when"><b>9<small>мин</small></b><span>в движении</span></span>
+      </button></li>
+      <li><button class="row" type="button" data-own="own" data-toast="В прототипе подробно раскрыт мини-экскаватор «12»">
+        <span class="th"><img src="img/cam1.webp" alt="Колёсный экскаватор 03 на въезде" title="Фото: Sounds of Changes, CC BY 3.0, Wikimedia Commons" style="inset:auto;left:-45%;top:0;width:145%;height:145%"><span class="th__t">14:40 · К1</span><span class="fnb">1</span></span>
+        <span class="row__who"><span class="bort"><small>борт</small>03</span><span class="row__what">Колёсный экскаватор, своя</span></span>
+        <span class="when"><b>6<small>ч</small> 40<small>мин</small></b><span>в движении</span></span>
+      </button></li>
+      <li><button class="row" type="button" data-own="own" data-toast="В прототипе подробно раскрыт мини-экскаватор «12»">
+        <span class="th"><img src="img/kem-out.webp" alt="Экскаватор грузит самосвал" title="Фото: KEmel49, CC BY-SA 4.0, Wikimedia Commons"><span class="th__t">14:40 · К2</span><span class="fnb">3</span></span>
+        <span class="row__who"><span class="bort"><small>борт</small>07</span><span class="row__what">Экскаватор, своя, на&nbsp;месте, двигается</span></span>
+        <span class="when"><b>6<small>ч</small> 28<small>мин</small></b><span>на месте</span></span>
+      </button></li>
+    </ul>
+  </div>
+
+  <button class="linkrow" type="button" data-go="feed" style="margin-top:12px">
+    <svg class="ic"><use href="#i-out"/></svg>
+    <span>Уехали за смену: 3<small>Х 731 АМ, Т 905 ОР, Р 117 СА, подробно в ленте</small></span>
+  </button>
+
+  <div class="foot">
+    <p class="legend"><span>Цвет полоски у строки показывает, чья техника:</span><span><i class="sw sw--own"></i>своя</span><span><i class="sw sw--rent"></i>аренда</span><span><i class="sw sw--sub"></i>подрядчик</span></p>
+    <button class="credits-btn" type="button" data-go="frames"><svg class="ic"><use href="#i-image"/></svg><span><b>Кадры 1–4, 6</b> из открытых роликов Wikimedia Commons, люди и номера размыты. Авторы и лицензии</span></button>
+  </div>
+</section>
+
+<!-- ============ 2. Вопросы ============ -->
+<section data-screen="questions" aria-label="Вопросы" hidden>
+  <header class="bar"><h1 class="bar__t">Вопросы</h1><span class="bar__m qleft">3 ждут ответа</span><div class="bar__end"><span class="sample">Пример</span></div></header>
+  <p class="intro">Пока нет ответа, время идёт в спорный интервал.</p>
+
+  <div class="qs">
+    <article class="q win" id="q-same">
+      <div class="q__h"><svg class="ic ic--l"><use href="#i-merge"/></svg><h2>Тот же?</h2><span class="t">14:38 · К2</span></div>
+      <div class="q__b">
+        <p class="q__say">Из-за отвала выехал самосвал.<br><span class="nw">Это <span class="plate"><span class="plate__n">Е 482 КМ</span><span class="plate__r">159</span></span>?</span></p>
+        <div class="pair">
+          <figure>
+            <div class="zoom"><img src="img/trk2-cam2.webp" alt="Крупно: самосвал Е 482 КМ в 14:30" title="Фото: ŠJů, CC BY 4.0, Wikimedia Commons" style="width:427%;left:-32.8%;top:-26.9%">
+              <span class="cap">14:30 · К2</span><span class="fnb">2</span></div>
+            <figcaption>Е 482 КМ в 14:30, потом ушёл за отвал</figcaption>
+            <div class="scene"><span class="th"><img src="img/trk2-cam2.webp" alt="Целый кадр 14:30" title="Фото: ŠJů, CC BY 4.0, Wikimedia Commons"><span class="box" style="left:11%;top:15%;width:18%;height:35%"></span></span></div>
+          </figure>
+          <figure>
+            <div class="zoom"><img src="img/cam2.webp" alt="Крупно: самосвал, который выехал из-за отвала" title="Фото: ŠJů, CC BY 4.0, Wikimedia Commons" style="width:435%;left:-25.2%;top:-43.6%">
+              <span class="cap">сейчас · К2</span><span class="fnb">2</span></div>
+            <figcaption>выехал в 14:38, кадр 14:40</figcaption>
+            <div class="scene"><span class="th"><img src="img/cam2.webp" alt="Целый кадр 14:40" title="Фото: ŠJů, CC BY 4.0, Wikimedia Commons"><span class="box" style="left:8.5%;top:22%;width:17.5%;height:33%"></span></span></div>
+          </figure>
+        </div>
+        <p class="note">Его не было видно 8 минут, поэтому система спрашивает вас.</p>
+        <div class="ans">
+          <button class="btn" type="button" data-answer="Та же" aria-pressed="false"><svg class="ic"><use href="#i-check"/></svg>Та же</button>
+          <button class="btn" type="button" data-answer="Другая" aria-pressed="false"><svg class="ic"><use href="#i-x"/></svg>Другая</button>
+        </div>
+      </div>
+      <p class="stamp">Отвечено ✓ <span>«<b class="pick">Та же</b>», прораб в 14:40</span></p>
+    </article>
+
+    <article class="q win" id="q-idle">
+      <div class="q__h"><svg class="ic ic--l"><use href="#i-pause"/></svg><h2>Стоит 12 мин. Почему?</h2><span class="t">с 14:28</span></div>
+      <div class="q__b">
+        <div class="stand">
+          <span class="th"><img src="img/mini-in.webp" alt="Мини-экскаватор 12 стоит" title="Фото: ŠJů, CC BY 4.0, Wikimedia Commons"><span class="th__t">14:28 · К2</span><span class="fnb">2</span></span>
+          <p class="q__line"><span class="bort"><small>борт</small>12</span><span>Мини-экскаватор, аренда</span></p>
+        </div>
+        <div class="chips" role="group" aria-label="Причина простоя">
+          <button class="chip chip--wide" type="button" data-answer="Ждём бетон или материал" aria-pressed="false">Ждём бетон или материал</button>
+          <button class="chip" type="button" data-answer="Поломка" aria-pressed="false">Поломка</button>
+          <button class="chip" type="button" data-answer="Погода" aria-pressed="false">Погода</button>
+          <button class="chip" type="button" data-answer="По вине заказчика" aria-pressed="false">По вине заказчика</button>
+          <button class="chip" type="button" data-answer="Другое" aria-pressed="false">Другое</button>
+        </div>
+      </div>
+      <p class="stamp">Отвечено ✓ <span>«<b class="pick">Погода</b>», прораб в 14:40</span></p>
+    </article>
+
+    <article class="q win" id="q-plate">
+      <div class="q__h"><svg class="ic ic--l"><use href="#i-scan"/></svg><h2>Подтвердите номер</h2><span class="t">14:36 · К1</span></div>
+      <div class="q__b">
+        <div class="crop"><img src="img/unk-in.webp" alt="Вырезка: самосвал с номером" title="Фото: Triplec85, CC BY-SA 4.0, Wikimedia Commons"><span class="cap">вырезка, кадр 14:36 · К1</span><span class="fnb">6</span></div>
+        <p class="q__line"><span class="plate plate--lg"><span class="plate__n">У 352 К<span class="plate__q">?</span></span><span class="plate__r">159</span></span><span class="tag tag--warn">сомнительно · 2 из 5 кадров</span></p>
+        <p class="note">Самосвал? Нет в списке площадки. Номер на кадре размыт для показа.</p>
+        <div class="ans">
+          <button class="btn" type="button" data-answer="Верно" aria-pressed="false"><svg class="ic"><use href="#i-check"/></svg>Верно</button>
+          <button class="btn" type="button" data-answer="Исправить" aria-pressed="false"><svg class="ic"><use href="#i-scan"/></svg>Исправить</button>
+        </div>
+      </div>
+      <p class="stamp">Отвечено ✓ <span>«<b class="pick">Верно</b>», прораб в 14:40</span></p>
+    </article>
+  </div>
+
+  <button class="empty-link" type="button" data-go="empty">Как выглядит, когда вопросов нет</button>
+  <div class="foot">
+    <button class="credits-btn" type="button" data-go="frames"><svg class="ic"><use href="#i-image"/></svg><span><b>Кадры 2, 6</b> из открытых роликов Wikimedia Commons. Авторы и лицензии</span></button>
+  </div>
+</section>
+
+<!-- ============ 3. Лента ============ -->
+<section data-screen="feed" aria-label="Лента" hidden>
+  <header class="bar"><h1 class="bar__t">Лента смены</h1><span class="bar__m">вт 20.10</span><div class="bar__end"><span class="sample">Пример</span></div></header>
+  <div class="segctl" role="group" aria-label="Что показать">
+    <button type="button" data-filter="all" aria-pressed="true">Все</button>
+    <button type="button" data-filter="car" aria-pressed="false">Машины</button>
+    <button type="button" data-filter="ppl" aria-pressed="false">Люди</button>
+  </div>
+  <ol class="feed">
+    <li class="ev" data-kind="car">
+      <time class="ev__t">14:38</time>
+      <div class="ev__b">
+        <p class="ev__h"><svg class="ic"><use href="#i-merge"/></svg>Из-за отвала выехал самосвал</p>
+        <p class="ev__l"><span class="tag tag--warn" data-wait="q-same" data-done="отвечено">ждёт ответа</span></p>
+        <p class="ev__m">К2. Тот же, что Е 482 КМ? Время в спорном интервале</p>
+        <button class="btn" type="button" data-go="questions" data-q="q-same"><svg class="ic ic--s"><use href="#i-q"/></svg>Ответить</button>
+      </div>
+      <span class="th"><img src="img/trk2-in.webp" alt="Самосвал выезжает из-за отвала" title="Фото: ŠJů, CC BY 4.0, Wikimedia Commons"><span class="th__t">14:38 · К2</span><span class="fnb">2</span></span>
+    </li>
+    <li class="ev" data-kind="car">
+      <time class="ev__t">14:36</time>
+      <div class="ev__b">
+        <p class="ev__h"><svg class="ic"><use href="#i-in"/></svg>Въехал</p>
+        <p class="ev__l"><span class="plate"><span class="plate__n">У 352 К<span class="plate__q">?</span></span><span class="plate__r">159</span></span><span class="tag tag--warn">сомнительно, 2 из 5</span></p>
+        <p class="ev__m">Самосвал? Нет в списке площадки</p>
+      </div>
+      <span class="th"><img src="img/unk-in.webp" alt="Самосвал на въезде" title="Фото: Triplec85, CC BY-SA 4.0, Wikimedia Commons"><span class="th__t">14:36 · К1</span><span class="fnb">6</span></span>
+    </li>
+    <li class="ev" data-kind="car">
+      <time class="ev__t">14:31</time>
+      <div class="ev__b">
+        <p class="ev__h"><svg class="ic"><use href="#i-in"/></svg>Въехал</p>
+        <p class="ev__l"><span class="plate"><span class="plate__n">О 218 ВК</span><span class="plate__r">159</span></span></p>
+        <p class="ev__m">Самосвал, рейс 5 за смену, номер 5 из 5 кадров</p>
+      </div>
+      <span class="th"><img src="img/dmp-in.webp" alt="Самосвал на въезде" title="Фото: Sounds of Changes, CC BY 3.0, Wikimedia Commons"><span class="th__t">14:31 · К1</span><span class="fnb">1</span></span>
+    </li>
+    <li class="ev" data-kind="car">
+      <time class="ev__t">14:30</time>
+      <div class="ev__b">
+        <p class="ev__h"><i class="mk mk--unseen"></i>Скрылся за отвалом</p>
+        <p class="ev__l"><span class="plate"><span class="plate__n">Е 482 КМ</span><span class="plate__r">159</span></span></p>
+        <p class="ev__m">К2, последний кадр 14:30</p>
+      </div>
+      <span class="th th--stale"><img src="img/trk2-cam2.webp" alt="Самосвал перед отвалом" title="Фото: ŠJů, CC BY 4.0, Wikimedia Commons"><span class="th__t">14:30 · К2</span><span class="fnb">2</span></span>
+    </li>
+    <li class="ev" data-kind="car">
+      <time class="ev__t">14:28</time>
+      <div class="ev__b">
+        <p class="ev__h"><i class="mk mk--idle"></i>Стоит</p>
+        <p class="ev__l"><span class="bort"><small>борт</small>12</span></p>
+        <p class="ev__m">Мини-экскаватор, аренда. Причина не указана</p>
+      </div>
+      <span class="th"><img src="img/mini-in.webp" alt="Мини-экскаватор" title="Фото: ŠJů, CC BY 4.0, Wikimedia Commons"><span class="th__t">14:28 · К2</span><span class="fnb">2</span></span>
+    </li>
+    <li class="ev" data-kind="car">
+      <time class="ev__t">14:22</time>
+      <div class="ev__b">
+        <p class="ev__h"><i class="mk mk--idle"></i>Стоит с 14:22</p>
+        <p class="ev__l"><span class="plate"><span class="plate__n">С 446 НЕ</span><span class="plate__r">159</span></span></p>
+        <p class="ev__m">Бетоносмеситель, ждёт разгрузки</p>
+      </div>
+      <span class="th"><img src="img/mix-in.webp" alt="Автобетоносмеситель" title="Фото: Gpkp, CC BY-SA 4.0, Wikimedia Commons"><span class="th__t">14:22 · К1</span><span class="fnb">4</span></span>
+    </li>
+    <li class="ev" data-kind="car">
+      <time class="ev__t">14:05</time>
+      <div class="ev__b">
+        <p class="ev__h"><svg class="ic"><use href="#i-out"/></svg>Уехал</p>
+        <p class="ev__l"><span class="plate"><span class="plate__n">Х 731 АМ</span><span class="plate__r">159</span></span></p>
+        <p class="ev__m">Самосвал, на площадке 1&nbsp;ч 12&nbsp;мин, рейс 4</p>
+      </div>
+      <span class="th"><img src="img/fh-out.webp" alt="Самосвал на выезде" title="Фото: Cjp24, CC BY-SA 4.0, Wikimedia Commons"><span class="th__t">14:05 · К1</span><span class="fnb">7</span></span>
+    </li>
+    <li class="ev ev--off" data-kind="ppl">
+      <time class="ev__t">13:20</time>
+      <div class="ev__b">
+        <p class="ev__h"><svg class="ic"><use href="#i-ban"/></svg>Ложная тревога отклонена</p>
+        <p class="ev__m">«Человек в зоне стрелы», К2. На кадре в зоне стрелы людей нет. Отклонил прораб, 13:21</p>
+      </div>
+      <span class="th"><img src="img/kem-out.webp" alt="Экскаватор, в зоне стрелы людей нет" title="Фото: KEmel49, CC BY-SA 4.0, Wikimedia Commons"><span class="th__t">13:20 · К2</span><span class="fnb">3</span></span>
+    </li>
+    <li class="ev" data-kind="car">
+      <time class="ev__t">13:10</time>
+      <div class="ev__b">
+        <p class="ev__h"><svg class="ic"><use href="#i-out"/></svg>Уехал</p>
+        <p class="ev__l"><span class="plate"><span class="plate__n">Т 905 ОР</span><span class="plate__r">159</span></span></p>
+        <p class="ev__m">Самосвал, рейс 2</p>
+      </div>
+      <span class="th"><img src="img/fh-in.webp" alt="Самосвал" title="Фото: Cjp24, CC BY-SA 4.0, Wikimedia Commons"><span class="th__t">13:10 · К1</span><span class="fnb">7</span></span>
+    </li>
+    <li class="ev" data-kind="car">
+      <time class="ev__t">12:40</time>
+      <div class="ev__b">
+        <p class="ev__h"><svg class="ic"><use href="#i-out"/></svg>Уехал</p>
+        <p class="ev__l"><span class="plate"><span class="plate__n">Р 117 СА</span><span class="plate__r">159</span></span></p>
+        <p class="ev__m">Бетоносмеситель</p>
+      </div>
+      <span class="th"><img src="img/mix-out2.webp" alt="Автобетоносмеситель на выезде" title="Фото: Gpkp, CC BY-SA 4.0, Wikimedia Commons"><span class="th__t">12:40 · К1</span><span class="fnb">4</span></span>
+    </li>
+    <li class="ev ev--wide ev--inc" data-kind="ppl">
+      <time class="ev__t">11:52</time>
+      <div class="ev__b">
+        <p class="ev__h"><svg class="ic"><use href="#i-alert"/></svg>Человек в зоне стрелы экскаватора</p>
+        <p class="ev__m">К2. Подтверждён прорабом в 11:54</p>
+        <div class="frame"><img src="img/wien-out.webp" alt="Экскаватор, внизу люди, лица размыты" title="Фото: Hangman'sDeath, CC0, Wikimedia Commons">
+          <div class="box" style="left:44%;top:3%;width:22%;height:82%"><span class="box__id box__id--in">экскаватор</span></div>
+          <span class="faces"><svg class="ic ic--s"><use href="#i-eyeoff"/></svg>лица скрыты</span>
+          <span class="cap">кадр 11:52 · К2</span><span class="fnb">8</span></div>
+      </div>
+    </li>
+  </ol>
+  <div class="foot">
+    <button class="credits-btn" type="button" data-go="frames"><svg class="ic"><use href="#i-image"/></svg><span><b>Кадры 1–8</b> из открытых роликов Wikimedia Commons. Авторы и лицензии</span></button>
+  </div>
+</section>
+
+<!-- ============ 4. Смена ============ -->
+<section data-screen="shift" aria-label="Смена" hidden>
+  <header class="bar"><h1 class="bar__t">Смена</h1><span class="bar__m">08:00–20:00, к 14:40</span><div class="bar__end"><span class="sample">Пример</span></div></header>
+  <div class="rp">
+    <div class="rp__row"><h2>Часы техники</h2><p class="rp__v rp__v--xl">38,5<small>машино-ч</small></p></div>
+    <div class="bar3" role="img" aria-label="в движении 31,2, стоит 6,1, не видно 1,2">
+      <span class="s-move" style="width:81%"></span><span class="s-idle" style="width:15.8%"></span><span class="s-unseen" style="width:3.2%"></span>
+    </div>
+    <p class="legend"><span><i class="mk mk--move"></i>в движении <b>31,2</b></span><span><i class="mk mk--idle"></i>стоит <b>6,1</b></span><span><i class="mk mk--unseen"></i>не видно <b>1,2</b>, спорный интервал</span></p>
+    <div class="proof">
+      <span class="th"><img src="img/cam1.webp" alt="Камера 1" title="Фото: Sounds of Changes, CC BY 3.0, Wikimedia Commons"><span class="th__t">14:40 · К1</span><span class="fnb">1</span></span>
+      <span class="th"><img src="img/cam2.webp" alt="Камера 2" title="Фото: ŠJů, CC BY 4.0, Wikimedia Commons"><span class="th__t">14:40 · К2</span><span class="fnb">2</span></span>
+      <p>Считаем по двум камерам: въезд и котлован</p>
+    </div>
+    <hr>
+    <div class="rp__row"><h2>Простой</h2><p class="rp__v rp__v--l">6<small>ч</small> 05<small>мин</small></p></div>
+    <p class="rp__sub"><span>у 7 машин; оценка по ставкам оператора, не к оплате</span><b>≈ 17 500 ₽</b></p>
+    <div class="proof">
+      <span class="th"><img src="img/mini-in.webp" alt="Мини-экскаватор 12" title="Фото: ŠJů, CC BY 4.0, Wikimedia Commons"><span class="th__t">14:28 · К2</span><span class="fnb">2</span></span>
+      <p>Дольше всех стоит мини-экскаватор «12»: 2&nbsp;ч 10&nbsp;мин</p>
+    </div>
+    <div class="export">
+    <button class="btn btn--primary btn--block btn--xl" type="button" data-open="sh-export"><svg class="ic ic--l"><use href="#i-download"/></svg>Выгрузить к акту</button>
+    <p><svg class="ic ic--s"><use href="#i-eyeoff"/></svg>кадров с людьми в выгрузке нет</p>
+    </div>
+    <dl class="kv">
+      <dt>Машин за смену<small>у одной номер ждёт подтверждения</small></dt><dd>10</dd>
+      <dt>Рейсов самосвалов</dt><dd>14</dd>
+      <dt>Людей сейчас<small>все, кого видят камеры: 6 на К1, 8 на К2; лица скрыты</small></dt><dd>14</dd>
+      <dt>Человеко-часы<small>по заявке бригады 9 человек, вводит диспетчер</small></dt><dd>47 из 54<small>−7 к заявке</small></dd>
+      <dt>Инциденты<small>человек в зоне стрелы, 11:52, К2</small></dt><dd>1 подтверждён<small>1 отклонён</small></dd>
+    </dl>
+  </div>
+
+
+  <div class="grp" style="margin-top:4px">
+    <h2 class="grp__h">По машинам <span class="n">10</span></h2>
+    <ul class="rows">
+      <li><div class="srow" data-own="own">
+        <p class="srow__who"><i class="mk mk--move"></i><span class="bort"><small>борт</small>03</span><em>колёсный экскаватор</em></p><p class="srow__h">6<small>ч</small> 40<small>мин</small></p>
+        <p class="srow__d">без простоя, не видно 12 мин</p>
+        <p class="srow__ok"><svg class="ic"><use href="#i-clipcheck"/></svg>Сверено: прораб, 14:40</p>
+      </div></li>
+      <li><div class="srow" data-own="own">
+        <p class="srow__who"><i class="mk mk--move"></i><span class="bort"><small>борт</small>07</span><em>экскаватор</em></p><p class="srow__h">6<small>ч</small> 28<small>мин</small></p>
+        <p class="srow__d">стоит 52 мин, не видно 6 мин</p>
+        <p class="srow__ok"><svg class="ic"><use href="#i-clipcheck"/></svg>Сверено: прораб, 14:40</p>
+      </div></li>
+      <li><div class="srow" data-own="rent">
+        <p class="srow__who"><i class="mk mk--idle"></i><span class="bort"><small>борт</small>12</span><em>мини-экскаватор</em></p><p class="srow__h">6<small>ч</small> 06<small>мин</small></p>
+        <p class="srow__d">стоит 2 ч 10 мин, не видно 6 мин</p>
+        <p class="srow__ok no">не сверено</p>
+      </div></li>
+      <li><div class="srow" data-own="sub">
+        <p class="srow__who"><i class="mk mk--move"></i><span class="plate"><span class="plate__n">О 218 ВК</span><span class="plate__r">159</span></span><em>самосвал</em></p><p class="srow__h">3<small>ч</small> 54<small>мин</small></p>
+        <p class="srow__d">стоит 34 мин, рейсов 5, не видно 14 мин</p>
+        <p class="srow__ok"><svg class="ic"><use href="#i-clipcheck"/></svg>Сверено: прораб, 14:40</p>
+      </div></li>
+      <li><div class="srow" data-own="sub">
+        <p class="srow__who"><i class="mk mk--unseen"></i><span class="plate"><span class="plate__n">Е 482 КМ</span><span class="plate__r">159</span></span><em>самосвал</em></p><p class="srow__h">4<small>ч</small> 06<small>мин</small></p>
+        <p class="srow__d">стоит 41 мин, рейсов 3, не видно 20 мин</p>
+        <p class="srow__ok no">не сверено, ждёт ответа «Тот же?»</p>
+      </div></li>
+      <li><div class="srow" data-own="sub">
+        <p class="srow__who"><i class="mk mk--idle"></i><span class="plate"><span class="plate__n">С 446 НЕ</span><span class="plate__r">159</span></span><em>бетоносмеситель</em></p><p class="srow__h">1<small>ч</small> 42<small>мин</small></p>
+        <p class="srow__d">въехал 12:58, стоял 13:05–13:52 и стоит с 14:22, всего 1 ч 05 мин</p>
+        <p class="srow__ok no">не сверено</p>
+      </div></li>
+      <li><div class="srow">
+        <p class="srow__who"><svg class="ic q-mark" style="color:var(--warn);width:16px;height:16px"><use href="#i-help"/></svg><span class="plate"><span class="plate__n">У 352 К<span class="plate__q">?</span></span><span class="plate__r">159</span></span><em>самосвал?</em></p><p class="srow__h">4<small>мин</small></p>
+        <p class="srow__d">в часы не идёт, пока номер не подтверждён</p>
+        <p class="srow__ok no">не сверено, номер под вопросом</p>
+      </div></li>
+      <li><div class="srow" data-own="sub">
+        <p class="srow__who"><svg class="ic ic-out"><use href="#i-out"/></svg><span class="plate"><span class="plate__n">Х 731 АМ</span><span class="plate__r">159</span></span><em>уехал 14:05</em></p><p class="srow__h">1<small>ч</small> 12<small>мин</small></p>
+        <p class="srow__d">стоит 18 мин, рейсов 4</p>
+        <p class="srow__ok"><svg class="ic"><use href="#i-clipcheck"/></svg>Сверено: прораб, 14:10</p>
+      </div></li>
+      <li><div class="srow" data-own="sub">
+        <p class="srow__who"><svg class="ic ic-out"><use href="#i-out"/></svg><span class="plate"><span class="plate__n">Т 905 ОР</span><span class="plate__r">159</span></span><em>уехал 13:10</em></p><p class="srow__h">4<small>ч</small> 48<small>мин</small></p>
+        <p class="srow__d">стоит 25 мин, рейсов 2, не видно 8 мин</p>
+        <p class="srow__ok"><svg class="ic"><use href="#i-clipcheck"/></svg>Сверено: прораб, 13:15</p>
+      </div></li>
+      <li><div class="srow" data-own="sub">
+        <p class="srow__who"><svg class="ic ic-out"><use href="#i-out"/></svg><span class="plate"><span class="plate__n">Р 117 СА</span><span class="plate__r">159</span></span><em>уехал 12:40</em></p><p class="srow__h">3<small>ч</small> 30<small>мин</small></p>
+        <p class="srow__d">без простоя, не видно 6 мин</p>
+        <p class="srow__ok"><svg class="ic"><use href="#i-clipcheck"/></svg>Сверено: прораб, 12:45</p>
+      </div></li>
+    </ul>
+  </div>
+  <p class="acc">Точность на открытых роликах примера: въезды 19 из 20 (76–99 %), номер верно 47 из 50 (84–98 %), неверно 0, не прочитано 3. Отметка «Сверено» часы не меняет.</p>
+  <div class="foot">
+    <button class="credits-btn" type="button" data-go="frames"><svg class="ic"><use href="#i-image"/></svg><span><b>Кадры 1, 2</b> из открытых роликов Wikimedia Commons. Авторы и лицензии</span></button>
+  </div>
+</section>
+
+<!-- ============ 5. Машина ============ -->
+<section data-screen="machine" aria-label="Мини-экскаватор 12" hidden>
+  <header class="bar bar--back"><button class="back" type="button" data-back><svg class="ic"><use href="#i-back"/></svg>Назад</button><h1 class="bar__t">Мини-экскаватор «12»</h1></header>
+  <div class="mhead">
+    <div class="mstate"><i class="mk mk--idle"></i><h2>стоит <span class="tick-m">12</span> мин</h2></div>
+    <p class="msince">с 14:28, прошло <span class="tick" data-s="727">12 мин 07 с</span></p>
+    <div class="mwho"><span class="bort bort--lg"><small>борт</small>12</span><span class="own"><i class="sw sw--rent"></i>аренда</span><span class="sample" style="margin-left:auto">Пример</span></div>
+  </div>
+  <figure class="mframe">
+    <div class="frame"><img src="img/mini-in.webp" alt="Мини-экскаватор 12 стоит, стрела опущена" title="Фото: ŠJů, CC BY 4.0, Wikimedia Commons">
+      <div class="box" style="left:17%;top:5%;width:64%;height:92%"><span class="box__id box__id--in">«12» · стоит</span></div>
+      <span class="faces"><svg class="ic ic--s"><use href="#i-eyeoff"/></svg>лица скрыты</span>
+      <span class="cap">кадр 14:40 · К2</span><span class="fnb">2</span></div>
+    <figcaption>Стрела на месте с 14:28, движения нет. Кабина размыта.</figcaption>
+  </figure>
+
+  <div class="sec">
+    <h3>Причина простоя <span class="tag tag--warn" data-wait="q-idle" data-done="указана">ждёт ответа</span></h3>
+    <div class="chips" role="group" aria-label="Причина простоя">
+      <button class="chip chip--wide" type="button" data-reason aria-pressed="false">Ждём бетон или материал</button>
+      <button class="chip" type="button" data-reason aria-pressed="false">Поломка</button>
+      <button class="chip" type="button" data-reason aria-pressed="false">Погода</button>
+      <button class="chip" type="button" data-reason aria-pressed="false">По вине заказчика</button>
+      <button class="chip" type="button" data-reason aria-pressed="false">Другое</button>
+    </div>
+  </div>
+
+  <div class="sec">
+    <h3>Смена 08:00–20:00</h3>
+    <div class="band" role="img" aria-label="Полоса смены: стоит, в движении, не видно; сейчас 14:40">
+      <span class="seg seg--idle" style="left:4.72%;width:5.56%"></span>
+      <span class="seg seg--move" style="left:10.28%;width:7.64%"></span>
+      <span class="seg seg--idle" style="left:17.92%;width:6.25%"></span>
+      <span class="seg seg--move" style="left:24.17%;width:8.33%"></span>
+      <span class="seg seg--unseen" style="left:32.5%;width:0.83%"></span>
+      <span class="seg seg--move" style="left:33.33%;width:7.64%"></span>
+      <span class="seg seg--idle" style="left:40.97%;width:4.59%"></span>
+      <span class="seg seg--move" style="left:45.56%;width:8.33%"></span>
+      <span class="seg seg--idle" style="left:53.89%;width:1.67%"></span>
+      <span class="future" style="left:55.56%">впереди</span>
+      <span class="nowline" style="left:55.56%"></span>
+    </div>
+    <div class="ticks"><span style="left:0">08</span><span style="left:16.67%">10</span><span style="left:33.33%">12</span><span class="now" style="left:55.56%">14:40</span><span style="left:66.67%">16</span><span style="left:83.33%">18</span><span style="left:100%">20</span></div>
+    <p class="legend"><span><i class="mk mk--move"></i>в движении</span><span><i class="mk mk--idle"></i>стоит</span><span><i class="mk mk--unseen"></i>не видно</span></p>
+    <dl class="kv">
+      <dt>На площадке<small>въехал 08:34 через К1, выезда нет</small></dt><dd>6 ч 06 мин</dd>
+      <dt>Стоит за смену<small>4 раза, дольше всего 45 мин</small></dt><dd>2 ч 10 мин</dd>
+      <dt>Не видно<small>11:54–12:00, спорный интервал</small></dt><dd>6 мин</dd>
+    </dl>
+  </div>
+
+  <div class="mact">
+    <button class="btn btn--block" type="button" data-toast="В прототипе видео нет: здесь откроется запись К2 с 14:28"><svg class="ic"><use href="#i-play"/></svg>Смотреть видео с 14:28</button>
+    <div class="verify"><p class="vtext no">не сверено</p><button class="btn" type="button" data-verify aria-pressed="false"><svg class="ic"><use href="#i-clipcheck"/></svg><span class="vbtn">Отметить: сверено</span></button></div>
+  </div>
+  <div class="foot">
+    <button class="credits-btn" type="button" data-go="frames"><svg class="ic"><use href="#i-image"/></svg><span><b>Кадр 2</b> из открытого ролика Wikimedia Commons. Автор и лицензия</span></button>
+  </div>
+</section>
+
+<!-- ============ 6. Вопросов нет ============ -->
+<section data-screen="empty" aria-label="Вопросов нет" hidden>
+  <header class="bar bar--back"><button class="back" type="button" data-back><svg class="ic"><use href="#i-back"/></svg>Назад</button><h1 class="bar__t">Вопросы</h1></header>
+  <div class="empty">
+    <span class="empty__ic"><svg class="ic"><use href="#i-check"/></svg></span>
+    <h2>Вопросов нет</h2>
+    <p>Всё, что система не может решить сама, придёт сюда вместе с кадром. Сейчас решать нечего.</p>
+    <button class="btn btn--primary btn--block" type="button" data-go="site"><svg class="ic"><use href="#i-site"/></svg>Открыть площадку</button>
+  </div>
+</section>
+
+<!-- ============ Камеры ============ -->
+<section data-screen="cams" aria-label="Камеры" hidden>
+  <header class="bar bar--back"><button class="back" type="button" data-back><svg class="ic"><use href="#i-back"/></svg>Назад</button><h1 class="bar__t">Камеры</h1><div class="bar__end"><span class="sample">Пример</span></div></header>
+  <article class="cam win">
+    <div class="cam__h"><h2>К1 «Въезд»</h2><span class="ok"><svg class="ic ic--s"><use href="#i-check"/></svg>в порядке, кадр 14:40</span></div>
+    <div class="frame"><img src="img/cam1.webp" alt="Камера 1, въезд" title="Фото: Sounds of Changes, CC BY 3.0, Wikimedia Commons">
+      <div class="box" style="left:0.5%;top:28%;width:26.5%;height:38%"><span class="box__id">самосвал · О 218 ВК</span></div>
+      <div class="box" style="left:65%;top:2%;width:34.5%;height:67%"><span class="box__id box__id--in" style="left:auto;right:0;border-radius:0 0 0 2px">экскаватор · 03</span></div>
+      <span class="faces"><svg class="ic ic--s"><use href="#i-eyeoff"/></svg>лица скрыты</span>
+      <span class="cap">кадр 14:40 · К1</span><span class="fnb">1</span></div>
+    <p class="cam__n"><svg class="ic ic--s"><use href="#i-users"/></svg>Людей в кадре 6, лица и кабины размыты, имён нет.</p>
+  </article>
+  <article class="cam win">
+    <div class="cam__h"><h2>К2 «Котлован»</h2><span class="ok"><svg class="ic ic--s"><use href="#i-check"/></svg>в порядке, кадр 14:40</span></div>
+    <div class="frame"><img src="img/cam2.webp" alt="Камера 2, котлован" title="Фото: ŠJů, CC BY 4.0, Wikimedia Commons">
+      <span class="blind" aria-hidden="true"></span>
+      <div class="box" style="left:8.5%;top:22%;width:17.5%;height:33%"><span class="box__id box__id--warn">самосвал · тот же?</span></div>
+      <div class="box" style="left:50%;top:21%;width:32.5%;height:52%"><span class="box__id">«12» · стоит 12 мин</span></div>
+      <span class="faces"><svg class="ic ic--s"><use href="#i-eyeoff"/></svg>лица скрыты</span>
+      <span class="cap">кадр 14:40 · К2</span><span class="fnb">2</span></div>
+    <p class="cam__n"><svg class="ic ic--s"><use href="#i-eyeoff"/></svg>Левый край К2 закрыт отвалом, техника там не видна. Е 482 КМ не видно с 14:30.</p>
+  </article>
+  <p class="legend pad" style="margin-top:12px">Белой рамкой обведены машины из списка смены, штриховкой закрыто то, чего камера не видит.</p>
+  <div class="foot">
+    <button class="credits-btn" type="button" data-go="frames"><svg class="ic"><use href="#i-image"/></svg><span><b>Кадры 1, 2</b> из открытых роликов Wikimedia Commons. Авторы и лицензии</span></button>
+  </div>
+</section>
+
+<!-- ============ Кадры: авторы и лицензии ============ -->
+<section data-screen="frames" aria-label="Кадры" hidden>
+  <header class="bar bar--back"><button class="back" type="button" data-back><svg class="ic"><use href="#i-back"/></svg>Назад</button><h1 class="bar__t">Кадры</h1></header>
+  <div class="credits">
+    <p>Все кадры взяты из открытых роликов Wikimedia Commons. Лица, кабины и номера размыты заранее. Цифра в кружке на кадре указывает строку этого списка.</p>
+    <ol>
+      <li><b>1</b><div><a href="https://commons.wikimedia.org/wiki/File:Building_site_Ljubljana_2.webm" target="_blank" rel="noopener">«Building site Ljubljana 2»</a><span>Sounds of Changes, CC BY 3.0</span></div></li>
+      <li><b>2</b><div><a href="https://commons.wikimedia.org/wiki/File:Retenční_nádrž_Libušská,_čištění_vtoku.webm" target="_blank" rel="noopener">«Retenční nádrž Libušská, čištění vtoku»</a><span>ŠJů, CC BY 4.0</span></div></li>
+      <li><b>3</b><div><a href="https://commons.wikimedia.org/wiki/File:Excavator_digging_land_and_loading_truck.webm" target="_blank" rel="noopener">«Excavator digging land and loading truck»</a><span>KEmel49, CC BY-SA 4.0</span></div></li>
+      <li><b>4</b><div><a href="https://commons.wikimedia.org/wiki/File:Cement_mixer_truck_in_Bangalore_(2025).webm" target="_blank" rel="noopener">«Cement mixer truck in Bangalore (2025)»</a><span>Gpkp, CC BY-SA 4.0</span></div></li>
+      <li><b>5</b><div><a href="https://commons.wikimedia.org/wiki/File:Hafriyat_kamyonuna_yükleme_yapan_kepçe_videosu.webm" target="_blank" rel="noopener">«Hafriyat kamyonuna yükleme yapan kepçe videosu»</a><span>Satirdan kahraman, CC BY-SA 4.0</span></div></li>
+      <li><b>6</b><div><a href="https://commons.wikimedia.org/wiki/File:2018-05-07_Ein_Muldenkipper_im_Steinbruch_Unterbalbach.webm" target="_blank" rel="noopener">«2018-05-07 Ein Muldenkipper im Steinbruch Unterbalbach»</a><span>Triplec85, CC BY-SA 4.0</span></div></li>
+      <li><b>7</b><div><a href="https://commons.wikimedia.org/wiki/File:Volvo_FH_500_(video).webm" target="_blank" rel="noopener">«Volvo FH 500 (video)»</a><span>Cjp24, CC BY-SA 4.0</span></div></li>
+      <li><b>8</b><div><a href="https://commons.wikimedia.org/wiki/File:1050_Wien,_U4_Station_Pilgramgasse_Baustelle_Wienfluss-Kanal_Bagger_03_2023-10-05.webm" target="_blank" rel="noopener">«1050 Wien, U4 Station Pilgramgasse Baustelle Wienfluss-Kanal Bagger 03 2023-10-05»</a><span>Hangman'sDeath, CC0</span></div></li>
+    </ol>
+  </div>
+</section>
+
+</div>
+
+<!-- Нижнее меню -->
+<nav class="tabs" aria-label="Разделы">
+  <button class="tab" type="button" data-go="site"><svg class="ic"><use href="#i-site"/></svg>Площадка</button>
+  <button class="tab" type="button" data-go="questions"><svg class="ic"><use href="#i-q"/></svg>Вопросы<span class="badge" aria-label="ждут ответа">3</span></button>
+  <button class="tab" type="button" data-go="feed"><svg class="ic"><use href="#i-feed"/></svg>Лента</button>
+  <button class="tab" type="button" data-go="shift"><svg class="ic"><use href="#i-shift"/></svg>Смена</button>
+</nav>
+
+<!-- Листы снизу -->
+<button class="veil" type="button" data-close aria-label="Закрыть" hidden></button>
+<div class="sheet" id="sh-more" role="dialog" aria-label="Показ: знак и тема" hidden>
+  <div class="sheet__h"><h2>Показ</h2><button class="iconbtn" type="button" data-close aria-label="Закрыть"><svg class="ic"><use href="#i-x"/></svg></button></div>
+  <div class="opt">
+    <div><b>Знак заказчика</b><p>Одна настройка ставит знак и цвет заказчика в шапку и на главные кнопки.</p></div>
+    <button class="switch" type="button" data-brand-toggle aria-pressed="false"><span class="sr">Знак заказчика</span></button>
+  </div>
+  <div class="opt opt--col">
+    <b>Тема</b>
+    <div class="seg3" role="group" aria-label="Тема">
+      <button type="button" data-set-theme="system" aria-pressed="true"><svg class="ic ic--s"><use href="#i-monitor"/></svg>Система</button>
+      <button type="button" data-set-theme="light" aria-pressed="false"><svg class="ic ic--s"><use href="#i-sun"/></svg>Светлая</button>
+      <button type="button" data-set-theme="dark" aria-pressed="false"><svg class="ic ic--s"><use href="#i-moon"/></svg>Тёмная</button>
+    </div>
+  </div>
+  <button class="linkrow" type="button" data-go="frames" style="padding-left:0"><svg class="ic"><use href="#i-image"/></svg><span>Кадры: авторы и лицензии</span></button>
+</div>
+<div class="sheet" id="sh-export" role="dialog" aria-label="Выгрузить к акту" hidden>
+  <div class="sheet__h"><h2>Выгрузить к акту</h2><button class="iconbtn" type="button" data-close aria-label="Закрыть"><svg class="ic"><use href="#i-x"/></svg></button></div>
+  <p>Смена вт 20.10, 08:00–14:40 (идёт). Черновик для сверки.</p>
+  <button class="xrow" type="button" data-toast="В прототипе файл не создаётся"><svg class="ic ic--l"><use href="#i-sheet"/></svg><span><b>Excel</b>листы «Рейсы», «Табель», «Люди»</span></button>
+  <button class="xrow" type="button" data-toast="В прототипе файл не создаётся"><svg class="ic ic--l"><use href="#i-report"/></svg><span><b>PDF</b>рапорт за смену, черновик для сверки</span></button>
+  <p class="nopeople"><svg class="ic ic--s"><use href="#i-eyeoff"/></svg>Кадров с людьми в выгрузке нет. Простой в рублях дан оценкой, не к оплате.</p>
+</div>
+
+<div class="toast" role="status" aria-live="polite"></div>
+
+<script>
+(() => {
+  const H = document.documentElement, Q = new URLSearchParams(location.search);
+  const th = Q.get('theme'); if (th === 'light' || th === 'dark') H.dataset.theme = th;
+  if (Q.get('brand') === 'client') H.dataset.brand = 'client';
+  const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const screens = $$('[data-screen]');
+  const TAB = { site: 'site', machine: 'site', cams: 'site', questions: 'questions', empty: 'questions', feed: 'feed', shift: 'shift', frames: '' };
+  const PARENT = { machine: 'site', cams: 'site', empty: 'questions', frames: 'site' };
+  const hist = []; let cur = null; let left = 3;
+
+  function closeSheets() { $$('.sheet, .veil').forEach(x => { x.hidden = true; x.classList.remove('open'); }); }
+  function show(id, push) {
+    const el = $(`[data-screen="${id}"]`); if (!el) return;
+    if (push && cur && cur !== id) { if (TAB[id] === id) hist.length = 0; else hist.push(cur); }
+    screens.forEach(s => { s.hidden = s !== el; });
+    cur = id;
+    $$('.tab').forEach(t => t.dataset.go === TAB[id] ? t.setAttribute('aria-current', 'page') : t.removeAttribute('aria-current'));
+    $('.badge').hidden = id === 'empty' || !left;
+    closeSheets(); window.scrollTo(0, 0);
+  }
+  function back() { show(hist.pop() || PARENT[cur] || 'site', false); }
+
+  const toast = $('.toast'); let tt;
+  function say(msg) { toast.textContent = msg; toast.classList.add('on'); clearTimeout(tt); tt = setTimeout(() => toast.classList.remove('on'), 2600); }
+
+  function counts() {
+    const b = $('.badge'); b.textContent = left; b.hidden = cur === 'empty' || !left;
+    $('.qleft').textContent = left ? left + (left === 1 ? ' ждёт ответа' : ' ждут ответа') : 'все отвечены';
+    $('.need__n').textContent = left; $('.need__n').hidden = !left;
+    $('.need__t').textContent = left ? 'Нужен ваш ответ' : 'Все вопросы отвечены';
+  }
+  // один ответ отмечается везде: карточка, плашка на «Площадке», метки в строках, ленте и на экране машины
+  function markCard(card, text) {
+    const first = !card.classList.contains('done');
+    card.classList.add('done');
+    $('.pick', card).textContent = text;
+    $$('[data-answer]', card).forEach(x => x.setAttribute('aria-pressed', String(x.dataset.answer === text)));
+    $$(`.need__a[data-q="${card.id}"]`).forEach(a => { a.closest('li').hidden = true; });
+    $$(`[data-wait="${card.id}"]`).forEach(t => { t.textContent = t.dataset.done || 'отвечено'; t.className = 'tag tag--muted'; });
+    if (card.id === 'q-idle') $$('[data-reason]').forEach(x => x.setAttribute('aria-pressed', String(x.textContent === text)));
+    if (first) { left = Math.max(0, left - 1); counts(); }
+  }
+  function answer(b) {
+    markCard(b.closest('.q'), b.dataset.answer);
+    say('Отвечено: ' + b.dataset.answer + '. В прототипе ответ не сохраняется');
+  }
+  function reason(b) {
+    markCard($('#q-idle'), b.textContent);
+    say('Причина простоя: ' + b.textContent + '. В прототипе не сохраняется');
+  }
+  function focusCard(id) {
+    const c = document.getElementById(id); if (!c) return;
+    window.scrollTo(0, Math.max(0, c.getBoundingClientRect().top + window.scrollY - 68));
+    c.classList.add('flash'); setTimeout(() => c.classList.remove('flash'), 1600);
+  }
+  function filter(b) {
+    if (b.getAttribute('aria-pressed') === 'true') { say('Уже показано'); return; }
+    $$('[data-filter]').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+    const k = b.dataset.filter;
+    $$('.ev').forEach(ev => { ev.hidden = !(k === 'all' || ev.dataset.kind === k); });
+  }
+  function setTheme(t) {
+    const was = H.dataset.theme || 'system';
+    if (t === 'system') delete H.dataset.theme; else H.dataset.theme = t;
+    $$('[data-set-theme]').forEach(x => x.setAttribute('aria-pressed', String(x.dataset.setTheme === t)));
+    if (was === t) say('Эта тема уже включена');
+  }
+  function syncTheme() { const t = H.dataset.theme || 'system'; $$('[data-set-theme]').forEach(x => x.setAttribute('aria-pressed', String(x.dataset.setTheme === t))); }
+  function brand(b) {
+    const on = H.dataset.brand !== 'client';
+    if (on) H.dataset.brand = 'client'; else delete H.dataset.brand;
+    b.setAttribute('aria-pressed', String(on));
+  }
+  function verify(b) {
+    const on = b.getAttribute('aria-pressed') !== 'true';
+    b.setAttribute('aria-pressed', String(on));
+    const v = $('.vtext'); v.textContent = on ? 'Сверено: прораб, 14:40' : 'не сверено'; v.classList.toggle('no', !on);
+    $('.vbtn').textContent = on ? 'Снять отметку' : 'Отметить: сверено';
+  }
+
+  document.addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return;
+    const d = b.dataset;
+    if (d.go) { show(d.go, true); if (d.q) focusCard(d.q); return; }
+    if ('back' in d) return back();
+    if (d.toast) return say(d.toast);
+    if (d.answer) return answer(b);
+    if ('reason' in d) return reason(b);
+    if (d.filter) return filter(b);
+    if (d.open) { closeSheets(); const s = $('#' + d.open); s.hidden = false; s.classList.add('open'); $('.veil').hidden = false; return; }
+    if ('close' in d) return closeSheets();
+    if (d.setTheme) return setTheme(d.setTheme);
+    if ('brandToggle' in d) return brand(b);
+    if ('verify' in d) return verify(b);
+  });
+
+  // тикающий таймер простоя (раз в секунду; при «меньше движения» стоит)
+  const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const tick = $('.tick'), tickM = $('.tick-m');
+  let s = +tick.dataset.s;
+  if (!still) setInterval(() => { s++; const m = Math.floor(s / 60); tick.textContent = m + ' мин ' + String(s % 60).padStart(2, '0') + ' с'; tickM.textContent = m; }, 1000);
+
+  syncTheme();
+  if (H.dataset.brand === 'client') $('[data-brand-toggle]').setAttribute('aria-pressed', 'true');
+  const start = Q.get('screen');
+  show(start && $(`[data-screen="${start}"]`) ? start : 'site', false);
+})();
+</script>
+</body>
+</html>

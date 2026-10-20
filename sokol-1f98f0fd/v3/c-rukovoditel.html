@@ -1,0 +1,835 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Сокол · руководитель</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="tokens.css">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0}
+h1,h2,h3,p,ul,ol,figure,dl,dd{margin:0}
+ul,ol{padding:0;list-style:none}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;text-align:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
+svg{display:block}
+img{display:block}
+body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:var(--fs-16);line-height:1.45;-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:100%;font-variant-numeric:tabular-nums}
+:focus-visible{outline:2px solid var(--text);outline-offset:2px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.sprite{position:absolute;width:0;height:0;overflow:hidden}
+.h-bg{fill:var(--surface)} .h-ln{fill:var(--text)}
+.ic{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.ic--s{width:16px;height:16px}
+.ic--xl{width:40px;height:40px;stroke-width:1.75}
+.grey{display:block;color:var(--muted);font-size:var(--fs-14);line-height:1.4}
+.app{max-width:480px;margin:0 auto;min-height:100vh;padding-bottom:calc(76px + env(safe-area-inset-bottom))}
+
+/* шапка */
+.bar{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:10px;height:56px;padding:0 6px 0 16px;background:var(--bg);border-bottom:1px solid var(--line)}
+.brandmark{display:inline-flex;align-items:center;height:30px;padding:0 10px;border-radius:var(--radius-control);background:var(--brand);color:var(--on-brand);font-weight:600;font-size:var(--fs-16);white-space:nowrap}
+.brandmark::before{content:var(--brand-name)}
+.sample{display:inline-flex;align-items:center;height:28px;padding:0 10px;border:1px solid var(--line);border-radius:var(--radius-control);color:var(--muted);font-size:var(--fs-14);font-weight:500;white-space:nowrap}
+.bar__end{margin-left:auto;display:flex}
+.iconbtn{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:var(--radius-control);color:var(--text)}
+.iconbtn[aria-pressed="true"]{background:var(--surface-3)}
+
+/* экраны */
+[data-screen]:not([hidden]){display:block;animation:in var(--dur) ease-out}
+@keyframes in{from{opacity:0}to{opacity:1}}
+.head{padding:20px 16px 8px}
+.head--tight{padding-top:4px}
+.h1{font-size:var(--fs-28);font-weight:600;line-height:1.15;letter-spacing:-.01em}
+.h2{font-size:var(--fs-16);font-weight:600;line-height:1.3}
+.sub{margin-top:6px;color:var(--muted);font-size:var(--fs-16);line-height:1.4}
+.kicker{color:var(--muted);font-size:var(--fs-14);font-weight:500;margin-bottom:4px}
+.live{display:inline-flex;align-items:center;gap:6px;margin-left:4px;color:var(--text);font-weight:500;white-space:nowrap}
+.live::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--text);animation:pulse 2.4s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* героиня: сумма простоя */
+.hero{display:block;width:100%;padding:12px 16px 18px}
+.hero__label{display:flex;align-items:baseline;justify-content:space-between;gap:8px;font-weight:600}
+.hero__est{color:var(--muted);font-size:var(--fs-14);font-weight:500}
+.hero__sum{display:flex;align-items:baseline;gap:6px;margin:6px 0 2px;line-height:.92;white-space:nowrap}
+.hero__ap{font-size:var(--fs-40);font-weight:500;color:var(--muted)}
+.hero__n{font-size:var(--fs-88);font-weight:600;letter-spacing:-.035em}
+.hero__cur{font-size:var(--fs-40);font-weight:500}
+.hero__line{display:block;margin-top:10px;font-size:var(--fs-16)}
+.more{display:flex;align-items:center;justify-content:space-between;min-height:44px;margin-top:12px;padding:0 4px 0 14px;border:1px solid var(--control-line);border-radius:var(--radius-control);font-weight:500}
+
+/* кадр-доказательство */
+.proof{display:grid;grid-template-columns:120px minmax(0,1fr);gap:12px;align-items:start;margin-top:12px}
+.proof--hero{grid-template-columns:168px minmax(0,1fr);margin-top:14px}
+.proof__cap{display:block;font-size:var(--fs-14);line-height:1.4;color:var(--muted)}
+.proof__cap b{display:block;color:var(--text);font-weight:600;margin-bottom:2px}
+.proof__cap .ic{display:inline-block;vertical-align:-3px;margin-right:4px}
+.proof__cap--row{display:flex;gap:8px;flex-wrap:wrap;padding:8px 16px 0}
+.proof__cap--row b{margin:0}
+.shot{position:relative;display:block;aspect-ratio:16/9;overflow:hidden;border-radius:var(--radius-control);background:var(--frame)}
+.shot img{position:absolute;left:0;top:0;width:100%;height:100%;object-fit:cover}
+.shot__in{position:absolute;inset:0;display:block}
+.shot--zoom img{width:calc(var(--z) * 100%);height:calc(var(--z) * 100%);left:var(--zx);top:var(--zy)}
+.shot--wide{border-radius:0}
+.box{position:absolute;border:2px solid var(--track);border-radius:2px}
+.box__l{position:absolute;left:-2px;top:-2px;padding:2px 8px;background:var(--scrim);color:var(--on-scrim);font-size:var(--fs-14);font-weight:500;white-space:nowrap;border-radius:2px}
+.fn{position:absolute;right:4px;bottom:4px;min-width:22px;height:22px;padding:0 6px;border-radius:11px;background:var(--scrim);color:var(--on-scrim);font-size:var(--fs-14);font-weight:600;line-height:22px;text-align:center}
+.faces{position:absolute;left:4px;bottom:4px;display:inline-flex;align-items:center;gap:4px;height:22px;padding:0 6px;border-radius:4px;background:var(--scrim);color:var(--on-scrim);font-size:var(--fs-14);font-weight:500;white-space:nowrap}
+.shot--hero .faces{font-size:var(--fs-14)}
+
+/* табло */
+.board{margin:0 16px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius)}
+.metric{display:block;width:100%;padding:14px 16px 16px}
+.metric+.metric{border-top:1px solid var(--line)}
+.metric__top{display:flex;align-items:center;justify-content:space-between;font-weight:600}
+.chev{color:var(--muted)}
+.metric__val{display:flex;align-items:baseline;gap:8px;margin:2px 0 10px;line-height:1.1}
+.metric__val b{font-size:var(--fs-40);font-weight:600;letter-spacing:-.02em}
+.metric__val span{color:var(--muted)}
+.delta{font-style:normal;font-weight:600;margin-left:auto}
+.split,.meter{width:100%;height:14px}
+.s-move{fill:var(--text)} .s-idle{fill:var(--surface);stroke:var(--muted);stroke-width:2} .s-unseen{fill:none;stroke:var(--muted);stroke-width:1.5;stroke-dasharray:3 2}
+.m-plan{fill:var(--surface);stroke:var(--control-line);stroke-width:1} .m-fact{fill:var(--text)}
+.keys{display:flex;flex-wrap:wrap;gap:4px 14px;margin:8px 0 4px;font-size:var(--fs-14);color:var(--muted)}
+.keys>span{display:inline-flex;align-items:center;gap:6px}
+.keys b{color:var(--text);font-weight:600}
+.mk{display:inline-block;width:12px;height:12px;border-radius:50%;flex:none}
+.mk--move{background:var(--text)} .mk--idle{border:2px solid var(--muted)} .mk--unseen{border:2px dashed var(--muted)}
+.metric .grey{margin-top:6px}
+
+/* окна */
+.win{margin:16px 16px 0;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+.win__head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding:14px 16px 10px}
+.win__head--col{display:block}
+.win__meta{color:var(--muted);font-size:var(--fs-14);text-align:right}
+
+/* тренд на Сводке */
+.trow{display:grid;grid-template-columns:96px 156px minmax(0,1fr);gap:12px;align-items:center;width:100%;min-height:56px;padding:6px 16px;border-top:1px solid var(--line)}
+.trow__l{display:flex;flex-direction:column;line-height:1.25}
+.trow__l b{font-weight:600}
+.trow__l span{color:var(--muted);font-size:var(--fs-14)}
+.trow__v{font-weight:600;font-size:var(--fs-20);text-align:right}
+.trow--axis{min-height:0;padding-top:0;padding-bottom:4px;border-top:0}
+.mini{width:156px;height:40px}
+.mini--axis{height:36px}
+.v-bar{fill:var(--text)} .v-today{fill:url(#hatch);stroke:var(--text);stroke-width:1}
+.v-zero{fill:var(--muted)} .v-off{fill:var(--surface-3)} .v-base{stroke:var(--control-line);stroke-width:1}
+.v-plan{fill:none;stroke:var(--muted);stroke-width:1}
+.v-ax{fill:var(--muted);font-size:13px;font-weight:500}
+.v-ax--b{fill:var(--text);font-weight:600}
+.v-ax--s{font-weight:400}
+.v-lab{fill:var(--text);font-size:14px;font-weight:600}
+.v-lab--m{fill:var(--muted);font-weight:500;font-size:13px}
+.tnote{display:flex;flex-wrap:wrap;gap:4px 16px;padding:8px 16px 14px;color:var(--muted);font-size:var(--fs-14)}
+.tnote>span{display:inline-flex;align-items:center;gap:6px}
+.sw{display:inline-block;width:14px;height:14px;border-radius:2px;flex:none}
+.sw--off{background:var(--surface-3)}
+.sw--today{border:1px solid var(--text);background:repeating-linear-gradient(45deg,var(--text) 0 2px,var(--surface) 2px 4px)}
+
+.credits-btn{display:flex;align-items:center;gap:10px;width:calc(100% - 32px);min-height:44px;margin:16px 16px 8px;padding:8px 0;color:var(--muted);font-size:var(--fs-14);line-height:1.35;text-decoration:underline;text-underline-offset:3px}
+
+/* По дням */
+.seg{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin:8px 16px 0;padding:2px;border-radius:var(--radius);background:var(--surface-3)}
+.seg__b{min-height:44px;border-radius:var(--radius-control);font-size:var(--fs-14);font-weight:500;color:var(--muted);text-align:center;white-space:nowrap}
+.seg__b[aria-pressed="true"]{background:var(--surface);color:var(--text);font-weight:600;box-shadow:0 0 0 1px var(--line)}
+.chart{position:relative;margin:0 16px}
+.big{position:relative;z-index:1;width:100%;height:auto;pointer-events:none}
+.dbtn{position:absolute;top:0;bottom:0;width:calc(100% / 7);z-index:0;border-radius:var(--radius-control)}
+.dbtn[aria-pressed="true"]{background:var(--surface-2);box-shadow:inset 0 -3px 0 var(--text)}
+.chartnote{padding:8px 16px 14px;color:var(--muted);font-size:var(--fs-14)}
+.dayp{padding:14px 16px 16px}
+.dayp__head{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+.dayp__head h3{font-size:var(--fs-20);font-weight:600}
+.dayp__head span{color:var(--muted);font-size:var(--fs-14)}
+.quad{display:grid;grid-template-columns:1fr 1fr;gap:1px;margin-top:12px;background:var(--line);border:1px solid var(--line);border-radius:var(--radius-control);overflow:hidden}
+.quad>div{padding:10px 12px;background:var(--surface)}
+.quad dt{color:var(--muted);font-size:var(--fs-14)}
+.quad dd{font-size:var(--fs-20);font-weight:600;white-space:nowrap}
+.quad dd small{font-size:var(--fs-14);font-weight:500;color:var(--muted)}
+.quad--pad{margin:0 16px 12px}
+.okline{display:flex;align-items:center;gap:6px;margin-top:12px;font-size:var(--fs-14);font-weight:500}
+.okline--pad{margin:0;padding:0 16px 10px;color:var(--muted)}
+.weektot{margin-top:10px}
+
+/* Подрядчики */
+.finding{margin:8px 16px 0;padding:12px 14px;border-left:3px solid var(--text);background:var(--surface);border-radius:0 var(--radius-control) var(--radius-control) 0;font-size:var(--fs-16)}
+.ghead,.grow,.gtotal{display:grid;grid-template-columns:minmax(0,1fr) 52px 84px 46px 20px;gap:8px;align-items:center;padding:0 12px 0 16px}
+.ghead{min-height:36px;color:var(--muted);font-size:var(--fs-14);border-bottom:1px solid var(--line)}
+.ghead span:nth-child(n+2){text-align:right}
+.grow{width:100%;min-height:60px;padding-top:8px;padding-bottom:8px}
+.grp+.grp{border-top:1px solid var(--line)}
+.grow__name{display:grid;grid-template-columns:12px 1fr;column-gap:8px;align-items:center;line-height:1.25}
+.grow__name b{font-weight:600}
+.grow__name span{grid-column:2;color:var(--muted);font-size:var(--fs-14)}
+.grow__n{text-align:right;font-weight:600;white-space:nowrap}
+.grow__rub{position:relative;padding-bottom:6px}
+.rubbar{position:absolute;right:0;bottom:0;height:3px;background:var(--text);border-radius:2px}
+.chev--down{transition:transform var(--dur)}
+.grow[aria-expanded="true"] .chev--down{transform:rotate(180deg)}
+.own{display:inline-block;width:8px;height:8px;border-radius:50%;flex:none}
+.own--own{background:var(--c-own)} .own--rent{background:var(--c-rent)} .own--sub{background:var(--c-sub)}
+.mlist{border-top:1px solid var(--line);background:var(--surface-2)}
+.mrow{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:4px 10px;align-items:center;padding:10px 12px 10px 16px}
+.mrow::before{content:"";position:absolute;left:0;top:6px;bottom:6px;width:4px;border-radius:0 2px 2px 0}
+.mrow--sub::before{background:var(--c-sub)} .mrow--rent::before{background:var(--c-rent)} .mrow--own::before{background:var(--c-own)}
+.mrow+.mrow{border-top:1px solid var(--line)}
+.mrow__r{font-weight:600;font-size:var(--fs-14);white-space:nowrap}
+.mrow__id{grid-row:span 1}
+.gtotal{min-height:52px;border-top:1px solid var(--control-line);background:var(--surface)}
+.gtotal>span:first-child{display:flex;flex-direction:column;line-height:1.25}
+.gtotal>span:first-child span{color:var(--muted);font-size:var(--fs-14)}
+.unk{padding:14px 16px}
+.unk__in{display:grid;grid-template-columns:120px minmax(0,1fr);gap:12px;align-items:start}
+.unk__t{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.unk__m{margin-top:6px;font-size:var(--fs-14);color:var(--muted)}
+.unk .grey{margin-top:10px}
+.foot{margin:12px 16px 0;color:var(--muted);font-size:var(--fs-14);line-height:1.5}
+.foot .own{vertical-align:1px;margin:0 2px}
+
+/* номер и бортовой */
+.plate{display:inline-flex;align-items:stretch;height:28px;border:2px solid var(--plate-line);border-radius:4px;background:var(--plate);color:var(--plate-ink);font-weight:600;font-size:var(--fs-14);line-height:1;white-space:nowrap;flex:none}
+.plate__n{display:flex;align-items:center;padding:0 6px;letter-spacing:.03em}
+.plate__r{display:flex;align-items:center;padding:0 5px;border-left:2px solid var(--plate-line);font-size:var(--fs-14)}
+.bort{display:inline-flex;align-items:baseline;gap:3px;height:28px;padding:4px 7px 0;border:2px solid var(--text);border-radius:4px;font-size:var(--fs-14);color:var(--muted);white-space:nowrap;flex:none;line-height:1.2}
+.bort b{color:var(--text);font-size:var(--fs-16);font-weight:600}
+.tag{display:inline-flex;align-items:center;gap:6px;height:26px;padding:0 8px;border-radius:var(--radius-control);font-size:var(--fs-14);font-weight:600;white-space:nowrap}
+.tag--warn{color:var(--warn);background:var(--warn-soft);border:1px solid var(--warn)}
+.tag--muted{color:var(--muted);background:var(--surface-2)}
+
+/* Акты */
+.replist{border-top:1px solid var(--line)}
+.replist>div{display:flex;justify-content:space-between;gap:12px;align-items:baseline;padding:10px 16px;border-bottom:1px solid var(--line)}
+.replist dt{color:var(--muted)}
+.replist dd{font-weight:600;text-align:right}
+.replist dd small{display:block;color:var(--muted);font-weight:500;font-size:var(--fs-14)}
+.rep__act{padding:14px 16px 16px}
+.rep__act .grey{display:flex;align-items:center;gap:6px;margin-top:10px}
+.prow{display:grid;grid-template-columns:56px minmax(0,1fr) 20px;gap:12px;align-items:center;width:100%;min-height:60px;padding:8px 12px 8px 16px;border-top:1px solid var(--line)}
+.prow__d{display:flex;flex-direction:column;line-height:1.25}
+.prow__d b{font-weight:600}
+.prow__d span{color:var(--muted);font-size:var(--fs-14)}
+.prow__t{display:flex;flex-direction:column;line-height:1.3}
+.prow__t b{font-weight:500}
+.prow__t span{color:var(--muted);font-size:var(--fs-14)}
+.prow__t.grey{font-size:var(--fs-16)}
+
+/* кнопки */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 16px;border:1px solid var(--control-line);border-radius:var(--radius-control);background:var(--surface);color:var(--text);font-weight:500;white-space:nowrap}
+.btn--primary{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.btn--block{width:100%}
+.backbar{position:sticky;top:56px;z-index:15;display:flex;align-items:center;height:52px;padding:0 8px;background:var(--bg)}
+.back{display:inline-flex;align-items:center;gap:2px;min-height:44px;padding:0 12px 0 4px;font-weight:500;border-radius:var(--radius-control)}
+
+/* разбор простоя */
+.h1--sum{font-size:var(--fs-56);letter-spacing:-.03em;line-height:1}
+.h1--sum .ap{font-size:var(--fs-28);color:var(--muted);font-weight:500;margin-right:6px;letter-spacing:0}
+.ilist{margin:12px 16px 0;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius)}
+.irow{position:relative;padding:14px 16px 16px 20px}
+.irow::before{content:"";position:absolute;left:0;top:14px;width:4px;height:44px;border-radius:0 2px 2px 0}
+.irow--sub::before{background:var(--c-sub)} .irow--rent::before{background:var(--c-rent)} .irow--own::before{background:var(--c-own)}
+.irow+.irow{border-top:1px solid var(--line)}
+.irow__top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.irow__sum{font-size:var(--fs-20);font-weight:600;white-space:nowrap}
+.calc{margin-top:8px;font-size:var(--fs-16)}
+.share{display:block;height:4px;margin-top:8px;background:var(--surface-3);border-radius:2px;overflow:hidden}
+.share i{display:block;height:100%;background:var(--text);border-radius:2px}
+.reason{margin:10px 0 12px;font-size:var(--fs-14)}
+.reason b{font-weight:600}
+.reason--none{color:var(--muted)}
+.itotal{display:flex;justify-content:space-between;align-items:baseline;margin:0 16px;padding:14px 4px 0;font-weight:500}
+.itotal b{font-size:var(--fs-20);font-weight:600}
+
+/* пусто */
+.empty{padding:24px 16px 0}
+.empty__ic{display:inline-flex;width:72px;height:72px;align-items:center;justify-content:center;margin-bottom:16px;border:1px solid var(--line);border-radius:var(--radius);color:var(--muted)}
+.empty .sub{margin-top:10px}
+.empty .grey{margin:10px 0 24px}
+
+/* инцидент */
+.incframe{margin:12px 0 0}
+.incframe .shot{margin:0 16px;border-radius:var(--radius)}
+.tl{padding:6px 16px 0}
+.tl li{display:grid;grid-template-columns:56px minmax(0,1fr);gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
+.tl time{font-weight:600}
+.tl--ok span{display:flex;align-items:center;gap:6px}
+.false{display:grid;grid-template-columns:20px minmax(0,1fr);gap:10px;padding:14px 16px;color:var(--muted)}
+.false>span{display:flex;flex-direction:column}
+.false b{color:var(--text);font-weight:600}
+.false span span{font-size:var(--fs-14)}
+
+/* нижнее меню */
+.tabbar{position:fixed;left:0;right:0;bottom:0;z-index:30;display:grid;grid-template-columns:repeat(4,1fr);max-width:480px;margin:0 auto;padding:4px 4px env(safe-area-inset-bottom);background:var(--surface);border-top:1px solid var(--line)}
+.tab{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-height:62px;color:var(--muted);font-size:var(--fs-14);font-weight:500}
+.tab .ic{width:28px;height:28px;stroke-width:1.75}
+.tab[aria-current="page"]{color:var(--text);font-weight:600}
+.tab[aria-current="page"] .ic{stroke-width:2.25}
+.tab[aria-current="page"]::before{content:"";position:absolute;top:-5px;left:30%;right:30%;height:3px;border-radius:0 0 2px 2px;background:var(--text)}
+
+/* лист снизу, тост */
+.shade{position:fixed;inset:0;z-index:40;background:var(--scrim)}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:50;max-width:480px;max-height:86vh;overflow:auto;margin:0 auto;padding:8px 16px calc(16px + env(safe-area-inset-bottom));background:var(--surface);border-radius:var(--radius) var(--radius) 0 0;border-top:1px solid var(--line)}
+.sheet:not([hidden]){animation:up var(--dur) ease-out}
+@keyframes up{from{transform:translateY(24px);opacity:0}to{transform:none;opacity:1}}
+.sheet__grip{width:40px;height:4px;margin:0 auto 12px;border-radius:2px;background:var(--control-line)}
+.sheet__head{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px}
+.sheet__head h2{font-size:var(--fs-20);font-weight:600}
+.opt{display:grid;grid-template-columns:28px minmax(0,1fr);gap:12px;align-items:center;width:100%;min-height:64px;padding:10px 12px;margin-top:8px;border:1px solid var(--control-line);border-radius:var(--radius-control)}
+.opt .ic{width:28px;height:28px}
+.opt span{display:flex;flex-direction:column;line-height:1.3}
+.opt b{font-weight:600}
+.opt span span{color:var(--muted);font-size:var(--fs-14)}
+.sheet .grey{display:flex;align-items:center;gap:6px;margin:12px 0 4px}
+.vframe{margin-top:4px}
+.vframe .shot{border-radius:var(--radius)}
+.vmsg{display:flex;align-items:center;gap:8px;margin-top:10px;padding:12px;border:1px solid var(--line);border-radius:var(--radius-control);color:var(--muted);font-size:var(--fs-14)}
+.credits{display:grid;gap:8px;margin-top:4px;font-size:var(--fs-14);color:var(--muted)}
+.credits li{display:grid;grid-template-columns:24px minmax(0,1fr);gap:8px}
+.credits li b{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:11px;background:var(--surface-3);color:var(--text);font-weight:600}
+.credits a{color:var(--text)}
+.toast{position:fixed;left:16px;right:16px;bottom:calc(84px + env(safe-area-inset-bottom));z-index:60;max-width:448px;margin:0 auto;padding:12px 16px;border-radius:var(--radius);background:var(--accent);color:var(--on-accent);font-weight:500;opacity:0;transform:translateY(8px);pointer-events:none;transition:opacity var(--dur),transform var(--dur)}
+.toast.on{opacity:1;transform:none}
+
+
+svg[hidden]{display:none}
+.dayp.flip dd,.big.flip .v-lab{animation:flip var(--dur) ease-out}
+@keyframes flip{from{opacity:0;transform:translateY(-3px)}to{opacity:1;transform:none}}
+.mrow{grid-template-columns:auto minmax(0,1fr)}
+.mrow__r{text-align:right}
+.mrow__t{grid-column:1 / -1;display:block;color:var(--muted);font-size:var(--fs-14);line-height:1.35}
+.irow__name{flex:1 1 auto;min-width:0;font-weight:600;font-size:var(--fs-16);line-height:1.3}
+.irow__sum{flex:none}
+p.irow__who{display:flex;align-items:center;gap:10px;margin-top:6px;color:var(--muted);font-size:var(--fs-14)}
+p.irow__who>span{display:inline-flex;align-items:center;gap:6px}
+
+/* круг k2 */
+.head--sum{padding:12px 16px 2px}
+.h1--day{display:flex;align-items:center;flex-wrap:wrap;gap:4px 12px;font-size:var(--fs-20);line-height:1.3}
+.h1--day .live{margin-left:0;font-size:var(--fs-16)}
+.head--sum .sub{margin-top:2px}
+.hero{padding:8px 16px 14px}
+.hero__line{margin-top:8px}
+.proof--hero{grid-template-columns:112px minmax(0,1fr) 20px;align-items:center;margin-top:10px}
+.metric{display:grid;grid-template-columns:minmax(0,1fr) 112px;column-gap:12px;align-items:start;padding:12px 14px}
+.metric__main{display:flex;flex-direction:column;min-width:0}
+.metric__top{display:flex;align-items:center;justify-content:space-between;gap:8px;font-weight:600}
+.metric .metric__val{margin:0 0 4px}
+.metric .split{margin-top:4px}
+.metric__shot{display:block;min-width:0}
+.mcap{display:block;margin-top:4px;font-size:var(--fs-14);line-height:1.3;color:var(--muted)}
+.mcap b{display:block;color:var(--text);font-weight:600;white-space:nowrap}
+.mcap .ic{display:inline-block;vertical-align:-3px;margin-right:4px}
+.mline{font-size:var(--fs-14);color:var(--muted);line-height:1.4}
+.mline b{color:var(--text);font-weight:600}
+.metric .keys{grid-column:1 / -1;margin:8px 0 0;flex-wrap:nowrap;justify-content:space-between;gap:4px;white-space:nowrap}
+.metric .keys>span{gap:4px}
+.metric .keys .mk{width:10px;height:10px}
+.gtotal{padding-bottom:8px}
+.gtotal__note{grid-column:1 / -1;margin-top:-6px;font-size:var(--fs-14);color:var(--muted)}
+.replist dt{white-space:nowrap}
+.rows{margin-top:10px;border-top:1px solid var(--line)}
+.rows>div{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}
+.rows dt{color:var(--muted)}
+.rows dd{font-weight:600;text-align:right;white-space:nowrap}
+.dbtn{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:8px;line-height:1.3}
+.dbtn__d,.dbtn__w{font-size:var(--fs-14);color:var(--muted)}
+.dbtn__d{font-weight:500}
+.dbtn[aria-pressed="true"]{background:none;box-shadow:inset 0 -3px 0 var(--text);border-radius:0}
+.dbtn[aria-pressed="true"] .dbtn__d,.dbtn[aria-pressed="true"] .dbtn__w{color:var(--text);font-weight:600}
+.grow__rub{display:flex;flex-direction:column;align-items:flex-end;gap:7px;padding-bottom:0}
+.rubtrack{display:block;width:100%;height:4px;border-radius:2px;background:var(--surface-3);overflow:hidden}
+.rubtrack i{display:block;height:100%;margin-left:auto;background:var(--muted);border-radius:2px}
+.foot+.foot{margin-top:8px}
+.shotbtn{position:relative;display:block;width:100%;border-radius:var(--radius-control)}
+.play{position:absolute;left:4px;top:4px;display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:14px;background:var(--scrim);color:var(--on-scrim)}
+.play .ic{fill:currentColor;stroke-width:1.5;margin-left:2px}
+.vhint{display:flex!important;align-items:center;gap:6px;margin-top:6px;color:var(--muted)}
+.irow .proof{margin-bottom:2px}
+.reason{margin:12px 0 0}
+.brandbtn{display:inline-flex;align-items:center;justify-content:center;min-width:44px;min-height:44px;margin-left:2px;padding:0 2px}
+.brandbtn span{display:inline-flex;align-items:center;height:32px;padding:0 10px;border:1px solid var(--control-line);border-radius:var(--radius-control);font-size:var(--fs-14);font-weight:500}
+.brandbtn[aria-pressed="true"] span{background:var(--accent);border-color:var(--accent);color:var(--on-accent);font-weight:600}
+
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+}
+</style>
+</head>
+<body>
+<svg class="sprite" width="0" height="0" aria-hidden="true"><defs><pattern id="hatch" patternUnits="userSpaceOnUse" width="5" height="5" patternTransform="rotate(45)"><rect class="h-bg" width="5" height="5"/><rect class="h-ln" width="2.2" height="5"/></pattern></defs><symbol id="i-gauge" viewBox="0 0 24 24"><path d="m12 14 4-4"/><path d="M3.34 19a10 10 0 1 1 17.32 0"/></symbol><symbol id="i-chart" viewBox="0 0 24 24"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></symbol><symbol id="i-truck" viewBox="0 0 24 24"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></symbol><symbol id="i-file" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></symbol><symbol id="i-sheet" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M8 13h2"/><path d="M14 13h2"/><path d="M8 17h2"/><path d="M14 17h2"/></symbol><symbol id="i-eyeoff" viewBox="0 0 24 24"><path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49"/><path d="M14.084 14.158a3 3 0 0 1-4.242-4.242"/><path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143"/><path d="m2 2 20 20"/></symbol><symbol id="i-contrast" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 18a6 6 0 0 0 0-12v12z"/></symbol><symbol id="i-stamp" viewBox="0 0 24 24"><path d="M5 22h14"/><path d="M19.27 13.73A2.5 2.5 0 0 0 17.5 13h-11A2.5 2.5 0 0 0 4 15.5V17a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-1.5c0-.66-.26-1.3-.73-1.77Z"/><path d="M14 13V8.5C14 7 15 7 15 5a3 3 0 0 0-3-3c-1.69 0-3 1-3 3s1 2 1 3.5V13"/></symbol><symbol id="i-left" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol><symbol id="i-right" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol><symbol id="i-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol><symbol id="i-video" viewBox="0 0 24 24"><path d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5"/><rect x="2" y="6" width="14" height="12" rx="2"/></symbol><symbol id="i-download" viewBox="0 0 24 24"><path d="M12 15V3"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/></symbol><symbol id="i-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></symbol><symbol id="i-xcircle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></symbol><symbol id="i-alert" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></symbol><symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></symbol><symbol id="i-calx" viewBox="0 0 24 24"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/><path d="m14 14-4 4"/><path d="m10 14 4 4"/></symbol><symbol id="i-image" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></symbol><symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol><symbol id="i-play" viewBox="0 0 24 24"><polygon points="6 3 20 12 6 21 6 3"/></symbol><symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></symbol></svg>
+<div class="app">
+<header class="bar">
+  <span class="brandmark" role="img" aria-label="Знак"></span>
+  <span class="sample">Пример</span>
+  <span class="bar__end">
+    <button class="iconbtn" id="theme-btn" type="button" aria-label="Тема: светлая или тёмная" title="Тема"><svg class="ic " aria-hidden="true"><use href="#i-contrast"/></svg></button>
+    <button class="brandbtn" id="brand-btn" type="button" aria-pressed="false" title="Показать знак и цвет заказчика"><span>Знак</span></button>
+  </span>
+</header>
+<main>
+<section data-screen="summary" aria-labelledby="h-sum">
+  <div class="head head--sum">
+    <h1 class="h1 h1--day" id="h-sum">Сегодня, к 14:40 <span class="live">смена идёт</span></h1>
+    <p class="sub">Жилой дом, секция Б, смена 08:00–20:00</p>
+  </div>
+
+  <button class="hero" type="button" data-go="idle">
+    <span class="hero__label"><span>Простой техники</span><span class="hero__est">оценка, не к оплате</span></span>
+    <span class="hero__sum"><span class="hero__ap">≈</span><span class="hero__n">17 500</span><span class="hero__cur">₽</span></span>
+    <span class="hero__line">6 ч 05 мин без движения у 7 машин</span>
+    <span class="proof proof--hero">
+      <span class="shot shot--hero"><img src="img/mini-in.webp" alt="Мини-экскаватор на кадре камеры К2" title="Кадр 0:03 из ролика «Retenční nádrž Libušská, čištění vtoku». ŠJů, CC BY 4.0, Wikimedia Commons" loading="lazy" decoding="async"><span class="box" style="left:17%;top:3%;width:62%;height:95%" aria-hidden="true"></span><span class="fn" aria-label="кадр 1 в списке «Кадры»">1</span></span>
+      <span class="proof__cap"><b>кадр 14:28 · К2</b><span>Мини-экскаватор «12» стоит 12 мин, за смену дольше всех.</span></span>
+      <svg class="ic chev" aria-hidden="true"><use href="#i-right"/></svg>
+    </span>
+  </button>
+
+  <div class="board" role="group" aria-label="Смена к 14:40">
+    <button class="metric" type="button" data-go="contractors">
+      <span class="metric__main">
+        <span class="metric__top"><span>Часы техники</span><svg class="ic chev" aria-hidden="true"><use href="#i-right"/></svg></span>
+        <span class="metric__val"><b>38,5</b><span>машино-ч</span></span>
+        <svg class="split" viewBox="0 0 200 14" preserveAspectRatio="none" aria-hidden="true">
+          <rect class="s-move" x="0" y="0" width="157.2" height="14" rx="3"/>
+          <rect class="s-idle" x="161.2" y="1" width="29.7" height="12" rx="2"/>
+          <rect class="s-unseen" x="194.4" y="1" width="4.8" height="12" rx="2"/>
+        </svg>
+      </span>
+      <span class="metric__shot">
+        <span class="shot "><span class="shot__in" style="transform:scale(1.4);transform-origin:50% 85%"><img src="img/kem-out.webp" alt="Экскаватор грузит самосвал, кадр камеры К2" title="Кадр 0:14 из ролика «Excavator digging land and loading truck». KEmel49, CC BY-SA 4.0, Wikimedia Commons" loading="lazy" decoding="async"><span class="box" style="left:25%;top:28%;width:40%;height:53%" aria-hidden="true"></span></span><span class="fn" aria-label="кадр 2 в списке «Кадры»">2</span></span>
+        <span class="mcap"><b>кадр 14:40 · К2</b><span>«07» на месте, двигается</span></span>
+      </span>
+      <span class="keys">
+        <span><i class="mk mk--move"></i>в движении <b>31,2</b></span>
+        <span><i class="mk mk--idle"></i>стоит <b>6,1</b></span>
+        <span><i class="mk mk--unseen"></i>не видно <b>1,2</b></span>
+      </span>
+    </button>
+
+    <button class="metric" type="button" data-go="days" data-m="people">
+      <span class="metric__main">
+        <span class="metric__top"><span>Человеко-часы</span><svg class="ic chev" aria-hidden="true"><use href="#i-right"/></svg></span>
+        <span class="metric__val"><b>47</b><span>из 54</span></span>
+        <span class="mline"><b>−7 чел-ч</b> к заявке</span>
+        <span class="mline">заявка: 9 чел × 6 ч к 14:40</span>
+      </span>
+      <span class="metric__shot">
+        <span class="shot shot--zoom " style="--z:2;--zx:-100%;--zy:-100%"><img src="img/fh-out.webp" alt="Человек у самосвала, вырезка кадра камеры К1" title="Кадр 0:40 из ролика «Volvo FH 500 (video)». Cjp24, CC BY-SA 4.0, Wikimedia Commons" loading="lazy" decoding="async"><span class="fn" aria-label="кадр 3 в списке «Кадры»">3</span></span>
+        <span class="mcap"><b>кадр 14:31 · К1</b><span><svg class="ic ic--s" aria-hidden="true"><use href="#i-eyeoff"/></svg>лица скрыты</span></span>
+      </span>
+    </button>
+
+    <button class="metric" type="button" data-go="incident">
+      <span class="metric__main">
+        <span class="metric__top"><span>Инциденты</span><svg class="ic chev" aria-hidden="true"><use href="#i-right"/></svg></span>
+        <span class="metric__val"><b>1</b><span>подтверждён</span></span>
+        <span class="mline">В 11:52 человек в зоне стрелы. Ещё 1 ложный, отклонён.</span>
+      </span>
+      <span class="metric__shot">
+        <span class="shot "><img src="img/wien-out.webp" alt="Экскаватор в городском котловане, люди размыты" title="Кадр 1:31 из ролика «1050 Wien, U4 Station Pilgramgasse Baustelle Wienfluss-Kanal Bagger 03 2023-10-05». Hangman&#x27;sDeath, CC0, Wikimedia Commons" loading="lazy" decoding="async"><span class="box" style="left:40%;top:1%;width:28%;height:89%" aria-hidden="true"></span><span class="fn" aria-label="кадр 4 в списке «Кадры»">4</span></span>
+        <span class="mcap"><b>кадр 11:52 · К2</b><span><svg class="ic ic--s" aria-hidden="true"><use href="#i-eyeoff"/></svg>лица скрыты</span></span>
+      </span>
+    </button>
+  </div>
+
+  <section class="win trend" aria-labelledby="h-tr">
+    <div class="win__head"><h2 class="h2" id="h-tr">7 дней</h2><span class="win__meta">14–20.10, сегодня к 14:40</span></div>
+    <button class="trow" type="button" data-go="days" data-m="hours"><span class="trow__l"><b>Часы</b><span>машино-ч</span></span><svg class="mini" viewBox="0 0 156 40" aria-hidden="true"><rect class="v-off" x="90.14" y="0" width="20.29" height="40" rx="2"/><path class="v-bar" d="M5.14,38.00V9.78Q5.14,7.78 7.14,7.78H15.14Q17.14,7.78 17.14,9.78V38.00Z"/><path class="v-bar" d="M27.43,38.00V6.71Q27.43,4.71 29.43,4.71H37.43Q39.43,4.71 39.43,6.71V38.00Z"/><path class="v-bar" d="M49.71,38.00V12.61Q49.71,10.61 51.71,10.61H59.71Q61.71,10.61 61.71,12.61V38.00Z"/><path class="v-bar" d="M72.00,38.00V10.96Q72.00,8.96 74.00,8.96H82.00Q84.00,8.96 84.00,10.96V38.00Z"/><path class="v-bar" d="M116.57,38.00V8.83Q116.57,6.83 118.57,6.83H126.57Q128.57,6.83 128.57,8.83V38.00Z"/><path class="v-today" d="M138.86,38.00V21.82Q138.86,19.82 140.86,19.82H148.86Q150.86,19.82 150.86,21.82V38.00Z"/><line class="v-base" x1="0" x2="156" y1="38.5" y2="38.5"/></svg><span class="trow__v">38,5</span></button>
+    <button class="trow" type="button" data-go="days" data-m="idle"><span class="trow__l"><b>Простой</b><span>тыс. ₽</span></span><svg class="mini" viewBox="0 0 156 40" aria-hidden="true"><rect class="v-off" x="90.14" y="0" width="20.29" height="40" rx="2"/><path class="v-bar" d="M5.14,38.00V11.03Q5.14,9.03 7.14,9.03H15.14Q17.14,9.03 17.14,11.03V38.00Z"/><path class="v-bar" d="M27.43,38.00V19.06Q27.43,17.06 29.43,17.06H37.43Q39.43,17.06 39.43,19.06V38.00Z"/><path class="v-bar" d="M49.71,38.00V6.27Q49.71,4.27 51.71,4.27H59.71Q61.71,4.27 61.71,6.27V38.00Z"/><path class="v-bar" d="M72.00,38.00V23.54Q72.00,21.54 74.00,21.54H82.00Q84.00,21.54 84.00,23.54V38.00Z"/><path class="v-bar" d="M116.57,38.00V15.11Q116.57,13.11 118.57,13.11H126.57Q128.57,13.11 128.57,15.11V38.00Z"/><path class="v-today" d="M138.86,38.00V16.20Q138.86,14.20 140.86,14.20H148.86Q150.86,14.20 150.86,16.20V38.00Z"/><line class="v-base" x1="0" x2="156" y1="38.5" y2="38.5"/></svg><span class="trow__v">17,5</span></button>
+    <button class="trow" type="button" data-go="days" data-m="people"><span class="trow__l"><b>Люди</b><span>чел-ч</span></span><svg class="mini" viewBox="0 0 156 40" aria-hidden="true"><rect class="v-off" x="90.14" y="0" width="20.29" height="40" rx="2"/><rect class="v-plan" x="5.64" y="4.00" width="11" height="34.00" rx="1.5"/><path class="v-bar" d="M5.14,38.00V10.16Q5.14,8.16 7.14,8.16H15.14Q17.14,8.16 17.14,10.16V38.00Z"/><rect class="v-plan" x="27.93" y="4.00" width="11" height="34.00" rx="1.5"/><path class="v-bar" d="M27.43,38.00V8.27Q27.43,6.27 29.43,6.27H37.43Q39.43,6.27 39.43,8.27V38.00Z"/><rect class="v-plan" x="50.21" y="4.00" width="11" height="34.00" rx="1.5"/><path class="v-bar" d="M49.71,38.00V13.18Q49.71,11.18 51.71,11.18H59.71Q61.71,11.18 61.71,13.18V38.00Z"/><rect class="v-plan" x="72.50" y="4.00" width="11" height="34.00" rx="1.5"/><path class="v-bar" d="M72.00,38.00V6.76Q72.00,4.76 74.00,4.76H82.00Q84.00,4.76 84.00,6.76V38.00Z"/><rect class="v-plan" x="117.07" y="4.00" width="11" height="34.00" rx="1.5"/><path class="v-bar" d="M116.57,38.00V9.78Q116.57,7.78 118.57,7.78H126.57Q128.57,7.78 128.57,9.78V38.00Z"/><rect class="v-plan" x="139.36" y="17.60" width="11" height="20.40" rx="1.5"/><path class="v-today" d="M138.86,38.00V22.24Q138.86,20.24 140.86,20.24H148.86Q150.86,20.24 150.86,22.24V38.00Z"/><line class="v-base" x1="0" x2="156" y1="38.5" y2="38.5"/></svg><span class="trow__v">47</span></button>
+    <button class="trow" type="button" data-go="days" data-m="inc"><span class="trow__l"><b>Инциденты</b><span>без ложных</span></span><svg class="mini" viewBox="0 0 156 40" aria-hidden="true"><rect class="v-off" x="90.14" y="0" width="20.29" height="40" rx="2"/><rect class="v-zero" x="5.14" y="36" width="12" height="2"/><path class="v-bar" d="M27.43,38.00V23.00Q27.43,21.00 29.43,21.00H37.43Q39.43,21.00 39.43,23.00V38.00Z"/><rect class="v-zero" x="49.71" y="36" width="12" height="2"/><path class="v-bar" d="M72.00,38.00V6.00Q72.00,4.00 74.00,4.00H82.00Q84.00,4.00 84.00,6.00V38.00Z"/><rect class="v-zero" x="116.57" y="36" width="12" height="2"/><path class="v-today" d="M138.86,38.00V23.00Q138.86,21.00 140.86,21.00H148.86Q150.86,21.00 150.86,23.00V38.00Z"/><line class="v-base" x1="0" x2="156" y1="38.5" y2="38.5"/></svg><span class="trow__v">1</span></button>
+    <div class="trow trow--axis"><span></span><svg class="mini mini--axis" viewBox="0 0 156 36" aria-hidden="true"><rect class="v-off" x="90.14" y="0" width="20.29" height="36" rx="2"/><text class="v-ax" x="11.14" y="14" text-anchor="middle">14</text><text class="v-ax v-ax--s" x="11.14" y="31" text-anchor="middle">ср</text><text class="v-ax" x="33.43" y="14" text-anchor="middle">15</text><text class="v-ax v-ax--s" x="33.43" y="31" text-anchor="middle">чт</text><text class="v-ax" x="55.71" y="14" text-anchor="middle">16</text><text class="v-ax v-ax--s" x="55.71" y="31" text-anchor="middle">пт</text><text class="v-ax" x="78.00" y="14" text-anchor="middle">17</text><text class="v-ax v-ax--s" x="78.00" y="31" text-anchor="middle">сб</text><text class="v-ax" x="100.29" y="14" text-anchor="middle">18</text><text class="v-ax v-ax--s" x="100.29" y="31" text-anchor="middle">вс</text><text class="v-ax" x="122.57" y="14" text-anchor="middle">19</text><text class="v-ax v-ax--s" x="122.57" y="31" text-anchor="middle">пн</text><text class="v-ax v-ax--b" x="144.86" y="14" text-anchor="middle">20</text><text class="v-ax v-ax--s" x="144.86" y="31" text-anchor="middle">вт</text></svg><span></span></div>
+    <p class="tnote"><span><i class="sw sw--off"></i>В воскресенье 18.10 смены не было, это не ноль</span><span><i class="sw sw--today"></i>20.10 смена ещё идёт</span></p>
+  </section>
+  <button class="credits-btn" type="button" data-sheet="sh-credits"><svg class="ic " aria-hidden="true"><use href="#i-image"/></svg><span>Кадры: открытые ролики Wikimedia Commons, люди и кабины размыты. Авторы и лицензии</span></button>
+</section>
+
+<section data-screen="days" hidden aria-labelledby="h-days">
+  <div class="head">
+    <h1 class="h1" id="h-days">По дням</h1>
+    <p class="sub">14–20.10, Жилой дом, секция Б</p>
+  </div>
+  <div class="seg" role="group" aria-label="Что показать">
+    <button class="seg__b" type="button" data-m="hours" aria-pressed="true">Часы</button><button class="seg__b" type="button" data-m="idle" aria-pressed="false">Простой ₽</button><button class="seg__b" type="button" data-m="people" aria-pressed="false">Люди</button><button class="seg__b" type="button" data-m="inc" aria-pressed="false">Инциденты</button>
+  </div>
+  <section class="win chartwin" aria-label="График по дням">
+    <div class="win__head win__head--col">
+      <h2 class="h2" data-ct="hours">Часы техники, машино-ч</h2><h2 class="h2" data-ct="idle" hidden>Простой, тыс. ₽ (оценка, не к оплате)</h2><h2 class="h2" data-ct="people" hidden>Человеко-часы: факт и заявка</h2><h2 class="h2" data-ct="inc" hidden>Инциденты, подтверждённые прорабом</h2>
+    </div>
+    <div class="chart">
+      <button class="dbtn" type="button" style="left:0.000%" data-day="14.10" aria-pressed="false" aria-label="14.10, среда"><span class="dbtn__d">14</span><span class="dbtn__w">ср</span></button><button class="dbtn" type="button" style="left:14.286%" data-day="15.10" aria-pressed="false" aria-label="15.10, четверг"><span class="dbtn__d">15</span><span class="dbtn__w">чт</span></button><button class="dbtn" type="button" style="left:28.571%" data-day="16.10" aria-pressed="false" aria-label="16.10, пятница"><span class="dbtn__d">16</span><span class="dbtn__w">пт</span></button><button class="dbtn" type="button" style="left:42.857%" data-day="17.10" aria-pressed="false" aria-label="17.10, суббота"><span class="dbtn__d">17</span><span class="dbtn__w">сб</span></button><button class="dbtn" type="button" style="left:57.143%" data-go="noshift" aria-label="18.10, воскресенье: смены не было"><span class="dbtn__d">18</span><span class="dbtn__w">вс</span></button><button class="dbtn" type="button" style="left:71.429%" data-day="19.10" aria-pressed="false" aria-label="19.10, понедельник"><span class="dbtn__d">19</span><span class="dbtn__w">пн</span></button><button class="dbtn" type="button" style="left:85.714%" data-day="20.10" aria-pressed="true" aria-label="20.10, вторник"><span class="dbtn__d">20</span><span class="dbtn__w">идёт</span></button>
+      <svg class="big" viewBox="0 0 324 252" data-chart="hours" aria-hidden="true"><rect class="v-off" x="187.14" y="16" width="42.29" height="180" rx="4"/><text class="v-lab v-lab--m" x="208.29" y="144" text-anchor="middle">смены</text><text class="v-lab v-lab--m" x="208.29" y="162" text-anchor="middle">не было</text><path class="v-bar" d="M11.14,196.00V61.33Q11.14,57.33 15.14,57.33H31.14Q35.14,57.33 35.14,61.33V196.00Z"/><text class="v-lab" x="23.14" y="49.33" text-anchor="middle">64,0</text><path class="v-bar" d="M57.43,196.00V47.25Q57.43,43.25 61.43,43.25H77.43Q81.43,43.25 81.43,47.25V196.00Z"/><text class="v-lab" x="69.43" y="35.25" text-anchor="middle">70,5</text><path class="v-bar" d="M103.71,196.00V74.33Q103.71,70.33 107.71,70.33H123.71Q127.71,70.33 127.71,74.33V196.00Z"/><text class="v-lab" x="115.71" y="62.33" text-anchor="middle">58,0</text><path class="v-bar" d="M150.00,196.00V66.75Q150.00,62.75 154.00,62.75H170.00Q174.00,62.75 174.00,66.75V196.00Z"/><text class="v-lab" x="162.00" y="54.75" text-anchor="middle">61,5</text><path class="v-bar" d="M242.57,196.00V57.00Q242.57,53.00 246.57,53.00H262.57Q266.57,53.00 266.57,57.00V196.00Z"/><text class="v-lab" x="254.57" y="45.00" text-anchor="middle">66,0</text><path class="v-today" d="M288.86,196.00V116.58Q288.86,112.58 292.86,112.58H308.86Q312.86,112.58 312.86,116.58V196.00Z"/><text class="v-lab" x="300.86" y="104.58" text-anchor="middle">38,5</text><line class="v-base" x1="0" x2="324" y1="196.5" y2="196.5"/></svg><svg class="big" viewBox="0 0 324 252" data-chart="idle" aria-hidden="true" hidden><rect class="v-off" x="187.14" y="16" width="42.29" height="180" rx="4"/><text class="v-lab v-lab--m" x="208.29" y="144" text-anchor="middle">смены</text><text class="v-lab v-lab--m" x="208.29" y="162" text-anchor="middle">не было</text><path class="v-bar" d="M11.14,196.00V67.09Q11.14,63.09 15.14,63.09H31.14Q35.14,63.09 35.14,67.09V196.00Z"/><text class="v-lab" x="23.14" y="55.09" text-anchor="middle">21,3</text><path class="v-bar" d="M57.43,196.00V103.90Q57.43,99.90 61.43,99.90H77.43Q81.43,99.90 81.43,103.90V196.00Z"/><text class="v-lab" x="69.43" y="91.90" text-anchor="middle">15,4</text><path class="v-bar" d="M103.71,196.00V45.25Q103.71,41.25 107.71,41.25H123.71Q127.71,41.25 127.71,45.25V196.00Z"/><text class="v-lab" x="115.71" y="33.25" text-anchor="middle">24,8</text><path class="v-bar" d="M150.00,196.00V124.50Q150.00,120.50 154.00,120.50H170.00Q174.00,120.50 174.00,124.50V196.00Z"/><text class="v-lab" x="162.00" y="112.50" text-anchor="middle">12,1</text><path class="v-bar" d="M242.57,196.00V85.81Q242.57,81.81 246.57,81.81H262.57Q266.57,81.81 266.57,85.81V196.00Z"/><text class="v-lab" x="254.57" y="73.81" text-anchor="middle">18,3</text><path class="v-today" d="M288.86,196.00V90.80Q288.86,86.80 292.86,86.80H308.86Q312.86,86.80 312.86,90.80V196.00Z"/><text class="v-lab" x="300.86" y="78.80" text-anchor="middle">17,5</text><line class="v-base" x1="0" x2="324" y1="196.5" y2="196.5"/></svg><svg class="big" viewBox="0 0 324 252" data-chart="people" aria-hidden="true" hidden><rect class="v-off" x="187.14" y="16" width="42.29" height="180" rx="4"/><text class="v-lab v-lab--m" x="208.29" y="144" text-anchor="middle">смены</text><text class="v-lab v-lab--m" x="208.29" y="162" text-anchor="middle">не было</text><rect class="v-plan" x="11.64" y="40.00" width="23" height="156.00" rx="3"/><path class="v-bar" d="M11.14,196.00V63.07Q11.14,59.07 15.14,59.07H31.14Q35.14,59.07 35.14,63.07V196.00Z"/><text class="v-lab" x="23.14" y="18.00" text-anchor="middle">79</text><text class="v-lab v-lab--m" x="23.14" y="34.00" text-anchor="middle">из 90</text><rect class="v-plan" x="57.93" y="40.00" width="23" height="156.00" rx="3"/><path class="v-bar" d="M57.43,196.00V54.40Q57.43,50.40 61.43,50.40H77.43Q81.43,50.40 81.43,54.40V196.00Z"/><text class="v-lab" x="69.43" y="18.00" text-anchor="middle">84</text><text class="v-lab v-lab--m" x="69.43" y="34.00" text-anchor="middle">из 90</text><rect class="v-plan" x="104.21" y="40.00" width="23" height="156.00" rx="3"/><path class="v-bar" d="M103.71,196.00V76.93Q103.71,72.93 107.71,72.93H123.71Q127.71,72.93 127.71,76.93V196.00Z"/><text class="v-lab" x="115.71" y="18.00" text-anchor="middle">71</text><text class="v-lab v-lab--m" x="115.71" y="34.00" text-anchor="middle">из 90</text><rect class="v-plan" x="150.50" y="40.00" width="23" height="156.00" rx="3"/><path class="v-bar" d="M150.00,196.00V47.47Q150.00,43.47 154.00,43.47H170.00Q174.00,43.47 174.00,47.47V196.00Z"/><text class="v-lab" x="162.00" y="18.00" text-anchor="middle">88</text><text class="v-lab v-lab--m" x="162.00" y="34.00" text-anchor="middle">из 90</text><rect class="v-plan" x="243.07" y="40.00" width="23" height="156.00" rx="3"/><path class="v-bar" d="M242.57,196.00V61.33Q242.57,57.33 246.57,57.33H262.57Q266.57,57.33 266.57,61.33V196.00Z"/><text class="v-lab" x="254.57" y="18.00" text-anchor="middle">80</text><text class="v-lab v-lab--m" x="254.57" y="34.00" text-anchor="middle">из 90</text><rect class="v-plan" x="289.36" y="102.40" width="23" height="93.60" rx="3"/><path class="v-today" d="M288.86,196.00V118.53Q288.86,114.53 292.86,114.53H308.86Q312.86,114.53 312.86,118.53V196.00Z"/><text class="v-lab" x="300.86" y="80.40" text-anchor="middle">47</text><text class="v-lab v-lab--m" x="300.86" y="96.40" text-anchor="middle">из 54</text><line class="v-base" x1="0" x2="324" y1="196.5" y2="196.5"/></svg><svg class="big" viewBox="0 0 324 252" data-chart="inc" aria-hidden="true" hidden><rect class="v-off" x="187.14" y="16" width="42.29" height="180" rx="4"/><text class="v-lab v-lab--m" x="208.29" y="144" text-anchor="middle">смены</text><text class="v-lab v-lab--m" x="208.29" y="162" text-anchor="middle">не было</text><rect class="v-zero" x="11.14" y="194" width="24" height="2"/><text class="v-lab" x="23.14" y="188.00" text-anchor="middle">0</text><path class="v-bar" d="M57.43,196.00V148.00Q57.43,144.00 61.43,144.00H77.43Q81.43,144.00 81.43,148.00V196.00Z"/><text class="v-lab" x="69.43" y="136.00" text-anchor="middle">1</text><rect class="v-zero" x="103.71" y="194" width="24" height="2"/><text class="v-lab" x="115.71" y="188.00" text-anchor="middle">0</text><path class="v-bar" d="M150.00,196.00V96.00Q150.00,92.00 154.00,92.00H170.00Q174.00,92.00 174.00,96.00V196.00Z"/><text class="v-lab" x="162.00" y="84.00" text-anchor="middle">2</text><rect class="v-zero" x="242.57" y="194" width="24" height="2"/><text class="v-lab" x="254.57" y="188.00" text-anchor="middle">0</text><path class="v-today" d="M288.86,196.00V148.00Q288.86,144.00 292.86,144.00H308.86Q312.86,144.00 312.86,148.00V196.00Z"/><text class="v-lab" x="300.86" y="136.00" text-anchor="middle">1</text><line class="v-base" x1="0" x2="324" y1="196.5" y2="196.5"/></svg>
+    </div>
+    <p class="chartnote" data-cn="hours">Штриховкой отмечена смена, которая ещё идёт. Нажмите на день, чтобы увидеть его цифры.</p><p class="chartnote" data-cn="idle" hidden>Оценка по ставкам, которые ввёл оператор, не к оплате. Нажмите на день, чтобы увидеть его цифры.</p><p class="chartnote" data-cn="people" hidden>Рамка показывает заявку, заливка показывает факт. Заявка: 9 человек × 10 ч на смену. К 14:40 прошло 6 рабочих часов (смена с 08:00, обед 12:00–12:40), значит 9 × 6 ч. Камеры видят всех (сейчас 14), а в заявке только бригада подрядчика.</p><p class="chartnote" data-cn="inc" hidden>Только подтверждённые прорабом. Нажмите на день, чтобы увидеть его цифры.</p>
+  </section>
+  <section class="win daywin" aria-label="Выбранный день">
+    <div class="dayp" data-dayp="14.10" hidden>
+      <div class="dayp__head"><h3>14.10, среда</h3><span>смена закрыта</span></div>
+      <dl class="rows">
+        <div><dt>Часы техники</dt><dd>64,0 машино-ч</dd></div>
+        <div><dt>Простой, оценка</dt><dd>≈ 21 300 ₽</dd></div>
+        <div><dt>Человеко-часы</dt><dd>79 из 90</dd></div>
+        <div><dt>Инциденты</dt><dd>0</dd></div>
+      </dl>
+      <p class="okline"><svg class="ic ic--s" aria-hidden="true"><use href="#i-check"/></svg>Сверено: прораб, 20:10</p>
+    </div><div class="dayp" data-dayp="15.10" hidden>
+      <div class="dayp__head"><h3>15.10, четверг</h3><span>смена закрыта</span></div>
+      <dl class="rows">
+        <div><dt>Часы техники</dt><dd>70,5 машино-ч</dd></div>
+        <div><dt>Простой, оценка</dt><dd>≈ 15 400 ₽</dd></div>
+        <div><dt>Человеко-часы</dt><dd>84 из 90</dd></div>
+        <div><dt>Инциденты</dt><dd>1</dd></div>
+      </dl>
+      <p class="okline"><svg class="ic ic--s" aria-hidden="true"><use href="#i-check"/></svg>Сверено: прораб, 20:05</p>
+    </div><div class="dayp" data-dayp="16.10" hidden>
+      <div class="dayp__head"><h3>16.10, пятница</h3><span>смена закрыта</span></div>
+      <dl class="rows">
+        <div><dt>Часы техники</dt><dd>58,0 машино-ч</dd></div>
+        <div><dt>Простой, оценка</dt><dd>≈ 24 800 ₽</dd></div>
+        <div><dt>Человеко-часы</dt><dd>71 из 90</dd></div>
+        <div><dt>Инциденты</dt><dd>0</dd></div>
+      </dl>
+      <p class="okline"><svg class="ic ic--s" aria-hidden="true"><use href="#i-check"/></svg>Сверено: прораб, 20:20</p>
+    </div><div class="dayp" data-dayp="17.10" hidden>
+      <div class="dayp__head"><h3>17.10, суббота</h3><span>смена закрыта</span></div>
+      <dl class="rows">
+        <div><dt>Часы техники</dt><dd>61,5 машино-ч</dd></div>
+        <div><dt>Простой, оценка</dt><dd>≈ 12 100 ₽</dd></div>
+        <div><dt>Человеко-часы</dt><dd>88 из 90</dd></div>
+        <div><dt>Инциденты</dt><dd>2</dd></div>
+      </dl>
+      <p class="okline"><svg class="ic ic--s" aria-hidden="true"><use href="#i-check"/></svg>Сверено: прораб, 19:55</p>
+    </div><div class="dayp" data-dayp="19.10" hidden>
+      <div class="dayp__head"><h3>19.10, понедельник</h3><span>смена закрыта</span></div>
+      <dl class="rows">
+        <div><dt>Часы техники</dt><dd>66,0 машино-ч</dd></div>
+        <div><dt>Простой, оценка</dt><dd>≈ 18 300 ₽</dd></div>
+        <div><dt>Человеко-часы</dt><dd>80 из 90</dd></div>
+        <div><dt>Инциденты</dt><dd>0</dd></div>
+      </dl>
+      <p class="okline"><svg class="ic ic--s" aria-hidden="true"><use href="#i-check"/></svg>Сверено: прораб, 20:05</p>
+    </div><div class="dayp" data-dayp="20.10">
+      <div class="dayp__head"><h3>20.10, вторник</h3><span>смена идёт, к 14:40</span></div>
+      <dl class="rows">
+        <div><dt>Часы техники</dt><dd>38,5 машино-ч</dd></div>
+        <div><dt>Простой, оценка</dt><dd>≈ 17 500 ₽</dd></div>
+        <div><dt>Человеко-часы</dt><dd>47 из 54</dd></div>
+        <div><dt>Инциденты</dt><dd>1</dd></div>
+      </dl>
+      <p class="okline"><svg class="ic ic--s" aria-hidden="true"><use href="#i-check"/></svg>Сверено: прораб, 14:40</p>
+    </div>
+    <div class="dayp" data-dayp="week" hidden>
+      <div class="dayp__head"><h3>14–20.10, 6 смен</h3><span>день не выбран</span></div>
+      <p class="weektot" data-wt="hours">За 6 смен набралось 358,5 машино-ч. Полная смена обычно даёт от 58 до 70,5.</p><p class="weektot" data-wt="idle" hidden>За 6 смен простой оценён в ≈ 109 400 ₽. Больше всего вышло 16.10, ≈ 24 800 ₽.</p><p class="weektot" data-wt="people" hidden>За 6 смен 449 из 504 человеко-часов по заявке, на 55 меньше. Заявку вводит диспетчер.</p><p class="weektot" data-wt="inc" hidden>За 6 смен подтверждено 4. Отклонённые как ложные в счёт не идут.</p>
+    </div>
+  </section>
+  <button class="credits-btn" type="button" data-sheet="sh-credits"><svg class="ic " aria-hidden="true"><use href="#i-image"/></svg><span>Кадры: открытые ролики Wikimedia Commons, люди и кабины размыты. Авторы и лицензии</span></button>
+</section>
+
+<section data-screen="contractors" hidden aria-labelledby="h-con">
+  <div class="head">
+    <h1 class="h1" id="h-con">Подрядчики</h1>
+    <p class="sub">Чья техника: своя, аренда, подрядчик. Сегодня, к 14:40</p>
+  </div>
+  <p class="finding">Арендована 1 машина из 9, а простоя на 6 933 ₽. Это <b>40 % всех потерь смены</b>, и мини-экскаватор «12» стоит до сих пор.</p>
+  <section class="win" aria-label="По чьей технике">
+    <div class="ghead" aria-hidden="true"><span></span><span>Часы</span><span>Простой ₽</span><span>Рейсы</span><span></span></div>
+    <div class="grp">
+      <button class="grow" type="button" aria-expanded="true" aria-controls="grp-sub">
+        <span class="grow__name"><i class="own own--sub" aria-hidden="true"></i><b>Подрядчик</b><span>6 машин</span></span>
+        <span class="grow__n">19,2</span>
+        <span class="grow__n grow__rub"><span>7 753</span><span class="rubtrack" aria-hidden="true"><i style="width:100.0%"></i></span></span>
+        <span class="grow__n">14</span>
+        <svg class="ic chev chev--down" aria-hidden="true"><use href="#i-down"/></svg>
+      </button>
+      <ul class="mlist" id="grp-sub"><li class="mrow mrow--sub"><span class="mrow__id"><span class="plate"><span class="plate__n">О 218 ВК</span><span class="plate__r">159</span></span></span><span class="mrow__r">1 360 ₽</span><span class="mrow__t">Самосвал, 5 рейсов, 3,9 машино-ч, стоял 34 мин</span></li><li class="mrow mrow--sub"><span class="mrow__id"><span class="plate"><span class="plate__n">Е 482 КМ</span><span class="plate__r">159</span></span></span><span class="mrow__r">1 640 ₽</span><span class="mrow__t">Самосвал, 3 рейса, 4,1 машино-ч, стоял 41 мин</span></li><li class="mrow mrow--sub"><span class="mrow__id"><span class="plate"><span class="plate__n">Т 905 ОР</span><span class="plate__r">159</span></span></span><span class="mrow__r">1 000 ₽</span><span class="mrow__t">Самосвал, уехал 13:10, 2 рейса, 4,8 машино-ч, стоял 25 мин</span></li><li class="mrow mrow--sub"><span class="mrow__id"><span class="plate"><span class="plate__n">Х 731 АМ</span><span class="plate__r">159</span></span></span><span class="mrow__r">720 ₽</span><span class="mrow__t">Самосвал, уехал 14:05, 4 рейса, 1,2 машино-ч, стоял 18 мин</span></li><li class="mrow mrow--sub"><span class="mrow__id"><span class="plate"><span class="plate__n">С 446 НЕ</span><span class="plate__r">159</span></span></span><span class="mrow__r">3 033 ₽</span><span class="mrow__t">Автобетоносмеситель, въехал 12:58, 1,7 машино-ч, стоял 1 ч 05 мин</span></li><li class="mrow mrow--sub"><span class="mrow__id"><span class="plate"><span class="plate__n">Р 117 СА</span><span class="plate__r">159</span></span></span><span class="mrow__r">без простоя</span><span class="mrow__t">Автобетоносмеситель, уехал 12:40, 3,5 машино-ч, не стоял</span></li></ul>
+    </div><div class="grp">
+      <button class="grow" type="button" aria-expanded="false" aria-controls="grp-rent">
+        <span class="grow__name"><i class="own own--rent" aria-hidden="true"></i><b>Аренда</b><span>1 машина</span></span>
+        <span class="grow__n">6,1</span>
+        <span class="grow__n grow__rub"><span>6 933</span><span class="rubtrack" aria-hidden="true"><i style="width:89.4%"></i></span></span>
+        <span class="grow__n">—</span>
+        <svg class="ic chev chev--down" aria-hidden="true"><use href="#i-down"/></svg>
+      </button>
+      <ul class="mlist" id="grp-rent" hidden><li class="mrow mrow--rent"><span class="mrow__id"><span class="bort" aria-label="бортовой 12">борт.<b>12</b></span></span><span class="mrow__r">6 933 ₽</span><span class="mrow__t">Мини-экскаватор, с 08:34, 6,1 машино-ч, стоял 2 ч 10 мин</span></li></ul>
+    </div><div class="grp">
+      <button class="grow" type="button" aria-expanded="false" aria-controls="grp-own">
+        <span class="grow__name"><i class="own own--own" aria-hidden="true"></i><b>Своя</b><span>2 машины</span></span>
+        <span class="grow__n">13,2</span>
+        <span class="grow__n grow__rub"><span>2 773</span><span class="rubtrack" aria-hidden="true"><i style="width:35.8%"></i></span></span>
+        <span class="grow__n">—</span>
+        <svg class="ic chev chev--down" aria-hidden="true"><use href="#i-down"/></svg>
+      </button>
+      <ul class="mlist" id="grp-own" hidden><li class="mrow mrow--own"><span class="mrow__id"><span class="bort" aria-label="бортовой 07">борт.<b>07</b></span></span><span class="mrow__r">2 773 ₽</span><span class="mrow__t">Экскаватор, 6,5 машино-ч, стоял 52 мин</span></li><li class="mrow mrow--own"><span class="mrow__id"><span class="bort" aria-label="бортовой 03">борт.<b>03</b></span></span><span class="mrow__r">без простоя</span><span class="mrow__t">Колёсный экскаватор, с 07:58, 6,7 машино-ч, не стоял</span></li></ul>
+    </div>
+    <div class="gtotal"><span><b>Итого</b><span>9 машин</span></span><span class="grow__n">38,5</span><span class="grow__n">≈ 17 460</span><span class="grow__n">14</span><span></span><span class="gtotal__note">+1 машина не подтверждена, её часы не входят</span></div>
+  </section>
+  <section class="win unk" aria-label="Не определена">
+    <div class="unk__in">
+      <span class="shot "><img src="img/unk-in.webp" alt="Карьерный самосвал на кадре камеры К1" title="Кадр 0:14 из ролика «2018-05-07 Ein Muldenkipper im Steinbruch Unterbalbach». Triplec85, CC BY-SA 4.0, Wikimedia Commons" loading="lazy" decoding="async"><span class="box" style="left:40%;top:32%;width:31%;height:28%" aria-hidden="true"></span><span class="fn" aria-label="кадр 5 в списке «Кадры»">5</span></span>
+      <div>
+        <p class="unk__t"><span class="plate"><span class="plate__n">У 352 К?</span><span class="plate__r">159</span></span><span class="tag tag--warn"><svg class="ic ic--s" aria-hidden="true"><use href="#i-help"/></svg>сомнительно</span></p>
+        <p class="unk__m">2 из 5 кадров, въехал 14:36, К1. Её нет в списке площадки, чья она, не знаем.</p>
+      </div>
+    </div>
+    <p class="grey">В часы не входит, пока прораб не подтвердит номер.</p>
+  </section>
+  <p class="foot">Из 38,5 машино-ч 1,2 приходятся на «не видно»: машина за отвалом, это время не идёт ни в движение, ни в простой.</p>
+  <p class="foot">Рейсы считаем у самосвалов. Простой оценён по ставкам оператора, не к оплате; строки округлены до рубля. Цвет стоит только точкой у строки: <i class="own own--sub" aria-hidden="true"></i> подрядчик, <i class="own own--rent" aria-hidden="true"></i> аренда, <i class="own own--own" aria-hidden="true"></i> своя.</p>
+  <button class="credits-btn" type="button" data-sheet="sh-credits"><svg class="ic " aria-hidden="true"><use href="#i-image"/></svg><span>Кадры: открытые ролики Wikimedia Commons, люди и кабины размыты. Авторы и лицензии</span></button>
+</section>
+
+<section data-screen="reports" hidden aria-labelledby="h-rep">
+  <div class="head">
+    <h1 class="h1" id="h-rep">Акты</h1>
+    <p class="sub">Рапорт за смену и выгрузка к акту</p>
+  </div>
+  <section class="win rep" aria-labelledby="h-today">
+    <div class="win__head"><h2 class="h2" id="h-today">Рапорт за 20.10</h2><span class="tag tag--muted">черновик</span></div>
+    <p class="okline okline--pad"><svg class="ic ic--s" aria-hidden="true"><use href="#i-check"/></svg>Сверено: прораб, 14:40. Отметка часы не меняет.</p>
+    <dl class="replist">
+      <div><dt>Машин за смену</dt><dd>10 <small>1 номер ждёт подтверждения</small></dd></div>
+      <div><dt>Рейсов самосвалов</dt><dd>14</dd></div>
+      <div><dt>Часы техники</dt><dd>38,5 машино-ч</dd></div>
+      <div><dt>Простой</dt><dd>6 ч 05 мин <small>≈ 17 500 ₽, оценка</small></dd></div>
+      <div><dt>Человеко-часы</dt><dd>47 из 54</dd></div>
+      <div><dt>Инциденты</dt><dd>1 <small>+1 ложный</small></dd></div>
+    </dl>
+    <div class="rep__act">
+      <button class="btn btn--primary btn--block" type="button" data-sheet="sh-export" data-what="за смену 20.10"><svg class="ic " aria-hidden="true"><use href="#i-download"/></svg>Выгрузить к акту</button>
+      <p class="grey"><svg class="ic ic--s" aria-hidden="true"><use href="#i-eyeoff"/></svg>Кадров с людьми в выгрузке нет.</p>
+    </div>
+  </section>
+  <section class="win" aria-labelledby="h-dec">
+    <div class="win__head"><h2 class="h2" id="h-dec">Декада 11–20.10</h2><span class="win__meta">8 смен, 20.10 идёт</span></div>
+    <dl class="replist">
+      <div><dt>Часы техники</dt><dd>485,0 машино-ч</dd></div>
+      <div><dt>Простой, оценка</dt><dd>≈ 143 200 ₽</dd></div>
+    </dl>
+    <div class="rep__act"><button class="btn btn--block" type="button" data-sheet="sh-export" data-what="за декаду 11–20.10"><svg class="ic " aria-hidden="true"><use href="#i-download"/></svg>Выгрузить декаду к акту</button></div>
+  </section>
+  <section class="win" aria-labelledby="h-past">
+    <div class="win__head"><h2 class="h2" id="h-past">Прошлые смены</h2></div>
+    <ul><li><button class="prow" type="button" data-go="days" data-day="19.10"><span class="prow__d"><b>19.10</b><span>пн</span></span><span class="prow__t"><b>66,0 машино-ч, ≈ 18 300 ₽</b><span>Сверено: прораб, 20:05</span></span><svg class="ic chev" aria-hidden="true"><use href="#i-right"/></svg></button></li><li><button class="prow" type="button" data-go="noshift"><span class="prow__d"><b>18.10</b><span>вс</span></span><span class="prow__t grey">Смены не было</span><svg class="ic chev" aria-hidden="true"><use href="#i-right"/></svg></button></li><li><button class="prow" type="button" data-go="days" data-day="17.10"><span class="prow__d"><b>17.10</b><span>сб</span></span><span class="prow__t"><b>61,5 машино-ч, ≈ 12 100 ₽</b><span>Сверено: прораб, 19:55</span></span><svg class="ic chev" aria-hidden="true"><use href="#i-right"/></svg></button></li><li><button class="prow" type="button" data-go="days" data-day="16.10"><span class="prow__d"><b>16.10</b><span>пт</span></span><span class="prow__t"><b>58,0 машино-ч, ≈ 24 800 ₽</b><span>Сверено: прораб, 20:20</span></span><svg class="ic chev" aria-hidden="true"><use href="#i-right"/></svg></button></li><li><button class="prow" type="button" data-go="days" data-day="15.10"><span class="prow__d"><b>15.10</b><span>чт</span></span><span class="prow__t"><b>70,5 машино-ч, ≈ 15 400 ₽</b><span>Сверено: прораб, 20:05</span></span><svg class="ic chev" aria-hidden="true"><use href="#i-right"/></svg></button></li><li><button class="prow" type="button" data-go="days" data-day="14.10"><span class="prow__d"><b>14.10</b><span>ср</span></span><span class="prow__t"><b>64,0 машино-ч, ≈ 21 300 ₽</b><span>Сверено: прораб, 20:10</span></span><svg class="ic chev" aria-hidden="true"><use href="#i-right"/></svg></button></li></ul>
+  </section>
+  <button class="credits-btn" type="button" data-sheet="sh-credits"><svg class="ic " aria-hidden="true"><use href="#i-image"/></svg><span>Кадры: открытые ролики Wikimedia Commons, люди и кабины размыты. Авторы и лицензии</span></button>
+</section>
+
+<section data-screen="idle" hidden aria-labelledby="h-idle">
+  <div class="backbar"><button class="back" type="button" data-back><svg class="ic " aria-hidden="true"><use href="#i-left"/></svg>Сводка</button></div>
+  <div class="head head--tight">
+    <p class="kicker">Простой сегодня, к 14:40</p>
+    <h1 class="h1 h1--sum" id="h-idle"><span class="ap">≈</span>17 500 ₽</h1>
+    <p class="sub">6 ч 05 мин без движения у 7 машин. Простоем считаем от 2 мин без движения.</p>
+  </div>
+  <ol class="ilist"><li class="irow irow--rent">
+      <div class="irow__top">
+        <b class="irow__name">Мини-экскаватор</b>
+        <span class="irow__sum">6 933 ₽</span>
+      </div>
+      <p class="irow__who"><span class="bort" aria-label="бортовой 12">борт.<b>12</b></span><span><i class="own own--rent" aria-hidden="true"></i>аренда</span></p>
+      <p class="calc">2 ч 10 мин × 3 200 ₽/ч</p>
+      <span class="share" aria-hidden="true"><i style="width:100.0%"></i></span>
+      <div class="proof">
+        <button class="shotbtn" type="button" data-video="mini-in" data-vfn="1" data-vcap="Мини-экскаватор, кадр 14:28 · К2" aria-label="Смотреть видео: Мини-экскаватор, кадр 14:28 · К2"><span class="shot "><img src="img/mini-in.webp" alt="Мини-экскаватор, кадр 14:28 · К2" title="Кадр 0:03 из ролика «Retenční nádrž Libušská, čištění vtoku». ŠJů, CC BY 4.0, Wikimedia Commons" loading="lazy" decoding="async"><span class="box" style="left:17%;top:3%;width:62%;height:95%" aria-hidden="true"></span><span class="fn" aria-label="кадр 1 в списке «Кадры»">1</span></span><span class="play" aria-hidden="true"><svg class="ic ic--s" aria-hidden="true"><use href="#i-play"/></svg></span></button>
+        <span class="proof__cap"><b>кадр 14:28 · К2</b><span>Стоит и сейчас, уже 12 мин.</span></span>
+      </div>
+      <p class="reason reason--none">Причина не указана</p>
+    </li><li class="irow irow--sub">
+      <div class="irow__top">
+        <b class="irow__name">Самосвалы в очереди, 4 машины</b>
+        <span class="irow__sum">4 720 ₽</span>
+      </div>
+      <p class="irow__who"><span><i class="own own--sub" aria-hidden="true"></i>подрядчик</span></p>
+      <p class="calc">1 ч 58 мин × 2 400 ₽/ч</p>
+      <span class="share" aria-hidden="true"><i style="width:68.1%"></i></span>
+      <div class="proof">
+        <button class="shotbtn" type="button" data-video="dmp-in" data-vfn="6" data-vcap="Самосвалы в очереди, 4 машины, кадр 12:05 · К1" aria-label="Смотреть видео: Самосвалы в очереди, 4 машины, кадр 12:05 · К1"><span class="shot "><img src="img/dmp-in.webp" alt="Самосвалы в очереди, 4 машины, кадр 12:05 · К1" title="Кадр 0:04 из ролика «Building site Ljubljana 2». Sounds of Changes, CC BY 3.0, Wikimedia Commons" loading="lazy" decoding="async"><span class="box" style="left:0%;top:7%;width:69%;height:84%" aria-hidden="true"></span><span class="fn" aria-label="кадр 6 в списке «Кадры»">6</span></span><span class="play" aria-hidden="true"><svg class="ic ic--s" aria-hidden="true"><use href="#i-play"/></svg></span></button>
+        <span class="proof__cap"><b>кадр 12:05 · К1</b><span>О 218 ВК 34 мин, Е 482 КМ 41 мин, Т 905 ОР 25 мин, Х 731 АМ 18 мин.</span></span>
+      </div>
+      <p class="reason">Причину <b>«Другое: очередь под погрузку»</b> поставил прораб.</p>
+    </li><li class="irow irow--sub">
+      <div class="irow__top">
+        <b class="irow__name">Автобетоносмеситель</b>
+        <span class="irow__sum">3 033 ₽</span>
+      </div>
+      <p class="irow__who"><span class="plate"><span class="plate__n">С 446 НЕ</span><span class="plate__r">159</span></span><span><i class="own own--sub" aria-hidden="true"></i>подрядчик</span></p>
+      <p class="calc">1 ч 05 мин × 2 800 ₽/ч</p>
+      <span class="share" aria-hidden="true"><i style="width:43.7%"></i></span>
+      <div class="proof">
+        <button class="shotbtn" type="button" data-video="mix-in" data-vfn="7" data-vcap="Автобетоносмеситель, кадр 14:22 · К1" aria-label="Смотреть видео: Автобетоносмеситель, кадр 14:22 · К1"><span class="shot "><img src="img/mix-in.webp" alt="Автобетоносмеситель, кадр 14:22 · К1" title="Кадр 0:01 из ролика «Cement mixer truck in Bangalore (2025)». Gpkp, CC BY-SA 4.0, Wikimedia Commons" loading="lazy" decoding="async"><span class="box" style="left:0%;top:8%;width:77%;height:84%" aria-hidden="true"></span><span class="fn" aria-label="кадр 7 в списке «Кадры»">7</span></span><span class="play" aria-hidden="true"><svg class="ic ic--s" aria-hidden="true"><use href="#i-play"/></svg></span></button>
+        <span class="proof__cap"><b>кадр 14:22 · К1</b><span>Стоял 13:05–13:52 и стоит с 14:22, ждёт разгрузки.</span></span>
+      </div>
+      <p class="reason reason--none">Причина не указана</p>
+    </li><li class="irow irow--own">
+      <div class="irow__top">
+        <b class="irow__name">Экскаватор</b>
+        <span class="irow__sum">2 773 ₽</span>
+      </div>
+      <p class="irow__who"><span class="bort" aria-label="бортовой 07">борт.<b>07</b></span><span><i class="own own--own" aria-hidden="true"></i>своя</span></p>
+      <p class="calc">52 мин × 3 200 ₽/ч</p>
+      <span class="share" aria-hidden="true"><i style="width:40.0%"></i></span>
+      <div class="proof">
+        <button class="shotbtn" type="button" data-video="kem-in" data-vfn="2" data-vcap="Экскаватор, кадр 10:41 · К2" aria-label="Смотреть видео: Экскаватор, кадр 10:41 · К2"><span class="shot "><img src="img/kem-in.webp" alt="Экскаватор, кадр 10:41 · К2" title="Кадр 0:05 из ролика «Excavator digging land and loading truck». KEmel49, CC BY-SA 4.0, Wikimedia Commons" loading="lazy" decoding="async"><span class="box" style="left:14%;top:38%;width:44%;height:36%" aria-hidden="true"></span><span class="fn" aria-label="кадр 2 в списке «Кадры»">2</span></span><span class="play" aria-hidden="true"><svg class="ic ic--s" aria-hidden="true"><use href="#i-play"/></svg></span></button>
+        <span class="proof__cap"><b>кадр 10:41 · К2</b><span>Стоял 10:15–11:07.</span></span>
+      </div>
+      <p class="reason">Причину <b>«Ждём бетон или материал»</b> поставил прораб.</p>
+    </li></ol>
+  <div class="itotal"><span>Итого по строкам</span><b>≈ 17 460 ₽</b></div>
+  <p class="foot">Ставки ввёл оператор. Это оценка, не к оплате; в сводке сумма округлена до 17 500 ₽.</p>
+  <button class="credits-btn" type="button" data-sheet="sh-credits"><svg class="ic " aria-hidden="true"><use href="#i-image"/></svg><span>Кадры: открытые ролики Wikimedia Commons, люди и кабины размыты. Авторы и лицензии</span></button>
+</section>
+
+<section data-screen="noshift" hidden aria-labelledby="h-no">
+  <div class="backbar"><button class="back" type="button" data-back><svg class="ic " aria-hidden="true"><use href="#i-left"/></svg>Назад</button></div>
+  <div class="empty">
+    <span class="empty__ic"><svg class="ic ic--xl" aria-hidden="true"><use href="#i-calx"/></svg></span>
+    <h1 class="h1" id="h-no">18.10 — смены не было</h1>
+    <p class="sub">Воскресенье. Камеры были в порядке, техники и людей на площадке не было. Считать нечего.</p>
+    <p class="grey">На графиках этот день отмечен серой полосой, а не нулём.</p>
+    <button class="btn btn--primary btn--block" type="button" data-go="days" data-day="19.10">Открыть 19.10</button>
+  </div>
+</section>
+
+<section data-screen="incident" hidden aria-labelledby="h-inc">
+  <div class="backbar"><button class="back" type="button" data-back><svg class="ic " aria-hidden="true"><use href="#i-left"/></svg>Сводка</button></div>
+  <div class="head head--tight">
+    <p class="kicker">Инцидент, К2 «Котлован», 11:52</p>
+    <h1 class="h1" id="h-inc">Человек в зоне стрелы экскаватора</h1>
+  </div>
+  <div class="incframe">
+    <span class="shot shot--wide"><img src="img/wien-out.webp" alt="Экскаватор в котловане, внизу размытые люди, кадр К2 11:52" title="Кадр 1:31 из ролика «1050 Wien, U4 Station Pilgramgasse Baustelle Wienfluss-Kanal Bagger 03 2023-10-05». Hangman&#x27;sDeath, CC0, Wikimedia Commons" loading="lazy" decoding="async"><span class="box" style="left:40%;top:1%;width:28%;height:89%" aria-hidden="true"><span class="box__l">экскаватор</span></span><span class="faces"><svg class="ic ic--s" aria-hidden="true"><use href="#i-eyeoff"/></svg>лица скрыты</span><span class="fn" aria-label="кадр 4 в списке «Кадры»">4</span></span>
+    <p class="proof__cap proof__cap--row"><b>кадр 11:52 · К2</b><span>Люди на кадре без лиц и имён.</span></p>
+  </div>
+  <section class="win" aria-label="Что было">
+    <ol class="tl">
+      <li><time>11:52</time><span>Человек вошёл в зону стрелы, экскаватор в движении</span></li>
+      <li><time>11:53</time><span>Вышел из зоны</span></li>
+      <li class="tl--ok"><time>11:55</time><span><svg class="ic ic--s" aria-hidden="true"><use href="#i-check"/></svg><b>Подтверждён прорабом</b></span></li>
+    </ol>
+    <div class="rep__act"><button class="btn btn--block" type="button" data-video="wien-out" data-vfn="4" data-vcap="Инцидент, кадр 11:52 · К2"><svg class="ic " aria-hidden="true"><use href="#i-video"/></svg>Смотреть видео</button></div>
+  </section>
+  <section class="win falsewin" aria-label="Отклонённый">
+    <p class="false"><svg class="ic " aria-hidden="true"><use href="#i-xcircle"/></svg><span><b>13:20, отклонён как ложный</b><span>Прораб отметил в 13:24, что в зоне никого не было. В счёт не идёт.</span></span></p>
+  </section>
+  <button class="credits-btn" type="button" data-sheet="sh-credits"><svg class="ic " aria-hidden="true"><use href="#i-image"/></svg><span>Кадры: открытые ролики Wikimedia Commons, люди и кабины размыты. Авторы и лицензии</span></button>
+</section>
+</main>
+</div>
+<nav class="tabbar" aria-label="Разделы"><button class="tab" type="button" data-go="summary" aria-current="page"><svg class="ic " aria-hidden="true"><use href="#i-gauge"/></svg><span>Сводка</span></button><button class="tab" type="button" data-go="days"><svg class="ic " aria-hidden="true"><use href="#i-chart"/></svg><span>По дням</span></button><button class="tab" type="button" data-go="contractors"><svg class="ic " aria-hidden="true"><use href="#i-truck"/></svg><span>Подрядчики</span></button><button class="tab" type="button" data-go="reports"><svg class="ic " aria-hidden="true"><use href="#i-file"/></svg><span>Акты</span></button></nav>
+
+<div class="shade" hidden></div>
+<section class="sheet" id="sh-export" hidden role="dialog" aria-labelledby="h-exp">
+  <div class="sheet__grip"></div>
+  <div class="sheet__head"><h2 id="h-exp">Выгрузить к акту</h2><button class="iconbtn" type="button" data-close aria-label="Закрыть"><svg class="ic " aria-hidden="true"><use href="#i-x"/></svg></button></div>
+  <p class="grey" style="margin:0">Рапорт <span id="export-what">за смену 20.10</span></p>
+  <button class="opt" type="button" data-toast="В прототипе файл не создаётся"><svg class="ic " aria-hidden="true"><use href="#i-sheet"/></svg><span><b>Excel</b><span>Листы «Рейсы», «Табель», «Люди»</span></span></button>
+  <button class="opt" type="button" data-toast="В прототипе файл не создаётся"><svg class="ic " aria-hidden="true"><use href="#i-file"/></svg><span><b>PDF</b><span>Рапорт за смену, черновик для сверки</span></span></button>
+  <p class="grey"><svg class="ic ic--s" aria-hidden="true"><use href="#i-eyeoff"/></svg>Кадров с людьми в выгрузке нет.</p>
+</section>
+<section class="sheet" id="sh-video" hidden role="dialog" aria-labelledby="video-cap">
+  <div class="sheet__grip"></div>
+  <div class="sheet__head"><h2 id="video-cap">Видео</h2><button class="iconbtn" type="button" data-close aria-label="Закрыть"><svg class="ic " aria-hidden="true"><use href="#i-x"/></svg></button></div>
+  <div class="vframe"><span class="shot"><img src="img/mini-in.webp" alt="Кадр, с которого начнётся видео" decoding="async"><span class="faces"><svg class="ic ic--s" aria-hidden="true"><use href="#i-eyeoff"/></svg>лица скрыты</span><span class="fn">1</span></span></div>
+  <p class="vmsg"><svg class="ic " aria-hidden="true"><use href="#i-video"/></svg>Здесь откроется видео. В прототипе его нет.</p>
+</section>
+<section class="sheet" id="sh-credits" hidden role="dialog" aria-labelledby="h-cr">
+  <div class="sheet__grip"></div>
+  <div class="sheet__head"><h2 id="h-cr">Кадры</h2><button class="iconbtn" type="button" data-close aria-label="Закрыть"><svg class="ic " aria-hidden="true"><use href="#i-x"/></svg></button></div>
+  <p class="grey" style="margin:0 0 8px">Кадры взяты из открытых роликов Wikimedia Commons; люди, кабины и номера размыты. Номер на кадре ведёт к строке списка.</p>
+  <ol class="credits"><li><b>1</b><span>ŠJů, CC BY 4.0 — <a href="https://commons.wikimedia.org/wiki/File:Retenční_nádrž_Libušská,_čištění_vtoku.webm" target="_blank" rel="noopener">«Retenční nádrž Libušská, čištění vtoku»</a>, Wikimedia Commons</span></li><li><b>2</b><span>KEmel49, CC BY-SA 4.0 — <a href="https://commons.wikimedia.org/wiki/File:Excavator_digging_land_and_loading_truck.webm" target="_blank" rel="noopener">«Excavator digging land and loading truck»</a>, Wikimedia Commons</span></li><li><b>3</b><span>Cjp24, CC BY-SA 4.0 — <a href="https://commons.wikimedia.org/wiki/File:Volvo_FH_500_(video).webm" target="_blank" rel="noopener">«Volvo FH 500 (video)»</a>, Wikimedia Commons</span></li><li><b>4</b><span>Hangman&#x27;sDeath, CC0 — <a href="https://commons.wikimedia.org/wiki/File:1050_Wien,_U4_Station_Pilgramgasse_Baustelle_Wienfluss-Kanal_Bagger_03_2023-10-05.webm" target="_blank" rel="noopener">«1050 Wien, U4 Station Pilgramgasse Baustelle Wienfluss-Kanal Bagger 03 2023-10-05»</a>, Wikimedia Commons</span></li><li><b>5</b><span>Triplec85, CC BY-SA 4.0 — <a href="https://commons.wikimedia.org/wiki/File:2018-05-07_Ein_Muldenkipper_im_Steinbruch_Unterbalbach.webm" target="_blank" rel="noopener">«2018-05-07 Ein Muldenkipper im Steinbruch Unterbalbach»</a>, Wikimedia Commons</span></li><li><b>6</b><span>Sounds of Changes, CC BY 3.0 — <a href="https://commons.wikimedia.org/wiki/File:Building_site_Ljubljana_2.webm" target="_blank" rel="noopener">«Building site Ljubljana 2»</a>, Wikimedia Commons</span></li><li><b>7</b><span>Gpkp, CC BY-SA 4.0 — <a href="https://commons.wikimedia.org/wiki/File:Cement_mixer_truck_in_Bangalore_(2025).webm" target="_blank" rel="noopener">«Cement mixer truck in Bangalore (2025)»</a>, Wikimedia Commons</span></li></ol>
+</section>
+<div class="toast" role="status" aria-live="polite"></div>
+<script>
+(() => {
+  const root = document.documentElement, P = new URLSearchParams(location.search);
+  const th = P.get('theme'); if (th === 'light' || th === 'dark') root.dataset.theme = th;
+  if (P.get('brand') === 'client') root.dataset.brand = 'client';
+  const $ = (s, el = document) => el.querySelector(s), $$ = (s, el = document) => [...el.querySelectorAll(s)];
+  const screens = $$('[data-screen]');
+  const PARENT = { summary: 'summary', days: 'days', contractors: 'contractors', reports: 'reports', idle: 'summary', incident: 'summary', noshift: 'days' };
+  let cur = 'summary'; const stack = [];
+  const toastEl = $('.toast'); let tt;
+  const toast = msg => { toastEl.textContent = msg; toastEl.classList.add('on'); clearTimeout(tt); tt = setTimeout(() => toastEl.classList.remove('on'), 2600); };
+  function show(id, push) {
+    if (!$(`[data-screen="${id}"]`)) id = 'summary';
+    if (push && cur !== id) stack.push(cur);
+    screens.forEach(s => { s.hidden = s.dataset.screen !== id; });
+    cur = id;
+    $$('.tab').forEach(t => t.dataset.go === PARENT[id] ? t.setAttribute('aria-current', 'page') : t.removeAttribute('aria-current'));
+    window.scrollTo(0, 0);
+  }
+  function setMeasure(m) {
+    $$('.seg__b').forEach(b => b.setAttribute('aria-pressed', b.dataset.m === m));
+    $$('[data-chart]').forEach(c => { c.toggleAttribute('hidden', c.dataset.chart !== m); if (c.dataset.chart === m) flip(c); });
+    $$('[data-ct]').forEach(c => { c.hidden = c.dataset.ct !== m; });
+    $$('[data-wt]').forEach(c => { c.hidden = c.dataset.wt !== m; });
+    $$('[data-cn]').forEach(c => { c.hidden = c.dataset.cn !== m; });
+  }
+  // как на табло: коротко подсвечиваем только то, что сменилось
+  const flip = el => { el.classList.add('flip'); setTimeout(() => el.classList.remove('flip'), 700); };
+  function setDay(d) {
+    $$('.dbtn[data-day]').forEach(b => b.setAttribute('aria-pressed', b.dataset.day === d));
+    $$('[data-dayp]').forEach(p => { p.toggleAttribute('hidden', p.dataset.dayp !== d); if (p.dataset.dayp === d) flip(p); });
+  }
+  const shade = $('.shade');
+  function openSheet(id) { closeSheets(); shade.hidden = false; shade.dataset.sheet = id; $('#' + id).hidden = false; }
+  function closeSheets() { $$('.sheet').forEach(s => { s.hidden = true; }); shade.hidden = true; delete shade.dataset.sheet; }
+  shade.addEventListener('click', closeSheets);
+  const brandBtn = $('#brand-btn');
+  const syncBrand = () => brandBtn.setAttribute('aria-pressed', root.dataset.brand === 'client');
+  syncBrand();
+
+  document.addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return;
+    if (b.id === 'theme-btn') {
+      const dark = root.dataset.theme ? root.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+      root.dataset.theme = dark ? 'light' : 'dark'; return;
+    }
+    if (b === brandBtn) {
+      if (root.dataset.brand === 'client') delete root.dataset.brand; else root.dataset.brand = 'client';
+      syncBrand(); toast(root.dataset.brand ? 'Знак и цвет заказчика включены' : 'Знак «Сокол»'); return;
+    }
+    if (b.dataset.go) {
+      closeSheets(); show(b.dataset.go, true);
+      if (b.dataset.m) setMeasure(b.dataset.m);
+      if (b.dataset.day) setDay(b.dataset.day);
+      return;
+    }
+    if (b.hasAttribute('data-back')) { show(stack.pop() || PARENT[cur], false); return; }
+    if (b.classList.contains('seg__b')) {
+      if (b.getAttribute('aria-pressed') === 'true') { toast('Уже показано: ' + b.textContent); return; }
+      setMeasure(b.dataset.m); return;
+    }
+    if (b.classList.contains('dbtn')) {
+      if (b.getAttribute('aria-pressed') === 'true') { setDay('week'); return; }
+      setDay(b.dataset.day); return;
+    }
+    if (b.hasAttribute('aria-expanded')) {
+      const open = b.getAttribute('aria-expanded') !== 'true';
+      b.setAttribute('aria-expanded', open); $('#' + b.getAttribute('aria-controls')).hidden = !open; return;
+    }
+    if (b.dataset.sheet) {
+      if (b.dataset.what) $('#export-what').textContent = b.dataset.what;
+      openSheet(b.dataset.sheet); return;
+    }
+    if (b.dataset.video) {
+      const v = $('#sh-video');
+      $('img', v).src = 'img/' + b.dataset.video + '.webp';
+      $('img', v).title = $(`img[src="img/${b.dataset.video}.webp"]`).title;
+      $('.fn', v).textContent = b.dataset.vfn;
+      $('#video-cap').textContent = b.dataset.vcap;
+      openSheet('sh-video'); return;
+    }
+    if (b.hasAttribute('data-close')) { closeSheets(); return; }
+    if (b.dataset.toast) { toast(b.dataset.toast); return; }
+  });
+
+  show(P.get('screen') || 'summary', false);
+  if (P.get('m')) setMeasure(P.get('m'));
+})();
+</script>
+</body>
+</html>
