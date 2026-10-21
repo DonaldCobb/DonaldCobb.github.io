@@ -1,0 +1,900 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Пульт «Сокола» · выбор</title>
+<meta name="color-scheme" content="light dark">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600&display=swap">
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+:root{--bg:#F3F4F6;--sf:#FFFFFF;--ink:#14171A;--mut:#565C66;--ln:#D5D8DD;--amb:#8F5200;--inv:#FFFFFF;--shade:rgba(20,23,26,.06);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0F1114;--sf:#171A1E;--ink:#ECEEF1;--mut:#A9B0BA;--ln:#2A2F35;--amb:#F0B451;--inv:#0F1114;--shade:rgba(236,238,241,.06);color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0F1114;--sf:#171A1E;--ink:#ECEEF1;--mut:#A9B0BA;--ln:#2A2F35;--amb:#F0B451;--inv:#0F1114;--shade:rgba(236,238,241,.06);color-scheme:dark}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.4 "Golos Text",system-ui,-apple-system,sans-serif;font-variant-numeric:tabular-nums;padding-bottom:calc(112px + env(safe-area-inset-bottom));overflow-x:hidden}
+button,input{font:inherit;color:inherit}
+a{color:inherit}
+.top{padding:16px 16px 0;max-width:1440px;margin:0 auto;display:grid;grid-template-columns:1fr;gap:10px 16px;align-items:start}
+h1{font-size:20px;font-weight:600;margin:0 0 4px;letter-spacing:-.01em}
+.sub{margin:0;color:var(--mut);font-size:14px;max-width:62ch}
+.sub b{color:var(--ink);font-weight:500}
+.tools{display:flex;gap:8px;flex-wrap:wrap}
+.tools button,.lk,.links a{min-height:44px;padding:0 14px;border:1px solid var(--ln);background:var(--sf);border-radius:4px;font-weight:500;font-size:14px;cursor:pointer;display:inline-flex;align-items:center;text-decoration:none}
+.tools button[aria-pressed="true"]{background:var(--ink);color:var(--inv);border-color:var(--ink)}
+.nav{grid-column:1/-1;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin:4px -16px 0;padding:0 16px 4px}
+.nav::-webkit-scrollbar{display:none}
+.nav a{flex:none;min-height:44px;display:inline-flex;align-items:center;gap:6px;padding:0 12px;border-radius:4px;border:1px solid var(--ln);text-decoration:none;font-size:14px;font-weight:500;background:var(--sf)}
+.nav a span{color:var(--mut)}
+main{max-width:1440px;margin:0 auto;padding:0 16px}
+section{scroll-margin-top:12px}
+h2{font-size:16px;font-weight:600;margin:24px 0 12px;display:flex;flex-wrap:wrap;gap:4px 10px;align-items:baseline}
+h2 small{font-size:14px;font-weight:400;color:var(--mut)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(320px,100%),1fr));gap:16px}
+.gbig{grid-template-columns:repeat(auto-fill,minmax(min(560px,100%),1fr))}
+.card{background:var(--sf);border:1px solid var(--ln);border-radius:8px;overflow:hidden;display:flex;flex-direction:column;min-width:0;transition:opacity .16s,border-color .16s}
+.card[data-v="yes"]{border:2px solid var(--ink)}
+.card[data-v="mix"]{border:2px dashed var(--ink)}
+.card[data-v="no"] .media{opacity:.4}
+.card[data-v="no"] h3,.card[data-v="no"] .idea,.card[data-v="no"] .ours{color:var(--mut)}
+body.todo .card[data-v]{display:none}
+.media{display:flex;flex-direction:column;border-bottom:1px solid var(--ln);transition:opacity .16s}
+.shot{display:block;border:0;padding:0;margin:0;background:var(--shade);cursor:zoom-in;width:100%}
+.shot img{display:block;width:100%;height:auto;max-height:420px;object-fit:cover;object-position:top}
+.noshot{display:flex;align-items:center;justify-content:center;min-height:160px;color:var(--mut);font-size:14px;padding:16px;text-align:center}
+.refs{display:flex;gap:10px;align-items:center;padding:8px 10px;min-width:0}
+.rths{display:flex;gap:4px;flex:none;align-items:center}
+.rth{border:1px solid var(--ln);padding:0;background:var(--shade);border-radius:4px;overflow:hidden;cursor:zoom-in;width:72px;height:48px;flex:none}
+.big .rth{width:60px;height:44px}
+.rth img{width:100%;height:100%;object-fit:cover;display:block}
+.rmore{font-size:12px;color:var(--mut);padding:0 2px}
+.rcap{margin:0;font-size:12px;line-height:1.3;color:var(--mut);min-width:0;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.rcap span{display:block;font-weight:500;text-transform:lowercase;letter-spacing:.02em}
+.body{padding:10px 12px 12px;display:flex;flex-direction:column;gap:6px;flex:1}
+.head{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.id{font-size:12px;font-weight:600;border:1px solid var(--ln);border-radius:4px;padding:1px 6px}
+.badge{font-size:12px;font-weight:500;color:var(--mut);border:1px solid var(--ln);border-radius:4px;padding:1px 6px}
+.badge.adv{color:var(--amb);border-color:var(--amb);font-weight:600}
+h3{font-size:16px;font-weight:600;margin:0;line-height:1.3}
+.big h3{font-size:20px}
+.idea,.ours{margin:0;font-size:13px;line-height:1.4;color:var(--mut)}
+.ours b{font-weight:500;color:var(--ink)}
+.links{display:flex;gap:8px;flex-wrap:wrap;margin-top:2px}
+.vote{display:grid;grid-template-columns:1fr 1fr 1.3fr;gap:6px;margin-top:auto;padding-top:6px}
+.vote button{min-height:44px;border:1px solid var(--ln);background:transparent;border-radius:4px;font-weight:500;font-size:14px;cursor:pointer;padding:0 6px}
+.vote button[aria-pressed="true"]{background:var(--ink);color:var(--inv);border-color:var(--ink)}
+.vote button[data-v="mix"][aria-pressed="true"]{background:transparent;color:var(--ink);border:2px dashed var(--ink)}
+.mixf{display:flex;flex-direction:column;gap:4px;font-size:12px;color:var(--mut)}
+.mixf[hidden]{display:none}
+.mixf input{min-height:44px;border:1px solid var(--ln);border-radius:4px;background:var(--bg);padding:0 10px;font-size:16px;width:100%}
+.mixf input:focus,button:focus-visible,a:focus-visible,summary:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+details summary{list-style:none;cursor:pointer;min-height:44px;display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px;font-weight:600;border:1px solid var(--ln);border-radius:8px;padding:8px 12px;margin:24px 0 12px;background:var(--sf)}
+details summary::-webkit-details-marker{display:none}
+details summary::before{content:"▸";color:var(--mut)}
+details[open] summary::before{content:"▾"}
+details summary small{font-weight:400;color:var(--mut);font-size:13px}
+.lic{color:var(--mut);font-size:12px;margin:24px 0}
+.bar{position:fixed;left:0;right:0;bottom:0;z-index:5;background:var(--sf);border-top:1px solid var(--ln);padding:10px 16px calc(10px + env(safe-area-inset-bottom))}
+.bar-in{max-width:1440px;margin:0 auto;display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center}
+#cnt{flex:1 1 100%;font-size:13px;color:var(--mut);min-width:0;line-height:1.25}
+#copy{flex:1}#send{flex:2}
+#cnt b{color:var(--ink);font-weight:600}
+.bar button{min-height:44px;border-radius:4px;padding:0 14px;font-weight:600;font-size:15px;cursor:pointer;border:1px solid var(--ln);background:var(--sf)}
+#send{background:var(--ink);color:var(--inv);border-color:var(--ink)}
+dialog{border:0;padding:0;background:transparent;max-width:100vw;max-height:100vh;width:100vw;height:100vh;margin:0}
+dialog::backdrop{background:rgba(10,11,13,.92)}
+.lb{width:100%;height:100%;display:flex;flex-direction:column;color:#ECEEF1}
+.lb-top{display:flex;align-items:center;gap:10px;padding:8px 12px}
+.lb-top p{flex:1;margin:0;font-size:14px;min-width:0}
+.lb-top button{min-height:44px;min-width:44px;border:1px solid #2A2F35;background:#171A1E;color:#ECEEF1;border-radius:4px;font-weight:500;padding:0 14px;cursor:pointer}
+.lb-img{flex:1;overflow:auto;display:flex;align-items:flex-start;justify-content:center;padding:0 8px 8px}
+.lb-img img{max-width:100%;height:auto}@media (max-width:700px){.lb-img{overflow-x:auto}.lb-img img{max-width:none;width:1000px}}
+#cp textarea{width:100%;min-height:160px;font:14px/1.4 ui-monospace,monospace;border:1px solid #2A2F35;border-radius:4px;background:#171A1E;color:#ECEEF1;padding:10px}
+.toast{position:fixed;left:50%;bottom:calc(90px + env(safe-area-inset-bottom));transform:translateX(-50%);background:var(--ink);color:var(--inv);padding:10px 14px;border-radius:4px;font-size:14px;z-index:20;opacity:0;transition:opacity .16s;pointer-events:none;max-width:calc(100vw - 32px)}
+.toast.on{opacity:1}
+@media (min-width:900px){.top{padding-top:24px;grid-template-columns:1fr auto}h1{font-size:28px}.nav{margin:8px 0 0;padding:0}#cnt{flex:1 1 auto}#copy,#send{flex:none}body{padding-bottom:84px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style></head><body>
+<header class="top"><div class="ttl"><h1>«Сокол» · пульт: берём или нет</h1>
+<p class="sub">Всего на выбор: 93. На каждый — решение: <b>Берём</b>, <b>Нет</b> или <b>Совместить</b> с другим (впиши номер). Снимок — крупно по нажатию, «Открыть» — живой экран.</p></div>
+<div class="tools"><button type="button" id="todo" aria-pressed="false">Только неотмеченные</button><button type="button" id="theme" aria-label="Сменить тему">Тема</button></div>
+<nav class="nav" aria-label="Разделы"><a href="#s-main">Главный экран <span>4</span></a><a href="#s-strong">Сильные <span>15</span></a><a href="#s-r3">Набор 3 <span>30</span></a><a href="#s-r2">Набор 2 <span>40</span></a><a href="#s-rej">Не прошли <span>4</span></a></nav></header>
+<main>
+<section id="s-main"><h2>Главный экран <small>4 варианта · первый — наш совет</small></h2><div class="grid gbig"><article class="card big" id="c-v4" data-id="v4">
+<div class="media"><button type="button" class="shot" data-full="mains/shots/v4-1440-dark.webp" aria-label="Снимок крупно"><picture><source media="(max-width: 600px)" srcset="mains/shots/v4-390-dark.png"><img loading="lazy" decoding="async" src="mains/shots/v4-1440-dark.webp" width="1440" height="900" alt="Снимок v4: Кино + итог"></picture></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs2/r31.webp" data-cap="Tesla · энергия крупными цифрами" aria-label="Референс r31 крупно"><img loading="lazy" decoding="async" src="refimg/refs2/r31.webp" width="1242" height="2208" alt="Референс r31: Tesla · энергия крупными цифрами"></button><button type="button" class="rth" data-full="refimg/refs2/r17.webp" data-cap="Buildots · итог одной фразой" aria-label="Референс r17 крупно"><img loading="lazy" decoding="async" src="refimg/refs2/r17.webp" width="778" height="680" alt="Референс r17: Buildots · итог одной фразой"></button><button type="button" class="rth" data-full="refimg/refs2/r30.webp" data-cap="Apple Дом · камеры и клипы событий" aria-label="Референс r30 крупно"><img loading="lazy" decoding="async" src="refimg/refs2/r30.webp" width="842" height="1744" alt="Референс r30: Apple Дом · камеры и клипы событий"></button><button type="button" class="rth" data-full="refimg/refs2/r12.webp" data-cap="Motive · ступенчатая шкала суток" aria-label="Референс r12 крупно"><img loading="lazy" decoding="async" src="refimg/refs2/r12.webp" width="1242" height="2208" alt="Референс r12: Motive · ступенчатая шкала суток"></button><button type="button" class="rth" data-full="refimg/refs2/r08.webp" data-cap="Coram · карточка тревоги" aria-label="Референс r08 крупно"><img loading="lazy" decoding="async" src="refimg/refs2/r08.webp" width="1308" height="1048" alt="Референс r08: Coram · карточка тревоги"></button><span class="rmore">+2</span></div><p class="rcap"><span>референс</span>7 референсов</p></div></div>
+<div class="body"><div class="head"><span class="id">v4</span><span class="badge adv">совет</span></div>
+<h3>Кино + итог</h3><p class="idea">«Кино» с фразой из «Сводки»: под названием объекта на затемнении — итог дня крупно (28 px), «Два номера» янтарём; выноска экскаватора «6 ч 12 мин · глубина 7,0 из 14,0 м по проекту»; в доке под числами «вчера 37 / вчера 24 %», ступенчатая линия «машин на площадке» вместо штрихкода, на дорожке только янтарные точки и «сейчас»; «Подтвердить · 2 номера» открывает карточку номера с кадром и «Верно / Исправить» (без скриптов). Телефон: фраза первой строкой под видео, числа строками, столбики «рейсов в час».</p>
+<div class="links"><a href="mains/v4.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по v4"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card big" id="c-v1" data-id="v1">
+<div class="media"><button type="button" class="shot" data-full="mains/shots/v1-1440-dark.webp" aria-label="Снимок крупно"><picture><source media="(max-width: 600px)" srcset="mains/shots/v1-390-dark.png"><img loading="lazy" decoding="async" src="mains/shots/v1-1440-dark.webp" width="1440" height="900" alt="Снимок v1: Кино"></picture></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs2/r31.webp" data-cap="Tesla · энергия крупными цифрами" aria-label="Референс r31 крупно"><img loading="lazy" decoding="async" src="refimg/refs2/r31.webp" width="1242" height="2208" alt="Референс r31: Tesla · энергия крупными цифрами"></button><button type="button" class="rth" data-full="refimg/refs2/r30.webp" data-cap="Apple Дом · камеры и клипы событий" aria-label="Референс r30 крупно"><img loading="lazy" decoding="async" src="refimg/refs2/r30.webp" width="842" height="1744" alt="Референс r30: Apple Дом · камеры и клипы событий"></button><button type="button" class="rth" data-full="refimg/refs2/r11.webp" data-cap="Samsara · простой крупной цифрой" aria-label="Референс r11 крупно"><img loading="lazy" decoding="async" src="refimg/refs2/r11.webp" width="1039" height="692" alt="Референс r11: Samsara · простой крупной цифрой"></button><button type="button" class="rth" data-full="refimg/refs2/r03.webp" data-cap="Eagle Eye · несколько камер на одной шкале" aria-label="Референс r03 крупно"><img loading="lazy" decoding="async" src="refimg/refs2/r03.webp" width="1058" height="699" alt="Референс r03: Eagle Eye · несколько камер на одной шкале"></button><button type="button" class="rth" data-full="refimg/refs2/r07.webp" data-cap="Lumana · запись с метками событий" aria-label="Референс r07 крупно"><img loading="lazy" decoding="async" src="refimg/refs2/r07.webp" width="1284" height="2778" alt="Референс r07: Lumana · запись с метками событий"></button><span class="rmore">+4</span></div><p class="rcap"><span>референс</span>9 референсов</p></div></div>
+<div class="body"><div class="head"><span class="id">v1</span></div>
+<h3>Кино</h3><p class="idea">Живое видео камеры 1 во весь экран; крупные числа приколоты к машинам тонкими выносками, как у Tesla, — теперь над затемнением; рамки-уголки с номером и уверенностью; вверху справа янтарная «Подтвердить · 2 номера»; внизу стеклянный док: камера 2, числа смены над шкалой 07:00–19:00, три последних события. Телефон — как «Дом» Apple: видео сверху, камеры миниатюрами, событие стеклом, числа строками.</p>
+<div class="links"><a href="mains/v1.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по v1"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card big" id="c-v2" data-id="v2">
+<div class="media"><button type="button" class="shot" data-full="mains/shots/v2-1440-light.webp" aria-label="Снимок крупно"><picture><source media="(max-width: 600px)" srcset="mains/shots/v2-390-light.png"><img loading="lazy" decoding="async" src="mains/shots/v2-1440-light.webp" width="1440" height="900" alt="Снимок v2: Сводка"></picture></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs2/r17.webp" data-cap="Buildots · итог одной фразой" aria-label="Референс r17 крупно"><img loading="lazy" decoding="async" src="refimg/refs2/r17.webp" width="778" height="680" alt="Референс r17: Buildots · итог одной фразой"></button><button type="button" class="rth" data-full="refimg/refs2/r46.webp" data-cap="Обзор: одна большая цифра" aria-label="Референс r46 крупно"><img loading="lazy" decoding="async" src="refimg/refs2/r46.webp" width="1600" height="1200" alt="Референс r46: Обзор: одна большая цифра"></button><button type="button" class="rth" data-full="refimg/refs2/r14.webp" data-cap="Trackunit · работа против простоя" aria-label="Референс r14 крупно"><img loading="lazy" decoding="async" src="refimg/refs2/r14.webp" width="1242" height="2208" alt="Референс r14: Trackunit · работа против простоя"></button><button type="button" class="rth" data-full="refimg/refs2/r34.webp" data-cap="Карточка экскаватора: работа и простой" aria-label="Референс r34 крупно"><img loading="lazy" decoding="async" src="refimg/refs2/r34.webp" width="1600" height="1200" alt="Референс r34: Карточка экскаватора: работа и простой"></button><button type="button" class="rth" data-full="refimg/refs3/r09.webp" data-cap="Verkada · линия пересечения и карточка события" aria-label="Референс r09 крупно"><img loading="lazy" decoding="async" src="refimg/refs3/r09.webp" width="600" height="600" alt="Референс r09: Verkada · линия пересечения и карточка события"></button><span class="rmore">+3</span></div><p class="rcap"><span>референс</span>8 референсов</p></div></div>
+<div class="body"><div class="head"><span class="id">v2</span></div>
+<h3>Сводка</h3><p class="idea">День одной фразой — заголовок 28 px, над ним серым «Сегодня · среда, 21 октября»; справа единственный вход в подтверждение — карточка номера с кадром и «Верно / Исправить» (на телефоне сразу после фразы); ниже камера со шкалой смены и экскаватор: кольцо загрузки, столбики по часам, котлован по 3D-контуру; события в две колонки. Без полосы пяти чисел и левой колонки иконок. Светлая по умолчанию, как приложения Apple.</p>
+<div class="links"><a href="mains/v2.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по v2"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card big" id="c-v3" data-id="v3">
+<div class="media"><button type="button" class="shot" data-full="mains/shots/v3-1440-dark.webp" aria-label="Снимок крупно"><picture><source media="(max-width: 600px)" srcset="mains/shots/v3-390-dark.png"><img loading="lazy" decoding="async" src="mains/shots/v3-1440-dark.webp" width="1440" height="900" alt="Снимок v3: Площадка"></picture></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs3/r30.webp" data-cap="Waymo · светлая глиняная изометрия, один путь" aria-label="Референс r30 крупно"><img loading="lazy" decoding="async" src="refimg/refs3/r30.webp" width="600" height="600" alt="Референс r30: Waymo · светлая глиняная изометрия, один путь"></button><button type="button" class="rth" data-full="refimg/refs3/r26.webp" data-cap="Waymo · вид сверху: кубоиды, коридор пути, врезка камеры · ▶ анимация" aria-label="Референс r26 крупно"><img loading="lazy" decoding="async" src="refimg/refs3/r26.webp" width="800" height="450" alt="Референс r26: Waymo · вид сверху: кубоиды, коридор пути, врезка камеры · ▶ анимация"></button><button type="button" class="rth" data-full="refimg/refs3/r28.webp" data-cap="Applied Intuition · тёмная 3D-сцена, коробки с иконками" aria-label="Референс r28 крупно"><img loading="lazy" decoding="async" src="refimg/refs3/r28.webp" width="800" height="450" alt="Референс r28: Applied Intuition · тёмная 3D-сцена, коробки с иконками"></button><button type="button" class="rth" data-full="refimg/refs3/r20.webp" data-cap="«Обливион» · карта с заштрихованной зоной" aria-label="Референс r20 крупно"><img loading="lazy" decoding="async" src="refimg/refs3/r20.webp" width="800" height="450" alt="Референс r20: «Обливион» · карта с заштрихованной зоной"></button><button type="button" class="rth" data-full="refimg/refs3/r07.webp" data-cap="Mobileye · кольцо на земле под машиной · ▶ анимация" aria-label="Референс r07 крупно"><img loading="lazy" decoding="async" src="refimg/refs3/r07.webp" width="800" height="450" alt="Референс r07: Mobileye · кольцо на земле под машиной · ▶ анимация"></button><span class="rmore">+5</span></div><p class="rcap"><span>референс</span>10 референсов</p></div></div>
+<div class="body"><div class="head"><span class="id">v3</span></div>
+<h3>Площадка</h3><p class="idea">Вся стройка сверху в изометрии, как «глиняный» вид Waymo: корпус, кран, котлован ступенями по 3D-контуру с пунктиром проекта, дорога, пути самосвалов за день и толстая линия текущего рейса, конусы камер; силуэты машин по классу (самосвал — кабина и кузов, миксер — барабан, экскаватор — стрела и ковш); окна двух камер у своих столбов; справа карточка выбранной машины как во Flightradar; одна главная кнопка — янтарная «Подтвердить». Телефон: сцена сверху, лист около 300 px.</p>
+<div class="links"><a href="mains/v3.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по v3"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article></div></section>
+<section id="s-strong"><h2>Мини по референсам <small>сначала 15 сильных</small></h2><div class="grid"><article class="card" id="c-n12" data-id="n12">
+<div class="media"><button type="button" class="shot" data-full="refs3/shots/n12.jpg" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs3/shots/n12.jpg" width="1000" height="730" alt="Снимок n12: Сетка камер: событие — красной шапкой"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs3/r12.webp" data-cap="MANTIS · сетка камер, событие красным заголовком" aria-label="Референс r12 крупно"><img loading="lazy" decoding="async" src="refimg/refs3/r12.webp" width="800" height="600" alt="Референс r12: MANTIS · сетка камер, событие красным заголовком"></button></div><p class="rcap"><span>референс</span>MANTIS · сетка камер, событие красным заголовком</p></div></div>
+<div class="body"><div class="head"><span class="id">n12</span></div>
+<h3>Сетка камер: событие — красной шапкой</h3><p class="idea">В сетке камер кадр с событием получает красную шапку, остальные спокойные; зона на полу тонирована.</p><p class="ours"><b>У нас:</b> Пульт на 4 камеры: взгляд сразу падает на ту, где неизвестная машина заехала в зону.</p>
+<div class="links"><a href="refs3/n12.html" target="_blank" rel="noopener">Открыть ↗</a><button type="button" class="lk" data-full="refs3/shots/phone/n12.jpg">Телефон</button></div>
+<div class="vote" role="group" aria-label="Решение по n12"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-n31" data-id="n31">
+<div class="media"><button type="button" class="shot" data-full="refs3/shots/n31.jpg" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs3/shots/n31.jpg" width="1000" height="730" alt="Снимок n31: Серая сцена, участники события выделены, события слева"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs3/r31.webp" data-cap="Отчёт о ДТП · тёмный 3D-город, участники цветом · ▶ анимация" aria-label="Референс r31 крупно"><img loading="lazy" decoding="async" src="refimg/refs3/r31.webp" width="800" height="600" alt="Референс r31: Отчёт о ДТП · тёмный 3D-город, участники цветом · ▶ анимация"></button></div><p class="rcap"><span>референс</span>Отчёт о ДТП · тёмный 3D-город, участники цветом · ▶ анимация</p></div></div>
+<div class="body"><div class="head"><span class="id">n31</span></div>
+<h3>Серая сцена, участники события выделены, события слева</h3><p class="idea">Всё серое, участники события — цветом; слева лента событий с кадрами камер; переключатель 2D/3D.</p><p class="ours"><b>У нас:</b> Нажал событие — в модели выделены машины, которых оно касается: чужая красным со значком, своя белым.</p>
+<div class="links"><a href="refs3/n31.html" target="_blank" rel="noopener">Открыть ↗</a><button type="button" class="lk" data-full="refs3/shots/phone/n31.jpg">Телефон</button></div>
+<div class="vote" role="group" aria-label="Решение по n31"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-n18" data-id="n18">
+<div class="media"><button type="button" class="shot" data-full="refs3/shots/n18.jpg" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs3/shots/n18.jpg" width="1000" height="730" alt="Снимок n18: Бирка с крупной цифрой, «прилипшая» к машине"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs3/r18.webp" data-cap="«Трон: Арес» · счётчики-бирки на машинах ночью · ▶ анимация" aria-label="Референс r18 крупно"><img loading="lazy" decoding="async" src="refimg/refs3/r18.webp" width="800" height="422" alt="Референс r18: «Трон: Арес» · счётчики-бирки на машинах ночью · ▶ анимация"></button></div><p class="rcap"><span>референс</span>«Трон: Арес» · счётчики-бирки на машинах ночью · ▶ анимация</p></div></div>
+<div class="body"><div class="head"><span class="id">n18</span></div>
+<h3>Бирка с крупной цифрой, «прилипшая» к машине</h3><p class="idea">Бирка с крупными цифрами едет вместе с машиной; кадр приглушён в один тон под цвет интерфейса.</p><p class="ours"><b>У нас:</b> Цифра на бирке — главное число машины за смену: рейсы самосвала, циклы экскаватора.</p>
+<div class="links"><a href="refs3/n18.html" target="_blank" rel="noopener">Открыть ↗</a><button type="button" class="lk" data-full="refs3/shots/phone/n18.jpg">Телефон</button></div>
+<div class="vote" role="group" aria-label="Решение по n18"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-n22" data-id="n22">
+<div class="media"><button type="button" class="shot" data-full="refs3/shots/n22.jpg" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs3/shots/n22.jpg" width="1000" height="730" alt="Снимок n22: Кольца прицела и плашка статуса на цели"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs3/r22.webp" data-cap="«Обливион» · кольца прицела и плашка CLEAR" aria-label="Референс r22 крупно"><img loading="lazy" decoding="async" src="refimg/refs3/r22.webp" width="800" height="450" alt="Референс r22: «Обливион» · кольца прицела и плашка CLEAR"></button></div><p class="rcap"><span>референс</span>«Обливион» · кольца прицела и плашка CLEAR</p></div></div>
+<div class="body"><div class="head"><span class="id">n22</span></div>
+<h3>Кольца прицела и плашка статуса на цели</h3><p class="idea">Концентрические кольца с разрывами и пилюля статуса прямо на цели, кадр в монохроме.</p><p class="ours"><b>У нас:</b> Статус словами на машине: «въехал», «работает 47 мин» — читается без списка.</p>
+<div class="links"><a href="refs3/n22.html" target="_blank" rel="noopener">Открыть ↗</a><button type="button" class="lk" data-full="refs3/shots/phone/n22.jpg">Телефон</button></div>
+<div class="vote" role="group" aria-label="Решение по n22"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-n11" data-id="n11">
+<div class="media"><button type="button" class="shot" data-full="refs3/shots/n11.jpg" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs3/shots/n11.jpg" width="1000" height="730" alt="Снимок n11: Рамка с лёгкой заливкой и уверенность в углу"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs3/r11.webp" data-cap="Built Robotics · красная рамка-заливка и процент уверенности" aria-label="Референс r11 крупно"><img loading="lazy" decoding="async" src="refimg/refs3/r11.webp" width="276" height="600" alt="Референс r11: Built Robotics · красная рамка-заливка и процент уверенности"></button></div><p class="rcap"><span>референс</span>Built Robotics · красная рамка-заливка и процент уверенности</p></div></div>
+<div class="body"><div class="head"><span class="id">n11</span></div>
+<h3>Рамка с лёгкой заливкой и уверенность в углу</h3><p class="idea">Рамка с прозрачной заливкой и плашкой процента; низ кадра затемнён под подписи.</p><p class="ours"><b>У нас:</b> Уверенно — светлая рамка; сомнительно — янтарь и «подтвердить», а не скрытая находка.</p>
+<div class="links"><a href="refs3/n11.html" target="_blank" rel="noopener">Открыть ↗</a><button type="button" class="lk" data-full="refs3/shots/phone/n11.jpg">Телефон</button></div>
+<div class="vote" role="group" aria-label="Решение по n11"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-n28" data-id="n28">
+<div class="media"><button type="button" class="shot" data-full="refs3/shots/n28.jpg" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs3/shots/n28.jpg" width="1000" height="730" alt="Снимок n28: Тёмная 3D-сцена: силуэты, иконки, лента пути"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs3/r28.webp" data-cap="Applied Intuition · тёмная 3D-сцена, коробки с иконками" aria-label="Референс r28 крупно"><img loading="lazy" decoding="async" src="refimg/refs3/r28.webp" width="800" height="450" alt="Референс r28: Applied Intuition · тёмная 3D-сцена, коробки с иконками"></button></div><p class="rcap"><span>референс</span>Applied Intuition · тёмная 3D-сцена, коробки с иконками</p></div></div>
+<div class="body"><div class="head"><span class="id">n28</span></div>
+<h3>Тёмная 3D-сцена: силуэты, иконки, лента пути</h3><p class="idea">Тёмная сцена, техника — цветными коробками с круглой иконкой типа над каждой, у выбранной — светящаяся лента пути.</p><p class="ours"><b>У нас:</b> Выбранный самосвал — белым, остальные — серыми силуэтами; лента — куда он едет в ближайшие 40 секунд.</p>
+<div class="links"><a href="refs3/n28.html" target="_blank" rel="noopener">Открыть ↗</a><button type="button" class="lk" data-full="refs3/shots/phone/n28.jpg">Телефон</button></div>
+<div class="vote" role="group" aria-label="Решение по n28"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-n04" data-id="n04">
+<div class="media"><button type="button" class="shot" data-full="refs3/shots/n04.jpg" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs3/shots/n04.jpg" width="1000" height="730" alt="Снимок n04: Чёрно-белое видео, тонкие уголки"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs3/r04.webp" data-cap="Roboflow Supervision · тонкие уголки на ч/б видео" aria-label="Референс r04 крупно"><img loading="lazy" decoding="async" src="refimg/refs3/r04.webp" width="800" height="457" alt="Референс r04: Roboflow Supervision · тонкие уголки на ч/б видео"></button></div><p class="rcap"><span>референс</span>Roboflow Supervision · тонкие уголки на ч/б видео</p></div></div>
+<div class="body"><div class="head"><span class="id">n04</span></div>
+<h3>Чёрно-белое видео, тонкие уголки</h3><p class="idea">Кадр приглушён в ч/б — разметка одним светлым тоном читается мгновенно, без плашек и заливок.</p><p class="ours"><b>У нас:</b> Режим «разметка» для показа: видео серое, всё, что нашла модель, — тонкими уголками со словом и уверенностью.</p>
+<div class="links"><a href="refs3/n04.html" target="_blank" rel="noopener">Открыть ↗</a><button type="button" class="lk" data-full="refs3/shots/phone/n04.jpg">Телефон</button></div>
+<div class="vote" role="group" aria-label="Решение по n04"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-n30" data-id="n30">
+<div class="media"><button type="button" class="shot" data-full="refs3/shots/n30.jpg" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs3/shots/n30.jpg" width="1000" height="730" alt="Снимок n30: Светлая глина: одна машина, путь двумя тонами"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs3/r30.webp" data-cap="Waymo · светлая глиняная изометрия, один путь" aria-label="Референс r30 крупно"><img loading="lazy" decoding="async" src="refimg/refs3/r30.webp" width="600" height="600" alt="Референс r30: Waymo · светлая глиняная изометрия, один путь"></button></div><p class="rcap"><span>референс</span>Waymo · светлая глиняная изометрия, один путь</p></div></div>
+<div class="body"><div class="head"><span class="id">n30</span></div>
+<h3>Светлая глина: одна машина, путь двумя тонами</h3><p class="idea">Белые блоки-здания, одна машина цветом, путь двумя цветами (пройдено и впереди), зона — цветным квадратом.</p><p class="ours"><b>У нас:</b> Светлая тема для клиента-застройщика: мягкие тени, котлован с откосами, выделено одно — куда едет самосвал.</p>
+<div class="links"><a href="refs3/n30.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по n30"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-m40" data-id="m40">
+<div class="media"><button type="button" class="shot" data-full="refs2/shots/m40.webp" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs2/shots/m40.webp" width="1440" height="406" alt="Снимок m40: Табель техники точками по дням"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs2/r40.webp" data-cap="Табель точками по дням" aria-label="Референс r40 крупно"><img loading="lazy" decoding="async" src="refimg/refs2/r40.webp" width="1600" height="1200" alt="Референс r40: Табель точками по дням"></button></div><p class="rcap"><span>референс</span>Табель точками по дням</p></div></div>
+<div class="body"><div class="head"><span class="id">m40</span></div>
+<h3>Табель техники точками по дням</h3><p class="idea">Табель точками «машина × день месяца»: полный день, неполный, не было — для рейсов техники.</p>
+<div class="links"><a href="refs2/m40.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по m40"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-m16" data-id="m16">
+<div class="media"><button type="button" class="shot" data-full="refs2/shots/m16.webp" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs2/shots/m16.webp" width="1440" height="400" alt="Снимок m16: Журнал ворот с кадрами рядом с записью"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs2/r16.webp" data-cap="Evercam · журнал ворот с кадрами" aria-label="Референс r16 крупно"><img loading="lazy" decoding="async" src="refimg/refs2/r16.webp" width="2000" height="1125" alt="Референс r16: Evercam · журнал ворот с кадрами"></button></div><p class="rcap"><span>референс</span>Evercam · журнал ворот с кадрами</p></div></div>
+<div class="body"><div class="head"><span class="id">m16</span></div>
+<h3>Журнал ворот с кадрами рядом с записью</h3><p class="idea">Журнал въезда и выезда: каждая машина — кадр, время, номер и направление, рядом с записью ворот.</p>
+<div class="links"><a href="refs2/m16.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по m16"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-m11" data-id="m11">
+<div class="media"><button type="button" class="shot" data-full="refs2/shots/m11.webp" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs2/shots/m11.webp" width="780" height="1000" alt="Снимок m11: Простой одной большой цифрой"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs2/r11.webp" data-cap="Samsara · простой крупной цифрой" aria-label="Референс r11 крупно"><img loading="lazy" decoding="async" src="refimg/refs2/r11.webp" width="1039" height="692" alt="Референс r11: Samsara · простой крупной цифрой"></button></div><p class="rcap"><span>референс</span>Samsara · простой крупной цифрой</p></div></div>
+<div class="body"><div class="head"><span class="id">m11</span><span class="badge">приёмка: доработать</span></div>
+<h3>Простой одной большой цифрой</h3><p class="idea">Главный показатель — простой техники — одной крупной цифрой на стекле поверх кадра и разбивка по машинам.</p>
+<div class="links"><a href="refs2/m11.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по m11"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-m14" data-id="m14">
+<div class="media"><button type="button" class="shot" data-full="refs2/shots/m14.webp" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs2/shots/m14.webp" width="780" height="1000" alt="Снимок m14: Работа против простоя по машине"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs2/r14.webp" data-cap="Trackunit · работа против простоя" aria-label="Референс r14 крупно"><img loading="lazy" decoding="async" src="refimg/refs2/r14.webp" width="1242" height="2208" alt="Референс r14: Trackunit · работа против простоя"></button></div><p class="rcap"><span>референс</span>Trackunit · работа против простоя</p></div></div>
+<div class="body"><div class="head"><span class="id">m14</span></div>
+<h3>Работа против простоя по машине</h3><p class="idea">Работа и простой одной машины: кольцо доли, начало и длительность дня, почасовые столбики, одна подсказка.</p>
+<div class="links"><a href="refs2/m14.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по m14"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-m18" data-id="m18">
+<div class="media"><button type="button" class="shot" data-full="refs2/shots/m18.webp" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs2/shots/m18.webp" width="1440" height="400" alt="Снимок m18: Тёмная сводка: отставание видно сразу"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs2/r18.webp" data-cap="Doxel · тёмная сводка хода работ" aria-label="Референс r18 крупно"><img loading="lazy" decoding="async" src="refimg/refs2/r18.webp" width="1025" height="640" alt="Референс r18: Doxel · тёмная сводка хода работ"></button></div><p class="rcap"><span>референс</span>Doxel · тёмная сводка хода работ</p></div></div>
+<div class="body"><div class="head"><span class="id">m18</span></div>
+<h3>Тёмная сводка: отставание видно сразу</h3><p class="idea">Тёмная сводка смены: рейсы и время против плана, цвет — только у того, кто отстаёт.</p>
+<div class="links"><a href="refs2/m18.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по m18"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-m21" data-id="m21">
+<div class="media"><button type="button" class="shot" data-full="refs2/shots/m21.webp" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs2/shots/m21.webp" width="780" height="1138" alt="Снимок m21: Журнал номеров с кадрами"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs2/r21.webp" data-cap="Rhombus · журнал номеров" aria-label="Референс r21 крупно"><img loading="lazy" decoding="async" src="refimg/refs2/r21.webp" width="1242" height="2688" alt="Референс r21: Rhombus · журнал номеров"></button></div><p class="rcap"><span>референс</span>Rhombus · журнал номеров</p></div></div>
+<div class="body"><div class="head"><span class="id">m21</span></div>
+<h3>Журнал номеров с кадрами</h3><p class="idea">Номера за день плиткой: кадр машины, номер, сколько рейсов и когда была последний раз.</p>
+<div class="links"><a href="refs2/m21.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по m21"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-m35" data-id="m35">
+<div class="media"><button type="button" class="shot" data-full="refs2/shots/m35.webp" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs2/shots/m35.webp" width="780" height="1000" alt="Снимок m35: Кадр, событие и история плитками"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs2/r35.webp" data-cap="Камера с событием, бенто" aria-label="Референс r35 крупно"><img loading="lazy" decoding="async" src="refimg/refs2/r35.webp" width="1195" height="896" alt="Референс r35: Камера с событием, бенто"></button></div><p class="rcap"><span>референс</span>Камера с событием, бенто</p></div></div>
+<div class="body"><div class="head"><span class="id">m35</span></div>
+<h3>Кадр, событие и история плитками</h3><p class="idea">Бенто по-эппловски: кадр с событием сверху, четыре плитки с главными числами, короткая история.</p>
+<div class="links"><a href="refs2/m35.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по m35"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article></div></section>
+<section id="s-r3"><h2>Набор 3 · рамки, видео, 3D <small>ещё 30</small></h2><div class="grid"><article class="card" id="c-n01" data-id="n01">
+<div class="media"><button type="button" class="shot" data-full="refs3/shots/n01.jpg" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs3/shots/n01.jpg" width="1000" height="730" alt="Снимок n01: Уголки и номер у каждой машины"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs3/r01.webp" data-cap="NVIDIA Metropolis · уголки и номер у каждой машины · ▶ анимация" aria-label="Референс r01 крупно"><img loading="lazy" decoding="async" src="refimg/refs3/r01.webp" width="800" height="450" alt="Референс r01: NVIDIA Metropolis · уголки и номер у каждой машины · ▶ анимация"></button></div><p class="rcap"><span>референс</span>NVIDIA Metropolis · уголки и номер у каждой машины · ▶ анимация</p></div></div>
+<div class="body"><div class="head"><span class="id">n01</span></div>
+<h3>Уголки и номер у каждой машины</h3><p class="idea">Вместо сплошной рамки — четыре уголка, над машиной — плашка «класс и номер».</p><p class="ours"><b>У нас:</b> Класс — словом на плашке, не цветом; выбранная машина — уголки толще. Картинка под рамкой не закрыта.</p>
+<div class="links"><a href="refs3/n01.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по n01"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-n02" data-id="n02">
+<div class="media"><button type="button" class="shot" data-full="refs3/shots/n02.jpg" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs3/shots/n02.jpg" width="1000" height="730" alt="Снимок n02: Счёт прямо на линии въезда, скорость у машины"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs3/r02.webp" data-cap="NVIDIA · вид сверху: скорость, счётчики на линиях, тепловой след · ▶ анимация" aria-label="Референс r02 крупно"><img loading="lazy" decoding="async" src="refimg/refs3/r02.webp" width="800" height="450" alt="Референс r02: NVIDIA · вид сверху: скорость, счётчики на линиях, тепловой след · ▶ анимация"></button></div><p class="rcap"><span>референс</span>NVIDIA · вид сверху: скорость, счётчики на линиях, тепловой след · ▶ анимация</p></div></div>
+<div class="body"><div class="head"><span class="id">n02</span></div>
+<h3>Счёт прямо на линии въезда, скорость у машины</h3><p class="idea">Вид сверху: цифры счёта стоят на самой линии, скорость — плашкой у машины, путь окрашен по скорости.</p><p class="ours"><b>У нас:</b> Линия поперёк рампы котлована считает въезды и выезды за смену; по следу видно, где самосвал стоял.</p>
+<div class="links"><a href="refs3/n02.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по n02"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-n03" data-id="n03">
+<div class="media"><button type="button" class="shot" data-full="refs3/shots/n03.jpg" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs3/shots/n03.jpg" width="1000" height="730" alt="Снимок n03: Объёмная рамка и пятно на земле"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs3/r03.webp" data-cap="NVIDIA + Verizon · объёмные рамки и пятно на земле · ▶ анимация" aria-label="Референс r03 крупно"><img loading="lazy" decoding="async" src="refimg/refs3/r03.webp" width="800" height="450" alt="Референс r03: NVIDIA + Verizon · объёмные рамки и пятно на земле · ▶ анимация"></button></div><p class="rcap"><span>референс</span>NVIDIA + Verizon · объёмные рамки и пятно на земле · ▶ анимация</p></div></div>
+<div class="body"><div class="head"><span class="id">n03</span></div>
+<h3>Объёмная рамка и пятно на земле</h3><p class="idea">Прозрачный параллелепипед вместо плоской рамки, под машиной — светящееся пятно, по земле — едва заметная сетка.</p><p class="ours"><b>У нас:</b> Объём сразу читается как «машина в пространстве», пятно показывает, где она стоит на площадке.</p>
+<div class="links"><a href="refs3/n03.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по n03"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-n05" data-id="n05">
+<div class="media"><button type="button" class="shot" data-full="refs3/shots/n05.jpg" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs3/shots/n05.jpg" width="1000" height="730" alt="Снимок n05: Ореол по силуэту вместо рамки"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs3/r05.webp" data-cap="Roboflow Supervision · свечение по силуэту вместо рамки" aria-label="Референс r05 крупно"><img loading="lazy" decoding="async" src="refimg/refs3/r05.webp" width="800" height="457" alt="Референс r05: Roboflow Supervision · свечение по силуэту вместо рамки"></button></div><p class="rcap"><span>референс</span>Roboflow Supervision · свечение по силуэту вместо рамки</p></div></div>
+<div class="body"><div class="head"><span class="id">n05</span></div>
+<h3>Ореол по силуэту вместо рамки</h3><p class="idea">Маска объекта с мягким свечением по контуру — «как в кино», без коробок.</p><p class="ours"><b>У нас:</b> Для выбранной машины: ореол по силуэту из маски сегментации; остальные — без разметки.</p>
+<div class="links"><a href="refs3/n05.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по n05"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-n06" data-id="n06">
+<div class="media"><button type="button" class="shot" data-full="refs3/shots/n06.jpg" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs3/shots/n06.jpg" width="1000" height="730" alt="Снимок n06: Хвост пути за машиной"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs3/r06.webp" data-cap="Roboflow Supervision · след пути за каждым объектом" aria-label="Референс r06 крупно"><img loading="lazy" decoding="async" src="refimg/refs3/r06.webp" width="800" height="457" alt="Референс r06: Roboflow Supervision · след пути за каждым объектом"></button></div><p class="rcap"><span>референс</span>Roboflow Supervision · след пути за каждым объектом</p></div></div>
+<div class="body"><div class="head"><span class="id">n06</span></div>
+<h3>Хвост пути за машиной</h3><p class="idea">За объектом тянется след последних 2–3 секунд, к хвосту затухает — видно, откуда и куда едет.</p><p class="ours"><b>У нас:</b> След у самосвала — направление въезд/выезд; пунктир ковша — счёт циклов погрузки.</p>
+<div class="links"><a href="refs3/n06.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по n06"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-n07" data-id="n07">
+<div class="media"><button type="button" class="shot" data-full="refs3/shots/n07.jpg" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs3/shots/n07.jpg" width="1000" height="730" alt="Снимок n07: Кольцо на земле под выбранной машиной"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs3/r07.webp" data-cap="Mobileye · кольцо на земле под машиной · ▶ анимация" aria-label="Референс r07 крупно"><img loading="lazy" decoding="async" src="refimg/refs3/r07.webp" width="800" height="450" alt="Референс r07: Mobileye · кольцо на земле под машиной · ▶ анимация"></button></div><p class="rcap"><span>референс</span>Mobileye · кольцо на земле под машиной · ▶ анимация</p></div></div>
+<div class="body"><div class="head"><span class="id">n07</span></div>
+<h3>Кольцо на земле под выбранной машиной</h3><p class="idea">Эллипс-ореол на земле вместо рамки: «эта машина» отмечена, картинка не перекрыта.</p><p class="ours"><b>У нас:</b> Кольцо лежит на земле и уходит за колёса; подпись — над машиной одной строкой.</p>
+<div class="links"><a href="refs3/n07.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по n07"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-n08" data-id="n08">
+<div class="media"><button type="button" class="shot" data-full="refs3/shots/n08.jpg" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs3/shots/n08.jpg" width="1000" height="730" alt="Снимок n08: Каркасные кубоиды, 1 px, класс — формой линии"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs3/r08.webp" data-cap="Voxel51 · объёмные рамки по классам на фото" aria-label="Референс r08 крупно"><img loading="lazy" decoding="async" src="refimg/refs3/r08.webp" width="630" height="600" alt="Референс r08: Voxel51 · объёмные рамки по классам на фото"></button></div><p class="rcap"><span>референс</span>Voxel51 · объёмные рамки по классам на фото</p></div></div>
+<div class="body"><div class="head"><span class="id">n08</span></div>
+<h3>Каркасные кубоиды, 1 px, класс — формой линии</h3><p class="idea">Тонкие каркасные кубоиды по классам, внутри — малые рамки частей (ковш, кузов).</p><p class="ours"><b>У нас:</b> Без цвета: самосвал — сплошная линия, экскаватор — пунктир, стоящее — приглушено; класс ещё и словом в легенде.</p>
+<div class="links"><a href="refs3/n08.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по n08"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-n09" data-id="n09">
+<div class="media"><button type="button" class="shot" data-full="refs3/shots/n09.jpg" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs3/shots/n09.jpg" width="1000" height="730" alt="Снимок n09: Линия с ручками и карточка «пересёк линию»"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs3/r09.webp" data-cap="Verkada · линия пересечения и карточка события" aria-label="Референс r09 крупно"><img loading="lazy" decoding="async" src="refimg/refs3/r09.webp" width="600" height="600" alt="Референс r09: Verkada · линия пересечения и карточка события"></button></div><p class="rcap"><span>референс</span>Verkada · линия пересечения и карточка события</p></div></div>
+<div class="body"><div class="head"><span class="id">n09</span></div>
+<h3>Линия с ручками и карточка «пересёк линию»</h3><p class="idea">Линия поперёк пути с двумя ручками; каждое пересечение — карточка в ленте: что, где, когда, снимок.</p><p class="ours"><b>У нас:</b> Ровно наш учёт въездов: линию ставит оператор поперёк дороги, карточка — строка журнала с кадром-доказательством.</p>
+<div class="links"><a href="refs3/n09.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по n09"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-n10" data-id="n10">
+<div class="media"><button type="button" class="shot" data-full="refs3/shots/n10.jpg" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs3/shots/n10.jpg" width="1000" height="730" alt="Снимок n10: Полупрозрачная заливка зоны"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs3/r10.webp" data-cap="Spot AI · залитая зона на стройке · ▶ анимация" aria-label="Референс r10 крупно"><img loading="lazy" decoding="async" src="refimg/refs3/r10.webp" width="800" height="584" alt="Референс r10: Spot AI · залитая зона на стройке · ▶ анимация"></button></div><p class="rcap"><span>референс</span>Spot AI · залитая зона на стройке · ▶ анимация</p></div></div>
+<div class="body"><div class="head"><span class="id">n10</span></div>
+<h3>Полупрозрачная заливка зоны</h3><p class="idea">Зона закрашена мягко, без рамки вокруг машин — видно правило места, а не объект.</p><p class="ours"><b>У нас:</b> Красная штриховка со значком — радиус работы стрелы (человек внутри — событие); светлая — площадка погрузки.</p>
+<div class="links"><a href="refs3/n10.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по n10"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-n13" data-id="n13">
+<div class="media"><button type="button" class="shot" data-full="refs3/shots/n13.jpg" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs3/shots/n13.jpg" width="1000" height="730" alt="Снимок n13: Прозрачная заливка класса и счёт слева"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs3/r13.webp" data-cap="Tensra · прозрачные рамки и счёт по классам" aria-label="Референс r13 крупно"><img loading="lazy" decoding="async" src="refimg/refs3/r13.webp" width="800" height="600" alt="Референс r13: Tensra · прозрачные рамки и счёт по классам"></button></div><p class="rcap"><span>референс</span>Tensra · прозрачные рамки и счёт по классам</p></div></div>
+<div class="body"><div class="head"><span class="id">n13</span></div>
+<h3>Прозрачная заливка класса и счёт слева</h3><p class="idea">Рамка — полупрозрачная заливка класса с маленьким ярлыком; слева — список классов с числом.</p><p class="ours"><b>У нас:</b> Без цвета: самосвал — сплошная заливка, экскаватор — штриховка, стоящее — приглушено; число — в списке.</p>
+<div class="links"><a href="refs3/n13.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по n13"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-n14" data-id="n14">
+<div class="media"><button type="button" class="shot" data-full="refs3/shots/n14.jpg" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs3/shots/n14.jpg" width="1000" height="730" alt="Снимок n14: Рамка у кадра, цель — без рамки"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs3/r14.webp" data-cap="«Форсаж 7» · вид сверху на машину, данные по краям" aria-label="Референс r14 крупно"><img loading="lazy" decoding="async" src="refimg/refs3/r14.webp" width="800" height="333" alt="Референс r14: «Форсаж 7» · вид сверху на машину, данные по краям"></button></div><p class="rcap"><span>референс</span>«Форсаж 7» · вид сверху на машину, данные по краям</p></div></div>
+<div class="body"><div class="head"><span class="id">n14</span></div>
+<h3>Рамка у кадра, цель — без рамки</h3><p class="idea">Уголки по углам всего кадра, «запись», колонка данных мелким капсом слева, цель — перекрестием без коробки.</p><p class="ours"><b>У нас:</b> Режим «наблюдение» для показа: камера дрона как кадр из фильма, кадр приглушён, одна цель — самосвал 417.</p>
+<div class="links"><a href="refs3/n14.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по n14"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-n15" data-id="n15">
+<div class="media"><button type="button" class="shot" data-full="refs3/shots/n15.jpg" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs3/shots/n15.jpg" width="1000" height="753" alt="Снимок n15: Подсветка номера с бликом"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs3/r15.webp" data-cap="«Форсаж 7» · распознавание номера" aria-label="Референс r15 крупно"><img loading="lazy" decoding="async" src="refimg/refs3/r15.webp" width="800" height="333" alt="Референс r15: «Форсаж 7» · распознавание номера"></button></div><p class="rcap"><span>референс</span>«Форсаж 7» · распознавание номера</p></div></div>
+<div class="body"><div class="head"><span class="id">n15</span></div>
+<h3>Подсветка номера с бликом</h3><p class="idea">Номер обведён прямоугольником, по нему пробегает блик; шапка «распознавание, город»; фон — бегущий код.</p><p class="ours"><b>У нас:</b> Крупный план из кадра: номер в перспективе кузова (здесь условный — настоящий скрыт), уверенность честно, оператор подтверждает одним касанием.</p>
+<div class="links"><a href="refs3/n15.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по n15"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-n16" data-id="n16">
+<div class="media"><button type="button" class="shot" data-full="refs3/shots/n16.jpg" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs3/shots/n16.jpg" width="1000" height="730" alt="Снимок n16: Маршрут ломаной и камеры на снимке сверху"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs3/r16.webp" data-cap="«Форсаж 7» · город сверху, маршрут и метки камер" aria-label="Референс r16 крупно"><img loading="lazy" decoding="async" src="refimg/refs3/r16.webp" width="800" height="333" alt="Референс r16: «Форсаж 7» · город сверху, маршрут и метки камер"></button></div><p class="rcap"><span>референс</span>«Форсаж 7» · город сверху, маршрут и метки камер</p></div></div>
+<div class="body"><div class="head"><span class="id">n16</span></div>
+<h3>Маршрут ломаной и камеры на снимке сверху</h3><p class="idea">Ломаная маршрута поверх снимка, значки камер с конусами обзора, карточка цели справа.</p><p class="ours"><b>У нас:</b> Путь самосвала по площадке, собранный из нескольких камер: где ехал, какие камеры видели.</p>
+<div class="links"><a href="refs3/n16.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по n16"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-n17" data-id="n17">
+<div class="media"><button type="button" class="shot" data-full="refs3/shots/n17.jpg" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs3/shots/n17.jpg" width="1000" height="730" alt="Снимок n17: Тонкий визир и статус над целью"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs3/r17.webp" data-cap="«Джек Райан» · дрон ведёт машину по дороге · ▶ анимация" aria-label="Референс r17 крупно"><img loading="lazy" decoding="async" src="refimg/refs3/r17.webp" width="800" height="450" alt="Референс r17: «Джек Райан» · дрон ведёт машину по дороге · ▶ анимация"></button></div><p class="rcap"><span>референс</span>«Джек Райан» · дрон ведёт машину по дороге · ▶ анимация</p></div></div>
+<div class="body"><div class="head"><span class="id">n17</span></div>
+<h3>Тонкий визир и статус над целью</h3><p class="idea">Тонкая рамка-визир с засечками, статус одной строкой над целью, телеметрия по углам мелко.</p><p class="ours"><b>У нас:</b> Режим «ведём машину»: минимум поверх приглушённого кадра — что ведём, скорость, уверенность трека.</p>
+<div class="links"><a href="refs3/n17.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по n17"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-n19" data-id="n19">
+<div class="media"><button type="button" class="shot" data-full="refs3/shots/n19.jpg" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs3/shots/n19.jpg" width="1000" height="730" alt="Снимок n19: Схема сверху и окна камер на своих местах"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs3/r19.webp" data-cap="«Трон: Арес» · город сверху, связи и окна видео · ▶ анимация" aria-label="Референс r19 крупно"><img loading="lazy" decoding="async" src="refimg/refs3/r19.webp" width="800" height="422" alt="Референс r19: «Трон: Арес» · город сверху, связи и окна видео · ▶ анимация"></button></div><p class="rcap"><span>референс</span>«Трон: Арес» · город сверху, связи и окна видео · ▶ анимация</p></div></div>
+<div class="body"><div class="head"><span class="id">n19</span></div>
+<h3>Схема сверху и окна камер на своих местах</h3><p class="idea">Карта сверху, на ней — врезанные окна живого видео там, где стоят камеры, линии связей.</p><p class="ours"><b>У нас:</b> Один вид вместо переключения: котлован с откосами, дорога, объекты; где камера, что видит, какая машина в её поле.</p>
+<div class="links"><a href="refs3/n19.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по n19"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-n20" data-id="n20">
+<div class="media"><button type="button" class="shot" data-full="refs3/shots/n20.jpg" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs3/shots/n20.jpg" width="1000" height="753" alt="Снимок n20: Штриховка запретной зоны и колонка статусов"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs3/r20.webp" data-cap="«Обливион» · карта с заштрихованной зоной" aria-label="Референс r20 крупно"><img loading="lazy" decoding="async" src="refimg/refs3/r20.webp" width="800" height="450" alt="Референс r20: «Обливион» · карта с заштрихованной зоной"></button></div><p class="rcap"><span>референс</span>«Обливион» · карта с заштрихованной зоной</p></div></div>
+<div class="body"><div class="head"><span class="id">n20</span></div>
+<h3>Штриховка запретной зоны и колонка статусов</h3><p class="idea">Красная штриховка — запретная зона; сетка с адресами клеток; сбоку — колонка статусов с метками.</p><p class="ours"><b>У нас:</b> Клетка схемы — адрес на площадке («И3–Л4»): буквы сверху, номера слева; опасность — красным со значком, стоящая техника — кольцом.</p>
+<div class="links"><a href="refs3/n20.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по n20"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-n21" data-id="n21">
+<div class="media"><button type="button" class="shot" data-full="refs3/shots/n21.jpg" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs3/shots/n21.jpg" width="1000" height="730" alt="Снимок n21: Рамка «лежит» в сцене по перспективе"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs3/r21.webp" data-cap="«Обливион» · перспективный визир на цели" aria-label="Референс r21 крупно"><img loading="lazy" decoding="async" src="refimg/refs3/r21.webp" width="800" height="450" alt="Референс r21: «Обливион» · перспективный визир на цели"></button></div><p class="rcap"><span>референс</span>«Обливион» · перспективный визир на цели</p></div></div>
+<div class="body"><div class="head"><span class="id">n21</span></div>
+<h3>Рамка «лежит» в сцене по перспективе</h3><p class="idea">Трапеция-рамка по перспективе земли и шкала делений сверху — рамка в сцене, а не плоско на экране.</p><p class="ours"><b>У нас:</b> След машины на земле совпадает с местом разгрузки — видно, что она стоит именно там.</p>
+<div class="links"><a href="refs3/n21.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по n21"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-n23" data-id="n23">
+<div class="media"><button type="button" class="shot" data-full="refs3/shots/n23.jpg" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs3/shots/n23.jpg" width="1000" height="753" alt="Снимок n23: Светлая схема: кольца целей и расстояние"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs3/r23.webp" data-cap="«Хантер Киллер» · светлая карта, кольца целей" aria-label="Референс r23 крупно"><img loading="lazy" decoding="async" src="refimg/refs3/r23.webp" width="750" height="600" alt="Референс r23: «Хантер Киллер» · светлая карта, кольца целей"></button></div><p class="rcap"><span>референс</span>«Хантер Киллер» · светлая карта, кольца целей</p></div></div>
+<div class="body"><div class="head"><span class="id">n23</span></div>
+<h3>Светлая схема: кольца целей и расстояние</h3><p class="idea">Светлая тема: цели — кольца с разрывами, свои и чужие разными знаками, пунктир и расстояние между ними.</p><p class="ours"><b>У нас:</b> Схема для клиента днём: котлован с откосами, дорога, объекты; свои — тёмными кольцами, чужая машина — красным со значком.</p>
+<div class="links"><a href="refs3/n23.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по n23"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-n24" data-id="n24">
+<div class="media"><button type="button" class="shot" data-full="refs3/shots/n24.jpg" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs3/shots/n24.jpg" width="1000" height="730" alt="Снимок n24: Всё приглушено, работающие машины — в цвете"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs3/r24.webp" data-cap="«Наёмник» · судно сверху, тепловые пятна" aria-label="Референс r24 крупно"><img loading="lazy" decoding="async" src="refimg/refs3/r24.webp" width="800" height="450" alt="Референс r24: «Наёмник» · судно сверху, тепловые пятна"></button></div><p class="rcap"><span>референс</span>«Наёмник» · судно сверху, тепловые пятна</p></div></div>
+<div class="body"><div class="head"><span class="id">n24</span></div>
+<h3>Всё приглушено, работающие машины — в цвете</h3><p class="idea">Кадр приглушён, «горячие» объекты остаются в цвете; крупная шапка «прямой эфир» тонким шрифтом.</p><p class="ours"><b>У нас:</b> Цветом — только техника, которая сейчас работает; стоящая уходит в серое фоном.</p>
+<div class="links"><a href="refs3/n24.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по n24"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-n25" data-id="n25">
+<div class="media"><button type="button" class="shot" data-full="refs3/shots/n25.jpg" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs3/shots/n25.jpg" width="1000" height="730" alt="Снимок n25: Снимок в уголках, вокруг — колонки данных"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs3/r25.webp" data-cap="«Миля 22» · снимок дрона в рамке-пульте" aria-label="Референс r25 крупно"><img loading="lazy" decoding="async" src="refimg/refs3/r25.webp" width="800" height="450" alt="Референс r25: «Миля 22» · снимок дрона в рамке-пульте"></button></div><p class="rcap"><span>референс</span>«Миля 22» · снимок дрона в рамке-пульте</p></div></div>
+<div class="body"><div class="head"><span class="id">n25</span></div>
+<h3>Снимок в уголках, вокруг — колонки данных</h3><p class="idea">Центральный снимок в уголках, по бокам плотные колонки цифр мелким моно — плотность «пульта».</p><p class="ours"><b>У нас:</b> Режим «штаб» на большой экран: камера в центре, смена в цифрах по бокам; простой и события — янтарём, рейсы внизу.</p>
+<div class="links"><a href="refs3/n25.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по n25"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-n26" data-id="n26">
+<div class="media"><button type="button" class="shot" data-full="refs3/shots/n26.jpg" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs3/shots/n26.jpg" width="1000" height="730" alt="Снимок n26: Вид сверху: силуэты со стрелкой, коридор пути, врезка камеры"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs3/r26.webp" data-cap="Waymo · вид сверху: кубоиды, коридор пути, врезка камеры · ▶ анимация" aria-label="Референс r26 крупно"><img loading="lazy" decoding="async" src="refimg/refs3/r26.webp" width="800" height="450" alt="Референс r26: Waymo · вид сверху: кубоиды, коридор пути, врезка камеры · ▶ анимация"></button></div><p class="rcap"><span>референс</span>Waymo · вид сверху: кубоиды, коридор пути, врезка камеры · ▶ анимация</p></div></div>
+<div class="body"><div class="head"><span class="id">n26</span></div>
+<h3>Вид сверху: силуэты со стрелкой, коридор пути, врезка камеры</h3><p class="idea">Объёмные коробки со стрелкой направления, подсвеченный коридор пути, линия стопа штриховкой, живая камера в углу.</p><p class="ours"><b>У нас:</b> Схема «куда едет самосвал»: котлован с откосами, коридор к экскаватору, стоп у ворот — там читаем номер; камера ворот рядом.</p>
+<div class="links"><a href="refs3/n26.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по n26"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-n27" data-id="n27">
+<div class="media"><button type="button" class="shot" data-full="refs3/shots/n27.jpg" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs3/shots/n27.jpg" width="1000" height="730" alt="Снимок n27: Облако точек, прозрачные силуэты, шкала времени"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs3/r27.webp" data-cap="Streetscape.gl · облако точек, 3D-рамки, шкала времени · ▶ анимация" aria-label="Референс r27 крупно"><img loading="lazy" decoding="async" src="refimg/refs3/r27.webp" width="800" height="600" alt="Референс r27: Streetscape.gl · облако точек, 3D-рамки, шкала времени · ▶ анимация"></button></div><p class="rcap"><span>референс</span>Streetscape.gl · облако точек, 3D-рамки, шкала времени · ▶ анимация</p></div></div>
+<div class="body"><div class="head"><span class="id">n27</span></div>
+<h3>Облако точек, прозрачные силуэты, шкала времени</h3><p class="idea">Сцена из точек, техника — прозрачными коробками с булавкой-иконкой, пути линиями, внизу шкала для перемотки.</p><p class="ours"><b>У нас:</b> Цифровой двойник смены: тянешь шкалу — силуэты едут по своим путям, видно, кто где был в 14:40; класс — значком на булавке.</p>
+<div class="links"><a href="refs3/n27.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по n27"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-n29" data-id="n29">
+<div class="media"><button type="button" class="shot" data-full="refs3/shots/n29.jpg" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs3/shots/n29.jpg" width="1000" height="753" alt="Снимок n29: Площадка из точек, здания и пути свечением"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs3/r29.webp" data-cap="Waymo · ночной город из точек, светящиеся пути" aria-label="Референс r29 крупно"><img loading="lazy" decoding="async" src="refimg/refs3/r29.webp" width="600" height="600" alt="Референс r29: Waymo · ночной город из точек, светящиеся пути"></button></div><p class="rcap"><span>референс</span>Waymo · ночной город из точек, светящиеся пути</p></div></div>
+<div class="body"><div class="head"><span class="id">n29</span></div>
+<h3>Площадка из точек, здания и пути свечением</h3><p class="idea">Изометрия, всё из точек, пути — светящимися линиями, плашки над объектами; красиво без тяжёлой 3D-графики.</p><p class="ours"><b>У нас:</b> Ночной вид двойника: корпус, бытовки, склад и кран собраны из светящихся точек, котлован — контуром, маршруты за смену — линиями.</p>
+<div class="links"><a href="refs3/n29.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по n29"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-n32" data-id="n32">
+<div class="media"><button type="button" class="shot" data-full="refs3/shots/n32.jpg" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs3/shots/n32.jpg" width="1000" height="753" alt="Снимок n32: Стоянка: занятость формой и карточка места"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs3/r32.webp" data-cap="Voltera · 3D-парковка с зонами и карточкой места" aria-label="Референс r32 крупно"><img loading="lazy" decoding="async" src="refimg/refs3/r32.webp" width="800" height="600" alt="Референс r32: Voltera · 3D-парковка с зонами и карточкой места"></button></div><p class="rcap"><span>референс</span>Voltera · 3D-парковка с зонами и карточкой места</p></div></div>
+<div class="body"><div class="head"><span class="id">n32</span></div>
+<h3>Стоянка: занятость формой и карточка места</h3><p class="idea">3D-площадка, места обведены по занятости, у места всплывает карточка, снизу график загрузки.</p><p class="ours"><b>У нас:</b> Очередь самосвалов у котлована: занятое место — силуэт машины, свободное — пунктир со словом; кто сколько ждёт и когда стоянка забита.</p>
+<div class="links"><a href="refs3/n32.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по n32"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-n33" data-id="n33">
+<div class="media"><button type="button" class="shot" data-full="refs3/shots/n33.jpg" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs3/shots/n33.jpg" width="1000" height="791" alt="Снимок n33: Пульт: модель, камеры, видео и шкала событий"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs3/r33.webp" data-cap="Fuselab · 3D-кампус, камеры и лента событий · ▶ анимация" aria-label="Референс r33 крупно"><img loading="lazy" decoding="async" src="refimg/refs3/r33.webp" width="800" height="600" alt="Референс r33: Fuselab · 3D-кампус, камеры и лента событий · ▶ анимация"></button></div><p class="rcap"><span>референс</span>Fuselab · 3D-кампус, камеры и лента событий · ▶ анимация</p></div></div>
+<div class="body"><div class="head"><span class="id">n33</span></div>
+<h3>Пульт: модель, камеры, видео и шкала событий</h3><p class="idea">3D-модель объекта, список камер, живое видео и шкала времени с цветными событиями — весь пульт в одном экране.</p><p class="ours"><b>У нас:</b> Наш главный экран: модель занимает экран, выбранная камера отмечена на ней конусом, рядом — её эфир, внизу — смена.</p>
+<div class="links"><a href="refs3/n33.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по n33"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-n34" data-id="n34">
+<div class="media"><button type="button" class="shot" data-full="refs3/shots/n34.jpg" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs3/shots/n34.jpg" width="1000" height="753" alt="Снимок n34: Въезд площадки: улица, ворота, шлагбаум, полосы"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs3/r34.webp" data-cap="Smart Traffic Flow · тёмный перекрёсток, светящиеся полосы · ▶ анимация" aria-label="Референс r34 крупно"><img loading="lazy" decoding="async" src="refimg/refs3/r34.webp" width="800" height="600" alt="Референс r34: Smart Traffic Flow · тёмный перекрёсток, светящиеся полосы · ▶ анимация"></button></div><p class="rcap"><span>референс</span>Smart Traffic Flow · тёмный перекрёсток, светящиеся полосы · ▶ анимация</p></div></div>
+<div class="body"><div class="head"><span class="id">n34</span></div>
+<h3>Въезд площадки: улица, ворота, шлагбаум, полосы</h3><p class="idea">Тёмная низкополигональная сцена, полосы подсвечены, машины едут по ним — простая 3D-схема въезда.</p><p class="ours"><b>У нас:</b> Наш перекрёсток: улица вдоль забора, ворота с КПП и шлагбаумом, полосы въезда и выезда, линия счёта; самосвалы едут по живым данным учёта.</p>
+<div class="links"><a href="refs3/n34.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по n34"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-n35" data-id="n35">
+<div class="media"><button type="button" class="shot" data-full="refs3/shots/n35.jpg" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs3/shots/n35.jpg" width="1000" height="730" alt="Снимок n35: Облако с конусами обзора и синхронные камеры"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs3/r35.webp" data-cap="Rerun · 3D-облако, конусы камер, 4 видео и шкала · ▶ анимация" aria-label="Референс r35 крупно"><img loading="lazy" decoding="async" src="refimg/refs3/r35.webp" width="800" height="461" alt="Референс r35: Rerun · 3D-облако, конусы камер, 4 видео и шкала · ▶ анимация"></button></div><p class="rcap"><span>референс</span>Rerun · 3D-облако, конусы камер, 4 видео и шкала · ▶ анимация</p></div></div>
+<div class="body"><div class="head"><span class="id">n35</span></div>
+<h3>Облако с конусами обзора и синхронные камеры</h3><p class="idea">Облако точек с конусами обзора камер, справа ряд живых видео, снизу общая шкала времени.</p><p class="ours"><b>У нас:</b> Разбор спорного рейса: одна шкала двигает все камеры и модель сразу — видно одно и то же мгновение.</p>
+<div class="links"><a href="refs3/n35.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по n35"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-n36" data-id="n36">
+<div class="media"><button type="button" class="shot" data-full="refs3/shots/n36.jpg" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs3/shots/n36.jpg" width="1000" height="753" alt="Снимок n36: Мир в «глине», объекты выделены"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs3/r36.webp" data-cap="Сканирование · серый город, кольцо у машины · ▶ анимация" aria-label="Референс r36 крупно"><img loading="lazy" decoding="async" src="refimg/refs3/r36.webp" width="800" height="600" alt="Референс r36: Сканирование · серый город, кольцо у машины · ▶ анимация"></button></div><p class="rcap"><span>референс</span>Сканирование · серый город, кольцо у машины · ▶ анимация</p></div></div>
+<div class="body"><div class="head"><span class="id">n36</span></div>
+<h3>Мир в «глине», объекты выделены</h3><p class="idea">Мир серый, как из глины, только объекты цветом: кольцо под машиной, люди — цветным силуэтом.</p><p class="ours"><b>У нас:</b> Безопасность: работающий экскаватор — тёмным с кольцом, человек в радиусе стрелы — красным со значком, остальные люди — глиной.</p>
+<div class="links"><a href="refs3/n36.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по n36"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-n37" data-id="n37">
+<div class="media"><button type="button" class="shot" data-full="refs3/shots/n37.jpg" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs3/shots/n37.jpg" width="1000" height="753" alt="Снимок n37: Белая модель и стеклянные карточки у машин"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs3/r37.webp" data-cap="Цифровой двойник цеха · белая 3D-модель с карточками" aria-label="Референс r37 крупно"><img loading="lazy" decoding="async" src="refimg/refs3/r37.webp" width="800" height="600" alt="Референс r37: Цифровой двойник цеха · белая 3D-модель с карточками"></button></div><p class="rcap"><span>референс</span>Цифровой двойник цеха · белая 3D-модель с карточками</p></div></div>
+<div class="body"><div class="head"><span class="id">n37</span></div>
+<h3>Белая модель и стеклянные карточки у машин</h3><p class="idea">Белая модель объекта, у каждой машины — стеклянная карточка со статусом и временем.</p><p class="ours"><b>У нас:</b> Светлая тема для руководителя-заказчика: силуэты техники на модели, работающие — тёмным, стоящая — тусклее и кольцом; статус без таблиц.</p>
+<div class="links"><a href="refs3/n37.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по n37"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-n38" data-id="n38">
+<div class="media"><button type="button" class="shot" data-full="refs3/shots/n38.jpg" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs3/shots/n38.jpg" width="1000" height="730" alt="Снимок n38: Модель площадки: выемка тёплой шкалой глубины"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs3/r38.webp" data-cap="Komatsu Smart Construction · съёмка площадки и выемка цветом · ▶ анимация" aria-label="Референс r38 крупно"><img loading="lazy" decoding="async" src="refimg/refs3/r38.webp" width="800" height="450" alt="Референс r38: Komatsu Smart Construction · съёмка площадки и выемка цветом · ▶ анимация"></button></div><p class="rcap"><span>референс</span>Komatsu Smart Construction · съёмка площадки и выемка цветом · ▶ анимация</p></div></div>
+<div class="body"><div class="head"><span class="id">n38</span></div>
+<h3>Модель площадки: выемка тёплой шкалой глубины</h3><p class="idea">Модель площадки с дрона, объём выемки — тепловой картой, техника на ней; как продукт на планшете.</p><p class="ours"><b>У нас:</b> Выработка за смену в кубах: глубина — тёплой шкалой от тёмного к светлому поверх снимка дрона, техника силуэтом.</p>
+<div class="links"><a href="refs3/n38.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по n38"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article></div></section>
+<section id="s-r2"><h2>Набор 2 · карточки и экраны пульта <small>ещё 40</small></h2><div class="grid"><article class="card" id="c-m30" data-id="m30">
+<div class="media"><button type="button" class="shot" data-full="refs2/shots/m30.webp" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs2/shots/m30.webp" width="780" height="1000" alt="Снимок m30: Клипы событий полосой под живым кадром"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs2/r30.webp" data-cap="Apple Дом · камеры и клипы событий" aria-label="Референс r30 крупно"><img loading="lazy" decoding="async" src="refimg/refs2/r30.webp" width="842" height="1744" alt="Референс r30: Apple Дом · камеры и клипы событий"></button></div><p class="rcap"><span>референс</span>Apple Дом · камеры и клипы событий</p></div></div>
+<div class="body"><div class="head"><span class="id">m30</span><span class="badge">приёмка: доработать</span></div>
+<h3>Клипы событий полосой под живым кадром</h3><p class="idea">Как в «Доме» Apple: большой живой кадр, под ним полоса клипов событий и одна фраза о том, что случилось.</p>
+<div class="links"><a href="refs2/m30.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по m30"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-m01" data-id="m01">
+<div class="media"><button type="button" class="shot" data-full="refs2/shots/m01.webp" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs2/shots/m01.webp" width="780" height="1000" alt="Снимок m01: Въехало и выехало за день"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs2/r01.webp" data-cap="Verkada · въехало и выехало за день" aria-label="Референс r01 крупно"><img loading="lazy" decoding="async" src="refimg/refs2/r01.webp" width="1920" height="1920" alt="Референс r01: Verkada · въехало и выехало за день"></button></div><p class="rcap"><span>референс</span>Verkada · въехало и выехало за день</p></div></div>
+<div class="body"><div class="head"><span class="id">m01</span></div>
+<h3>Въехало и выехало за день</h3><p class="idea">Счётчик «въехало / выехало» крупной цифрой и тихий двусторонний график по часам.</p>
+<div class="links"><a href="refs2/m01.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по m01"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-m02" data-id="m02">
+<div class="media"><button type="button" class="shot" data-full="refs2/shots/m02.webp" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs2/shots/m02.webp" width="1440" height="401" alt="Снимок m02: План площадки рядом с камерами и шкалой"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs2/r02.webp" data-cap="Verkada · план объекта и шкала событий" aria-label="Референс r02 крупно"><img loading="lazy" decoding="async" src="refimg/refs2/r02.webp" width="1920" height="1920" alt="Референс r02: Verkada · план объекта и шкала событий"></button></div><p class="rcap"><span>референс</span>Verkada · план объекта и шкала событий</p></div></div>
+<div class="body"><div class="head"><span class="id">m02</span><span class="badge">приёмка: доработать</span></div>
+<h3>План площадки рядом с камерами и шкалой</h3><p class="idea">План площадки с точками камер и машин рядом с видео, под ними одна шкала событий с клипами.</p>
+<div class="links"><a href="refs2/m02.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по m02"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-m03" data-id="m03">
+<div class="media"><button type="button" class="shot" data-full="refs2/shots/m03.webp" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs2/shots/m03.webp" width="1440" height="433" alt="Снимок m03: Две камеры на одной шкале"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs2/r03.webp" data-cap="Eagle Eye · несколько камер на одной шкале" aria-label="Референс r03 крупно"><img loading="lazy" decoding="async" src="refimg/refs2/r03.webp" width="1058" height="699" alt="Референс r03: Eagle Eye · несколько камер на одной шкале"></button></div><p class="rcap"><span>референс</span>Eagle Eye · несколько камер на одной шкале</p></div></div>
+<div class="body"><div class="head"><span class="id">m03</span><span class="badge">приёмка: доработать</span></div>
+<h3>Две камеры на одной шкале</h3><p class="idea">Одна шкала времени на обе камеры: метки событий каждой камеры на своей дорожке, общий указатель.</p>
+<div class="links"><a href="refs2/m03.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по m03"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-m04" data-id="m04">
+<div class="media"><button type="button" class="shot" data-full="refs2/shots/m04.webp" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs2/shots/m04.webp" width="780" height="1082" alt="Снимок m04: Лента тревог на тёмном"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs2/r04.webp" data-cap="Avigilon Alta · лента тревог" aria-label="Референс r04 крупно"><img loading="lazy" decoding="async" src="refimg/refs2/r04.webp" width="1242" height="2208" alt="Референс r04: Avigilon Alta · лента тревог"></button></div><p class="rcap"><span>референс</span>Avigilon Alta · лента тревог</p></div></div>
+<div class="body"><div class="head"><span class="id">m04</span></div>
+<h3>Лента тревог на тёмном</h3><p class="idea">Лента тревог группами «идёт / подтвердить / закрыто»: кадр, что случилось, где и когда.</p>
+<div class="links"><a href="refs2/m04.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по m04"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-m05" data-id="m05">
+<div class="media"><button type="button" class="shot" data-full="refs2/shots/m05.webp" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs2/shots/m05.webp" width="780" height="1026" alt="Снимок m05: Зоны на плане и действие с плана"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs2/r05.webp" data-cap="Genetec Security Center · зоны на карте" aria-label="Референс r05 крупно"><img loading="lazy" decoding="async" src="refimg/refs2/r05.webp" width="960" height="540" alt="Референс r05: Genetec Security Center · зоны на карте"></button></div><p class="rcap"><span>референс</span>Genetec Security Center · зоны на карте</p></div></div>
+<div class="body"><div class="head"><span class="id">m05</span><span class="badge">приёмка: доработать</span></div>
+<h3>Зоны на плане и действие с плана</h3><p class="idea">Светлый план с зонами; нажал на зону — карточка с тем, кто внутри, и действием прямо с плана.</p>
+<div class="links"><a href="refs2/m05.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по m05"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-m06" data-id="m06">
+<div class="media"><button type="button" class="shot" data-full="refs2/shots/m06.webp" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs2/shots/m06.webp" width="1440" height="400" alt="Снимок m06: Один вид в браузере и на телефоне"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs2/r06.webp" data-cap="Milestone XProtect · ПК и телефон" aria-label="Референс r06 крупно"><img loading="lazy" decoding="async" src="refimg/refs2/r06.webp" width="2000" height="1416" alt="Референс r06: Milestone XProtect · ПК и телефон"></button></div><p class="rcap"><span>референс</span>Milestone XProtect · ПК и телефон</p></div></div>
+<div class="body"><div class="head"><span class="id">m06</span><span class="badge">приёмка: доработать</span></div>
+<h3>Один вид в браузере и на телефоне</h3><p class="idea">Тот же просмотр и та же лента событий — в окне браузера на пульте и на телефоне прораба.</p>
+<div class="links"><a href="refs2/m06.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по m06"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-m07" data-id="m07">
+<div class="media"><button type="button" class="shot" data-full="refs2/shots/m07.webp" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs2/shots/m07.webp" width="780" height="1070" alt="Снимок m07: Светлое воспроизведение с событиями"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs2/r07.webp" data-cap="Lumana · запись с метками событий" aria-label="Референс r07 крупно"><img loading="lazy" decoding="async" src="refimg/refs2/r07.webp" width="1284" height="2778" alt="Референс r07: Lumana · запись с метками событий"></button></div><p class="rcap"><span>референс</span>Lumana · запись с метками событий</p></div></div>
+<div class="body"><div class="head"><span class="id">m07</span><span class="badge">приёмка: доработать</span></div>
+<h3>Светлое воспроизведение с событиями</h3><p class="idea">Светлая запись: под кадром вертикальная шкала часа, события на ней подписаны прямо словами.</p>
+<div class="links"><a href="refs2/m07.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по m07"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-m08" data-id="m08">
+<div class="media"><button type="button" class="shot" data-full="refs2/shots/m08.webp" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs2/shots/m08.webp" width="780" height="1000" alt="Снимок m08: Карточка тревоги поверх кадра"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs2/r08.webp" data-cap="Coram · карточка тревоги" aria-label="Референс r08 крупно"><img loading="lazy" decoding="async" src="refimg/refs2/r08.webp" width="1308" height="1048" alt="Референс r08: Coram · карточка тревоги"></button></div><p class="rcap"><span>референс</span>Coram · карточка тревоги</p></div></div>
+<div class="body"><div class="head"><span class="id">m08</span></div>
+<h3>Карточка тревоги поверх кадра</h3><p class="idea">Тревога как карточка поверх живого кадра: рамка на машине, что случилось, где, когда и две кнопки действия.</p>
+<div class="links"><a href="refs2/m08.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по m08"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-m09" data-id="m09">
+<div class="media"><button type="button" class="shot" data-full="refs2/shots/m09.webp" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs2/shots/m09.webp" width="780" height="1000" alt="Снимок m09: Уведомления по зоне погрузки"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs2/r09.webp" data-cap="Axis Camera Station · уведомления по зоне погрузки" aria-label="Референс r09 крупно"><img loading="lazy" decoding="async" src="refimg/refs2/r09.webp" width="1242" height="2208" alt="Референс r09: Axis Camera Station · уведомления по зоне погрузки"></button></div><p class="rcap"><span>референс</span>Axis Camera Station · уведомления по зоне погрузки</p></div></div>
+<div class="body"><div class="head"><span class="id">m09</span><span class="badge">приёмка: доработать</span></div>
+<h3>Уведомления по зоне погрузки</h3><p class="idea">Пуш-уведомления сгруппированы по зоне (ворота, погрузка), у каждого — кадр события.</p>
+<div class="links"><a href="refs2/m09.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по m09"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-m10" data-id="m10">
+<div class="media"><button type="button" class="shot" data-full="refs2/shots/m10.webp" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs2/shots/m10.webp" width="780" height="1166" alt="Снимок m10: События с номером машины на шкале"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs2/r10.webp" data-cap="Hanwha Wisenet · события с номером машины" aria-label="Референс r10 крупно"><img loading="lazy" decoding="async" src="refimg/refs2/r10.webp" width="1242" height="2208" alt="Референс r10: Hanwha Wisenet · события с номером машины"></button></div><p class="rcap"><span>референс</span>Hanwha Wisenet · события с номером машины</p></div></div>
+<div class="body"><div class="head"><span class="id">m10</span><span class="badge">приёмка: доработать</span></div>
+<h3>События с номером машины на шкале</h3><p class="idea">Шкала записи с отрезками распознанных номеров и список событий «номер распознан» с временем.</p>
+<div class="links"><a href="refs2/m10.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по m10"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-m12" data-id="m12">
+<div class="media"><button type="button" class="shot" data-full="refs2/shots/m12.webp" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs2/shots/m12.webp" width="780" height="1000" alt="Снимок m12: Сутки машины ступенчатой шкалой"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs2/r12.webp" data-cap="Motive · ступенчатая шкала суток" aria-label="Референс r12 крупно"><img loading="lazy" decoding="async" src="refimg/refs2/r12.webp" width="1242" height="2208" alt="Референс r12: Motive · ступенчатая шкала суток"></button></div><p class="rcap"><span>референс</span>Motive · ступенчатая шкала суток</p></div></div>
+<div class="body"><div class="head"><span class="id">m12</span><span class="badge">приёмка: доработать</span></div>
+<h3>Сутки машины ступенчатой шкалой</h3><p class="idea">Табель одной машины: смена ступенчатой линией по состояниям и список переходов с длительностью.</p>
+<div class="links"><a href="refs2/m12.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по m12"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-m13" data-id="m13">
+<div class="media"><button type="button" class="shot" data-full="refs2/shots/m13.webp" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs2/shots/m13.webp" width="780" height="1000" alt="Снимок m13: Событие с кнопкой «показать запись»"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs2/r13.webp" data-cap="Motive · событие и «запросить видео»" aria-label="Референс r13 крупно"><img loading="lazy" decoding="async" src="refimg/refs2/r13.webp" width="758" height="500" alt="Референс r13: Motive · событие и «запросить видео»"></button></div><p class="rcap"><span>референс</span>Motive · событие и «запросить видео»</p></div></div>
+<div class="body"><div class="head"><span class="id">m13</span><span class="badge">приёмка: доработать</span></div>
+<h3>Событие с кнопкой «показать запись»</h3><p class="idea">Карточка события поверх кадра и одна большая кнопка — сразу открыть запись этого момента.</p>
+<div class="links"><a href="refs2/m13.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по m13"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-m15" data-id="m15">
+<div class="media"><button type="button" class="shot" data-full="refs2/shots/m15.webp" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs2/shots/m15.webp" width="1440" height="400" alt="Снимок m15: Подписи техники поверх кадра"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs2/r15.webp" data-cap="EarthCam · подписи ИИ поверх стройки" aria-label="Референс r15 крупно"><img loading="lazy" decoding="async" src="refimg/refs2/r15.webp" width="1921" height="898" alt="Референс r15: EarthCam · подписи ИИ поверх стройки"></button></div><p class="rcap"><span>референс</span>EarthCam · подписи ИИ поверх стройки</p></div></div>
+<div class="body"><div class="head"><span class="id">m15</span><span class="badge">приёмка: доработать</span></div>
+<h3>Подписи техники поверх кадра</h3><p class="idea">ИИ подписывает технику прямо на кадре площадки; рядом — список того, что сейчас в кадре.</p>
+<div class="links"><a href="refs2/m15.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по m15"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-m17" data-id="m17">
+<div class="media"><button type="button" class="shot" data-full="refs2/shots/m17.webp" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs2/shots/m17.webp" width="780" height="1000" alt="Снимок m17: Итог смены одной фразой"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs2/r17.webp" data-cap="Buildots · итог одной фразой" aria-label="Референс r17 крупно"><img loading="lazy" decoding="async" src="refimg/refs2/r17.webp" width="778" height="680" alt="Референс r17: Buildots · итог одной фразой"></button></div><p class="rcap"><span>референс</span>Buildots · итог одной фразой</p></div></div>
+<div class="body"><div class="head"><span class="id">m17</span></div>
+<h3>Итог смены одной фразой</h3><p class="idea">Главный итог смены — одна крупная фраза на стеклянной карточке поверх кадра площадки.</p>
+<div class="links"><a href="refs2/m17.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по m17"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-m19" data-id="m19">
+<div class="media"><button type="button" class="shot" data-full="refs2/shots/m19.webp" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs2/shots/m19.webp" width="780" height="1000" alt="Снимок m19: Табель сеткой «машина × час»"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs2/r19.webp" data-cap="OpenSpace (Disperse) · готовность сеткой по этажам" aria-label="Референс r19 крупно"><img loading="lazy" decoding="async" src="refimg/refs2/r19.webp" width="1200" height="1600" alt="Референс r19: OpenSpace (Disperse) · готовность сеткой по этажам"></button></div><p class="rcap"><span>референс</span>OpenSpace (Disperse) · готовность сеткой по этажам</p></div></div>
+<div class="body"><div class="head"><span class="id">m19</span><span class="badge">приёмка: доработать</span></div>
+<h3>Табель сеткой «машина × час»</h3><p class="idea">Сетка «машина × час смены»: в клетке минуты работы, полный час залит, точка — событие.</p>
+<div class="links"><a href="refs2/m19.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по m19"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-m20" data-id="m20">
+<div class="media"><button type="button" class="shot" data-full="refs2/shots/m20.webp" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs2/shots/m20.webp" width="780" height="1000" alt="Снимок m20: Поиск по записи словами"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs2/r20.webp" data-cap="Spot AI · поиск по шкале" aria-label="Референс r20 крупно"><img loading="lazy" decoding="async" src="refimg/refs2/r20.webp" width="1242" height="2208" alt="Референс r20: Spot AI · поиск по шкале"></button></div><p class="rcap"><span>референс</span>Spot AI · поиск по шкале</p></div></div>
+<div class="body"><div class="head"><span class="id">m20</span><span class="badge">приёмка: доработать</span></div>
+<h3>Поиск по записи словами</h3><p class="idea">Поиск по записи: запрос словами, на шкале найденные отрезки, ниже — сами клипы.</p>
+<div class="links"><a href="refs2/m20.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по m20"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-m22" data-id="m22">
+<div class="media"><button type="button" class="shot" data-full="refs2/shots/m22.webp" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs2/shots/m22.webp" width="780" height="1118" alt="Снимок m22: Лента «номер распознан» с кадром"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs2/r22.webp" data-cap="TRASSIR · уведомления" aria-label="Референс r22 крупно"><img loading="lazy" decoding="async" src="refimg/refs2/r22.webp" width="1242" height="2208" alt="Референс r22: TRASSIR · уведомления"></button><button type="button" class="rth" data-full="refimg/refs2/r24.webp" data-cap="AxxonNet · «номер распознан»" aria-label="Референс r24 крупно"><img loading="lazy" decoding="async" src="refimg/refs2/r24.webp" width="1242" height="2208" alt="Референс r24: AxxonNet · «номер распознан»"></button></div><p class="rcap"><span>референс</span>TRASSIR · уведомления · AxxonNet · «номер распознан»</p></div></div>
+<div class="body"><div class="head"><span class="id">m22</span><span class="badge">приёмка: доработать</span></div>
+<h3>Лента «номер распознан» с кадром</h3><p class="idea">Лента событий по камерам (структура TRASSIR, AxxonNet): крупный кадр, время, что распознано и где — без тесноты.</p>
+<div class="links"><a href="refs2/m22.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по m22"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-m23" data-id="m23">
+<div class="media"><button type="button" class="shot" data-full="refs2/shots/m23.webp" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs2/shots/m23.webp" width="780" height="1000" alt="Снимок m23: Событие безопасности с подписью зоны"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs2/r23.webp" data-cap="Macroscop · «Нет каски · Стройплощадка»" aria-label="Референс r23 крупно"><img loading="lazy" decoding="async" src="refimg/refs2/r23.webp" width="1290" height="2796" alt="Референс r23: Macroscop · «Нет каски · Стройплощадка»"></button></div><p class="rcap"><span>референс</span>Macroscop · «Нет каски · Стройплощадка»</p></div></div>
+<div class="body"><div class="head"><span class="id">m23</span><span class="badge">приёмка: доработать</span></div>
+<h3>Событие безопасности с подписью зоны</h3><p class="idea">Событие ИИ на стройке поднято над лентой: что нарушено, в какой зоне, кадр и время по Перми.</p>
+<div class="links"><a href="refs2/m23.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по m23"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-m25" data-id="m25">
+<div class="media"><button type="button" class="shot" data-full="refs2/shots/m25.webp" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs2/shots/m25.webp" width="780" height="1064" alt="Снимок m25: Архив: шкала записи под кадром"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs2/r25.webp" data-cap="Линия · архив с зелёной шкалой" aria-label="Референс r25 крупно"><img loading="lazy" decoding="async" src="refimg/refs2/r25.webp" width="1289" height="2800" alt="Референс r25: Линия · архив с зелёной шкалой"></button><button type="button" class="rth" data-full="refimg/refs2/r26.webp" data-cap="Форпост · просмотр архива" aria-label="Референс r26 крупно"><img loading="lazy" decoding="async" src="refimg/refs2/r26.webp" width="1290" height="2796" alt="Референс r26: Форпост · просмотр архива"></button></div><p class="rcap"><span>референс</span>Линия · архив с зелёной шкалой · Форпост · просмотр архива</p></div></div>
+<div class="body"><div class="head"><span class="id">m25</span><span class="badge">приёмка: доработать</span></div>
+<h3>Архив: шкала записи под кадром</h3><p class="idea">Архив за сутки: шкала записи прямо под кадром, где была запись, а где дыра; дата и время одной плашкой.</p>
+<div class="links"><a href="refs2/m25.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по m25"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-m27" data-id="m27">
+<div class="media"><button type="button" class="shot" data-full="refs2/shots/m27.webp" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs2/shots/m27.webp" width="780" height="1000" alt="Снимок m27: Здоровье камер кольцами"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs2/r27.webp" data-cap="Cloudastructure · здоровье камер кольцами" aria-label="Референс r27 крупно"><img loading="lazy" decoding="async" src="refimg/refs2/r27.webp" width="1206" height="2622" alt="Референс r27: Cloudastructure · здоровье камер кольцами"></button></div><p class="rcap"><span>референс</span>Cloudastructure · здоровье камер кольцами</p></div></div>
+<div class="body"><div class="head"><span class="id">m27</span><span class="badge">приёмка: доработать</span></div>
+<h3>Здоровье камер кольцами</h3><p class="idea">Здоровье системы кольцами: камеры в сети, запись, распознавание — и строка на каждую камеру.</p>
+<div class="links"><a href="refs2/m27.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по m27"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-m28" data-id="m28">
+<div class="media"><button type="button" class="shot" data-full="refs2/shots/m28.webp" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs2/shots/m28.webp" width="780" height="1000" alt="Снимок m28: Активность ворот по дням"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs2/r28.webp" data-cap="Cloudastructure · активность ворот по дням" aria-label="Референс r28 крупно"><img loading="lazy" decoding="async" src="refimg/refs2/r28.webp" width="1206" height="2622" alt="Референс r28: Cloudastructure · активность ворот по дням"></button></div><p class="rcap"><span>референс</span>Cloudastructure · активность ворот по дням</p></div></div>
+<div class="body"><div class="head"><span class="id">m28</span><span class="badge">приёмка: доработать</span></div>
+<h3>Активность ворот по дням</h3><p class="idea">Сколько машин прошло ворота — столбиками по дням недели; выбрал день — под ним запись этого дня.</p>
+<div class="links"><a href="refs2/m28.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по m28"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-m29" data-id="m29">
+<div class="media"><button type="button" class="shot" data-full="refs2/shots/m29.webp" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs2/shots/m29.webp" width="780" height="1058" alt="Снимок m29: Ход вывоза и завоза по видам"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs2/r29.webp" data-cap="Track3D · ход работ" aria-label="Референс r29 крупно"><img loading="lazy" decoding="async" src="refimg/refs2/r29.webp" width="1600" height="2133" alt="Референс r29: Track3D · ход работ"></button></div><p class="rcap"><span>референс</span>Track3D · ход работ</p></div></div>
+<div class="body"><div class="head"><span class="id">m29</span><span class="badge">приёмка: доработать</span></div>
+<h3>Ход вывоза и завоза по видам</h3><p class="idea">Светлая сводка хода работ по видам груза: сколько из плана, полоса и прирост за сегодня.</p>
+<div class="links"><a href="refs2/m29.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по m29"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-m31" data-id="m31">
+<div class="media"><button type="button" class="shot" data-full="refs2/shots/m31.webp" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs2/shots/m31.webp" width="780" height="1000" alt="Снимок m31: Крупные цифры с выносками на кадре"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs2/r31.webp" data-cap="Tesla · энергия крупными цифрами" aria-label="Референс r31 крупно"><img loading="lazy" decoding="async" src="refimg/refs2/r31.webp" width="1242" height="2208" alt="Референс r31: Tesla · энергия крупными цифрами"></button></div><p class="rcap"><span>референс</span>Tesla · энергия крупными цифрами</p></div></div>
+<div class="body"><div class="head"><span class="id">m31</span><span class="badge">приёмка: доработать</span></div>
+<h3>Крупные цифры с выносками на кадре</h3><p class="idea">Как экран энергии Tesla: крупные цифры с тонкими выносками прямо к машинам на кадре, ниже — тихие строки.</p>
+<div class="links"><a href="refs2/m31.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по m31"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-m32" data-id="m32">
+<div class="media"><button type="button" class="shot" data-full="refs2/shots/m32.webp" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs2/shots/m32.webp" width="780" height="1036" alt="Снимок m32: Карточка машины поверх карты"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs2/r32.webp" data-cap="Flightradar24 · карточка объекта на карте" aria-label="Референс r32 крупно"><img loading="lazy" decoding="async" src="refimg/refs2/r32.webp" width="1242" height="2208" alt="Референс r32: Flightradar24 · карточка объекта на карте"></button></div><p class="rcap"><span>референс</span>Flightradar24 · карточка объекта на карте</p></div></div>
+<div class="body"><div class="head"><span class="id">m32</span><span class="badge">приёмка: доработать</span></div>
+<h3>Карточка машины поверх карты</h3><p class="idea">Как карточка рейса во Flightradar24: машина поверх плана — откуда и куда, по норме и по факту, полоса пути.</p>
+<div class="links"><a href="refs2/m32.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по m32"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-m33" data-id="m33">
+<div class="media"><button type="button" class="shot" data-full="refs2/shots/m33.webp" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs2/shots/m33.webp" width="1440" height="400" alt="Снимок m33: Тёмный моно-график с одной цифрой"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs2/r33.webp" data-cap="Linear · тёмный моно-график" aria-label="Референс r33 крупно"><img loading="lazy" decoding="async" src="refimg/refs2/r33.webp" width="2000" height="1105" alt="Референс r33: Linear · тёмный моно-график"></button></div><p class="rcap"><span>референс</span>Linear · тёмный моно-график</p></div></div>
+<div class="body"><div class="head"><span class="id">m33</span><span class="badge">приёмка: доработать</span></div>
+<h3>Тёмный моно-график с одной цифрой</h3><p class="idea">Как Insights в Linear: тёмные моно-графики без шума и одна главная цифра на отдельной панели.</p>
+<div class="links"><a href="refs2/m33.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по m33"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-m34" data-id="m34">
+<div class="media"><button type="button" class="shot" data-full="refs2/shots/m34.webp" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs2/shots/m34.webp" width="1440" height="400" alt="Снимок m34: Карточка экскаватора: работа и простой"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs2/r34.webp" data-cap="Карточка экскаватора: работа и простой" aria-label="Референс r34 крупно"><img loading="lazy" decoding="async" src="refimg/refs2/r34.webp" width="1600" height="1200" alt="Референс r34: Карточка экскаватора: работа и простой"></button></div><p class="rcap"><span>референс</span>Карточка экскаватора: работа и простой</p></div></div>
+<div class="body"><div class="head"><span class="id">m34</span><span class="badge">приёмка: доработать</span></div>
+<h3>Карточка экскаватора: работа и простой</h3><p class="idea">Машина на плане и её карточка рядом: работа 6 ч 24 мин против простоя 1 ч 12 мин, тренд и одно предупреждение.</p>
+<div class="links"><a href="refs2/m34.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по m34"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-m37" data-id="m37">
+<div class="media"><button type="button" class="shot" data-full="refs2/shots/m37.webp" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs2/shots/m37.webp" width="1440" height="400" alt="Снимок m37: Кадр, клипы на шкале, список камер"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs2/r37.webp" data-cap="Камеры: кадр, клипы, список" aria-label="Референс r37 крупно"><img loading="lazy" decoding="async" src="refimg/refs2/r37.webp" width="1600" height="1200" alt="Референс r37: Камеры: кадр, клипы, список"></button></div><p class="rcap"><span>референс</span>Камеры: кадр, клипы, список</p></div></div>
+<div class="body"><div class="head"><span class="id">m37</span><span class="badge">приёмка: доработать</span></div>
+<h3>Кадр, клипы на шкале, список камер</h3><p class="idea">Главный кадр, под ним шкала дня с клипами-миниатюрами на своих местах, справа — камеры и лента.</p>
+<div class="links"><a href="refs2/m37.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по m37"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-m41" data-id="m41">
+<div class="media"><button type="button" class="shot" data-full="refs2/shots/m41.webp" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs2/shots/m41.webp" width="1440" height="400" alt="Снимок m41: Сетка камер и общая шкала записи"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs2/r41.webp" data-cap="Видеорегистратор с шкалой" aria-label="Референс r41 крупно"><img loading="lazy" decoding="async" src="refimg/refs2/r41.webp" width="1600" height="1200" alt="Референс r41: Видеорегистратор с шкалой"></button></div><p class="rcap"><span>референс</span>Видеорегистратор с шкалой</p></div></div>
+<div class="body"><div class="head"><span class="id">m41</span><span class="badge">приёмка: доработать</span></div>
+<h3>Сетка камер и общая шкала записи</h3><p class="idea">Видеорегистратор: дерево камер слева, сетка кадров (камеры и крупные планы ИИ), одна общая шкала записи внизу.</p>
+<div class="links"><a href="refs2/m41.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по m41"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-m42" data-id="m42">
+<div class="media"><button type="button" class="shot" data-full="refs2/shots/m42.webp" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs2/shots/m42.webp" width="780" height="1018" alt="Снимок m42: История движения на тёмном телефоне"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs2/r42.webp" data-cap="Охрана дома, тёмный телефон" aria-label="Референс r42 крупно"><img loading="lazy" decoding="async" src="refimg/refs2/r42.webp" width="1600" height="1200" alt="Референс r42: Охрана дома, тёмный телефон"></button></div><p class="rcap"><span>референс</span>Охрана дома, тёмный телефон</p></div></div>
+<div class="body"><div class="head"><span class="id">m42</span><span class="badge">приёмка: доработать</span></div>
+<h3>История движения на тёмном телефоне</h3><p class="idea">Тёмный телефон: живой кадр с мелкими показателями поверх, три быстрых действия и история событий строками.</p>
+<div class="links"><a href="refs2/m42.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по m42"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-m43" data-id="m43">
+<div class="media"><button type="button" class="shot" data-full="refs2/shots/m43.webp" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs2/shots/m43.webp" width="1440" height="400" alt="Снимок m43: Светлый план и карточка машины рядом"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs2/r43.webp" data-cap="Диспетчер: светлая карта и машина" aria-label="Референс r43 крупно"><img loading="lazy" decoding="async" src="refimg/refs2/r43.webp" width="1600" height="1200" alt="Референс r43: Диспетчер: светлая карта и машина"></button></div><p class="rcap"><span>референс</span>Диспетчер: светлая карта и машина</p></div></div>
+<div class="body"><div class="head"><span class="id">m43</span><span class="badge">приёмка: доработать</span></div>
+<h3>Светлый план и карточка машины рядом</h3><p class="idea">Светлый план площадки с выбранной машиной и под ним — её карточка: фото, статус и плитки с числами.</p>
+<div class="links"><a href="refs2/m43.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по m43"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-m44" data-id="m44">
+<div class="media"><button type="button" class="shot" data-full="refs2/shots/m44.webp" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs2/shots/m44.webp" width="1440" height="400" alt="Снимок m44: Лента рейсов и кадры рейса"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs2/r44.webp" data-cap="События рейса с кадром водителя" aria-label="Референс r44 крупно"><img loading="lazy" decoding="async" src="refimg/refs2/r44.webp" width="1600" height="1200" alt="Референс r44: События рейса с кадром водителя"></button></div><p class="rcap"><span>референс</span>События рейса с кадром водителя</p></div></div>
+<div class="body"><div class="head"><span class="id">m44</span><span class="badge">приёмка: доработать</span></div>
+<h3>Лента рейсов и кадры рейса</h3><p class="idea">Список рейсов слева, справа — выбранный рейс по шагам с кадром каждого шага, как кадр из кабины у телематики.</p>
+<div class="links"><a href="refs2/m44.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по m44"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-m45" data-id="m45">
+<div class="media"><button type="button" class="shot" data-full="refs2/shots/m45.webp" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs2/shots/m45.webp" width="1440" height="400" alt="Снимок m45: Тёмный план, цвет только у отклонений"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs2/r45.webp" data-cap="Диспетчер: тёмная карта" aria-label="Референс r45 крупно"><img loading="lazy" decoding="async" src="refimg/refs2/r45.webp" width="1600" height="1200" alt="Референс r45: Диспетчер: тёмная карта"></button></div><p class="rcap"><span>референс</span>Диспетчер: тёмная карта</p></div></div>
+<div class="body"><div class="head"><span class="id">m45</span><span class="badge">приёмка: доработать</span></div>
+<h3>Тёмный план, цвет только у отклонений</h3><p class="idea">Тёмный план рейсов: все пути тихие серые, цвет получает только отклонение — машина стоит у ворот 25 минут.</p>
+<div class="links"><a href="refs2/m45.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по m45"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-m46" data-id="m46">
+<div class="media"><button type="button" class="shot" data-full="refs2/shots/m46.webp" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs2/shots/m46.webp" width="780" height="1000" alt="Снимок m46: Одна огромная цифра и тихий график"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs2/r46.webp" data-cap="Обзор: одна большая цифра" aria-label="Референс r46 крупно"><img loading="lazy" decoding="async" src="refimg/refs2/r46.webp" width="1600" height="1200" alt="Референс r46: Обзор: одна большая цифра"></button></div><p class="rcap"><span>референс</span>Обзор: одна большая цифра</p></div></div>
+<div class="body"><div class="head"><span class="id">m46</span></div>
+<h3>Одна огромная цифра и тихий график</h3><p class="idea">Обзор одной огромной цифрой: рейсы за смену в дуге, тихая линия тренда и три спокойные цифры ниже.</p>
+<div class="links"><a href="refs2/m46.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по m46"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-m47" data-id="m47">
+<div class="media"><button type="button" class="shot" data-full="refs2/shots/m47.webp" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs2/shots/m47.webp" width="780" height="1022" alt="Снимок m47: Тёмный монохромный пульт машины"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs2/r47.webp" data-cap="Тёмный моно-пульт оборудования" aria-label="Референс r47 крупно"><img loading="lazy" decoding="async" src="refimg/refs2/r47.webp" width="1600" height="1200" alt="Референс r47: Тёмный моно-пульт оборудования"></button></div><p class="rcap"><span>референс</span>Тёмный моно-пульт оборудования</p></div></div>
+<div class="body"><div class="head"><span class="id">m47</span><span class="badge">приёмка: доработать</span></div>
+<h3>Тёмный монохромный пульт машины</h3><p class="idea">Состояние одной машины без пестроты: монохромный кадр, крупное слово-состояние, почасовые столбики с одним акцентом.</p>
+<div class="links"><a href="refs2/m47.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по m47"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-m48" data-id="m48">
+<div class="media"><button type="button" class="shot" data-full="refs2/shots/m48.webp" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs2/shots/m48.webp" width="1440" height="400" alt="Снимок m48: Крупные цифры и неделя столбиками"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs2/r48.webp" data-cap="Диспетчерская логистики, недели столбиками" aria-label="Референс r48 крупно"><img loading="lazy" decoding="async" src="refimg/refs2/r48.webp" width="1600" height="1200" alt="Референс r48: Диспетчерская логистики, недели столбиками"></button></div><p class="rcap"><span>референс</span>Диспетчерская логистики, недели столбиками</p></div></div>
+<div class="body"><div class="head"><span class="id">m48</span><span class="badge">приёмка: доработать</span></div>
+<h3>Крупные цифры и неделя столбиками</h3><p class="idea">Неделя площадки: ряд крупных цифр с подписью изменения и столбики «план / факт» по дням.</p>
+<div class="links"><a href="refs2/m48.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по m48"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-m49" data-id="m49">
+<div class="media"><button type="button" class="shot" data-full="refs2/shots/m49.webp" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs2/shots/m49.webp" width="1440" height="400" alt="Снимок m49: Схема узлов и их состояние"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs2/r49.webp" data-cap="Пульт площадки (Siemens)" aria-label="Референс r49 крупно"><img loading="lazy" decoding="async" src="refimg/refs2/r49.webp" width="1600" height="1200" alt="Референс r49: Пульт площадки (Siemens)"></button></div><p class="rcap"><span>референс</span>Пульт площадки (Siemens)</p></div></div>
+<div class="body"><div class="head"><span class="id">m49</span></div>
+<h3>Схема узлов и их состояние</h3><p class="idea">Схема площадки как узлы: камеры → распознаватель → пульт, сводка, 1С; у каждого узла статус и одна цифра.</p>
+<div class="links"><a href="refs2/m49.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по m49"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-m51" data-id="m51">
+<div class="media"><button type="button" class="shot" data-full="refs2/shots/m51.webp" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs2/shots/m51.webp" width="1440" height="400" alt="Снимок m51: Тёмная сводка движения со шкалой дня"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs2/r51.webp" data-cap="Тёмный пульт перевозок" aria-label="Референс r51 крупно"><img loading="lazy" decoding="async" src="refimg/refs2/r51.webp" width="1462" height="1076" alt="Референс r51: Тёмный пульт перевозок"></button></div><p class="rcap"><span>референс</span>Тёмный пульт перевозок</p></div></div>
+<div class="body"><div class="head"><span class="id">m51</span><span class="badge">приёмка: доработать</span></div>
+<h3>Тёмная сводка движения со шкалой дня</h3><p class="idea">Тёмная сводка смены: слева доля работы, в центре живой кадр, справа машины, внизу — шкала дня и одно действие.</p>
+<div class="links"><a href="refs2/m51.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по m51"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-m52" data-id="m52">
+<div class="media"><button type="button" class="shot" data-full="refs2/shots/m52.webp" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs2/shots/m52.webp" width="1440" height="400" alt="Снимок m52: Данные тонкими линиями на тёмном"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs2/r52.webp" data-cap="SCADA, тёмный минимализм" aria-label="Референс r52 крупно"><img loading="lazy" decoding="async" src="refimg/refs2/r52.webp" width="1600" height="1200" alt="Референс r52: SCADA, тёмный минимализм"></button></div><p class="rcap"><span>референс</span>SCADA, тёмный минимализм</p></div></div>
+<div class="body"><div class="head"><span class="id">m52</span><span class="badge">приёмка: доработать</span></div>
+<h3>Данные тонкими линиями на тёмном</h3><p class="idea">SCADA-минимализм: плашки счётчиков в ряд (одна подсвечена), тонкие линии по времени и два тонких циферблата.</p>
+<div class="links"><a href="refs2/m52.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по m52"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-m53" data-id="m53">
+<div class="media"><button type="button" class="shot" data-full="refs2/shots/m53.webp" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs2/shots/m53.webp" width="1440" height="400" alt="Снимок m53: Светлая сводка техники на объекте"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs2/r53.webp" data-cap="Рудник: светлая сводка" aria-label="Референс r53 крупно"><img loading="lazy" decoding="async" src="refimg/refs2/r53.webp" width="1600" height="1200" alt="Референс r53: Рудник: светлая сводка"></button></div><p class="rcap"><span>референс</span>Рудник: светлая сводка</p></div></div>
+<div class="body"><div class="head"><span class="id">m53</span><span class="badge">приёмка: доработать</span></div>
+<h3>Светлая сводка техники на объекте</h3><p class="idea">Светлая сводка объекта: по зонам — план и факт, в центре захватки котлована с рейсами, справа — погрузка самосвалов.</p>
+<div class="links"><a href="refs2/m53.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по m53"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article></div></section>
+<section id="s-rej"><details><summary><span>Не прошли приёмку · 4</span><small>критик сказал «нет» — можно всё равно взять</small></summary><div class="grid"><article class="card" id="c-m36" data-id="m36">
+<div class="media"><button type="button" class="shot" data-full="refs2/shots/m36.webp" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs2/shots/m36.webp" width="1440" height="400" alt="Снимок m36: Светлый план, окно камеры и шкала дня"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs2/r36.webp" data-cap="План площадки, камера и шкала" aria-label="Референс r36 крупно"><img loading="lazy" decoding="async" src="refimg/refs2/r36.webp" width="1600" height="1200" alt="Референс r36: План площадки, камера и шкала"></button></div><p class="rcap"><span>референс</span>План площадки, камера и шкала</p></div></div>
+<div class="body"><div class="head"><span class="id">m36</span></div>
+<h3>Светлый план, окно камеры и шкала дня</h3><p class="idea">Светлый план площадки во всю ширину, поверх — окно камеры, шкала дня с событиями и доля «видно».</p>
+<div class="links"><a href="refs2/m36.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по m36"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-m38" data-id="m38">
+<div class="media"><button type="button" class="shot" data-full="refs2/shots/m38.webp" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs2/shots/m38.webp" width="1440" height="400" alt="Снимок m38: Тёмный зал диспетчера с цифрами по краям"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs2/r38.webp" data-cap="Охрана: тёмный зал, 3D-город" aria-label="Референс r38 крупно"><img loading="lazy" decoding="async" src="refimg/refs2/r38.webp" width="1600" height="1200" alt="Референс r38: Охрана: тёмный зал, 3D-город"></button></div><p class="rcap"><span>референс</span>Охрана: тёмный зал, 3D-город</p></div></div>
+<div class="body"><div class="head"><span class="id">m38</span></div>
+<h3>Тёмный зал диспетчера с цифрами по краям</h3><p class="idea">Тёмный «зал диспетчера»: объёмная площадка в центре, выбранная зона подсвечена, крупные цифры по нижнему краю.</p>
+<div class="links"><a href="refs2/m38.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по m38"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-m39" data-id="m39">
+<div class="media"><button type="button" class="shot" data-full="refs2/shots/m39.webp" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs2/shots/m39.webp" width="780" height="1000" alt="Снимок m39: Одна цифра — одна стеклянная карточка"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs2/r39.webp" data-cap="Стеклянные карточки стройки" aria-label="Референс r39 крупно"><img loading="lazy" decoding="async" src="refimg/refs2/r39.webp" width="1600" height="1200" alt="Референс r39: Стеклянные карточки стройки"></button></div><p class="rcap"><span>референс</span>Стеклянные карточки стройки</p></div></div>
+<div class="body"><div class="head"><span class="id">m39</span></div>
+<h3>Одна цифра — одна стеклянная карточка</h3><p class="idea">Стеклянные карточки поверх кадра площадки: на каждой одна цифра, подпись и одно действие внизу.</p>
+<div class="links"><a href="refs2/m39.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по m39"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article>
+<article class="card" id="c-m50" data-id="m50">
+<div class="media"><button type="button" class="shot" data-full="refs2/shots/m50.webp" aria-label="Снимок крупно"><img loading="lazy" decoding="async" src="refs2/shots/m50.webp" width="1440" height="400" alt="Снимок m50: Карточка рейса поверх объёмной площадки"></button><div class="refs"><div class="rths"><button type="button" class="rth" data-full="refimg/refs2/r50.webp" data-cap="Карточка рейса на 3D-карте" aria-label="Референс r50 крупно"><img loading="lazy" decoding="async" src="refimg/refs2/r50.webp" width="1600" height="1200" alt="Референс r50: Карточка рейса на 3D-карте"></button></div><p class="rcap"><span>референс</span>Карточка рейса на 3D-карте</p></div></div>
+<div class="body"><div class="head"><span class="id">m50</span></div>
+<h3>Карточка рейса поверх объёмной площадки</h3><p class="idea">Объёмная площадка, выбранная зона залита акцентом, поверх — карточка рейса с шагами и водителем-машиной.</p>
+<div class="links"><a href="refs2/m50.html" target="_blank" rel="noopener">Открыть ↗</a></div>
+<div class="vote" role="group" aria-label="Решение по m50"><button type="button" data-v="yes" aria-pressed="false">Берём</button><button type="button" data-v="no" aria-pressed="false">Нет</button><button type="button" data-v="mix" aria-pressed="false">Совместить</button></div>
+<label class="mixf" hidden><span>С чем совместить</span><input type="text" autocomplete="off" placeholder="например m40 или v4" enterkeyhint="done"></label>
+</div></article></div></details></section>
+<p class="lic">Референсы — внутренние, для выбора приёмов; права у авторов, картинки в продукт не берём.</p>
+</main>
+<div class="bar"><div class="bar-in"><span id="cnt" aria-live="polite"></span><button type="button" id="copy">Копировать</button><button type="button" id="send">Отправить выбор</button></div></div>
+<dialog id="lb" aria-label="Крупно"><div class="lb"><div class="lb-top"><p id="lbcap"></p><button type="button" id="lbx">Закрыть</button></div><div class="lb-img" id="lbwrap"><img id="lbimg" alt=""></div></div></dialog>
+<dialog id="cp" aria-label="Текст выбора"><div class="lb"><div class="lb-top"><p>Скопируй и вставь в чат с ботом</p><button type="button" id="cpx">Закрыть</button></div><div class="lb-img"><textarea id="cpt" readonly></textarea></div></div></dialog>
+<div class="toast" id="toast" role="status"></div>
+<script>
+(function(){
+var KEY='sokol-pult-gallery-v1',TKEY='sokol-pult-theme';
+var tg=window.Telegram&&Telegram.WebApp;
+var st={};try{st=JSON.parse(localStorage.getItem(KEY)||'{}')||{}}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}}
+var root=document.documentElement,th=null;try{th=localStorage.getItem(TKEY)}catch(e){}
+if(!th&&tg&&tg.initData&&tg.colorScheme)th=tg.colorScheme;
+if(th)root.dataset.theme=th;
+document.getElementById('theme').onclick=function(){var cur=root.dataset.theme||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');var n=cur==='dark'?'light':'dark';root.dataset.theme=n;try{localStorage.setItem(TKEY,n)}catch(e){}};
+var cards=[].slice.call(document.querySelectorAll('.card'));
+var order=cards.map(function(c){return c.dataset.id});
+function paintCard(c){var s=st[c.dataset.id]||{};if(s.v)c.dataset.v=s.v;else delete c.dataset.v;
+ c.querySelectorAll('.vote button').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.v===s.v))});
+ var f=c.querySelector('.mixf');f.hidden=s.v!=='mix';var i=f.querySelector('input');if(document.activeElement!==i)i.value=s.w||''}
+function count(){var y=0,n=0,m=0;Object.keys(st).forEach(function(k){var v=(st[k]||{}).v;if(v==='yes')y++;else if(v==='no')n++;else if(v==='mix')m++});
+ document.getElementById('cnt').innerHTML='Берём <b>'+y+'</b> · Нет <b>'+n+'</b> · Совместить <b>'+m+'</b> · отмечено '+(y+n+m)+' из '+order.length}
+cards.forEach(function(c){var id=c.dataset.id;
+ c.querySelectorAll('.vote button').forEach(function(b){b.onclick=function(){var s=st[id]||{};s.v=s.v===b.dataset.v?undefined:b.dataset.v;if(!s.v&&!s.w)delete st[id];else st[id]=s;save();paintCard(c);count();if(s.v==='mix'&&!s.w)c.querySelector('.mixf input').focus()}});
+ var inp=c.querySelector('.mixf input');inp.oninput=function(){var s=st[id]||{v:'mix'};s.w=inp.value;st[id]=s;save();count()};
+ inp.onkeydown=function(e){if(e.key==='Enter')inp.blur()};
+ paintCard(c)});
+count();
+function norm(w){w=(w||'').trim();if(!w)return '';if(/^[nmv]\d+([\s,;+]+[nmv]\d+)*$/i.test(w))return w.toLowerCase().split(/[\s,;+]+/).join('+');return '«'+w.replace(/[;\n]+/g,' ')+'»'}
+function text(){var y=[],n=[],m=[];order.forEach(function(id){var s=st[id];if(!s||!s.v)return;if(s.v==='yes')y.push(id);else if(s.v==='no')n.push(id);else m.push(id+(norm(s.w)?'+'+norm(s.w):'+?'))});
+ if(!y.length&&!n.length&&!m.length)return '[пульт] ничего не отмечено';
+ var p=[];if(y.length)p.push('берём: '+y.join(', '));if(n.length)p.push('нет: '+n.join(', '));if(m.length)p.push('совместить: '+m.join(', '));
+ var t='[пульт] '+p.join('; ');return t.length>4000?t.slice(0,3990)+' …':t}
+window.pultText=text;
+var toastT;function toast(t){var e=document.getElementById('toast');e.textContent=t;e.classList.add('on');clearTimeout(toastT);toastT=setTimeout(function(){e.classList.remove('on')},2600)}
+var cp=document.getElementById('cp');
+function manual(t){document.getElementById('cpt').value=t;cp.showModal();var a=document.getElementById('cpt');a.focus();a.select()}
+function copy(t){if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(t).then(function(){toast('Скопировано — вставь в чат с ботом')},function(){manual(t)})}else manual(t)}
+document.getElementById('cpx').onclick=function(){cp.close()};
+document.getElementById('copy').onclick=function(){copy(text())};
+document.getElementById('send').onclick=function(){var t=text();
+ if(tg&&tg.initData&&tg.sendData&&!(tg.initDataUnsafe&&tg.initDataUnsafe.query_id)){try{tg.sendData(t);return}catch(e){}}
+ copy(t)};
+if(!(tg&&tg.initData&&tg.sendData&&!(tg.initDataUnsafe&&tg.initDataUnsafe.query_id))){var sb=document.getElementById('send');sb.textContent='Скопировать выбор';document.getElementById('copy').style.display='none';}
+document.getElementById('todo').onclick=function(){var on=document.body.classList.toggle('todo');this.setAttribute('aria-pressed',String(on));if(on)document.querySelectorAll('details').forEach(function(d){d.open=true})};
+var lb=document.getElementById('lb'),li=document.getElementById('lbimg');
+document.addEventListener('click',function(e){var b=e.target.closest('[data-full]');if(!b)return;e.preventDefault();var c=b.closest('.card');
+ li.src=b.dataset.full;var cap=b.dataset.cap||(c?(c.dataset.id+' · '+c.querySelector('h3').textContent):'');document.getElementById('lbcap').textContent=cap;li.alt=cap;lb.showModal()});
+document.getElementById('lbx').onclick=function(){lb.close()};
+document.getElementById('lbwrap').onclick=function(e){if(e.target===this)lb.close()};
+lb.addEventListener('close',function(){li.removeAttribute('src')});
+if(tg){try{tg.ready();tg.expand()}catch(e){}}
+})();
+</script></body></html>

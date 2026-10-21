@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Сокол · Кино</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400..700&display=swap" rel="stylesheet">
+<style>
+/* «Сокол» · главный экран · общие токены вариантов (Tesla / Apple).
+   Цвет — монохром + янтарь (design.md §1: просьба «ПроИИ» — без синего); янтарь только «подтверди», «сомнительно», «не видно».
+   Гарнитура — Golos Text (design.md §1, Типографика). Кегли — только токены 12 · 15 · 22 · 28 · 40. Радиусы — только 8 · 14 · 22 · 28
+   (исключения по ТЗ «не трогать»: табличка номера и уголки рамок — 4 px; точки и кольца — круг 50 %). */
+:root{
+  color-scheme: light dark;
+  --font: "Golos Text", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --bg:#F2F2F4; --bg-2:#E9EAED; --surface:#FFFFFF; --surface-2:#F6F6F8;
+  --glass: rgba(255,255,255,.74); --glass-strong: rgba(255,255,255,.88); --glass-line: rgba(0,0,0,.08);
+  --text:#111214; --text-2:#5B6069; --text-3:#6E737C; --line: rgba(17,18,20,.10); --line-2: rgba(17,18,20,.18);
+  --live:#111214; --idle: rgba(17,18,20,.22);
+  --warn:#8A4F00; --warn-on:#FFFFFF; --warn-soft: rgba(214,140,20,.16); --warn-line:#C98A1E;
+  /* главная кнопка «Подтвердить»: янтарная заливка, тёмный текст — одна на экране */
+  --warn-fill:#F2B552; --warn-fill-on:#111214;
+  --plate-bg:#FFFFFF; --plate-fg:#0B0B0C; --plate-line: rgba(0,0,0,.55);
+  /* поверх видео — одинаково в обеих темах (видео не меняется от темы) */
+  --on-video:#FFFFFF; --on-video-2: rgba(255,255,255,.86); --on-video-glass: rgba(10,11,12,.62); --on-video-line: rgba(255,255,255,.32);
+  --scrim: rgba(6,7,8,.72);
+  --vglass: rgba(250,250,251,.86); --vglass-text:#111214; --vglass-text-2:#40444B;
+  --track:#FFFFFF; --shadow: 0 1px 2px rgba(0,0,0,.06), 0 8px 28px rgba(0,0,0,.08);
+  --iso-top:#FFFFFF; --iso-l:#E4E5E8; --iso-r:#D3D5D9; --iso-ground:#E4E5E9; --iso-grid: rgba(17,18,20,.05);
+  --iso-pit-1:#DCDDE1; --iso-pit-2:#CDCFD4; --iso-pit-3:#BEC1C7; --iso-road:#F7F7F8; --iso-path:#111214;
+  --iso-cont:#55595F; --iso-cone:#6A6E75; --iso-cone-fill: rgba(17,18,20,.05);
+  --r-s:8px; --r-m:14px; --r-l:22px; --r-xl:28px;
+  /* шкала кеглей — пять ступеней */
+  --t-12:12px; --t-15:15px; --t-22:22px; --t-28:28px; --t-40:40px;
+  --hit:44px; /* минимальная цель для пальца и курсора */
+  --sat: env(safe-area-inset-top, 0px); --sab: env(safe-area-inset-bottom, 0px);
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#08090A; --bg-2:#0F1012; --surface:#141518; --surface-2:#1B1C20;
+    --glass: rgba(22,23,26,.62); --glass-strong: rgba(22,23,26,.84); --glass-line: rgba(255,255,255,.09);
+    --text:#F2F3F5; --text-2:#A2A7B0; --text-3:#8D929B; --line: rgba(255,255,255,.09); --line-2: rgba(255,255,255,.18);
+    --live:#F2F3F5; --idle: rgba(242,243,245,.22);
+    --warn:#F2B552; --warn-on:#111214; --warn-soft: rgba(242,181,82,.15); --warn-line:#F2B552;
+    --vglass: rgba(18,19,22,.58); --vglass-text:#F2F3F5; --vglass-text-2:#B7BBC2;
+    --track:#FFFFFF; --shadow: 0 1px 2px rgba(0,0,0,.4), 0 12px 32px rgba(0,0,0,.35);
+    --iso-top:#2A2C31; --iso-l:#1C1D21; --iso-r:#151619; --iso-ground:#0E0F11; --iso-grid: rgba(255,255,255,.04);
+    --iso-pit-1:#17181B; --iso-pit-2:#121315; --iso-pit-3:#0C0D0E; --iso-road:#1A1B1E; --iso-path:#F2F3F5;
+    --iso-cont:#9EA3AB; --iso-cone:#7C8189; --iso-cone-fill: rgba(242,243,245,.06);
+  }
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:var(--t-15);line-height:1.4;
+  -webkit-font-smoothing:antialiased}
+.num{font-variant-numeric:tabular-nums}
+.i{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.i--s{width:16px;height:16px}
+.i--l{width:24px;height:24px}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+:focus-visible{outline:2px solid var(--text);outline-offset:2px}
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* номер — как настоящая табличка: белая, чёрные знаки, регион за чертой (не трогать: вид и радиус 4 px) */
+.plate{display:inline-flex;align-items:stretch;height:24px;border:1.5px solid var(--plate-line);border-radius:4px;background:var(--plate-bg);
+  color:var(--plate-fg);font-weight:600;font-size:var(--t-15);line-height:21px;font-variant-numeric:tabular-nums;letter-spacing:.02em;overflow:hidden;white-space:nowrap}
+.plate b{padding:0 6px;font-weight:600}
+.plate i{font-style:normal;padding:0 5px;border-left:1.5px solid var(--plate-line);font-size:var(--t-12);font-weight:600}
+.plate--q{border-style:dashed}
+.plate--s{height:20px;font-size:var(--t-12);line-height:17px;letter-spacing:.01em}
+.plate--s b{padding:0 5px}
+.plate--s i{padding:0 4px;font-weight:500}
+
+/* «живое» — формой: точка — работает/едет, кольцо — стоит, пунктир янтарём — не видно */
+.dot{width:8px;height:8px;border-radius:50%;background:currentColor;flex:none;display:inline-block}
+.ring{width:8px;height:8px;border-radius:50%;border:1.5px solid currentColor;flex:none;display:inline-block}
+.dash{width:9px;height:9px;border-radius:50%;border:1.5px dashed var(--warn);flex:none;display:inline-block}
+.pulse{position:relative}
+.pulse::after{content:"";position:absolute;inset:-4px;border-radius:50%;border:1.5px solid currentColor;opacity:.5;animation:pulse 2.4s ease-out infinite}
+@keyframes pulse{from{transform:scale(.6);opacity:.6}to{transform:scale(1.6);opacity:0}}
+
+/* «2 номера» — словом, высота 44 px; на тёмном стекле видео и на поверхности */
+.ask{min-height:var(--hit);padding:0 16px 0 14px;border-radius:var(--r-l);display:inline-flex;align-items:center;gap:8px;white-space:nowrap;
+  font-size:var(--t-15);font-weight:600;background:var(--warn-fill);color:var(--warn-fill-on);border:0}
+.ask .dash{border-color:currentColor}
+.ask b{font-weight:700}
+
+/* рамка машины на видео: тонкие уголки + подпись-бирка (refs3 r01, r04, r09) — не трогать */
+.box{position:absolute;pointer-events:none}
+.box::before,.box::after,.box>.c1,.box>.c2{content:"";position:absolute;width:16px;height:16px;border:2px solid var(--track)}
+.box::before{left:0;top:0;border-right:0;border-bottom:0;border-top-left-radius:4px}
+.box::after{right:0;top:0;border-left:0;border-bottom:0;border-top-right-radius:4px}
+.box>.c1{left:0;bottom:0;border-right:0;border-top:0;border-bottom-left-radius:4px}
+.box>.c2{right:0;bottom:0;border-left:0;border-top:0;border-bottom-right-radius:4px}
+.box--q::before,.box--q::after,.box--q>.c1,.box--q>.c2{border-color:var(--warn-line)}
+.tag{position:absolute;left:0;bottom:calc(100% + 6px);display:flex;align-items:center;gap:6px;padding:4px 8px 4px 6px;border-radius:var(--r-s);
+  background:var(--on-video-glass);backdrop-filter:blur(14px) saturate(1.4);-webkit-backdrop-filter:blur(14px) saturate(1.4);
+  color:var(--on-video);font-size:var(--t-12);font-weight:500;white-space:nowrap}
+.tag em{font-style:normal;color:var(--on-video-2)}
+.tag--b{bottom:auto;top:calc(100% + 6px)}
+.groundring{position:absolute;left:14%;right:14%;bottom:-7%;height:14%;border-radius:50%;border:1.5px solid rgba(255,255,255,.7);
+  box-shadow:0 0 18px rgba(255,255,255,.25), inset 0 0 18px rgba(255,255,255,.15)}
+@media (prefers-reduced-motion: reduce){ *{animation:none!important;transition:none!important} }
+
+/* подпись автора кадра — мелко в углу */
+.credit{position:absolute;right:10px;bottom:8px;font-size:var(--t-12);line-height:1.3;color:var(--on-video-2);background:rgba(6,7,8,.5);padding:0 6px;border-radius:var(--r-s);pointer-events:none;white-space:nowrap}
+.sample{display:inline-flex;align-items:center;gap:0;min-height:24px;padding:2px 10px;border-radius:var(--r-s);font-size:var(--t-12);font-weight:500;
+  color:var(--text-2);border:1px solid var(--line-2)}
+.sample--v{color:var(--on-video);border-color:var(--on-video-line);background:var(--on-video-glass)}
+
+/* шкала смены 07:00–19:00: полоса — экскаватор работает; штрих — въезд, бледный — выезд; янтарная точка — подтвердить */
+.tl{position:relative;--tl-now-bg:var(--text);--tl-now-fg:var(--surface)}
+.tl-track{position:relative;height:28px;border-radius:var(--r-s);background:color-mix(in srgb,currentColor 7%,transparent)}
+.tl-work{position:absolute;top:0;bottom:0;background:color-mix(in srgb,currentColor 15%,transparent)}
+.tl-work:first-child{border-radius:var(--r-s) 0 0 var(--r-s)}
+.tl-past{display:none}
+.tl-m{position:absolute;top:7px;width:2px;height:14px;border-radius:var(--r-s);background:currentColor;transform:translateX(-1px)}
+.tl-out{opacity:.42}
+.tl-ask{width:8px;height:8px;top:10px;border-radius:50%;background:var(--warn);transform:translateX(-4px)}
+.tl-now{position:absolute;top:-5px;bottom:-5px;width:2px;border-radius:var(--r-s);background:currentColor;transform:translateX(-1px)}
+.tl-now b{position:absolute;bottom:calc(100% + 3px);left:50%;transform:translateX(-50%);font-size:var(--t-12);font-weight:600;line-height:18px;padding:0 6px;border-radius:var(--r-s);
+  background:var(--tl-now-bg);color:var(--tl-now-fg)}
+.tl-hours{position:relative;height:16px;margin-top:6px;font-size:var(--t-12);line-height:16px;color:var(--text-2)}
+.tl-hours span{position:absolute;transform:translateX(-50%)}
+.tl-hours span:first-child{transform:none}
+.tl-hours span:last-child{transform:translateX(-100%)}
+
+/* ── Вариант 1 «Кино»: живое видео во весь экран, данные приколоты к машинам тонкими линиями (Tesla r31), стекло внизу (Apple r30) ── */
+body{background:#000;overflow:hidden}
+.stage{position:fixed;inset:0;container-type:size;overflow:hidden;background:#000}
+/* кадр и слой разметки — одна геометрия; затемнение лежит между ними, поэтому рамки и выноски всегда над ним */
+.frame{position:absolute;top:50%;left:var(--fx,50%);width:max(100cqw,177.78cqh);aspect-ratio:16/9;transform:translate(calc(-1 * var(--fx,50%)),-50%)}
+.frame>img{position:absolute;inset:0;width:100%;height:100%;display:block}
+.frame--ov{pointer-events:none}
+.scrim-t{position:absolute;left:0;right:0;top:0;height:42%;background:linear-gradient(rgba(6,7,8,.72),rgba(6,7,8,.28) 55%,transparent);pointer-events:none}
+.scrim-b{position:absolute;left:0;right:0;bottom:0;height:40%;background:linear-gradient(transparent,rgba(6,7,8,.55));pointer-events:none}
+
+/* выноска: вертикальная волосяная линия от числа к машине */
+.lead{position:absolute;color:var(--on-video);text-shadow:0 1px 14px rgba(0,0,0,.55)}
+.lead::before{content:"";position:absolute;left:0;top:0;width:1.5px;height:var(--h);background:linear-gradient(rgba(255,255,255,.95),rgba(255,255,255,.55))}
+.lead>div{padding-left:12px}
+.lead .big{font-size:var(--t-40);font-weight:400;letter-spacing:-.02em;line-height:1}
+.lead .sub{font-size:var(--t-15);font-weight:500;color:var(--on-video-2);margin-top:6px}
+
+.top{position:fixed;left:28px;right:28px;top:calc(22px + var(--sat));display:flex;align-items:flex-start;justify-content:space-between;gap:16px;color:var(--on-video);z-index:3}
+.site{min-width:0}
+.site h1{font-size:var(--t-28);font-weight:600;letter-spacing:-.02em;display:flex;align-items:center;gap:6px;line-height:1.1}
+.site h1 .i{opacity:.8}
+.status{display:flex;align-items:center;gap:8px;margin-top:6px;font-size:var(--t-15);color:var(--on-video-2)}
+.status .dot{color:var(--on-video)}
+.top .sample{margin-top:10px}
+.seg{display:flex;padding:3px;border-radius:var(--r-m);background:var(--vglass);backdrop-filter:blur(20px) saturate(1.5);-webkit-backdrop-filter:blur(20px) saturate(1.5);
+  border:1px solid var(--glass-line);color:var(--vglass-text)}
+.seg button{height:var(--hit);padding:0 16px;border-radius:var(--r-s);font-size:var(--t-15);font-weight:500;display:flex;align-items:center;gap:6px;color:var(--vglass-text-2)}
+.seg button[aria-pressed=true]{background:var(--vglass-text);color:var(--surface)}
+@media (prefers-color-scheme: dark){ .seg button[aria-pressed=true]{background:rgba(255,255,255,.16);color:#fff} }
+.acts{display:flex;gap:10px;align-items:center}
+.rb{width:var(--hit);height:var(--hit);border-radius:var(--r-l);display:grid;place-items:center;background:var(--vglass);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border:1px solid var(--glass-line);color:var(--vglass-text)}
+
+/* док: камера 2 · числа смены над шкалой · три последних события */
+.dock{position:fixed;left:24px;right:24px;bottom:calc(24px + var(--sab));z-index:3;display:grid;grid-template-columns:256px 1fr 330px;gap:22px;align-items:stretch;
+  padding:14px;border-radius:var(--r-xl);background:var(--vglass);color:var(--vglass-text);border:1px solid var(--glass-line);
+  backdrop-filter:blur(28px) saturate(1.6);-webkit-backdrop-filter:blur(28px) saturate(1.6);box-shadow:0 20px 60px rgba(0,0,0,.35)}
+.pip{position:relative;border-radius:var(--r-m);overflow:hidden;aspect-ratio:16/9;background:#000;align-self:center;width:100%}
+.pip img{width:100%;height:100%;object-fit:cover;display:block}
+.pip .lbl{position:absolute;left:8px;top:8px;display:flex;align-items:center;gap:6px;height:24px;padding:0 9px 0 8px;border-radius:var(--r-m);font-size:var(--t-12);font-weight:600;
+  color:var(--on-video);background:var(--on-video-glass);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.pip .lbl .dot{width:6px;height:6px;color:#fff}
+.pip .box::before,.pip .box::after,.pip .box>.c1,.pip .box>.c2{width:9px;height:9px;border-width:1.5px}
+.pip .credit{right:6px;bottom:5px}
+.mid{display:flex;flex-direction:column;justify-content:space-between;min-width:0;padding:4px 4px 2px}
+.kpis{display:flex;gap:0;align-items:flex-end}
+.kpi{flex:1;min-width:0;padding-right:14px}
+.kpi+.kpi{padding-left:16px;border-left:1px solid var(--line)}
+.kpi b{display:block;font-size:var(--t-28);font-weight:500;letter-spacing:-.02em;line-height:1.05;white-space:nowrap}
+.kpi b small{font-size:var(--t-15);font-weight:500;letter-spacing:0;margin-left:3px;color:var(--vglass-text-2)}
+.kpi span{display:block;font-size:var(--t-15);color:var(--vglass-text-2);margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dock .tl{margin-top:26px;color:var(--vglass-text)}
+.dock .tl-hours{color:var(--vglass-text-2)}
+.feed{display:flex;flex-direction:column;gap:2px;min-width:0}
+.feed h2{font-size:var(--t-15);font-weight:600;color:var(--vglass-text);padding:0 6px;display:flex;justify-content:space-between;align-items:center}
+.feed h2 a{color:var(--vglass-text);text-decoration:none;font-weight:500;min-height:var(--hit);display:inline-flex;align-items:center;padding:0 4px}
+.ev{display:grid;grid-template-columns:56px 1fr auto;gap:10px;align-items:center;min-height:var(--hit);padding:6px;border-radius:var(--r-m);text-align:left;width:100%}
+.ev img{width:56px;height:32px;object-fit:cover;border-radius:var(--r-s);display:block}
+.ev .t{font-size:var(--t-15);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center;gap:6px;line-height:1.25}
+.ev .s{font-size:var(--t-12);color:var(--vglass-text-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}
+.ev time{font-size:var(--t-15);font-weight:500;color:var(--vglass-text-2)}
+.ev--q{background:var(--warn-soft)}
+.ev--q .s,.ev--q time{color:var(--vglass-text)}
+
+.tabs{display:none}
+.main-credit{right:28px;bottom:calc(266px + var(--sab))}
+.tag--r{left:auto;right:0}
+.tl-m{height:12px;top:8px}
+
+/* ── Телефон: как «Дом» Apple — видео сверху, ниже камеры, событие стеклом, клипы, числа строками Tesla ── */
+@media (max-width: 700px){
+  body{overflow:auto;background:var(--bg)}
+  .stage{position:relative;inset:auto;height:calc(330px + var(--sat));margin-top:0}
+  .scrim-t{height:62%}
+  .lead{display:none}
+  .top{position:absolute;left:16px;right:16px;top:calc(10px + var(--sat));display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:10px;align-items:center}
+  .site{display:contents}
+  .site h1{grid-column:1/-1;white-space:nowrap}
+  .status{grid-column:1;grid-row:2}
+  .acts{grid-column:2;grid-row:2;margin-top:4px}
+  .top .sample{grid-column:1/-1;grid-row:3;justify-self:start;margin-top:4px}
+  .site h1{font-size:var(--t-22)}
+  .status{font-size:var(--t-15);margin-top:4px}
+  .top .sample{margin-top:8px}
+  .top .seg,.ask .lbl{display:none}
+  .ask{padding:0 14px 0 12px}
+  .main-credit{bottom:8px;right:10px}
+  .box .tag em,.box .tag--r{display:none}
+  .dock{position:static;display:block;margin:0;padding:0 16px calc(120px + var(--sab));border-radius:0;border:0;background:var(--bg);color:var(--text);box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none}
+  .cams{display:flex;gap:10px;padding:14px 0 4px;overflow:hidden}
+  .cams button{position:relative;width:88px;height:50px;border-radius:var(--r-m);overflow:hidden;flex:none;padding:0}
+  .cams button img{width:100%;height:100%;object-fit:cover;display:block}
+  .cams button[aria-pressed=true]{outline:2.5px solid var(--text);outline-offset:2px}
+  .cams button span{position:absolute;left:4px;bottom:4px;font-size:var(--t-12);font-weight:600;line-height:18px;padding:0 5px;border-radius:var(--r-s);color:var(--on-video);background:var(--on-video-glass)}
+  .cams .three{display:grid;place-items:center;background:var(--surface-2);color:var(--text);border:1px solid var(--line)}
+  .cams .three span{position:static;color:var(--text);background:none;padding:0;font-size:var(--t-12);display:flex;flex-direction:column;align-items:center;gap:2px}
+  .pip{display:none}
+  .now{margin-top:12px;padding:14px 16px;border-radius:var(--r-l);background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow)}
+  .now .h{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+  .now .h b{font-size:var(--t-15);font-weight:600;line-height:1.3}
+  .now .h span{display:block;font-size:var(--t-15);color:var(--text-2);margin-top:2px}
+  .now .pp{width:var(--hit);height:var(--hit);border-radius:var(--r-l);display:grid;place-items:center;background:var(--surface-2);flex:none}
+  .segbar{display:flex;gap:3px;margin-top:12px}
+  .segbar i{height:4px;border-radius:var(--r-s);flex:1;background:var(--line-2)}
+  .segbar i.on{background:var(--text)}
+  .mid{padding:0}
+  .kpis{display:block;margin-top:18px}
+  .kpi,.kpi+.kpi{display:grid;grid-template-columns:28px 1fr 16px;align-items:center;gap:12px;padding:12px 0;border-left:0;border-top:1px solid var(--line)}
+  .kpi b{font-size:var(--t-22)}
+  .kpi b small{color:var(--text-2)}
+  .kpi span{color:var(--text-2);margin-top:2px}
+  .kpi .i{color:var(--text-2)}
+  .kpi .chev{color:var(--text-3)}
+  .dock .tl{margin-top:34px;color:var(--text)}
+  .dock .tl-hours{color:var(--text-2)}
+  .feed{margin-top:22px}
+  .feed h2{color:var(--text-2);padding:0}
+  .feed h2 a{color:var(--text)}
+  .ev{padding:8px 0;border-radius:0;border-top:1px solid var(--line)}
+  .ev--q{background:var(--warn-soft);border-radius:var(--r-m);padding:8px;border-top:0;margin:4px 0}
+  .ev .s{color:var(--text-2)}
+  .ev--q .s,.ev--q time{color:var(--text)}
+  .ev time{color:var(--text-2)}
+  .tabs{display:flex;position:fixed;left:12px;right:12px;bottom:calc(14px + var(--sab));z-index:5;height:64px;border-radius:var(--r-xl);justify-content:space-around;align-items:center;
+    background:var(--glass-strong);backdrop-filter:blur(24px) saturate(1.6);-webkit-backdrop-filter:blur(24px) saturate(1.6);border:1px solid var(--glass-line);box-shadow:var(--shadow)}
+  .tabs button{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:var(--t-12);font-weight:500;color:var(--text-2);min-width:64px;height:52px;justify-content:center}
+  .tabs button[aria-current=page]{color:var(--text)}
+  .tabs .i{width:24px;height:24px}
+}
+@media (min-width: 701px){ .phone-only{display:none!important} }
+@media (max-width: 700px){ .desk-only{display:none!important} }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<symbol id="i-video" viewBox="0 0 24 24"><path d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5"/><rect x="2" y="6" width="14" height="12" rx="2"/></symbol>
+<symbol id="i-list" viewBox="0 0 24 24"><path d="M3 12h.01M3 18h.01M3 6h.01M8 12h13M8 18h13M8 6h13"/></symbol>
+<symbol id="i-map" viewBox="0 0 24 24"><path d="M14.106 5.553a2 2 0 0 0 1.788 0l3.659-1.83A1 1 0 0 1 21 4.619v12.764a1 1 0 0 1-.553.894l-4.553 2.277a2 2 0 0 1-1.788 0l-4.212-2.106a2 2 0 0 0-1.788 0l-3.659 1.83A1 1 0 0 1 3 19.381V6.618a1 1 0 0 1 .553-.894l4.553-2.277a2 2 0 0 1 1.788 0z"/><path d="M15 5.764v15M9 3.236v15"/></symbol>
+<symbol id="i-box" viewBox="0 0 24 24"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5M12 22V12"/></symbol>
+<symbol id="i-file" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4M10 9H8M16 13H8M16 17H8"/></symbol>
+<symbol id="i-truck" viewBox="0 0 24 24"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></symbol>
+<symbol id="i-dig" viewBox="0 0 24 24"><rect x="2" y="17" width="12" height="4" rx="2"/><path d="M4 17v-4h7l2 4"/><path d="M11 13 15.5 6 21 9.5l-1.5 4.5"/><path d="M19.5 14l-2.5 1"/></symbol>
+<symbol id="i-bell" viewBox="0 0 24 24"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></symbol>
+<symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol>
+<symbol id="i-chev" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+<symbol id="i-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+<symbol id="i-play" viewBox="0 0 24 24"><path d="M6 4.5v15a1 1 0 0 0 1.5.86l12.5-7.5a1 1 0 0 0 0-1.72L7.5 3.64A1 1 0 0 0 6 4.5Z"/></symbol>
+<symbol id="i-pause" viewBox="0 0 24 24"><rect x="14" y="4" width="4" height="16" rx="1"/><rect x="6" y="4" width="4" height="16" rx="1"/></symbol>
+<symbol id="i-max" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3M16 21h3a2 2 0 0 0 2-2v-3"/></symbol>
+<symbol id="i-alert" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4M12 17h.01"/></symbol>
+<symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></symbol>
+<symbol id="i-layers" viewBox="0 0 24 24"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65M22 12.65l-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></symbol>
+<symbol id="i-more" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></symbol>
+<symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+<symbol id="i-route" viewBox="0 0 24 24"><circle cx="6" cy="19" r="3"/><path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"/><circle cx="18" cy="5" r="3"/></symbol>
+<symbol id="i-in" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+<symbol id="i-out" viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6"/></symbol>
+</svg>
+
+<section class="stage onvideo" aria-label="Камера 1, главный въезд — живое видео">
+  <div class="frame" style="--fx:56%">
+    <img src="img/cam1.webp" alt="Камера 1: самосвал у трубы и колёсный экскаватор за ограждением">
+  </div>
+  <div class="scrim-t"></div><div class="scrim-b desk-only"></div>
+  <div class="frame frame--ov" style="--fx:56%">
+    <!-- самосвал (слева) -->
+    <div class="box" style="left:1%;top:28%;width:26%;height:38%"><i class="c1"></i><i class="c2"></i>
+      <span class="tag tag--r">Самосвал <span class="plate plate--s"><b>К482ОР</b><i>59</i></span> <em class="num">0,96 · 5 из 6 кадров</em></span></div>
+    <!-- экскаватор (справа) -->
+    <div class="box" style="left:64%;top:37%;width:35%;height:34%"><i class="c1"></i><i class="c2"></i><span class="groundring"></span>
+      <span class="tag tag--b tag--x phone-only" style="left:10px"><span class="dot pulse"></span>Работает</span></div>
+    <!-- выноски с крупными числами -->
+    <div class="lead desk-only" style="left:15%;top:13%;--h:10cqh"><div><div class="big num">12 мин</div><div class="sub">самосвал на площадке</div></div></div>
+    <div class="lead desk-only" style="left:66%;top:12%;--h:25cqh"><div><div class="big num">6 ч 12 мин</div><div class="sub">Volvo EW180B работает, стоял 1 ч 20 мин</div></div></div>
+  </div>
+  <span class="credit main-credit">Кадр: Sounds of Changes, CC BY 3.0, Wikimedia Commons</span>
+</section>
+
+<header class="top onvideo">
+  <div class="site">
+    <h1>ЖК «Пример», корпус 2 <svg class="i i--s"><use href="#i-down"/></svg></h1>
+    <div class="status"><span class="dot pulse"></span> Смена идёт, 14:52 по Перми</div>
+    <span class="sample sample--v">Пример: данные выдуманы<span class="desk-only">, кадры настоящие</span></span>
+  </div>
+  <nav class="seg" aria-label="Режим пульта">
+    <button aria-pressed="true"><svg class="i i--s"><use href="#i-video"/></svg>Камеры</button>
+    <button aria-pressed="false"><svg class="i i--s"><use href="#i-list"/></svg>Журнал</button>
+    <button aria-pressed="false"><svg class="i i--s"><use href="#i-box"/></svg>Площадка в 3D</button>
+  </nav>
+  <div class="acts">
+    <button class="ask" aria-label="Подтвердить 2 номера"><span class="dash"></span><span class="lbl">Подтвердить</span><b>2 номера</b></button>
+    <button class="rb desk-only" aria-label="Поиск"><svg class="i"><use href="#i-search"/></svg></button>
+  </div>
+</header>
+
+<section class="dock" aria-label="Смена">
+  <div class="cams phone-only onvideo" role="group" aria-label="Камеры">
+    <button aria-pressed="true"><img src="img/cam1.webp" alt=""><span>Въезд</span></button>
+    <button aria-pressed="false"><img src="img/cam2.webp" alt=""><span>Котлован</span></button>
+    <button aria-pressed="false" class="three"><span><svg class="i"><use href="#i-box"/></svg>3D</span></button>
+  </div>
+  <div class="pip onvideo">
+    <img src="img/cam2.webp" alt="Камера 2: мини-экскаватор у котлована и самосвал на дороге">
+    <div class="box" style="left:50%;top:21%;width:32%;height:52%"><i class="c1"></i><i class="c2"></i></div>
+    <div class="box" style="left:9%;top:22%;width:17%;height:33%"><i class="c1"></i><i class="c2"></i></div>
+    <span class="lbl"><span class="dot"></span>Камера 2, котлован</span>
+    <span class="credit">ŠJů, CC BY 4.0</span>
+  </div>
+  <div class="now phone-only">
+    <div class="h"><div><b>Самосвал К482ОР 59 въехал</b><span class="num">Сегодня, 14:52. Номер 0,96, прочитан на 5 из 6 кадров</span></div>
+      <button class="pp" aria-label="Пауза"><svg class="i i--s"><use href="#i-pause"/></svg></button></div>
+    <div class="segbar"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></div>
+  </div>
+  <div class="mid">
+    <div class="kpis">
+      <div class="kpi"><svg class="i phone-only"><use href="#i-route"/></svg><div><b class="num">41</b><span>рейс за смену</span></div><svg class="i i--s chev phone-only"><use href="#i-chev"/></svg></div>
+      <div class="kpi"><svg class="i phone-only"><use href="#i-truck"/></svg><div><b class="num">23</b><span>машины</span></div><svg class="i i--s chev phone-only"><use href="#i-chev"/></svg></div>
+      <div class="kpi"><svg class="i phone-only"><use href="#i-clock"/></svg><div><b class="num">38<small>мин</small></b><span>средний цикл</span></div><svg class="i i--s chev phone-only"><use href="#i-chev"/></svg></div>
+      <div class="kpi"><svg class="i phone-only"><use href="#i-dig"/></svg><div><b class="num">18<small>%</small></b><span>простой техники</span></div><svg class="i i--s chev phone-only"><use href="#i-chev"/></svg></div>
+    </div>
+    <div class="tl" aria-label="Шкала смены 07:00–19:00"><div class="tl-track"><span class="tl-work" style="left:2.78%;width:calc(17.36% - 2.78%)"></span><span class="tl-work" style="left:22.22%;width:calc(43.06% - 22.22%)"></span><span class="tl-work" style="left:49.31%;width:calc(65.56% - 49.31%)"></span><span class="tl-past" style="width:65.56%"></span><span class="tl-m tl-in" style="left:1.67%" title="въехал 07:12"></span><span class="tl-m tl-out" style="left:6.94%" title="выехал"></span><span class="tl-m tl-in" style="left:4.31%" title="въехал 07:31"></span><span class="tl-m tl-out" style="left:9.58%" title="выехал"></span><span class="tl-m tl-in" style="left:6.67%" title="въехал 07:48"></span><span class="tl-m tl-out" style="left:11.94%" title="выехал"></span><span class="tl-m tl-in" style="left:9.03%" title="въехал 08:05"></span><span class="tl-m tl-out" style="left:14.31%" title="выехал"></span><span class="tl-m tl-in" style="left:11.39%" title="въехал 08:22"></span><span class="tl-m tl-out" style="left:16.67%" title="выехал"></span><span class="tl-m tl-in" style="left:13.89%" title="въехал 08:40"></span><span class="tl-m tl-out" style="left:19.17%" title="выехал"></span><span class="tl-m tl-in" style="left:18.33%" title="въехал 09:12"></span><span class="tl-m tl-out" style="left:23.61%" title="выехал"></span><span class="tl-m tl-in" style="left:20.83%" title="въехал 09:30"></span><span class="tl-m tl-out" style="left:26.11%" title="выехал"></span><span class="tl-m tl-in" style="left:24.72%" title="въехал 09:58"></span><span class="tl-m tl-out" style="left:30.00%" title="выехал"></span><span class="tl-m tl-in" style="left:27.08%" title="въехал 10:15"></span><span class="tl-m tl-out" style="left:32.36%" title="выехал"></span><span class="tl-m tl-in" style="left:33.61%" title="въехал 11:02"></span><span class="tl-m tl-out" style="left:38.89%" title="выехал"></span><span class="tl-m tl-in" style="left:36.11%" title="въехал 11:20"></span><span class="tl-m tl-out" style="left:41.39%" title="выехал"></span><span class="tl-m tl-in" style="left:39.86%" title="въехал 11:47"></span><span class="tl-m tl-out" style="left:45.14%" title="выехал"></span><span class="tl-m tl-in" style="left:49.72%" title="въехал 12:58"></span><span class="tl-m tl-out" style="left:55.00%" title="выехал"></span><span class="tl-m tl-in" style="left:52.08%" title="въехал 13:15"></span><span class="tl-m tl-out" style="left:57.36%" title="выехал"></span><span class="tl-m tl-in" style="left:54.58%" title="въехал 13:33"></span><span class="tl-m tl-out" style="left:59.86%" title="выехал"></span><span class="tl-m tl-in" style="left:57.78%" title="въехал 13:56"></span><span class="tl-m tl-out" style="left:63.06%" title="выехал"></span><span class="tl-m tl-in" style="left:59.72%" title="въехал 14:10"></span><span class="tl-m tl-out" style="left:65.00%" title="выехал"></span><span class="tl-m tl-in" style="left:65.56%" title="въехал 14:52"></span><span class="tl-m tl-ask" style="left:30.69%" title="подтвердить 10:41"></span><span class="tl-m tl-ask" style="left:60.83%" title="подтвердить 14:18"></span><span class="tl-now" style="left:65.56%"><b class="num">14:52</b></span></div><div class="tl-hours num"><span style="left:0.00%">07:00</span><span style="left:16.67%">09:00</span><span style="left:33.33%">11:00</span><span style="left:50.00%">13:00</span><span style="left:66.67%">15:00</span><span style="left:83.33%">17:00</span><span style="left:100.00%">19:00</span></div></div>
+  </div>
+  <div class="feed">
+    <h2>События <a href="#">Все 64</a></h2>
+    <button class="ev"><img src="img/dmp-in.webp" alt=""><div><div class="t">Самосвал въехал</div><div class="s"><span class="plate plate--s"><b>К482ОР</b><i>59</i></span></div></div><time class="num">14:52</time></button>
+    <button class="ev"><img src="img/fh-out.webp" alt=""><div><div class="t">Самосвал выехал</div><div class="s"><span class="plate plate--s"><b>М715ТН</b><i>159</i></span></div></div><time class="num">14:31</time></button>
+    <button class="ev ev--q"><img src="img/haf-in.webp" alt=""><div><div class="t"><span class="dash"></span>Проверьте номер</div><div class="s num">сомнительно: Е043ХА 59, 0,61</div></div><time class="num">14:18</time></button>
+  </div>
+</section>
+
+<nav class="tabs" aria-label="Разделы">
+  <button aria-current="page"><svg class="i"><use href="#i-video"/></svg>Камеры</button>
+  <button><svg class="i"><use href="#i-list"/></svg>Журнал</button>
+  <button><svg class="i"><use href="#i-box"/></svg>Площадка</button>
+  <button><svg class="i"><use href="#i-file"/></svg>Рапорт</button>
+</nav>
+</body>
+</html>

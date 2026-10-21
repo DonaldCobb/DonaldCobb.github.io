@@ -1,0 +1,349 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Сокол · Площадка</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400..700&display=swap" rel="stylesheet">
+<style>
+/* «Сокол» · главный экран · общие токены вариантов (Tesla / Apple).
+   Цвет — монохром + янтарь (design.md §1: просьба «ПроИИ» — без синего); янтарь только «подтверди», «сомнительно», «не видно».
+   Гарнитура — Golos Text (design.md §1, Типографика). Кегли — только токены 12 · 15 · 22 · 28 · 40. Радиусы — только 8 · 14 · 22 · 28
+   (исключения по ТЗ «не трогать»: табличка номера и уголки рамок — 4 px; точки и кольца — круг 50 %). */
+:root{
+  color-scheme: light dark;
+  --font: "Golos Text", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --bg:#F2F2F4; --bg-2:#E9EAED; --surface:#FFFFFF; --surface-2:#F6F6F8;
+  --glass: rgba(255,255,255,.74); --glass-strong: rgba(255,255,255,.88); --glass-line: rgba(0,0,0,.08);
+  --text:#111214; --text-2:#5B6069; --text-3:#6E737C; --line: rgba(17,18,20,.10); --line-2: rgba(17,18,20,.18);
+  --live:#111214; --idle: rgba(17,18,20,.22);
+  --warn:#8A4F00; --warn-on:#FFFFFF; --warn-soft: rgba(214,140,20,.16); --warn-line:#C98A1E;
+  /* главная кнопка «Подтвердить»: янтарная заливка, тёмный текст — одна на экране */
+  --warn-fill:#F2B552; --warn-fill-on:#111214;
+  --plate-bg:#FFFFFF; --plate-fg:#0B0B0C; --plate-line: rgba(0,0,0,.55);
+  /* поверх видео — одинаково в обеих темах (видео не меняется от темы) */
+  --on-video:#FFFFFF; --on-video-2: rgba(255,255,255,.86); --on-video-glass: rgba(10,11,12,.62); --on-video-line: rgba(255,255,255,.32);
+  --scrim: rgba(6,7,8,.72);
+  --vglass: rgba(250,250,251,.86); --vglass-text:#111214; --vglass-text-2:#40444B;
+  --track:#FFFFFF; --shadow: 0 1px 2px rgba(0,0,0,.06), 0 8px 28px rgba(0,0,0,.08);
+  --iso-top:#FFFFFF; --iso-l:#E4E5E8; --iso-r:#D3D5D9; --iso-ground:#E4E5E9; --iso-grid: rgba(17,18,20,.05);
+  --iso-pit-1:#DCDDE1; --iso-pit-2:#CDCFD4; --iso-pit-3:#BEC1C7; --iso-road:#F7F7F8; --iso-path:#111214;
+  --iso-cont:#55595F; --iso-cone:#6A6E75; --iso-cone-fill: rgba(17,18,20,.05);
+  --r-s:8px; --r-m:14px; --r-l:22px; --r-xl:28px;
+  /* шкала кеглей — пять ступеней */
+  --t-12:12px; --t-15:15px; --t-22:22px; --t-28:28px; --t-40:40px;
+  --hit:44px; /* минимальная цель для пальца и курсора */
+  --sat: env(safe-area-inset-top, 0px); --sab: env(safe-area-inset-bottom, 0px);
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#08090A; --bg-2:#0F1012; --surface:#141518; --surface-2:#1B1C20;
+    --glass: rgba(22,23,26,.62); --glass-strong: rgba(22,23,26,.84); --glass-line: rgba(255,255,255,.09);
+    --text:#F2F3F5; --text-2:#A2A7B0; --text-3:#8D929B; --line: rgba(255,255,255,.09); --line-2: rgba(255,255,255,.18);
+    --live:#F2F3F5; --idle: rgba(242,243,245,.22);
+    --warn:#F2B552; --warn-on:#111214; --warn-soft: rgba(242,181,82,.15); --warn-line:#F2B552;
+    --vglass: rgba(18,19,22,.58); --vglass-text:#F2F3F5; --vglass-text-2:#B7BBC2;
+    --track:#FFFFFF; --shadow: 0 1px 2px rgba(0,0,0,.4), 0 12px 32px rgba(0,0,0,.35);
+    --iso-top:#2A2C31; --iso-l:#1C1D21; --iso-r:#151619; --iso-ground:#0E0F11; --iso-grid: rgba(255,255,255,.04);
+    --iso-pit-1:#17181B; --iso-pit-2:#121315; --iso-pit-3:#0C0D0E; --iso-road:#1A1B1E; --iso-path:#F2F3F5;
+    --iso-cont:#9EA3AB; --iso-cone:#7C8189; --iso-cone-fill: rgba(242,243,245,.06);
+  }
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:var(--t-15);line-height:1.4;
+  -webkit-font-smoothing:antialiased}
+.num{font-variant-numeric:tabular-nums}
+.i{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.i--s{width:16px;height:16px}
+.i--l{width:24px;height:24px}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+:focus-visible{outline:2px solid var(--text);outline-offset:2px}
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* номер — как настоящая табличка: белая, чёрные знаки, регион за чертой (не трогать: вид и радиус 4 px) */
+.plate{display:inline-flex;align-items:stretch;height:24px;border:1.5px solid var(--plate-line);border-radius:4px;background:var(--plate-bg);
+  color:var(--plate-fg);font-weight:600;font-size:var(--t-15);line-height:21px;font-variant-numeric:tabular-nums;letter-spacing:.02em;overflow:hidden;white-space:nowrap}
+.plate b{padding:0 6px;font-weight:600}
+.plate i{font-style:normal;padding:0 5px;border-left:1.5px solid var(--plate-line);font-size:var(--t-12);font-weight:600}
+.plate--q{border-style:dashed}
+.plate--s{height:20px;font-size:var(--t-12);line-height:17px;letter-spacing:.01em}
+.plate--s b{padding:0 5px}
+.plate--s i{padding:0 4px;font-weight:500}
+
+/* «живое» — формой: точка — работает/едет, кольцо — стоит, пунктир янтарём — не видно */
+.dot{width:8px;height:8px;border-radius:50%;background:currentColor;flex:none;display:inline-block}
+.ring{width:8px;height:8px;border-radius:50%;border:1.5px solid currentColor;flex:none;display:inline-block}
+.dash{width:9px;height:9px;border-radius:50%;border:1.5px dashed var(--warn);flex:none;display:inline-block}
+.pulse{position:relative}
+.pulse::after{content:"";position:absolute;inset:-4px;border-radius:50%;border:1.5px solid currentColor;opacity:.5;animation:pulse 2.4s ease-out infinite}
+@keyframes pulse{from{transform:scale(.6);opacity:.6}to{transform:scale(1.6);opacity:0}}
+
+/* «2 номера» — словом, высота 44 px; на тёмном стекле видео и на поверхности */
+.ask{min-height:var(--hit);padding:0 16px 0 14px;border-radius:var(--r-l);display:inline-flex;align-items:center;gap:8px;white-space:nowrap;
+  font-size:var(--t-15);font-weight:600;background:var(--warn-fill);color:var(--warn-fill-on);border:0}
+.ask .dash{border-color:currentColor}
+.ask b{font-weight:700}
+
+/* рамка машины на видео: тонкие уголки + подпись-бирка (refs3 r01, r04, r09) — не трогать */
+.box{position:absolute;pointer-events:none}
+.box::before,.box::after,.box>.c1,.box>.c2{content:"";position:absolute;width:16px;height:16px;border:2px solid var(--track)}
+.box::before{left:0;top:0;border-right:0;border-bottom:0;border-top-left-radius:4px}
+.box::after{right:0;top:0;border-left:0;border-bottom:0;border-top-right-radius:4px}
+.box>.c1{left:0;bottom:0;border-right:0;border-top:0;border-bottom-left-radius:4px}
+.box>.c2{right:0;bottom:0;border-left:0;border-top:0;border-bottom-right-radius:4px}
+.box--q::before,.box--q::after,.box--q>.c1,.box--q>.c2{border-color:var(--warn-line)}
+.tag{position:absolute;left:0;bottom:calc(100% + 6px);display:flex;align-items:center;gap:6px;padding:4px 8px 4px 6px;border-radius:var(--r-s);
+  background:var(--on-video-glass);backdrop-filter:blur(14px) saturate(1.4);-webkit-backdrop-filter:blur(14px) saturate(1.4);
+  color:var(--on-video);font-size:var(--t-12);font-weight:500;white-space:nowrap}
+.tag em{font-style:normal;color:var(--on-video-2)}
+.tag--b{bottom:auto;top:calc(100% + 6px)}
+.groundring{position:absolute;left:14%;right:14%;bottom:-7%;height:14%;border-radius:50%;border:1.5px solid rgba(255,255,255,.7);
+  box-shadow:0 0 18px rgba(255,255,255,.25), inset 0 0 18px rgba(255,255,255,.15)}
+@media (prefers-reduced-motion: reduce){ *{animation:none!important;transition:none!important} }
+
+/* подпись автора кадра — мелко в углу */
+.credit{position:absolute;right:10px;bottom:8px;font-size:var(--t-12);line-height:1.3;color:var(--on-video-2);background:rgba(6,7,8,.5);padding:0 6px;border-radius:var(--r-s);pointer-events:none;white-space:nowrap}
+.sample{display:inline-flex;align-items:center;gap:0;min-height:24px;padding:2px 10px;border-radius:var(--r-s);font-size:var(--t-12);font-weight:500;
+  color:var(--text-2);border:1px solid var(--line-2)}
+.sample--v{color:var(--on-video);border-color:var(--on-video-line);background:var(--on-video-glass)}
+
+/* шкала смены 07:00–19:00: полоса — экскаватор работает; штрих — въезд, бледный — выезд; янтарная точка — подтвердить */
+.tl{position:relative;--tl-now-bg:var(--text);--tl-now-fg:var(--surface)}
+.tl-track{position:relative;height:28px;border-radius:var(--r-s);background:color-mix(in srgb,currentColor 7%,transparent)}
+.tl-work{position:absolute;top:0;bottom:0;background:color-mix(in srgb,currentColor 15%,transparent)}
+.tl-work:first-child{border-radius:var(--r-s) 0 0 var(--r-s)}
+.tl-past{display:none}
+.tl-m{position:absolute;top:7px;width:2px;height:14px;border-radius:var(--r-s);background:currentColor;transform:translateX(-1px)}
+.tl-out{opacity:.42}
+.tl-ask{width:8px;height:8px;top:10px;border-radius:50%;background:var(--warn);transform:translateX(-4px)}
+.tl-now{position:absolute;top:-5px;bottom:-5px;width:2px;border-radius:var(--r-s);background:currentColor;transform:translateX(-1px)}
+.tl-now b{position:absolute;bottom:calc(100% + 3px);left:50%;transform:translateX(-50%);font-size:var(--t-12);font-weight:600;line-height:18px;padding:0 6px;border-radius:var(--r-s);
+  background:var(--tl-now-bg);color:var(--tl-now-fg)}
+.tl-hours{position:relative;height:16px;margin-top:6px;font-size:var(--t-12);line-height:16px;color:var(--text-2)}
+.tl-hours span{position:absolute;transform:translateX(-50%)}
+.tl-hours span:first-child{transform:none}
+.tl-hours span:last-child{transform:translateX(-100%)}
+
+/* ── Вариант 3 «Площадка»: вся стройка сверху в 3D (Waymo r30 «глина», r26), окна камер у своих столбов, карточка машины как во Flightradar (refs2 r32), шкала ступенями (Motive r12) ── */
+body{overflow:hidden;background:var(--bg)}
+.map{position:fixed;left:0;right:370px;top:0;bottom:0}
+.iso{width:100%;height:100%;display:block}
+.iso .g{fill:var(--iso-ground);stroke:var(--line-2);stroke-width:1}
+.iso .g-r{fill:var(--iso-r)} .iso .g-l{fill:var(--iso-l)}
+.iso .grid{stroke:var(--iso-grid);stroke-width:1;fill:none}
+.iso .road{fill:var(--iso-road);stroke:var(--line);stroke-width:1}
+.iso .b-t{fill:var(--iso-top);stroke:var(--line);stroke-width:.6} .iso .b-r{fill:var(--iso-r)} .iso .b-l{fill:var(--iso-l)}
+.iso .m-t{fill:var(--text)} .iso .k-t{fill:color-mix(in srgb,var(--text) 62%,var(--bg))} .iso .k-r{fill:color-mix(in srgb,var(--text) 42%,var(--bg))} .iso .k-l{fill:color-mix(in srgb,var(--text) 52%,var(--bg))} .iso .m-r{fill:color-mix(in srgb,var(--text) 70%,var(--bg))} .iso .m-l{fill:color-mix(in srgb,var(--text) 82%,var(--bg))}
+.iso .arm{fill:none;stroke:var(--text);stroke-width:4.4;stroke-linecap:round;stroke-linejoin:round}
+.iso .wall-x{fill:var(--iso-r)} .iso .wall-y{fill:var(--iso-l)}
+.iso .pit2{fill:var(--iso-pit-1)} .iso .pit3{fill:var(--iso-pit-2)}
+.iso .cont{stroke:var(--iso-cont);stroke-width:1.5}
+.iso .cont-plan{stroke:var(--iso-cont);stroke-width:1.5;stroke-dasharray:5 5}
+.iso .ghost{stroke:var(--text-3);stroke-width:1;stroke-dasharray:3 4;fill:none}
+.iso .crane{stroke:var(--text-2);stroke-width:2;fill:none}
+.iso .cone{fill:var(--iso-cone-fill);stroke:var(--iso-cone);stroke-width:1.4;stroke-dasharray:5 4}
+.iso .path-day{fill:none;stroke:var(--iso-path);stroke-opacity:.28;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.iso .path-now{fill:none;stroke:var(--iso-path);stroke-width:8;stroke-linecap:round;filter:drop-shadow(0 0 6px color-mix(in srgb,var(--iso-path) 50%,transparent))}
+.iso .heat{fill:var(--text);fill-opacity:.07}
+.iso .gring{fill:none;stroke:var(--text);stroke-width:2}
+.iso .qring{fill:none;stroke:var(--warn-line);stroke-width:2;stroke-dasharray:5 4}
+.iso .pole{stroke:var(--text);stroke-width:2}
+.iso .camdot{fill:var(--surface);stroke:var(--text);stroke-width:2.5}
+.iso .lead{stroke:var(--text);stroke-opacity:.6;stroke-width:1.2}
+.ftag{display:inline-flex;align-items:center;gap:8px;height:48px;padding:0 16px 0 14px;border-radius:var(--r-l);background:var(--glass-strong);color:var(--text);
+  border:1px solid var(--glass-line);font-weight:500;font-size:var(--t-22);line-height:1;white-space:nowrap;box-shadow:var(--shadow)}
+.ftag .plate{height:32px;font-size:var(--t-22);line-height:29px}
+.ftag .plate i{font-size:var(--t-15)}
+.ftag .ic{width:24px;height:24px;color:var(--text-2)}
+.ftag .dot,.ftag .dash{width:10px;height:10px}
+.ftag .dot{color:var(--text)}
+.fo.q .ftag{border-color:var(--warn-line);background:var(--glass-strong)}
+.fo.lbl .ftag{background:transparent;border:0;box-shadow:none;color:var(--text-2);font-size:var(--t-22)}
+.fo.lbl .ftag b{color:var(--text);font-weight:600}
+.cw{position:relative;width:330px;height:186px;border-radius:var(--r-m);overflow:hidden;background:#000;box-shadow:0 10px 30px rgba(0,0,0,.28);outline:1px solid var(--glass-line)}
+.cw img{width:100%;height:100%;object-fit:cover;display:block}
+.cw .box::before,.cw .box::after,.cw .box>.c1,.cw .box>.c2{width:9px;height:9px;border-width:1.5px}
+.cwl{position:absolute;left:8px;top:8px;display:flex;align-items:center;gap:8px;height:34px;padding:0 12px 0 10px;border-radius:var(--r-m);font-weight:600;font-size:var(--t-22);line-height:1;color:var(--on-video);background:var(--on-video-glass)}
+.cwl .dot{width:8px;height:8px;color:#fff}
+.cw .credit{font-size:var(--t-15);right:8px;bottom:6px}
+
+.top{position:fixed;left:28px;right:28px;top:calc(18px + var(--sat));display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:start;gap:10px 16px;z-index:3;pointer-events:none}
+.top>*{pointer-events:auto}
+.top>.site{grid-area:1/1}
+.top>.seg{grid-area:1/2}
+.top>.acts{grid-area:1/3;justify-self:end}
+.top>.layers{grid-area:2/2;justify-self:center}
+.top .sample{margin-top:8px}
+.site h1{font-size:var(--t-28);font-weight:600;letter-spacing:-.02em;line-height:1.1}
+.status{display:flex;align-items:center;gap:8px;margin-top:4px;color:var(--text-2)}
+.status .dot{color:var(--text)}
+.seg{display:flex;padding:3px;border-radius:var(--r-m);background:var(--glass-strong);border:1px solid var(--glass-line);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
+.seg button{white-space:nowrap;height:var(--hit);padding:0 16px;border-radius:var(--r-s);font-size:var(--t-15);font-weight:500;display:flex;align-items:center;gap:6px;color:var(--text-2)}
+.seg button[aria-pressed=true]{background:var(--text);color:var(--bg)}
+.layers{display:flex;gap:6px}
+.chip{height:var(--hit);padding:0 14px;border-radius:var(--r-l);font-size:var(--t-15);font-weight:500;display:flex;align-items:center;gap:6px;background:var(--glass-strong);border:1px solid var(--glass-line);color:var(--text-2)}
+.chip[aria-pressed=true]{color:var(--text);border-color:var(--line-2)}
+.chip[aria-pressed=true]::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--text)}
+
+.card{position:fixed;right:20px;top:calc(74px + var(--sat));max-height:calc(100vh - 254px - var(--sat) - var(--sab));width:344px;border-radius:var(--r-xl);background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);overflow:hidden;
+  display:flex;flex-direction:column;z-index:3}
+.card .ph{position:relative;height:172px;background:#000;flex:none}
+.card .ph img{width:100%;height:100%;object-fit:cover;display:block}
+
+.card .ph .x{position:absolute;right:10px;top:10px;width:var(--hit);height:var(--hit);border-radius:var(--r-l);display:grid;place-items:center;color:#fff;background:rgba(10,11,12,.5)}
+.card .bd{padding:16px 18px;display:flex;flex-direction:column;gap:14px;flex:1;min-height:0}
+.card h2{font-size:var(--t-22);font-weight:600;letter-spacing:-.015em;line-height:1.15}
+.card .st{display:flex;align-items:center;gap:7px;font-size:var(--t-15);color:var(--text-2);margin-top:4px}
+.card .st .dot{color:var(--text)}
+.mx{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--line);border-radius:var(--r-m);overflow:hidden}
+.mx div{padding:11px 14px}
+.mx div:nth-child(2n){border-left:1px solid var(--line)}
+.mx div:nth-child(n+3){border-top:1px solid var(--line)}
+.mx b{display:block;font-size:var(--t-22);font-weight:500;letter-spacing:-.015em;line-height:1.1}
+.mx span{display:block;font-size:var(--t-12);color:var(--text-2);margin-top:3px}
+.pit .r{display:flex;justify-content:space-between;align-items:baseline;font-size:var(--t-15);color:var(--text-2)}
+.pit .r{gap:12px}
+.pit .r b{font-size:var(--t-15);color:var(--text);font-weight:600;white-space:nowrap}
+.prog{position:relative;height:8px;border-radius:var(--r-s);background:var(--bg-2);margin-top:8px}
+.prog i{position:absolute;left:0;top:0;bottom:0;width:33%;background:var(--text);border-radius:var(--r-s)}
+.prog s{position:absolute;left:33%;top:0;bottom:0;width:6%;background:repeating-linear-gradient(90deg,var(--text-3) 0 3px,transparent 3px 6px);opacity:.6}
+.pit p{font-size:var(--t-12);color:var(--text-2);margin-top:6px}
+.btns{display:flex;gap:8px;margin-top:4px}
+.btn{flex:1;height:var(--hit);border-radius:var(--r-m);font-size:var(--t-15);font-weight:600;display:inline-flex;align-items:center;justify-content:center;gap:7px}
+.btn--p{background:var(--text);color:var(--bg)}
+.btn--g{background:var(--surface-2);color:var(--text);border:1px solid var(--line)}
+
+.dock{position:fixed;left:20px;right:20px;bottom:calc(20px + var(--sab));height:134px;border-radius:var(--r-xl);background:var(--glass-strong);border:1px solid var(--glass-line);
+  backdrop-filter:blur(24px) saturate(1.5);-webkit-backdrop-filter:blur(24px) saturate(1.5);box-shadow:var(--shadow);z-index:3;
+  display:grid;grid-template-columns:200px 1fr;column-gap:20px;padding:14px 22px 10px;align-content:center}
+.dock .rl{font-size:var(--t-15);color:var(--text-2);display:flex;align-items:center;gap:8px;height:28px;white-space:nowrap}
+.dock .rl b{color:var(--text);font-weight:600}
+.dock .rl.big{height:40px}
+.steps{width:100%;height:40px;display:block}
+.steps .st-a{fill:var(--text);fill-opacity:.10}
+.steps .st-l{fill:none;stroke:var(--text);stroke-width:1.5}
+.dock .tl-hours{grid-column:2}
+.dock .tl{color:var(--text)}
+.tabs,.grab{display:none}
+@media (min-width: 701px){ .phone-only{display:none!important} }
+@media (max-width: 700px){ .desk-only{display:none!important} }
+
+@media (max-width: 700px){
+  body{overflow:auto}
+  .top{position:absolute;left:16px;right:16px;top:calc(10px + var(--sat));display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:10px;align-items:center}
+  .top>.site{display:contents}
+  .site h1{grid-column:1/-1;font-size:var(--t-22);white-space:nowrap}
+  .status{grid-column:1;grid-row:2;font-size:var(--t-15)}
+  .top>.acts{grid-area:2/2;margin-top:4px}
+  .top .sample{grid-column:1/-1;grid-row:3;justify-self:start;margin-top:4px;background:var(--glass-strong)}
+  .seg,.layers{display:none}
+  .ask .lbl{display:none}
+  .map{position:relative;left:auto;right:auto;top:auto;bottom:auto;height:calc(580px + var(--sat));overflow:hidden}
+  .iso{position:absolute;width:1200px;height:auto;left:-580px;top:calc(-210px + var(--sat))}
+  .fo-cam,.iso .lead,.fo.lbl,.fo-desk,.ftag .long{display:none}
+  /* лист: из-под карты видно ≈ 300 px — имя, состояние, четыре числа; остальное — прокруткой */
+  .card{position:relative;right:auto;top:auto;bottom:auto;width:auto;max-height:none;margin:-36px 0 0;border-radius:var(--r-xl) var(--r-xl) 0 0;box-shadow:0 -8px 30px rgba(0,0,0,.12);overflow:visible}
+  .grab{display:block;width:40px;height:5px;border-radius:var(--r-s);background:var(--line-2);margin:8px auto 0}
+  .card .ph{order:3;margin:0 16px;border-radius:var(--r-m);overflow:hidden;height:180px}
+  .card .bd{order:2;padding:12px 16px 14px}
+  .btns{margin-top:0}
+  .dock{position:relative;left:auto;right:auto;bottom:auto;height:auto;margin:14px 16px calc(120px + var(--sab));grid-template-columns:1fr;row-gap:4px;padding:14px 16px}
+  .dock .tl-hours{grid-column:1}
+  .tabs{display:flex;position:fixed;left:12px;right:12px;bottom:calc(14px + var(--sab));z-index:5;height:64px;border-radius:var(--r-xl);justify-content:space-around;align-items:center;
+    background:var(--glass-strong);backdrop-filter:blur(24px) saturate(1.6);-webkit-backdrop-filter:blur(24px) saturate(1.6);border:1px solid var(--glass-line);box-shadow:var(--shadow)}
+  .tabs button{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:var(--t-12);font-weight:500;color:var(--text-2);min-width:64px;height:52px;justify-content:center}
+  .tabs button[aria-current=page]{color:var(--text)}
+  .tabs .i{width:24px;height:24px}
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<symbol id="i-video" viewBox="0 0 24 24"><path d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5"/><rect x="2" y="6" width="14" height="12" rx="2"/></symbol>
+<symbol id="i-list" viewBox="0 0 24 24"><path d="M3 12h.01M3 18h.01M3 6h.01M8 12h13M8 18h13M8 6h13"/></symbol>
+<symbol id="i-map" viewBox="0 0 24 24"><path d="M14.106 5.553a2 2 0 0 0 1.788 0l3.659-1.83A1 1 0 0 1 21 4.619v12.764a1 1 0 0 1-.553.894l-4.553 2.277a2 2 0 0 1-1.788 0l-4.212-2.106a2 2 0 0 0-1.788 0l-3.659 1.83A1 1 0 0 1 3 19.381V6.618a1 1 0 0 1 .553-.894l4.553-2.277a2 2 0 0 1 1.788 0z"/><path d="M15 5.764v15M9 3.236v15"/></symbol>
+<symbol id="i-box" viewBox="0 0 24 24"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5M12 22V12"/></symbol>
+<symbol id="i-file" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4M10 9H8M16 13H8M16 17H8"/></symbol>
+<symbol id="i-truck" viewBox="0 0 24 24"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></symbol>
+<symbol id="i-dig" viewBox="0 0 24 24"><rect x="2" y="17" width="12" height="4" rx="2"/><path d="M4 17v-4h7l2 4"/><path d="M11 13 15.5 6 21 9.5l-1.5 4.5"/><path d="M19.5 14l-2.5 1"/></symbol>
+<symbol id="i-bell" viewBox="0 0 24 24"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></symbol>
+<symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol>
+<symbol id="i-chev" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+<symbol id="i-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+<symbol id="i-play" viewBox="0 0 24 24"><path d="M6 4.5v15a1 1 0 0 0 1.5.86l12.5-7.5a1 1 0 0 0 0-1.72L7.5 3.64A1 1 0 0 0 6 4.5Z"/></symbol>
+<symbol id="i-pause" viewBox="0 0 24 24"><rect x="14" y="4" width="4" height="16" rx="1"/><rect x="6" y="4" width="4" height="16" rx="1"/></symbol>
+<symbol id="i-max" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3M16 21h3a2 2 0 0 0 2-2v-3"/></symbol>
+<symbol id="i-alert" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4M12 17h.01"/></symbol>
+<symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></symbol>
+<symbol id="i-layers" viewBox="0 0 24 24"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65M22 12.65l-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></symbol>
+<symbol id="i-more" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></symbol>
+<symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+<symbol id="i-route" viewBox="0 0 24 24"><circle cx="6" cy="19" r="3"/><path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"/><circle cx="18" cy="5" r="3"/></symbol>
+<symbol id="i-in" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+<symbol id="i-out" viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6"/></symbol>
+</svg>
+
+<div class="map"><svg class="iso" viewBox="-524 -228 1408 1184" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Площадка в 3D: корпус, котлован ступенями, дорога, техника и камеры"><polygon class="g" points="0.0,0.0 685.9,396.0 199.5,676.8 -486.4,280.8" /><polygon class="g-r" points="685.9,396.0 199.5,676.8 199.5,686.2 685.9,405.4" /><polygon class="g-l" points="-486.4,280.8 199.5,676.8 199.5,686.2 -486.4,290.2" /><polyline class="grid" points="62.4,36.0 -424.0,316.8" /><polyline class="grid" points="124.7,72.0 -361.7,352.8" /><polyline class="grid" points="187.1,108.0 -299.3,388.8" /><polyline class="grid" points="249.4,144.0 -236.9,424.8" /><polyline class="grid" points="311.8,180.0 -174.6,460.8" /><polyline class="grid" points="374.1,216.0 -112.2,496.8" /><polyline class="grid" points="436.5,252.0 -49.9,532.8" /><polyline class="grid" points="498.8,288.0 12.5,568.8" /><polyline class="grid" points="561.2,324.0 74.8,604.8" /><polyline class="grid" points="623.5,360.0 137.2,640.8" /><polyline class="grid" points="-62.4,36.0 623.5,432.0" /><polyline class="grid" points="-124.7,72.0 561.2,468.0" /><polyline class="grid" points="-187.1,108.0 498.8,504.0" /><polyline class="grid" points="-249.4,144.0 436.5,540.0" /><polyline class="grid" points="-311.8,180.0 374.1,576.0" /><polyline class="grid" points="-374.1,216.0 311.8,612.0" /><polyline class="grid" points="-436.5,252.0 249.4,648.0" /><polygon class="road" points="361.7,583.2 548.7,691.2 486.4,727.2 299.3,619.2" /><polygon class="road" points="-49.9,345.6 361.7,583.2 299.3,619.2 -112.2,381.6" /><polygon class="road" points="0.0,316.8 62.4,352.8 -49.9,417.6 -112.2,381.6" /><polygon class="b-t" points="367.9,542.9 380.4,550.1 374.1,553.7 361.7,546.5" /><polygon class="b-r" points="380.4,579.6 374.1,583.2 374.1,553.7 380.4,550.1" /><polygon class="b-l" points="361.7,576.0 374.1,583.2 374.1,553.7 361.7,546.5" /><polygon class="b-t" points="286.8,589.7 299.3,596.9 293.1,600.5 280.6,593.3" /><polygon class="b-r" points="299.3,626.4 293.1,630.0 293.1,600.5 299.3,596.9" /><polygon class="b-l" points="280.6,622.8 293.1,630.0 293.1,600.5 280.6,593.3" /><polygon class="b-t" points="0.0,36.3 187.1,144.3 24.9,237.9 -162.1,129.9" /><polygon class="b-r" points="187.1,165.6 24.9,259.2 24.9,237.9 187.1,144.3" /><polygon class="b-l" points="-162.1,151.2 24.9,259.2 24.9,237.9 -162.1,129.9" /><polygon class="b-t" points="0.0,11.5 187.1,119.5 24.9,213.1 -162.1,105.1" /><polygon class="b-r" points="187.1,140.8 24.9,234.4 24.9,213.1 187.1,119.5" /><polygon class="b-l" points="-162.1,126.4 24.9,234.4 24.9,213.1 -162.1,105.1" /><polygon class="b-t" points="0.0,-13.2 187.1,94.8 24.9,188.4 -162.1,80.4" /><polygon class="b-r" points="187.1,116.0 24.9,209.6 24.9,188.4 187.1,94.8" /><polygon class="b-l" points="-162.1,101.6 24.9,209.6 24.9,188.4 -162.1,80.4" /><polygon class="b-t" points="0.0,-38.0 187.1,70.0 24.9,163.6 -162.1,55.6" /><polygon class="b-r" points="187.1,91.2 24.9,184.8 24.9,163.6 187.1,70.0" /><polygon class="b-l" points="-162.1,76.8 24.9,184.8 24.9,163.6 -162.1,55.6" /><polygon class="b-t" points="0.0,-62.8 187.1,45.2 24.9,138.8 -162.1,30.8" /><polygon class="b-r" points="187.1,66.4 24.9,160.0 24.9,138.8 187.1,45.2" /><polygon class="b-l" points="-162.1,52.0 24.9,160.0 24.9,138.8 -162.1,30.8" /><polyline class="ghost" points="-162.1,27.2 -162.1,-25.9" /><polyline class="ghost" points="-99.8,63.2 -99.8,10.1" /><polyline class="ghost" points="-37.4,99.2 -37.4,46.1" /><polyline class="ghost" points="24.9,135.2 24.9,82.1" /><polygon class="ghost" points="0.0,-119.5 187.1,-11.5 24.9,82.1 -162.1,-25.9" fill="none"/><polygon class="b-t" points="-212.0,199.6 -112.2,257.2 -162.1,286.0 -261.9,228.4" /><polygon class="b-r" points="-112.2,280.8 -162.1,309.6 -162.1,286.0 -112.2,257.2" /><polygon class="b-l" points="-261.9,252.0 -162.1,309.6 -162.1,286.0 -261.9,228.4" /><polygon class="b-t" points="-286.8,242.8 -236.9,271.6 -274.4,293.2 -324.2,264.4" /><polygon class="b-r" points="-236.9,295.2 -274.4,316.8 -274.4,293.2 -236.9,271.6" /><polygon class="b-l" points="-324.2,288.0 -274.4,316.8 -274.4,293.2 -324.2,264.4" /><polygon class="b-t" points="-224.5,278.8 -174.6,307.6 -212.0,329.2 -261.9,300.4" /><polygon class="b-r" points="-174.6,331.2 -212.0,352.8 -212.0,329.2 -174.6,307.6" /><polygon class="b-l" points="-261.9,324.0 -212.0,352.8 -212.0,329.2 -261.9,300.4" /><polygon class="b-t" points="137.2,-51.0 149.6,-43.8 137.2,-36.6 124.7,-43.8" /><polygon class="b-r" points="149.6,216.0 137.2,223.2 137.2,-36.6 149.6,-43.8" /><polygon class="b-l" points="124.7,216.0 137.2,223.2 137.2,-36.6 124.7,-43.8" /><polyline class="crane" points="137.2,-43.8 230.7,-97.8" /><polyline class="crane" points="137.2,-43.8 43.6,10.2" /><polygon class="wall-x" points="274.4,201.6 49.9,331.2 87.3,360.7 274.4,252.7" /><polygon class="wall-y" points="274.4,201.6 611.1,396.0 573.7,425.5 274.4,252.7" /><polygon class="pit2" points="274.4,252.7 573.7,425.5 386.6,533.5 87.3,360.7" /><polygon class="wall-x" points="274.4,252.7 87.3,360.7 124.7,390.2 274.4,303.8" /><polygon class="wall-y" points="274.4,252.7 573.7,425.5 536.2,455.0 274.4,303.8" /><polygon class="pit3" points="274.4,303.8 536.2,455.0 386.6,541.4 124.7,390.2" /><polygon class="wall-x" points="274.4,303.8 124.7,390.2 162.1,419.8 274.4,355.0" /><polygon class="wall-y" points="274.4,303.8 536.2,455.0 498.8,484.6 274.4,355.0" /><polygon class="pit3" points="274.4,355.0 498.8,484.6 386.6,549.4 162.1,419.8" /><polygon class="cont" points="274.4,201.6 611.1,396.0 386.6,525.6 49.9,331.2" fill="none"/><polygon class="cont" points="274.4,252.7 573.7,425.5 386.6,533.5 87.3,360.7" fill="none"/><polygon class="cont" points="274.4,303.8 536.2,455.0 386.6,541.4 124.7,390.2" fill="none"/><polygon class="cont-plan" points="274.4,355.0 498.8,484.6 386.6,549.4 162.1,419.8" fill="none"/><polygon class="cont-plan" points="274.4,406.1 461.4,514.1 386.6,557.3 199.5,449.3" fill="none"/><polygon class="cone" points="386.6,554.4 49.9,532.8 311.8,712.8" /><polygon class="cone" points="0.0,331.2 399.1,302.4 399.1,489.6" /><polyline class="path-day" points="517.5,709.2 330.5,601.2 18.7,421.2 -31.2,370.8 18.7,342.0 99.8,345.6 187.1,382.3 249.4,419.0" /><polyline class="path-now" points="508.2,714.6 371.0,635.4 233.8,556.2" /><ellipse class="heat" cx="-6.2" cy="356.4" rx="28.7" ry="16.6"/><ellipse class="heat" cx="249.4" cy="419.0" rx="35.9" ry="20.7"/><ellipse class="heat" cx="330.5" cy="601.2" rx="21.5" ry="12.4"/><ellipse class="gring pulse-ring" cx="286.8" cy="426.2" rx="46.6" ry="26.9"/><polygon class="m-t" points="286.8,403.6 318.0,421.6 293.1,436.0 261.9,418.0" /><polygon class="m-r" points="318.0,429.8 293.1,444.2 293.1,436.0 318.0,421.6" /><polygon class="m-l" points="261.9,426.2 293.1,444.2 293.1,436.0 261.9,418.0" /><polygon class="m-t" points="288.1,391.8 311.8,405.5 291.8,417.0 268.1,403.3" /><polygon class="m-r" points="311.8,420.9 291.8,432.4 291.8,417.0 311.8,405.5" /><polygon class="m-l" points="268.1,418.7 291.8,432.4 291.8,417.0 268.1,403.3" /><polyline class="arm" points="289.9,408.0 268.1,352.5 249.4,367.0" /><polyline class="arm" points="249.4,367.0 254.4,386.6 259.4,385.3" /><polygon class="m-t" points="205.8,373.8 219.5,381.7 200.8,392.5 187.1,384.6" /><polygon class="m-r" points="219.5,401.8 200.8,412.6 200.8,392.5 219.5,381.7" /><polygon class="m-l" points="187.1,404.6 200.8,412.6 200.8,392.5 187.1,384.6" /><polygon class="k-t" points="222.0,388.4 249.4,404.3 230.7,415.1 203.3,399.2" /><polygon class="k-r" points="249.4,419.0 230.7,429.8 230.7,415.1 249.4,404.3" /><polygon class="k-l" points="203.3,414.0 230.7,429.8 230.7,415.1 203.3,399.2" /><polygon class="m-t" points="205.8,509.1 219.5,517.0 200.8,527.8 187.1,519.9" /><polygon class="m-r" points="219.5,537.1 200.8,547.9 200.8,527.8 219.5,517.0" /><polygon class="m-l" points="187.1,540.0 200.8,547.9 200.8,527.8 187.1,519.9" /><polygon class="k-t" points="222.0,523.8 252.5,541.4 233.8,552.2 203.3,534.6" /><polygon class="k-r" points="252.5,556.2 233.8,567.0 233.8,552.2 252.5,541.4" /><polygon class="k-l" points="203.3,549.4 233.8,567.0 233.8,552.2 203.3,534.6" /><ellipse class="qring" cx="383.5" cy="613.8" rx="30.1" ry="17.4"/><polygon class="m-t" points="374.1,577.5 387.8,585.4 369.1,596.2 355.4,588.3" /><polygon class="m-r" points="387.8,605.5 369.1,616.3 369.1,596.2 387.8,585.4" /><polygon class="m-l" points="355.4,608.4 369.1,616.3 369.1,596.2 355.4,588.3" /><polygon class="k-t" points="390.3,592.2 420.9,609.8 402.2,620.6 371.6,603.0" /><polygon class="k-r" points="420.9,624.6 402.2,635.4 402.2,620.6 420.9,609.8" /><polygon class="k-l" points="371.6,617.8 402.2,635.4 402.2,620.6 371.6,603.0" /><polygon class="m-t" points="59.2,273.3 71.7,280.5 53.0,291.3 40.5,284.1" /><polygon class="m-r" points="71.7,300.6 53.0,311.4 53.0,291.3 71.7,280.5" /><polygon class="m-l" points="40.5,304.2 53.0,311.4 53.0,291.3 40.5,284.1" /><polygon class="k-t" points="74.2,295.0 102.9,311.5 84.2,322.3 55.5,305.8" /><polygon class="k-r" points="102.9,318.6 84.2,329.4 84.2,322.3 102.9,311.5" /><polygon class="k-l" points="55.5,312.8 84.2,329.4 84.2,322.3 55.5,305.8" /><polygon class="k-t" points="74.5,287.0 98.8,301.1 84.5,309.3 60.2,295.3" /><polygon class="k-r" points="98.8,311.7 84.5,320.0 84.5,309.3 98.8,301.1" /><polygon class="k-l" points="60.2,305.9 84.5,320.0 84.5,309.3 60.2,295.3" /><polygon class="k-t" points="76.1,285.9 91.7,294.9 82.9,299.9 67.3,290.9" /><polygon class="k-r" points="91.7,300.2 82.9,305.2 82.9,299.9 91.7,294.9" /><polygon class="k-l" points="67.3,296.2 82.9,305.2 82.9,299.9 67.3,290.9" /><polyline class="pole" points="386.6,554.4 386.6,513.1" /><circle class="camdot" cx="386.6" cy="513.1" r="5"/><polyline class="pole" points="0.0,331.2 0.0,289.9" /><circle class="camdot" cx="0.0" cy="289.9" r="5"/><line class="lead" x1="386.6" y1="513.1" x2="601.6" y2="449.1"/><foreignObject class="fo-cam" x="436.6" y="263.1" width="330" height="186"><div xmlns="http://www.w3.org/1999/xhtml" class="cw"><img src="img/cam1.webp" alt="Камера 1, въезд"/><div class="box" style="left:1%;top:28%;width:26%;height:38%"><i class="c1"></i><i class="c2"></i></div><div class="box" style="left:64%;top:37%;width:35%;height:34%"><i class="c1"></i><i class="c2"></i></div><span class="cwl"><span class="dot"></span>Камера 1, въезд</span><span class="credit">Sounds of Changes, CC BY 3.0</span></div></foreignObject><line class="lead" x1="0.0" y1="289.9" x2="-225.0" y2="435.9"/><foreignObject class="fo-cam" x="-390.0" y="249.9" width="330" height="186"><div xmlns="http://www.w3.org/1999/xhtml" class="cw"><img src="img/cam2.webp" alt="Камера 2, котлован"/><div class="box" style="left:50%;top:21%;width:32%;height:52%"><i class="c1"></i><i class="c2"></i></div><div class="box" style="left:9%;top:22%;width:17%;height:33%"><i class="c1"></i><i class="c2"></i></div><span class="cwl"><span class="dot"></span>Камера 2, котлован</span><span class="credit">ŠJů, CC BY 4.0</span></div></foreignObject><foreignObject class="fo" x="266.8" y="350.6" width="460" height="56"><div xmlns="http://www.w3.org/1999/xhtml" class="ftag"><span class="dot pulse"></span><span>Экскаватор<span class="long">, работает 6 ч 12 мин</span></span></div></foreignObject><foreignObject class="fo" x="178.2" y="471.5" width="460" height="56"><div xmlns="http://www.w3.org/1999/xhtml" class="ftag">Самосвал <span class="plate"><b>К482ОР</b><i>59</i></span></div></foreignObject><foreignObject class="fo q" x="422.4" y="591.7" width="460" height="56"><div xmlns="http://www.w3.org/1999/xhtml" class="ftag"><span class="dash"></span><span><span class="long">Номер: </span>Е043ХА 59?</span></div></foreignObject><foreignObject class="fo fo-desk" x="-125.2" y="245.5" width="460" height="56"><div xmlns="http://www.w3.org/1999/xhtml" class="ftag">Миксер <span class="plate"><b>В305СК</b><i>59</i></span></div></foreignObject><foreignObject class="fo lbl" x="394.6" y="523.6" width="460" height="56"><div xmlns="http://www.w3.org/1999/xhtml" class="ftag"><b>Котлован</b> 1 240 из 3 800 м³</div></foreignObject></svg>
+</div>
+
+<header class="top">
+  <div class="site">
+    <h1>ЖК «Пример», корпус 2</h1>
+    <div class="status"><span class="dot pulse"></span> Смена идёт, 14:52 по Перми</div>
+    <span class="sample">Пример: данные выдуманы<span class="desk-only">, кадры настоящие</span></span>
+  </div>
+  <nav class="seg" aria-label="Режим пульта">
+    <button aria-pressed="false"><svg class="i i--s"><use href="#i-video"/></svg>Камеры</button>
+    <button aria-pressed="false"><svg class="i i--s"><use href="#i-list"/></svg>Журнал</button>
+    <button aria-pressed="true"><svg class="i i--s"><use href="#i-box"/></svg>Площадка в 3D</button>
+  </nav>
+  <div class="acts"><button class="ask" aria-label="Подтвердить 2 номера"><span class="dash"></span><span class="lbl">Подтвердить</span><b>2 номера</b></button></div>
+  <div class="layers" role="group" aria-label="Слои">
+    <button class="chip" aria-pressed="true">Пути</button>
+    <button class="chip" aria-pressed="true">Камеры</button>
+    <button class="chip" aria-pressed="true">Контур</button>
+    <button class="chip" aria-pressed="false">Тепло</button>
+  </div>
+</header>
+
+<aside class="card" aria-label="Выбрана машина">
+  <span class="grab" aria-hidden="true"></span>
+  <div class="ph"><img src="img/exc-in.webp" alt="Экскаватор на кадре камеры 1"><button class="x" aria-label="Закрыть"><svg class="i i--s"><use href="#i-max"/></svg></button>
+    <span class="credit">Sounds of Changes, CC BY 3.0</span></div>
+  <div class="bd">
+    <div><h2>Экскаватор Volvo EW180B</h2><div class="st"><span class="dot pulse"></span>Работает с 12:55, вторая ступень котлована</div></div>
+    <div class="mx">
+      <div><b class="num">6 ч 12 мин</b><span>работает за смену</span></div>
+      <div><b class="num">1 ч 20 мин</b><span>стоял</span></div>
+      <div><b class="num">14</b><span>самосвалов загрузил</span></div>
+      <div><b class="num">82 %</b><span>загрузка, вчера 71 %</span></div>
+    </div>
+    <div class="pit">
+      <div class="r"><span>Котлован по 3D‑контуру</span><b class="num">1 240 из 3 800 м³</b></div>
+      <div class="prog"><i></i><s></s></div>
+      <p class="num">Глубина 7,0 м из 14,0 по проекту. Пунктир — план на завтра.</p>
+    </div>
+    <div class="btns"><button class="btn btn--g"><svg class="i i--s"><use href="#i-video"/></svg>На камере</button><button class="btn btn--g"><svg class="i i--s"><use href="#i-route"/></svg>Путь за день</button></div>
+  </div>
+</aside>
+
+<section class="dock" aria-label="Смена по времени">
+  <div class="rl big"><svg class="i i--s"><use href="#i-truck"/></svg>Машин на площадке <b class="num">4</b></div>
+  <svg class="steps" viewBox="0 0 1000 40" preserveAspectRatio="none" aria-hidden="true"><path class="st-a" d="M0.0,38.0 L2.8,38.0 L5.6,38.0 L8.3,38.0 L11.1,38.0 L13.9,38.0 L16.7,31.2 L19.4,31.2 L22.2,31.2 L25.0,31.2 L27.8,31.2 L30.6,31.2 L33.3,31.2 L36.1,31.2 L38.9,31.2 L41.7,31.2 L44.4,24.4 L47.2,24.4 L50.0,24.4 L52.8,24.4 L55.6,24.4 L58.3,24.4 L61.1,24.4 L63.9,24.4 L66.7,17.6 L69.4,24.4 L72.2,24.4 L75.0,24.4 L77.8,24.4 L80.6,24.4 L83.3,24.4 L86.1,24.4 L88.9,24.4 L91.7,17.6 L94.4,17.6 L97.2,24.4 L100.0,24.4 L102.8,24.4 L105.6,24.4 L108.3,24.4 L111.1,24.4 L113.9,17.6 L116.7,17.6 L119.4,24.4 L122.2,24.4 L125.0,24.4 L127.8,24.4 L130.6,24.4 L133.3,24.4 L136.1,24.4 L138.9,17.6 L141.7,17.6 L144.4,24.4 L147.2,24.4 L150.0,24.4 L152.8,24.4 L155.6,24.4 L158.3,24.4 L161.1,24.4 L163.9,24.4 L166.7,31.2 L169.4,31.2 L172.2,31.2 L175.0,31.2 L177.8,31.2 L180.6,31.2 L183.3,24.4 L186.1,24.4 L188.9,24.4 L191.7,31.2 L194.4,31.2 L197.2,31.2 L200.0,31.2 L202.8,31.2 L205.6,31.2 L208.3,24.4 L211.1,24.4 L213.9,24.4 L216.7,24.4 L219.4,24.4 L222.2,24.4 L225.0,24.4 L227.8,24.4 L230.6,24.4 L233.3,24.4 L236.1,31.2 L238.9,31.2 L241.7,31.2 L244.4,31.2 L247.2,24.4 L250.0,24.4 L252.8,24.4 L255.6,24.4 L258.3,24.4 L261.1,31.2 L263.9,31.2 L266.7,31.2 L269.4,31.2 L272.2,24.4 L275.0,24.4 L277.8,24.4 L280.6,24.4 L283.3,24.4 L286.1,24.4 L288.9,24.4 L291.7,24.4 L294.4,24.4 L297.2,24.4 L300.0,31.2 L302.8,31.2 L305.6,31.2 L308.3,31.2 L311.1,31.2 L313.9,31.2 L316.7,31.2 L319.4,31.2 L322.2,31.2 L325.0,38.0 L327.8,38.0 L330.6,38.0 L333.3,38.0 L336.1,31.2 L338.9,31.2 L341.7,31.2 L344.4,31.2 L347.2,31.2 L350.0,31.2 L352.8,31.2 L355.6,31.2 L358.3,31.2 L361.1,24.4 L363.9,24.4 L366.7,24.4 L369.4,24.4 L372.2,24.4 L375.0,24.4 L377.8,24.4 L380.6,24.4 L383.3,24.4 L386.1,24.4 L388.9,31.2 L391.7,31.2 L394.4,31.2 L397.2,31.2 L400.0,24.4 L402.8,24.4 L405.6,24.4 L408.3,24.4 L411.1,24.4 L413.9,31.2 L416.7,31.2 L419.4,31.2 L422.2,31.2 L425.0,31.2 L427.8,31.2 L430.6,31.2 L433.3,31.2 L436.1,31.2 L438.9,31.2 L441.7,31.2 L444.4,31.2 L447.2,31.2 L450.0,31.2 L452.8,38.0 L455.6,38.0 L458.3,38.0 L461.1,38.0 L463.9,38.0 L466.7,38.0 L469.4,38.0 L472.2,38.0 L475.0,38.0 L477.8,38.0 L480.6,38.0 L483.3,38.0 L486.1,38.0 L488.9,38.0 L491.7,38.0 L494.4,38.0 L497.2,31.2 L500.0,31.2 L502.8,31.2 L505.6,31.2 L508.3,31.2 L511.1,31.2 L513.9,31.2 L516.7,31.2 L519.4,31.2 L522.2,24.4 L525.0,24.4 L527.8,24.4 L530.6,24.4 L533.3,24.4 L536.1,24.4 L538.9,24.4 L541.7,24.4 L544.4,24.4 L547.2,17.6 L550.0,24.4 L552.8,24.4 L555.6,24.4 L558.3,24.4 L561.1,24.4 L563.9,24.4 L566.7,24.4 L569.4,24.4 L572.2,24.4 L575.0,31.2 L577.8,24.4 L580.6,24.4 L583.3,24.4 L586.1,24.4 L588.9,24.4 L591.7,24.4 L594.4,24.4 L597.2,17.6 L600.0,24.4 L602.8,24.4 L605.6,24.4 L608.3,24.4 L611.1,24.4 L613.9,24.4 L616.7,24.4 L619.4,24.4 L622.2,24.4 L625.0,24.4 L627.8,24.4 L630.6,31.2 L633.3,31.2 L636.1,31.2 L638.9,31.2 L641.7,31.2 L644.4,31.2 L647.2,31.2 L650.0,38.0 L652.8,38.0 L655.6,31.2 L655.6,40 L0,40 Z"/><path class="st-l" d="M0.0,38.0 L2.8,38.0 L5.6,38.0 L8.3,38.0 L11.1,38.0 L13.9,38.0 L16.7,31.2 L19.4,31.2 L22.2,31.2 L25.0,31.2 L27.8,31.2 L30.6,31.2 L33.3,31.2 L36.1,31.2 L38.9,31.2 L41.7,31.2 L44.4,24.4 L47.2,24.4 L50.0,24.4 L52.8,24.4 L55.6,24.4 L58.3,24.4 L61.1,24.4 L63.9,24.4 L66.7,17.6 L69.4,24.4 L72.2,24.4 L75.0,24.4 L77.8,24.4 L80.6,24.4 L83.3,24.4 L86.1,24.4 L88.9,24.4 L91.7,17.6 L94.4,17.6 L97.2,24.4 L100.0,24.4 L102.8,24.4 L105.6,24.4 L108.3,24.4 L111.1,24.4 L113.9,17.6 L116.7,17.6 L119.4,24.4 L122.2,24.4 L125.0,24.4 L127.8,24.4 L130.6,24.4 L133.3,24.4 L136.1,24.4 L138.9,17.6 L141.7,17.6 L144.4,24.4 L147.2,24.4 L150.0,24.4 L152.8,24.4 L155.6,24.4 L158.3,24.4 L161.1,24.4 L163.9,24.4 L166.7,31.2 L169.4,31.2 L172.2,31.2 L175.0,31.2 L177.8,31.2 L180.6,31.2 L183.3,24.4 L186.1,24.4 L188.9,24.4 L191.7,31.2 L194.4,31.2 L197.2,31.2 L200.0,31.2 L202.8,31.2 L205.6,31.2 L208.3,24.4 L211.1,24.4 L213.9,24.4 L216.7,24.4 L219.4,24.4 L222.2,24.4 L225.0,24.4 L227.8,24.4 L230.6,24.4 L233.3,24.4 L236.1,31.2 L238.9,31.2 L241.7,31.2 L244.4,31.2 L247.2,24.4 L250.0,24.4 L252.8,24.4 L255.6,24.4 L258.3,24.4 L261.1,31.2 L263.9,31.2 L266.7,31.2 L269.4,31.2 L272.2,24.4 L275.0,24.4 L277.8,24.4 L280.6,24.4 L283.3,24.4 L286.1,24.4 L288.9,24.4 L291.7,24.4 L294.4,24.4 L297.2,24.4 L300.0,31.2 L302.8,31.2 L305.6,31.2 L308.3,31.2 L311.1,31.2 L313.9,31.2 L316.7,31.2 L319.4,31.2 L322.2,31.2 L325.0,38.0 L327.8,38.0 L330.6,38.0 L333.3,38.0 L336.1,31.2 L338.9,31.2 L341.7,31.2 L344.4,31.2 L347.2,31.2 L350.0,31.2 L352.8,31.2 L355.6,31.2 L358.3,31.2 L361.1,24.4 L363.9,24.4 L366.7,24.4 L369.4,24.4 L372.2,24.4 L375.0,24.4 L377.8,24.4 L380.6,24.4 L383.3,24.4 L386.1,24.4 L388.9,31.2 L391.7,31.2 L394.4,31.2 L397.2,31.2 L400.0,24.4 L402.8,24.4 L405.6,24.4 L408.3,24.4 L411.1,24.4 L413.9,31.2 L416.7,31.2 L419.4,31.2 L422.2,31.2 L425.0,31.2 L427.8,31.2 L430.6,31.2 L433.3,31.2 L436.1,31.2 L438.9,31.2 L441.7,31.2 L444.4,31.2 L447.2,31.2 L450.0,31.2 L452.8,38.0 L455.6,38.0 L458.3,38.0 L461.1,38.0 L463.9,38.0 L466.7,38.0 L469.4,38.0 L472.2,38.0 L475.0,38.0 L477.8,38.0 L480.6,38.0 L483.3,38.0 L486.1,38.0 L488.9,38.0 L491.7,38.0 L494.4,38.0 L497.2,31.2 L500.0,31.2 L502.8,31.2 L505.6,31.2 L508.3,31.2 L511.1,31.2 L513.9,31.2 L516.7,31.2 L519.4,31.2 L522.2,24.4 L525.0,24.4 L527.8,24.4 L530.6,24.4 L533.3,24.4 L536.1,24.4 L538.9,24.4 L541.7,24.4 L544.4,24.4 L547.2,17.6 L550.0,24.4 L552.8,24.4 L555.6,24.4 L558.3,24.4 L561.1,24.4 L563.9,24.4 L566.7,24.4 L569.4,24.4 L572.2,24.4 L575.0,31.2 L577.8,24.4 L580.6,24.4 L583.3,24.4 L586.1,24.4 L588.9,24.4 L591.7,24.4 L594.4,24.4 L597.2,17.6 L600.0,24.4 L602.8,24.4 L605.6,24.4 L608.3,24.4 L611.1,24.4 L613.9,24.4 L616.7,24.4 L619.4,24.4 L622.2,24.4 L625.0,24.4 L627.8,24.4 L630.6,31.2 L633.3,31.2 L636.1,31.2 L638.9,31.2 L641.7,31.2 L644.4,31.2 L647.2,31.2 L650.0,38.0 L652.8,38.0 L655.6,31.2" vector-effect="non-scaling-stroke"/></svg>
+  <div class="rl"><svg class="i i--s"><use href="#i-dig"/></svg>Экскаватор и события</div>
+  <div class="tl" aria-label="Шкала смены"><div class="tl-track"><span class="tl-work" style="left:2.78%;width:calc(17.36% - 2.78%)"></span><span class="tl-work" style="left:22.22%;width:calc(43.06% - 22.22%)"></span><span class="tl-work" style="left:49.31%;width:calc(65.56% - 49.31%)"></span><span class="tl-past" style="width:65.56%"></span><span class="tl-m tl-in" style="left:1.67%" title="въехал 07:12"></span><span class="tl-m tl-out" style="left:6.94%" title="выехал"></span><span class="tl-m tl-in" style="left:4.31%" title="въехал 07:31"></span><span class="tl-m tl-out" style="left:9.58%" title="выехал"></span><span class="tl-m tl-in" style="left:6.67%" title="въехал 07:48"></span><span class="tl-m tl-out" style="left:11.94%" title="выехал"></span><span class="tl-m tl-in" style="left:9.03%" title="въехал 08:05"></span><span class="tl-m tl-out" style="left:14.31%" title="выехал"></span><span class="tl-m tl-in" style="left:11.39%" title="въехал 08:22"></span><span class="tl-m tl-out" style="left:16.67%" title="выехал"></span><span class="tl-m tl-in" style="left:13.89%" title="въехал 08:40"></span><span class="tl-m tl-out" style="left:19.17%" title="выехал"></span><span class="tl-m tl-in" style="left:18.33%" title="въехал 09:12"></span><span class="tl-m tl-out" style="left:23.61%" title="выехал"></span><span class="tl-m tl-in" style="left:20.83%" title="въехал 09:30"></span><span class="tl-m tl-out" style="left:26.11%" title="выехал"></span><span class="tl-m tl-in" style="left:24.72%" title="въехал 09:58"></span><span class="tl-m tl-out" style="left:30.00%" title="выехал"></span><span class="tl-m tl-in" style="left:27.08%" title="въехал 10:15"></span><span class="tl-m tl-out" style="left:32.36%" title="выехал"></span><span class="tl-m tl-in" style="left:33.61%" title="въехал 11:02"></span><span class="tl-m tl-out" style="left:38.89%" title="выехал"></span><span class="tl-m tl-in" style="left:36.11%" title="въехал 11:20"></span><span class="tl-m tl-out" style="left:41.39%" title="выехал"></span><span class="tl-m tl-in" style="left:39.86%" title="въехал 11:47"></span><span class="tl-m tl-out" style="left:45.14%" title="выехал"></span><span class="tl-m tl-in" style="left:49.72%" title="въехал 12:58"></span><span class="tl-m tl-out" style="left:55.00%" title="выехал"></span><span class="tl-m tl-in" style="left:52.08%" title="въехал 13:15"></span><span class="tl-m tl-out" style="left:57.36%" title="выехал"></span><span class="tl-m tl-in" style="left:54.58%" title="въехал 13:33"></span><span class="tl-m tl-out" style="left:59.86%" title="выехал"></span><span class="tl-m tl-in" style="left:57.78%" title="въехал 13:56"></span><span class="tl-m tl-out" style="left:63.06%" title="выехал"></span><span class="tl-m tl-in" style="left:59.72%" title="въехал 14:10"></span><span class="tl-m tl-out" style="left:65.00%" title="выехал"></span><span class="tl-m tl-in" style="left:65.56%" title="въехал 14:52"></span><span class="tl-m tl-ask" style="left:30.69%" title="подтвердить 10:41"></span><span class="tl-m tl-ask" style="left:60.83%" title="подтвердить 14:18"></span><span class="tl-now" style="left:65.56%"><b class="num">14:52</b></span></div><div class="tl-hours num"><span style="left:0.00%">07:00</span><span style="left:16.67%">09:00</span><span style="left:33.33%">11:00</span><span style="left:50.00%">13:00</span><span style="left:66.67%">15:00</span><span style="left:83.33%">17:00</span><span style="left:100.00%">19:00</span></div></div>
+</section>
+
+<nav class="tabs" aria-label="Разделы">
+  <button><svg class="i"><use href="#i-video"/></svg>Камеры</button>
+  <button><svg class="i"><use href="#i-list"/></svg>Журнал</button>
+  <button aria-current="page"><svg class="i"><use href="#i-box"/></svg>Площадка</button>
+  <button><svg class="i"><use href="#i-file"/></svg>Рапорт</button>
+</nav>
+</body>
+</html>

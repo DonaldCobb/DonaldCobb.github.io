@@ -1,0 +1,100 @@
+/* «Сокол» · refs3 мини-прототипы · общие токены и примитивы.
+   Направление: Tesla/Apple, монохром как proto/main и design.md (ПроИИ просили без синего): «живое/выбранное» — белый (тёмная) /
+   почти чёрный (светлая), янтарь — «подтвердить / сомнительно», тёплая шкала глубины, красный — только опасность и всегда со значком,
+   стоящая техника — приглушённая. Класс техники — формой и словом, не цветом. Шрифт Onest. Цвета — только здесь. */
+:root{
+  --bg:#F2F2F4;--surface:#FFFFFF;--line:#D9DADF;--text:#111214;--text-2:#5B6069;--acc:#111214;--acc-ink:#FFFFFF;
+  /* сцена поверх видео — всегда тёмная, как экран машины */
+  --s-bg:#0B0D10;--s-ink:#F5F7FA;--s-ink-2:rgba(245,247,250,.72);--s-dim:rgba(245,247,250,.38);
+  --s-acc:#F2F3F5;--s-acc-soft:rgba(242,243,245,.18);--s-acc-glow:rgba(255,255,255,.5);--s-warn:#F2B552;--s-warn-soft:rgba(242,181,82,.22);
+  --depth-1:#4A3714;--depth-2:#7A561A;--depth-3:#A8761F;--depth-4:#D39A2E;--depth-5:#F2C46A;
+  --s-alert:#FF5B4F;--s-alert-soft:rgba(255,91,79,.24);
+  --plate-bg:#F5F5F2;--plate-ink:#111214;--s-acc-l:#C9CCD2;--s-acc-r:#9EA3AB;--shadow:rgba(8,9,10,.16);--s-glass:rgba(12,14,18,.62);--s-glass-2:rgba(12,14,18,.38);--s-line:rgba(245,247,250,.16);
+  /* светлая «глина» для 3D-схем */
+  --c-bg:#ECEDF0;--c-top:#FFFFFF;--c-l:#E4E5E8;--c-r:#D3D5D9;--c-ground:#E4E5E9;--c-ink:#111214;--c-ink-2:#5B6069;--c-line:#BEC1C7;--c-acc:#111214;--c-acc-l:#2A2C31;--c-acc-r:#3B3E45;--c-pit-1:#DCDDE1;--c-pit-2:#CDCFD4;--c-pit-3:#BEC1C7;
+  /* тёмная 3D-сцена */
+  --d-bg:#08090A;--d-top:#2A2C31;--d-l:#1C1D21;--d-r:#151619;--d-ground:#0E0F11;--d-pit-1:#26282C;--d-pit-2:#1C1D21;--d-pit-3:#0A0B0C;--d-grid:rgba(245,247,250,.06);--d-pt:rgba(205,214,226,.55);
+  --r:14px;--r-s:8px;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#08090A;--surface:#141518;--line:#26282D;--text:#F2F3F5;--text-2:#A2A7B0;--acc:#F2F3F5;--acc-ink:#08090A;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#08090A;--surface:#141518;--line:#26282D;--text:#F2F3F5;--text-2:#A2A7B0;--acc:#F2F3F5;--acc-ink:#08090A;color-scheme:dark}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg)}
+body{color:var(--text);font:400 16px/1.5 "Onest",system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
+.frag{max-width:1000px;margin:0 auto;padding:20px 16px 28px}
+.fh{display:flex;align-items:baseline;gap:8px 14px;flex-wrap:wrap;margin-bottom:12px}
+.fh .ref{font-size:13px;color:var(--text-2);font-variant-numeric:tabular-nums}
+.fh h1{font-size:20px;font-weight:600;line-height:1.25;letter-spacing:-.01em}
+.fh .theme{margin-left:auto;min-height:44px;min-width:44px;padding:0 16px;border-radius:22px;border:1px solid var(--line);background:var(--surface);color:var(--text);font:inherit;font-size:13px;cursor:pointer}
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+.stage{position:relative;border-radius:var(--r);overflow:hidden;background:var(--s-bg);aspect-ratio:16/9;isolation:isolate}
+.stage>img,.stage>svg,.stage>.layer{position:absolute;inset:0;width:100%;height:100%;display:block}
+.stage>img{object-fit:cover}
+.stage.lt{background:var(--c-bg)}
+.stage.tall{aspect-ratio:16/10}
+.lic{position:absolute;right:10px;bottom:7px;z-index:5;font-size:10px;line-height:1;color:var(--s-ink-2);background:var(--s-glass-2);padding:3px 6px;border-radius:4px}
+.stage.lt .lic{color:var(--c-ink-2);background:rgba(255,255,255,.6)}
+.note{display:grid;grid-template-columns:1fr 1fr;gap:6px 28px;margin-top:14px;font-size:15px;color:var(--text-2);max-width:72ch}
+.note b{color:var(--text);font-weight:600}
+@media (max-width:640px){.note{grid-template-columns:1fr}.fh h1{font-size:18px}}
+/* svg-примитивы сцены */
+.k{fill:none;stroke:var(--s-acc);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.k1{fill:none;stroke:var(--s-acc);stroke-width:1}
+.kw{fill:none;stroke:var(--s-ink);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.kw1{fill:none;stroke:var(--s-ink);stroke-width:1}
+.kd{fill:none;stroke:var(--s-dim);stroke-width:1}
+.ka{fill:none;stroke:var(--s-alert);stroke-width:2;stroke-linecap:round}
+.kdash{stroke-dasharray:6 6}
+.fa{fill:var(--s-acc)}.fwarn{fill:var(--s-warn)}.fwarn2{fill:var(--s-warn-soft)}.kwarn{fill:none;stroke:var(--s-warn);stroke-width:2;stroke-linecap:round}.shd{fill:var(--shadow)}.d1{fill:var(--depth-1)}.d2{fill:var(--depth-2)}.d3{fill:var(--depth-3)}.d4{fill:var(--depth-4)}.d5{fill:var(--depth-5)}.dp1{fill:var(--d-pit-1)}.dp2{fill:var(--d-pit-2)}.dp3{fill:var(--d-pit-3)}.cp1{fill:var(--c-pit-1)}.cp2{fill:var(--c-pit-2)}.cp3{fill:var(--c-pit-3)}.fa2{fill:var(--s-acc-soft)}.fw{fill:var(--s-ink)}.fg{fill:var(--s-glass)}.fg2{fill:var(--s-glass-2)}.fal{fill:var(--s-alert)}.fal2{fill:var(--s-alert-soft)}.fbg{fill:var(--s-bg)}
+.t{fill:var(--s-ink);font:500 14px "Onest",system-ui,sans-serif;font-variant-numeric:tabular-nums}
+.t2{fill:var(--s-ink-2);font:400 12px "Onest",system-ui,sans-serif;font-variant-numeric:tabular-nums}
+.tb{fill:var(--s-ink);font:600 17px "Onest",system-ui,sans-serif;font-variant-numeric:tabular-nums}
+.tbig{fill:var(--s-ink);font:300 34px "Onest",system-ui,sans-serif;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.tk{fill:var(--s-bg);font:600 14px "Onest",system-ui,sans-serif;font-variant-numeric:tabular-nums}
+.ta{fill:var(--s-acc);font:600 14px "Onest",system-ui,sans-serif;font-variant-numeric:tabular-nums}
+.tal{fill:var(--s-alert);font:600 14px "Onest",system-ui,sans-serif}
+.tw{fill:var(--s-warn);font:600 14px "Onest",system-ui,sans-serif;font-variant-numeric:tabular-nums}
+.tm{fill:var(--s-ink-2);font:400 12px "DejaVu Sans Mono",ui-monospace,monospace;letter-spacing:.04em}
+.tmk{fill:var(--s-acc);font:400 12px "DejaVu Sans Mono",ui-monospace,monospace;letter-spacing:.06em}
+.t,.t2,.tb,.tbig,.ta,.tal,.tm,.tmk{paint-order:stroke;stroke:var(--s-bg);stroke-opacity:.55;stroke-width:3px;stroke-linejoin:round}
+.fg+text,.fg2+text{stroke-opacity:0}
+/* светлая глина */
+.ct{fill:var(--c-top)}.cl{fill:var(--c-l)}.cr{fill:var(--c-r)}.cg{fill:var(--c-ground)}.cline{fill:none;stroke:var(--c-line);stroke-width:1}
+.cx{fill:var(--c-ink);font:500 14px "Onest",system-ui,sans-serif;font-variant-numeric:tabular-nums}
+.cx2{fill:var(--c-ink-2);font:400 12px "Onest",system-ui,sans-serif;font-variant-numeric:tabular-nums}
+.cacc{fill:var(--c-acc)}.cks{fill:none;stroke:var(--c-acc);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.cpast{fill:none;stroke:var(--c-ink-2);stroke-width:3;stroke-linecap:round;stroke-dasharray:2 6}
+/* тёмная 3D */
+.dt{fill:var(--d-top)}.dl{fill:var(--d-l)}.dr{fill:var(--d-r)}.dg{fill:var(--d-ground)}.dgrid{fill:none;stroke:var(--d-grid);stroke-width:1}.dpt{fill:var(--d-pt)}
+.glow{filter:url(#glow)}
+.mt{fill:var(--s-acc)}.cml{fill:var(--c-acc-l)}.cmr{fill:var(--c-acc-r)}.ml{fill:var(--s-acc-l)}.mr{fill:var(--s-acc-r)}
+.gray{filter:grayscale(1) brightness(.78) contrast(1.05)}
+.grade{filter:grayscale(.6) brightness(.7)}
+.duo{filter:grayscale(1) brightness(.55) contrast(1.2)}
+/* html-слои пульта */
+.layer{font-size:13px;color:var(--s-ink)}
+.glass{background:var(--s-glass);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border:1px solid var(--s-line);border-radius:12px}
+/* движение — только без системного «уменьшить движение»; конечное состояние = базовый стиль */
+@media (prefers-reduced-motion:no-preference){
+  .an-draw{stroke-dasharray:1;stroke-dashoffset:0;animation:draw 1.1s cubic-bezier(.2,.7,.2,1) both}
+  .an-pop{animation:pop .5s .6s cubic-bezier(.2,.8,.2,1) both;transform-box:fill-box;transform-origin:center}
+  .an-pulse{animation:pulse 2.4s ease-out infinite;transform-box:fill-box;transform-origin:center}
+  .an-dash{animation:dash 1.6s linear infinite}
+  .an-sweep{animation:sweep 2.6s ease-in-out infinite}
+  .an-blink{animation:blink 1.4s steps(2) infinite}
+  .an-in{animation:fade .7s .2s ease both}
+}
+@keyframes draw{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+@keyframes pop{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:none}}
+@keyframes pulse{0%{opacity:.9;transform:scale(.7)}100%{opacity:0;transform:scale(1.5)}}
+@keyframes dash{to{stroke-dashoffset:-24}}
+@keyframes sweep{0%,30%{transform:translateX(-120%)}70%,100%{transform:translateX(220%)}}
+@keyframes blink{to{opacity:.25}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+
+/* подписи сцены на телефоне — HTML-слоем постоянного кегля */
+.hl{display:none;position:absolute;inset:0;z-index:4;pointer-events:none}
+.hl span{position:absolute;white-space:nowrap;font:500 12px/1.25 "Onest",system-ui,sans-serif;color:var(--s-ink);background:var(--s-glass);padding:2px 6px;border-radius:6px;font-variant-numeric:tabular-nums}
+.hl span.k{background:var(--s-ink);color:var(--s-bg)}.hl span.w{background:var(--s-warn);color:var(--s-bg)}.hl span.a{background:var(--s-alert);color:var(--s-bg)}
+.lt .hl span{background:rgba(255,255,255,.85);color:var(--c-ink)}
+@media (max-width:640px){.stage svg text,.stage svg .lbl{display:none}.stage .hl{display:block}.lic{font-size:9px}}
