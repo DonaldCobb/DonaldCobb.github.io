@@ -1,0 +1,267 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Перевод для Радара</title>
+<style>
+:root{--bg:#fafaf9;--fg:#1c1c1a;--mut:#6b6b66;--line:#e2e2de;--card:#fff;--acc:#1c1c1a;--soft:#f1f1ee}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#141413;--fg:#ececea;--mut:#9a9a94;--line:#2e2e2b;--card:#1c1c1a;--acc:#ececea;--soft:#232321}}
+:root[data-theme="dark"]{--bg:#141413;--fg:#ececea;--mut:#9a9a94;--line:#2e2e2b;--card:#1c1c1a;--acc:#ececea;--soft:#232321}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 -apple-system,system-ui,"Segoe UI",Roboto,sans-serif}
+main{max-width:1100px;margin:0 auto;padding:20px 16px 60px}h1{font-size:22px;margin:0 0 4px}.lead{color:var(--mut);margin:0 0 18px}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px}.tile.win{border:2px solid var(--acc)}
+.t-name{font-weight:600}.t-score{font-size:34px;font-weight:700;font-variant-numeric:tabular-nums}.t-score span{font-size:15px;color:var(--mut)}
+.bar{height:6px;background:var(--soft);border-radius:3px;overflow:hidden;margin:4px 0 10px}.bar i{display:block;height:100%;background:var(--acc)}
+dl{display:grid;grid-template-columns:1fr auto;gap:2px 10px;margin:0;font-size:13px}dt{color:var(--mut)}dd{margin:0;text-align:right;font-variant-numeric:tabular-nums}
+.sum{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:14px 0}.sum p{margin:4px 0}
+table{border-collapse:collapse;width:100%;font-size:14px}th,td{padding:6px 8px;border-bottom:1px solid var(--line);text-align:left}td{font-variant-numeric:tabular-nums}
+.tbl{overflow-x:auto}
+.bar2{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:22px 0 10px}button{font:inherit;border:1px solid var(--line);background:var(--card);color:var(--fg);border-radius:8px;padding:7px 12px;cursor:pointer}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;margin:0 0 14px}
+.card header{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:baseline}.card h3{margin:0;font-size:16px}.num{color:var(--mut);font-variant-numeric:tabular-nums}.src{color:var(--mut);font-size:12px}
+.orig{background:var(--soft);border-radius:8px;padding:8px 10px;margin:10px 0}.lab{font-size:12px;color:var(--mut)}.from{font-size:11px;color:var(--mut);word-break:break-all}
+.orig p,.var p{margin:4px 0;white-space:pre-line;overflow-wrap:anywhere}p.tagline{font-weight:600}
+.vars{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:10px}.var{border:1px solid var(--line);border-radius:8px;padding:8px 10px;min-width:0}
+.vh{display:flex;gap:8px;align-items:center}.letter{font-weight:700;border:1px solid var(--fg);border-radius:6px;padding:0 7px}.who{font-size:12px;color:var(--mut)}
+.score{border-top:1px dashed var(--line);margin-top:6px;padding-top:6px;font-size:13px}.score small{color:var(--mut)}.score em{font-style:normal;border:1px solid var(--fg);border-radius:4px;padding:0 4px;font-size:11px}
+.score ul{margin:4px 0 0;padding-left:18px;color:var(--mut)}.note{color:var(--mut);font-size:13px;margin:8px 0 0}
+</style></head><body><main>
+<h1>Перевод карточек «Стартап Радара»</h1>
+<p class="lead">10 настоящих записей из фикстур проекта · 3 переводчика с одной инструкцией · судья вслепую: Claude Opus 5.5 · 2026-10-21</p>
+<section class="tiles"><div class="tile win"><div class="t-name">GPT 6.1 Sol · лучший</div>
+<div class="t-score">4.62<span>/5</span></div>
+<div class="bar"><i style="width:92%"></i></div>
+<dl><dt>Лучший в записи</dt><dd>6 из 10</dd>
+<dt>Грубых замечаний</dt><dd>14</dd>
+<dt>Вся база 12–20 млн знаков</dt><dd>64.01 $ – 106.68 $</dd>
+<dt>Время на запись (медиана)</dt><dd>5.0 с</dd></dl></div><div class="tile"><div class="t-name">Haiku 5.5</div>
+<div class="t-score">4.17<span>/5</span></div>
+<div class="bar"><i style="width:84%"></i></div>
+<dl><dt>Лучший в записи</dt><dd>2 из 10</dd>
+<dt>Грубых замечаний</dt><dd>18</dd>
+<dt>Вся база 12–20 млн знаков</dt><dd>11.58 $ – 19.31 $</dd>
+<dt>Время на запись (медиана)</dt><dd>4.4 с</dd></dl></div><div class="tile"><div class="t-name">MiniMax (бесплатно)</div>
+<div class="t-score">3.92<span>/5</span></div>
+<div class="bar"><i style="width:78%"></i></div>
+<dl><dt>Лучший в записи</dt><dd>2 из 10</dd>
+<dt>Грубых замечаний</dt><dd>22</dd>
+<dt>Вся база 12–20 млн знаков</dt><dd>0 $ – 0 $</dd>
+<dt>Время на запись (медиана)</dt><dd>3.6 с</dd></dl></div></section>
+<div class="sum"><p><b>Главное.</b> Лучше всех — GPT 6.1 Sol: 4.62 из 5 против 4.17 у Haiku 5.5 (разница 0.45).</p>
+<p>Важно: по точности смысла GPT худший (3.8) — выигрывает русским языком и терминами. Частая ошибка GPT — сокращает: из-за «коротко, без воды» выпадают детали описания. MiniMax оставляет английские и корейские слова в тексте. Haiku — кальки и тяжёлые обороты.</p>
+<p>Цена всей базы считается по токенам этой пробы: 3318 знаков оригинала. Azure Translator (текущий) не сравнивали — ключ без чтения значения недоступен; его цена по памяти: F0 — 2 млн знаков в месяц бесплатно, S1 — около 10 $ за 1 млн знаков (не проверено). Бесплатная модель OpenRouter: лимиты бесплатного тарифа на 12–20 млн знаков (десятки тысяч запросов) не проверены; Gemma 4 сегодня отвечала 429 на все запросы.</p></div>
+<div class="tbl"><table><tr><th></th><th>GPT 6.1 Sol</th><th>Haiku 5.5</th><th>MiniMax (бесплатно)</th></tr><tr><th>Смысл</th><td>3.8</td><td>4.1</td><td>3.9</td></tr><tr><th>Русский</th><td>4.9</td><td>3.6</td><td>3.3</td></tr><tr><th>Бренды</th><td>5.0</td><td>4.8</td><td>4.8</td></tr><tr><th>Термины</th><td>4.8</td><td>4.2</td><td>3.7</td></tr></table></div>
+<div class="bar2"><button id="reveal" aria-pressed="false">Показать, кто где</button><button id="theme">Тема</button></div>
+<article class="card"><header><span class="num">1</span><h3>무브카운터 (MoveCounter)</h3><span class="src">Disquiet · ko · 535 зн.</span></header>
+<div class="orig"><div class="lab">Оригинал</div><p class="tagline">카메라가 자세를 보고 반복 횟수를 정직하게 세는 홈트 카운터 앱</p><p class="description">스쿼트 100개 세다가, 대충 세고 있다는 걸 깨달았습니다.
+
+혼자 홈트하다 보면 숫자를 세는 게 제일 대충이 됩니다. &quot;어차피 나만 아는데&quot; 하면서 무릎을 반만 굽히고도 카운트를 올리게 되더라고요.
+
+그래서 카메라로 자세를 보고 반복 횟수를 세는 앱을 만들고 있습니다. 스쿼트 100개 했다고 생각했는데, 앱으로 재보니 실제로는 62개였습니다. 무릎이 덜 굽은 건 세지 않았기 때문입니다. 대충 하면 안 세어집니다.
+
+■ 지금 되는 것
+- 스쿼트·푸시업·플랭크·런지·크런치·점핑잭·풀업 7종 인식
+- 준비 자세를 알아보면 3·2·1 카운트다운 뒤 저절로 시작, 횟수는 음성으로 알려줌
+- 한쪽 팔·다리만 움직이면 세지 않음 (양쪽이 기준만큼 움직여야 1회)
+- 카메라 영상은 휴대폰 안에서만 처리하고 서버로 보내지 않음
+- 친구·랭킹, 어두운 화면(다크 모드)
+- 기구 없이 몸만 있으면 됨, 무료
+
+■ 어디서 쓸 수 있나
+- 안드로이드: 구글 플레이 비공개 테스트 진행 중
+- 앱인토스(토스</p><div class="from">fixtures/disquiet/cards/8370.json (disquiet.io, 28.09.2026)</div></div>
+<div class="vars"><div class="var"><div class="vh"><span class="letter">A</span><span class="who" hidden>GPT 6.1 Sol low (шлюз)</span></div><p class="tagline">Приложение для домашних тренировок: камера отслеживает технику и считает только правильные повторения</p><p class="description">Разрабатываем приложение, которое анализирует технику упражнений через камеру и считает только корректные повторения. В тесте из 100 приседаний приложение засчитало 62: недостаточно глубокие приседания не учитывались.
+
+Возможности:
+- Распознаёт 7 упражнений: приседания, отжимания, планку, выпады, скручивания, прыжки с разведением рук и ног, подтягивания.
+- Определяет исходное положение и автоматически запускает тренировку после отсчёта 3–2–1. Озвучивает число повторений.
+- Не засчитывает повторение, если двигается только одна рука или нога: обе стороны должны выполнить движение с нужной амплитудой.
+- Обрабатывает видео только на смартфоне, без передачи на сервер.
+- Поддерживает друзей, рейтинги и тёмную тему.
+- Бесплатно, без оборудования.
+
+Доступность:
+- Android: закрытое тестирование в Google Play.
+- Apps in Toss (Toss…</p><div class="score"><b>4.5</b> <small>смысл 3, русский 5, бренды 5, термины 5</small> <em>лучший</em><ul><li>пропуск: опущено авторское вступление (история со 100 приседаниями и «никто не видит») и фраза «대충 하면 안 세어집니다»</li><li>искажение: «В тесте из 100 приседаний приложение засчитало 62» — в оригинале автор думал, что сделал 100, а реально было 62</li><li>пропуск: «закрытое тестирование в Google Play» — потеряно «진행 중» (продолжается)</li></ul></div></div><div class="var"><div class="vh"><span class="letter">B</span><span class="who" hidden>Claude Haiku 5.5 (шлюз)</span></div><p class="tagline">Домашний счётчик повторений, который считает честно: камера проверяет технику</p><p class="description">Считал 100 приседаний и понял, что считаю неточно.
+
+Дома на счёте легко халтурить. «Всё равно никто не видит», и приседание засчитывается с неполным сгибом колен.
+
+Поэтому я делаю приложение, которое по камере проверяет технику и считает повторения. Я думал, что сделал 100 приседаний, а приложение насчитало 62: неполные приседания не засчитались. Если делать вполсилы, повтор не засчитается.
+
+■ Что уже работает
+- Распознавание 7 упражнений: приседания, отжимания, планка, выпады, скручивания, прыжки с разведением ног, подтягивания
+- Встаньте в стартовую позицию: обратный отсчёт 3-2-1, затем автоматический старт, количество повторений озвучивается
+- Одна рука или нога не засчитываются: повтор считается, только если обе стороны выполнили нужную амплитуду
+- Видео с камеры обрабатывается только на телефоне и не отправляется на сервер
+- Друзья и рейтинг, тёмная тема
+- Без оборудования, нужно только тело. Бесплатно
+
+■ Где можно использовать
+- Android: закрытое тестирование в Google Play продолжается
+- 앱인토스(Toss</p><div class="score"><b>3.5</b> <small>смысл 4, русский 3, бренды 3, термины 4</small><ul><li>не русский язык: «앱인토스(Toss» — корейский текст оставлен без транслитерации/официального названия Apps in Toss</li><li>искажение: «Одна рука или нога не засчитываются» — неясно, что не засчитывается движение одной конечностью</li><li>неверный термин: «прыжки с разведением ног» — jumping jacks включают и руки</li><li>неестественно: «Домашний счётчик повторений» звучит как бытовой прибор</li></ul></div></div><div class="var"><div class="vh"><span class="letter">C</span><span class="who" hidden>MiniMax M3.1 Flash (бесплатно, OpenRouter)</span></div><p class="tagline">Приложение для подсчёта повторений с честным учётом с помощью камеры и контролем техники</p><p class="description">Считая 100 приседаний, я понял, что считал небрежно.
+
+Когда тренируешься один, число повторений обычно считается «на глаз». Думаешь: «Всё равно больше никто не узнает», — и засчитываешь подход, даже не согнув колени до конца.
+
+Поэтому я создаю приложение, которое с помощью камеры отслеживает технику и считает повторения. Я думал, что выполнил 100 приседаний, но приложение насчитало только 62: неполные сгибания коленей не засчитывались. Если выполнено неправильно, повторение не засчитывается.
+
+■ Что уже работает
+— Распознавание 7 упражнений: приседания, отжимания, планка, выпады, скручивания, прыжки на месте и подтягивания
+— После распознавания исходной позиции автоматический отсчёт 3·2·1 и старт; количество повторений сообщается голосом
+— Движение только одной руки или ноги не засчитывается: для одного повторения обе стороны должны двигаться в достаточном объёме
+— Видео с камеры обрабатывается только на смартфоне и не отправляется на сервер
+— Друзья и рейтинг, тёмная тема
+— Не требует спортивного инвентаря: нужен только собственный вес, приложение бесплатное
+
+■ Где доступно
+— Android: закрытое тестирование в Google Play продолжается
+— 앱인토스(토스</p><div class="score"><b>3.2</b> <small>смысл 4, русский 3, бренды 3, термины 3</small><ul><li>неверный термин: «засчитываешь подход» — речь о повторении, а не о подходе</li><li>не русский язык: «앱인토스(토스» — корейский текст оставлен как есть</li><li>неверный термин: «прыжки на месте» вместо «прыжки с разведением рук и ног» (jumping jacks)</li><li>пропуск: в tagline потеряно «для домашних тренировок»; слог громоздкий («с честным учётом с помощью камеры и контролем техники»)</li><li>неточный термин: «двигаться в достаточном объёме» — принято «с нужной амплитудой»</li></ul></div></div></div><p class="note">Судья: A — самый чистый и деловой перевод с верными терминами и названием Apps in Toss, но сокращает авторское вступление; B и C полнее, но оставляют корейский текст и допускают терминологические ошибки.</p></article><article class="card"><header><span class="num">2</span><h3>WebDecoy</h3><span class="src">Disquiet · ko · 433 зн.</span></header>
+<div class="orig"><div class="lab">Оригинал</div><p class="tagline">AI 크롤러와 자동화 봇의 활동을 확인하고 대응하는 개발자 도구</p><p class="description">WebDecoy는 허니팟, 브라우저 행동 분석, 엣지 센서를 조합해 AI 크롤러, 스크레이퍼, 자동화된 트래픽을 탐지하는 개발자 도구입니다.
+
+• 미끼 링크와 가짜 API 엔드포인트에 접근하는 요청 기록
+• 헤드리스 브라우저와 자동화 도구의 행동 신호 분석
+• Cloudflare와 Netlify에서 JavaScript를 실행하지 않는 크롤러 관측
+• 지원되는 IP 대역, DNS, 서명 검증을 통한 크롤러 신원 확인
+• 탐지 결과를 검토한 뒤 필요한 범위에서 대응 설정
+
+무료 플랜은 월 5,000건의 이벤트 저장과 7일간의 기록 보관을 제공합니다. 유료 플랜은 월 20달러(USD)부터입니다. 자동 대응 기능은 플랜과 연동 환경에 따라 다릅니다.
+
+웹사이트, 관리 화면, 기술 문서는 현재 영어로 제공됩니다.</p><div class="from">fixtures/disquiet/cards/8628.json (disquiet.io, 28.09.2026)</div></div>
+<div class="vars"><div class="var"><div class="vh"><span class="letter">A</span><span class="who" hidden>MiniMax M3.1 Flash (бесплатно, OpenRouter)</span></div><p class="tagline">Инструмент для разработчиков для мониторинга и противодействия активности AI-краулеров и автоматизированных ботов</p><p class="description">WebDecoy — инструмент для разработчиков, который выявляет AI-краулеров, скрейперов и автоматизированный трафик с помощью ханипотов, анализа поведения в браузере и периферийных датчиков.
+
+• Запись запросов к подставным ссылкам и фальшивым API-эндпоинтам
+• Анализ поведенческих сигналов headless-браузеров и инструментов автоматизации
+• Наблюдение за краулерами, не выполняющими JavaScript, на Cloudflare и Netlify
+• Идентификация краулеров с помощью проверки поддерживаемых диапазонов IP, DNS и подписей
+• Настройка ответных мер в необходимых пределах после проверки результатов обнаружения
+
+Бесплатный план включает хранение 5 000 событий в месяц и архивирование записей за 7 дней. Платные планы начинаются с 20 USD в месяц. Функции автоматического реагирования зависят от плана и среды интеграции.
+
+Веб-сайт, панель управления и техническая документация в настоящее время доступны только на английском языке.</p><div class="score"><b>4.2</b> <small>смысл 4, русский 4, бренды 5, термины 4</small><ul><li>Двойное «для» в tagline: «Инструмент для разработчиков для мониторинга»</li><li>Неточно передано хранение истории: «архивирование записей за 7 дней» (в оригинале срок хранения, а не архивирование)</li><li>Термин звучит как «железо»: «периферийных датчиков» (лучше «edge-сенсоров»)</li><li>Добавлено «только» в «доступны только на английском» (в оригинале просто «на английском»)</li></ul></div></div><div class="var"><div class="vh"><span class="letter">B</span><span class="who" hidden>GPT 6.1 Sol low (шлюз)</span></div><p class="tagline">Инструмент для разработчиков: мониторинг активности ИИ-краулеров и ботов автоматизации и реагирование на неё</p><p class="description">WebDecoy — инструмент для разработчиков, который выявляет ИИ-краулеры, скрейперы и автоматизированный трафик с помощью honeypot-ловушек, анализа поведения браузера и периферийных сенсоров.
+
+• Регистрация запросов к ссылкам-приманкам и фиктивным API-эндпоинтам
+• Анализ поведенческих сигналов браузеров без графического интерфейса и инструментов автоматизации
+• Отслеживание краулеров, не выполняющих JavaScript, на Cloudflare и Netlify
+• Проверка подлинности краулеров по поддерживаемым IP-диапазонам, DNS и цифровым подписям
+• Просмотр результатов обнаружения и настройка необходимых мер реагирования
+
+Бесплатный тариф включает сохранение 5 000 событий в месяц и хранение истории за 7 дней. Платные тарифы — от 20 долларов США в месяц. Возможности автоматического реагирования зависят от тарифа и среды интеграции.
+
+Сайт, панель управления и техническая документация пока доступны только на английском языке.</p><div class="score"><b>4.5</b> <small>смысл 4, русский 5, бренды 5, термины 4</small> <em>лучший</em><ul><li>Специалисты так не говорят: «браузеров без графического интерфейса» (принято «headless-браузеров»)</li><li>Избыточный гибрид: «honeypot-ловушек»</li><li>Потерян порядок «после проверки» и «в нужном объёме»: «Просмотр результатов обнаружения и настройка необходимых мер»</li><li>Добавлено «только»: «доступны только на английском»</li></ul></div></div><div class="var"><div class="vh"><span class="letter">C</span><span class="who" hidden>Claude Haiku 5.5 (шлюз)</span></div><p class="tagline">Инструмент разработчика для мониторинга и реагирования на активность AI-краулеров и ботов автоматизации</p><p class="description">WebDecoy — инструмент разработчика для обнаружения AI-краулеров, скраперов и автоматизированного трафика. Сочетает ханипоты, анализ поведения браузера и edge-сенсоры.
+
+• Журнал запросов к приманкам-ссылкам и поддельным API-эндпоинтам
+• Анализ поведенческих сигналов headless-браузеров и средств автоматизации
+• Наблюдение за краулерами, не выполняющими JavaScript, на Cloudflare и Netlify
+• Проверка идентичности краулеров по поддерживаемым IP-диапазонам, DNS и подписям
+• Настройка реагирования в необходимом объёме после анализа результатов обнаружения
+
+Бесплатный план включает хранение 5 000 событий в месяц и 7 дней истории. Платные планы — от 20 долл. США в месяц. Функции автоматического реагирования зависят от плана и интеграций.
+
+Веб-сайт, панель управления и техническая документация пока доступны только на английском языке.</p><div class="score"><b>4.0</b> <small>смысл 4, русский 3, бренды 5, термины 4</small><ul><li>Грамматическое рассогласование в tagline: «для мониторинга и реагирования на активность»</li><li>Калька: «Проверка идентичности краулеров» (нужно «подлинности»)</li><li>Неестественный порядок слов: «приманкам-ссылкам»</li><li>Добавлено «только»: «доступны только на английском»</li></ul></div></div></div><p class="note">Судья: B самый естественный и деловой, термины почти везде верные, кроме описательной замены «headless»; A и C проигрывают из-за стилистических и грамматических огрехов.</p></article><article class="card"><header><span class="num">3</span><h3>iAssets 知盈</h3><span class="src">appinn · zh · 521 зн.</span></header>
+<div class="orig"><div class="lab">Оригинал</div><p class="tagline">一款不记账、只做资产盘点的 iOS APP</p><p class="description">软件名称
+ iAssets 知盈
+ 应用平台
+ iPhone
+ iPad
+ iOS / iPadOS
+ 推荐类型
+ 〖开发者自荐〗
+ 是否收费
+ 免费下载，部分高级功能需要开通 Pro 会员。
+ 目前提供两种 Pro 方案：
+ 年度订阅：9.9 元 / 年
+ 永久会员：48 元
+ 基础功能可以免费下载使用，部分高级功能需要 Pro 会员权限。
+ 一句简介
+ 一款不记账、只盘点的个人与家庭资产管理 App，帮助你看清资产、负债、净资产及长期变化趋势。
+ 应用简介
+ iAssets 知盈是一款个人与家庭资产管理工具。
+ 和传统记账软件不同，它不要求每天记录每一笔消费，而是更关注：
+ 我现在有多少资产
+ 资产分别放在哪里
+ 有多少负债
+ 净资产是多少
+ 一段时间内资产是在增长还是下降
+ 所以我给它的定位一直比较简单：
+ 不记账，只盘点。 
+ 目前主要功能包括：
+ 支持银行账户、现金、证券账户、网络理财等多种资产类型
+ 支持资产、负债、净资产统计
+ 支持多账本管理
+ 支持家庭成员共同管理
+ 支持多币种资产
+ 支持股票、基金、贵金属、加密货币及外汇等动态估值
+ 支持资产趋势和结构分析
+ 支持资产</p><div class="from">fixtures/appinn/topics/92579.json (meta.appinn.net, 28.09.2026)</div></div>
+<div class="vars"><div class="var"><div class="vh"><span class="letter">A</span><span class="who" hidden>MiniMax M3.1 Flash (бесплатно, OpenRouter)</span></div><p class="tagline">iOS-приложение для учёта активов без ведения бюджета</p><p class="description">Название приложения
+ iAssets 知盈
+ Платформы
+ iPhone
+ iPad
+ iOS / iPadOS
+ Тип рекомендации
+ 〖Рекомендация разработчика〗
+ Стоимость
+ Бесплатное скачивание; для расширенных функций требуется подписка Pro.
+ Доступны два тарифа Pro:
+ Годовая подписка: 9,9 юаня в год
+ Пожизненный доступ: 48 юаней
+ Базовые функции доступны бесплатно, для некоторых расширенных функций требуется membership Pro.
+ Краткое описание
+ Приложение для учёта личных и семейных активов без ведения бюджета: помогает отслеживать активы, обязательства, чистый капитал и долгосрочные тенденции.
+ Описание приложения
+ iAssets 知盈 — инструмент управления личными и семейными активами.
+ В отличие от традиционных приложений для учёта расходов, оно не требует ежедневно записывать каждую трату, а помогает ответить на вопросы:
+ Сколько у меня сейчас активов
+ Где распределены активы
+ Сколько у меня обязательств
+ Каков мой чистый капитал
+ Растут или снижаются активы со временем
+ Поэтому его позиционирование остаётся простым:
+ Не учёт расходов, а учёт активов.
+ Основные функции:
+ Поддержка банковских счетов, наличных средств, брокерских счетов, онлайн-инвестиций и других типов активов
+ Статистика активов, обязательств и чистого капитала
+ Управление несколькими книгами учёта
+ Совместное управление финансами членами семьи
+ Поддержка активов в разных валютах
+ Динамическая оценка акций, фондов, драгоценных металлов, криптовалют и валют
+ Анализ динамики и структуры активов
+ Поддержка активов</p><div class="score"><b>4.0</b> <small>смысл 4, русский 3, бренды 5, термины 4</small><ul><li>не русский язык: «требуется membership Pro»</li><li>неточный смысл: «без ведения бюджета» (不记账 означает отсутствие учёта расходов, а не бюджета)</li><li>неестественно: «Совместное управление финансами членами семьи»</li></ul></div></div><div class="var"><div class="vh"><span class="letter">B</span><span class="who" hidden>Claude Haiku 5.5 (шлюз)</span></div><p class="tagline">iOS-приложение без учёта расходов: только инвентаризация активов</p><p class="description">Название: iAssets 知盈
+Платформы: iPhone, iPad
+Совместимость: iOS / iPadOS
+Тип рекомендации: самопрезентация разработчика
+Стоимость: бесплатная загрузка. Часть расширенных функций доступна по подписке Pro.
+Тарифы Pro: годовая подписка — 9,9 юаня в год; пожизненная подписка — 48 юаней.
+Базовые функции доступны бесплатно, расширенные требуют Pro.
+Краткое описание: персональное и семейное приложение для управления активами. Показывает активы, обязательства, чистую стоимость и динамику изменений за выбранный период.
+Описание: iAssets 知盈 — инструмент управления личными и семейными активами. В отличие от традиционных приложений для учёта расходов, не требует ежедневной записи каждой траты. Фокус на вопросах: сколько у меня активов, где они хранятся, какие есть обязательства, какова чистая стоимость и растут ли активы или сокращаются в течение периода.
+Принцип: не учёт, а инвентаризация.
+Основные функции:
+— поддержка банковских счетов, наличных, брокерских счетов, онлайн-финансовых продуктов и других типов активов;
+— статистика по активам, обязательствам и чистой стоимости;
+— несколько учётных книг;
+— совместное управление с членами семьи;
+— мультивалютность;
+— динамическая оценка акций, фондов, драгоценных металлов, криптовалют и валют;
+— анализ трендов и структуры активов;
+— поддержка активов</p><div class="score"><b>4.2</b> <small>смысл 4, русский 4, бренды 5, термины 4</small> <em>лучший</em><ul><li>выдумка: «динамику изменений за выбранный период» (в оригинале речь о долгосрочных тенденциях)</li><li>неудачно: «самопрезентация разработчика»</li><li>искажение: «не учёт, а инвентаризация» (потеряно «расходов»)</li></ul></div></div><div class="var"><div class="vh"><span class="letter">C</span><span class="who" hidden>GPT 6.1 Sol low (шлюз)</span></div><p class="tagline">Приложение для iOS: учет активов без записи повседневных расходов.</p><p class="description">iAssets 知盈 — приложение для управления личными и семейными активами на iPhone и iPad. Показывает состав и размещение активов, обязательства, чистую стоимость активов и их динамику без ежедневной записи расходов.
+
+Возможности: учет банковских счетов, наличных, брокерских счетов и онлайн-инвестиций; статистика активов и обязательств; несколько учетных книг; совместное управление с членами семьи; поддержка разных валют; динамическая оценка акций, фондов, драгоценных металлов, криптовалют и валютных активов; анализ структуры и динамики капитала.
+
+Базовые функции бесплатны. Расширенные доступны по подписке Pro: 9,9 юаня в год или 48 юаней за бессрочный доступ.</p><div class="score"><b>4.5</b> <small>смысл 3, русский 5, бренды 5, термины 5</small><ul><li>пропуск: нет слогана «不记账，只盘点» и типа рекомендации</li><li>пропуск: «статистика активов и обязательств» (опущен чистый капитал)</li><li>пропуск: нет «и других типов активов»</li></ul></div></div></div><p class="note">Судья: B полный, естественный и без иноязычных вкраплений; A портит «membership Pro», C слишком сокращает содержание.</p></article><article class="card"><header><span class="num">5</span><h3>Buma Baby Tracker</h3><span class="src">TrustMRR · en · 422 зн.</span></header>
+<div class="orig"><div class="lab">Оригинал</div><p class="description">Buma is a simple, flexible baby tracker and shared family journal. Log sleep, feeds, diapers, tummy time, and custom activities in one clear timeline. Invite a partner or caregiver so everyone can add and edit updates for the same baby, stay in sync across accounts, and keep a complete record of daily routines and special moments. Built for busy parents, Buma makes tracking quick, collaborative, and easy to understand.</p><div class="from">fixtures/trustmrr/detail/buma-baby-tracker.json (trustmrr.com API)</div></div>
+<div class="vars"><div class="var"><div class="vh"><span class="letter">A</span><span class="who" hidden>MiniMax M3.1 Flash (бесплатно, OpenRouter)</span></div><p class="description">Buma — простой и гибкий трекер для младенцев и общий семейный дневник. В единой понятной ленте можно записывать сон, кормление, смену подгузников, время на животе и пользовательские занятия. Пригласите партнера или помощника, чтобы все могли добавлять и редактировать обновления о ребенке, синхронизировать данные между аккаунтами и вести полную историю ежедневных ритуалов и особенных моментов. Buma помогает занятым родителям вести учет быстро, совместно и без лишних сложностей.</p><div class="score"><b>4.2</b> <small>смысл 4, русский 4, бренды 5, термины 4</small></div></div><div class="var"><div class="vh"><span class="letter">B</span><span class="who" hidden>Claude Haiku 5.5 (шлюз)</span></div><p class="description">Buma — простой и гибкий трекер для детей и общий семейный дневник. Фиксируйте сон, кормления, подгузники, время на животе и пользовательские активности в одной понятной хронологии. Приглашайте партнёра или няню, чтобы все могли добавлять и редактировать записи о ребёнке, синхронизироваться между аккаунтами и вести полную историю режима дня и важных моментов. Buma создан для занятых родителей: отслеживание становится быстрым, совместным и простым для понимания.</p><div class="score"><b>4.2</b> <small>смысл 4, русский 4, бренды 5, термины 4</small></div></div><div class="var"><div class="vh"><span class="letter">C</span><span class="who" hidden>GPT 6.1 Sol low (шлюз)</span></div><p class="description">Buma — простой и гибкий трекер ухода за ребёнком и общий семейный дневник. Отмечайте сон, кормления, смену подгузников, выкладывание на живот и другие занятия в единой хронологической ленте. Приглашайте партнёра или няню, чтобы вместе добавлять и редактировать записи о ребёнке с синхронизацией между аккаунтами. Сохраняйте полную историю повседневных дел и особых моментов. Buma помогает занятым родителям быстро и удобно вести записи вместе.</p><div class="score"><b>4.8</b> <small>смысл 4, русский 5, бренды 5, термины 5</small> <em>лучший</em></div></div></div><p class="note">Судья: C звучит естественнее всех и верно передаёт термин «выкладывание на живот», но теряет «custom» («другие занятия») и «easy to understand»; в A и B есть кальки («время на животе», «обновления», «активности»), а B сужает baby до «для детей».</p></article><article class="card"><header><span class="num">9</span><h3>SideKik CRM</h3><span class="src">Open-Launch · en · 273 зн.</span></header>
+<div class="orig"><div class="lab">Оригинал</div><p class="description">SideKik is a simple CRM for small businesses that helps you manage enquiries, customers, follow-ups, quotes, invoices and daily tasks in one easy dashboard. It also includes Lead Finder to help you discover new business opportunities and keep potential customers organised.</p><div class="from">fixtures/openlaunch/projects/sidekik-crm.html (open-launch.com, 28.09.2026)</div></div>
+<div class="vars"><div class="var"><div class="vh"><span class="letter">A</span><span class="who" hidden>GPT 6.1 Sol low (шлюз)</span></div><p class="description">SideKik — простая CRM для малого бизнеса: запросы, клиенты, повторные контакты, коммерческие предложения, счета и повседневные задачи в единой удобной панели. Встроенный Lead Finder помогает находить новые возможности для продаж и систематизировать данные о потенциальных клиентах.</p><div class="score"><b>4.8</b> <small>смысл 4, русский 5, бренды 5, термины 5</small> <em>лучший</em></div></div><div class="var"><div class="vh"><span class="letter">B</span><span class="who" hidden>Claude Haiku 5.5 (шлюз)</span></div><p class="description">SideKik — простая CRM для малого бизнеса: управление обращениями, клиентами, напоминаниями о контактах, коммерческими предложениями, счетами и ежедневными задачами в одной понятной панели. Также включает Lead Finder для поиска новых деловых возможностей и систематизации потенциальных клиентов.</p><div class="score"><b>4.5</b> <small>смысл 4, русский 4, бренды 5, термины 5</small></div></div><div class="var"><div class="vh"><span class="letter">C</span><span class="who" hidden>MiniMax M3.1 Flash (бесплатно, OpenRouter)</span></div><p class="description">SideKik — простая CRM для малого бизнеса, которая помогает управлять запросами, клиентами, последующими контактами, коммерческими предложениями, счетами и ежедневными задачами в едином удобном дашборде. Также включает Lead Finder для поиска новых бизнес-возможностей и систематизации потенциальных клиентов.</p><div class="score"><b>4.2</b> <small>смысл 5, русский 3, бренды 5, термины 4</small></div></div></div><p class="note">Судья: A звучит естественнее всех, но опускает глагол «управлять» и сужает «business opportunities» до «возможностей для продаж». В B вольно передано «напоминаниями о контактах», а фраза «Также включает» осталась без подлежащего. C точен, но в нём кальки «последующими контактами» и «бизнес-возможностей» и англицизм «дашборде»; в B и C неудачно сказано «систематизации потенциальных клиентов».</p></article><article class="card"><header><span class="num">12</span><h3>Chainalysis</h3><span class="src">Акселератор techstars · en · 132 зн.</span></header>
+<div class="orig"><div class="lab">Оригинал</div><p class="description">Chainalysis helps government agencies, cryptocurrency businesses, and financial institutions engage confidently with cryptocurrency.</p><div class="from">fixtures/accelerators/by-source/techstars.json (yigitmeteozcan/startups, MIT)</div></div>
+<div class="vars"><div class="var"><div class="vh"><span class="letter">A</span><span class="who" hidden>Claude Haiku 5.5 (шлюз)</span></div><p class="description">Chainalysis помогает государственным органам, криптовалютным компаниям и финансовым институтам уверенно работать с криптовалютой.</p><div class="score"><b>5.0</b> <small>смысл 5, русский 5, бренды 5, термины 5</small></div></div><div class="var"><div class="vh"><span class="letter">B</span><span class="who" hidden>MiniMax M3.1 Flash (бесплатно, OpenRouter)</span></div><p class="description">Chainalysis помогает государственным органам, криптовалютным компаниям и финансовым учреждениям уверенно работать с криптовалютой.</p><div class="score"><b>5.0</b> <small>смысл 5, русский 5, бренды 5, термины 5</small> <em>лучший</em></div></div><div class="var"><div class="vh"><span class="letter">C</span><span class="who" hidden>GPT 6.1 Sol low (шлюз)</span></div><p class="description">Chainalysis помогает государственным органам, криптовалютным компаниям и финансовым учреждениям уверенно работать с криптовалютами.</p><div class="score"><b>4.8</b> <small>смысл 5, русский 4, бренды 5, термины 5</small></div></div></div><p class="note">Судья: Все три перевода точны и без грубых ошибок. B чуть лучше: «финансовым учреждениям» — нейтральный деловой вариант, а единственное число «с криптовалютой» естественнее, чем множественное «с криптовалютами» в C.</p></article><article class="card"><header><span class="num">14</span><h3>MoEngage Inc.</h3><span class="src">Акселератор alchemist · en · 116 зн.</span></header>
+<div class="orig"><div class="lab">Оригинал</div><p class="tagline">Marketing Automation Platform pioneering user-level personalization and solving the problem of churn in mobile apps.</p><div class="from">fixtures/accelerators/by-source/alchemist.json (yigitmeteozcan/startups, MIT)</div></div>
+<div class="vars"><div class="var"><div class="vh"><span class="letter">A</span><span class="who" hidden>GPT 6.1 Sol low (шлюз)</span></div><p class="tagline">Платформа автоматизации маркетинга с персонализацией на уровне пользователя для снижения оттока в мобильных приложениях.</p><div class="score"><b>4.8</b> <small>смысл 4, русский 5, бренды 5, термины 5</small> <em>лучший</em><ul><li>пропуск: не передано «pioneering» (первопроходец/новатор) — «Платформа автоматизации маркетинга с персонализацией»</li></ul></div></div><div class="var"><div class="vh"><span class="letter">B</span><span class="who" hidden>MiniMax M3.1 Flash (бесплатно, OpenRouter)</span></div><p class="tagline">Платформа маркетинговой автоматизации, pioneered персонализацию на уровне пользователя и решила проблему оттока в мобильных приложениях.</p><div class="score"><b>2.8</b> <small>смысл 2, русский 1, бренды 5, термины 3</small><ul><li>не русский язык: «pioneered персонализацию»</li><li>искажение смысла (прошедшее время, утверждение о свершившемся факте): «решила проблему оттока»</li><li>грамматически несогласованная конструкция: «Платформа маркетинговой автоматизации, pioneered … и решила»</li></ul></div></div><div class="var"><div class="vh"><span class="letter">C</span><span class="who" hidden>Claude Haiku 5.5 (шлюз)</span></div><p class="tagline">Платформа маркетинговой автоматизации, которая обеспечивает персонализацию на уровне пользователя и решает проблему оттока в мобильных приложениях.</p><div class="score"><b>4.5</b> <small>смысл 4, русский 4, бренды 5, термины 5</small><ul><li>пропуск: «pioneering» сведено к нейтральному «которая обеспечивает персонализацию»</li></ul></div></div></div><p class="note">Судья: A и C теряют «pioneering», но A короче и естественнее, а B непригоден из-за английского слова и искажения времени.</p></article><article class="card"><header><span class="num">15</span><h3>LeadScope AI</h3><span class="src">TrustMRR · en · 200 зн.</span></header>
+<div class="orig"><div class="lab">Оригинал</div><p class="description">LeadScope AI helps agencies, freelancers, and B2B teams find high-intent local business leads faster. It combines business data, AI insights, SEO signals, Google Maps details, and outreach-ready infor</p><div class="from">fixtures/trustmrr/discovery.json fastestGrowingStartups (trustmrr.com API, 26.09.2026)</div></div>
+<div class="vars"><div class="var"><div class="vh"><span class="letter">A</span><span class="who" hidden>Claude Haiku 5.5 (шлюз)</span></div><p class="description">LeadScope AI помогает агентствам, фрилансерам и B2B-командам быстрее находить локальные бизнес-лиды с высокой готовностью к покупке. Сервис объединяет данные о компаниях, AI-инсайты, SEO-сигналы, детали из Google Maps и информацию, готовую для исходящих коммуникаций.</p><div class="score"><b>4.8</b> <small>смысл 5, русский 4, бренды 5, термины 5</small> <em>лучший</em><ul><li>Тяжеловесная концовка: «информацию, готовую для исходящих коммуникаций»</li></ul></div></div><div class="var"><div class="vh"><span class="letter">B</span><span class="who" hidden>GPT 6.1 Sol low (шлюз)</span></div><p class="description">LeadScope AI помогает агентствам, фрилансерам и B2B-командам быстрее находить местные компании с высокой готовностью к покупке. Объединяет данные о бизнесе, ИИ-аналитику, SEO-показатели, сведения из Google Maps и данные для прямого обращения к клиентам.</p><div class="score"><b>4.5</b> <small>смысл 4, русский 5, бренды 5, термины 4</small><ul><li>Потерян термин «лиды»: «находить местные компании» вместо лидов</li></ul></div></div><div class="var"><div class="vh"><span class="letter">C</span><span class="who" hidden>MiniMax M3.1 Flash (бесплатно, OpenRouter)</span></div><p class="description">LeadScope AI помогает агентствам, фрилансерам и B2B-командам быстрее находить местные бизнесы с высоким покупательским намерением. Он объединяет бизнес-данные, аналитику на основе ИИ, SEO-сигналы, сведения из Google Maps и готовую к использованию контактную информацию.</p><div class="score"><b>3.8</b> <small>смысл 4, русский 3, бренды 5, термины 3</small><ul><li>Неестественно: «местные бизнесы»</li><li>Калька с high-intent: «с высоким покупательским намерением»</li><li>Потерян термин «лиды»</li><li>Размыто outreach-ready: «готовую к использованию контактную информацию»</li></ul></div></div></div><p class="note">Судья: A точнее всех передаёт смысл и сохраняет принятую терминологию (лиды, B2B, SEO), но концовка у него громоздкая; B читается лучше, однако теряет понятие лидов.</p></article><article class="card"><header><span class="num">17</span><h3>Listing #95446</h3><span class="src">Empire Flippers · en · 552 зн.</span></header>
+<div class="orig"><div class="lab">Оригинал</div><p class="tagline">$71.5K Per Month SaaS Business in the Business Niche</p><p class="description">Launched in 2021, this B2B SaaS business provides identity verification, document authentication, biometric verification, and KYC solutions to customers across fintech, cryptocurrency, e-commerce, healthcare, system integrators, and telecom companies. The proprietary, API-first platform supports identity documents from more than 190 countries and generates fully recurring subscription revenue. Key strengths include strong year-over-year growth, ISO 27001:2022 certification, net profit margins of</p><div class="from">fixtures/empireflippers/for-sale-page-1.json listing 95446 (api.empireflippers.com)</div></div>
+<div class="vars"><div class="var"><div class="vh"><span class="letter">A</span><span class="who" hidden>MiniMax M3.1 Flash (бесплатно, OpenRouter)</span></div><p class="tagline">B2B SaaS-бизнес в нише бизнес-услуг с доходом $71,5 тыс. в месяц</p><p class="description">Запущен в 2021 году. Этот B2B SaaS-бизнес предлагает решения для верификации личности, аутентификации документов, биометрической проверки и KYC клиентам из финтеха, криптовалютной отрасли, электронной коммерции, здравоохранения, системной интеграции и телекоммуникаций. Собственная платформа с приоритетом API поддерживает документы, удостоверяющие личность, из более чем 190 стран и генерирует полностью возобновляемую подписочную выручку. Ключевые преимущества: высокие темпы годового роста, сертификация ISO 27001:2022 и рентабельность по чистой прибыли на уровне</p><div class="score"><b>4.2</b> <small>смысл 4, русский 4, бренды 5, термины 4</small> <em>лучший</em></div></div><div class="var"><div class="vh"><span class="letter">B</span><span class="who" hidden>Claude Haiku 5.5 (шлюз)</span></div><p class="tagline">SaaS-бизнес с выручкой $71,5 тыс. в месяц в нише бизнес-услуг</p><p class="description">Запущен в 2021 году. B2B SaaS-бизнес предоставляет решения для верификации личности, аутентификации документов, биометрической верификации и KYC клиентам из финтеха, криптовалютного сектора, электронной коммерции, здравоохранения, системных интеграторов и телекоммуникаций. Проприетарная API-first платформа поддерживает удостоверяющие документы более чем 190 стран и обеспечивает полностью повторяющуюся выручку по подписке. Ключевые преимущества: устойчивый рост год к году, сертификация ISO 27001:2022, чистая рентабельность</p><div class="score"><b>3.8</b> <small>смысл 4, русский 3, бренды 5, термины 3</small><ul><li>неверный термин: «полностью повторяющуюся выручку» (принято «регулярную/рекуррентную выручку»)</li><li>неточность: «удостоверяющие документы» (следует «документы, удостоверяющие личность»)</li></ul></div></div><div class="var"><div class="vh"><span class="letter">C</span><span class="who" hidden>GPT 6.1 Sol low (шлюз)</span></div><p class="tagline">B2B SaaS-бизнес с выручкой $71,5 тыс. в месяц</p><p class="description">Основанный в 2021 году B2B SaaS-бизнес предлагает проверку личности, подлинности документов, биометрическую верификацию и KYC-решения для финтеха, криптоиндустрии, электронной коммерции, здравоохранения, системных интеграторов и телеком-компаний. Собственная API-ориентированная платформа поддерживает удостоверения личности из более чем 190 стран. Вся выручка поступает от регулярных подписок. Ключевые преимущества: высокие темпы годового роста, сертификация ISO 27001:2022, рентабельность по чистой прибыли…</p><div class="score"><b>4.5</b> <small>смысл 3, русский 5, бренды 5, термины 5</small><ul><li>пропуск: в tagline нет «в нише бизнес-услуг» («B2B SaaS-бизнес с выручкой $71,5 тыс. в месяц»)</li></ul></div></div></div><p class="note">Судья: A передаёт оригинал полностью и корректно, хотя «с приоритетом API» и «возобновляемую» звучат калькой; C естественнее, но с пропуском в tagline, B страдает от калек в терминах.</p></article><article class="card"><header><span class="num">18</span><h3>Print-A-Panel 2 | 3D Printable Games, Wall Art, and More</h3><span class="src">Kickstarter · en · 134 зн.</span></header>
+<div class="orig"><div class="lab">Оригинал</div><p class="tagline">3D print your own tabletop gaming tables, puzzle tables, modular games, stunning wall art, organizers, and more -STLs for 3D printing.</p><div class="from">fixtures/kickstarter/Kickstarter_2026-09-10T03_20_48_478Z.json.gz id 455563083 (webrobots.io)</div></div>
+<div class="vars"><div class="var"><div class="vh"><span class="letter">A</span><span class="who" hidden>MiniMax M3.1 Flash (бесплатно, OpenRouter)</span></div><p class="tagline">3D-печать настольных игровых и головоломных столов, модульных игр, эффектных настенных панно, органайзеров и многого другого — STL-файлы для 3D-печати.</p><div class="score"><b>3.5</b> <small>смысл 3, русский 3, бренды 5, термины 3</small><ul><li>неверный термин: «головоломных столов» — puzzle tables здесь столы для сборки пазлов, а не «головоломки»</li><li>калька, тавтология: «настольных игровых … столов» (tabletop gaming tables)</li><li>пропуск: не передано «your own» (сами/свои)</li></ul></div></div><div class="var"><div class="vh"><span class="letter">B</span><span class="who" hidden>Claude Haiku 5.5 (шлюз)</span></div><p class="tagline">Печатайте на 3D-принтере настольные игровые столы, головоломочные столы, модульные игры, эффектные настенные панно, органайзеры и многое другое — STL-файлы для 3D-печати.</p><div class="score"><b>3.2</b> <small>смысл 3, русский 2, бренды 5, термины 3</small><ul><li>неверный термин: «головоломочные столы» — нужно «столы для пазлов»</li><li>калька, тавтология: «настольные игровые столы»</li><li>громоздко: «столы» повторено дважды подряд</li></ul></div></div><div class="var"><div class="vh"><span class="letter">C</span><span class="who" hidden>GPT 6.1 Sol low (шлюз)</span></div><p class="tagline">STL-файлы для 3D-печати столов для настольных игр и пазлов, модульных игр, эффектного настенного декора, органайзеров и многого другого.</p><div class="score"><b>4.8</b> <small>смысл 4, русский 5, бренды 5, термины 5</small> <em>лучший</em><ul><li>пропуск: не передан призыв «3D print your own» (печатайте сами)</li></ul></div></div></div><p class="note">Судья: C единственный верно передаёт «столы для настольных игр и пазлов» естественным деловым русским; A и B калькируют и ошибаются с puzzle tables.</p></article>
+</main><script>
+const b=document.getElementById("reveal");b.onclick=()=>{const on=b.getAttribute("aria-pressed")!=="true";b.setAttribute("aria-pressed",on);b.textContent=on?"Скрыть, кто где":"Показать, кто где";document.querySelectorAll(".who").forEach(e=>e.hidden=!on)};
+document.getElementById("theme").onclick=()=>{const r=document.documentElement;const dark=r.dataset.theme?r.dataset.theme==="dark":matchMedia("(prefers-color-scheme: dark)").matches;r.dataset.theme=dark?"light":"dark"};
+</script></body></html>
