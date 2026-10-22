@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Сокол · Кино</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="tokens.css">
+<style>
+.cam .fit{position:absolute;left:50%;top:50%;width:max(100%,calc(100cqh*16/9));aspect-ratio:16/9;transform:translate(-50%,-50%)}
+.cam{container-type:size}
+.cam .fit>img{width:100%;height:100%;object-fit:cover}
+.tag.big{align-items:flex-end;gap:8px;padding:6px 10px 6px 8px;border-left:3px solid var(--on-video)}
+.tag.big b{font-size:var(--t28);line-height:1;font-weight:600}
+.tag.big span{font-size:var(--t12);line-height:1.2;color:var(--on-video-2)}
+.tag.big.w{border-left-color:var(--warn)} .tag.big.w b{color:var(--warn)}
+.call{position:absolute;width:0;border-left:1px solid rgba(255,255,255,.8)}
+.call::after{content:"";position:absolute;left:-4px;bottom:-4px;width:7px;height:7px;border-radius:50%;background:#fff}
+.call .cc{position:absolute;left:8px;top:-10px;display:flex;flex-direction:column;padding:6px 12px 8px;background:var(--vglass-2);border-radius:var(--r-m);white-space:nowrap;backdrop-filter:blur(10px)}
+.call.l .cc{left:auto;right:8px;align-items:flex-end}
+.call b{font-size:clamp(14px,2.6cqw,40px);line-height:1.05;font-weight:500;color:#fff}
+.call .cc span{font-size:var(--t12);color:var(--on-video-2)}
+
+
+.plan{display:block;width:100%;height:100%}
+.plan .pl{font:400 12px var(--font);fill:var(--muted)} .plan .pl.b{fill:var(--text);font-weight:600} .plan .pl.w{fill:var(--warn)}
+
+.iso{display:block;width:100%;height:100%}
+.iso .pl{font:500 12px var(--font);fill:var(--muted)} .iso .pl.b{fill:var(--text)} .iso .ic{font:600 11px var(--font)}
+
+.clock{display:flex;flex-direction:column;align-items:flex-end;line-height:1.2} .clock .num{font-size:var(--t20)}
+
+.app{display:grid;grid-template-rows:auto 1fr;height:100vh;min-height:760px}
+.hd{display:flex;align-items:center;gap:20px;min-height:64px;padding:0 16px;border-bottom:1px solid var(--line);background:var(--bg)}
+.hd .site{display:flex;flex-direction:column;line-height:1.25;white-space:nowrap}
+.hd .cnt{display:flex;gap:18px;align-items:center;white-space:nowrap}
+.hd .cnt .num{font-size:var(--t20)}
+.hd .cnt span{display:inline-flex;align-items:center;gap:6px}
+.hd .sp{flex:1}
+.hdb{flex-direction:column;align-items:stretch;gap:6px;padding:12px 16px 14px}
+.hdb .r1{display:flex;align-items:center;gap:20px}
+.phrase-s{font-size:var(--t20);line-height:1.35;max-width:1100px}
+.confirm{display:flex;flex-direction:column}
+.cf{padding:14px 16px;border-bottom:1px solid var(--line);box-shadow:inset 3px 0 0 var(--warn)}
+.cf:last-child{border-bottom:0}
+.cf h3{font-size:var(--t16);font-weight:600;color:var(--warn);display:flex;align-items:center;gap:8px}
+.cf .bd{display:grid;grid-template-columns:132px 1fr;gap:12px;margin:10px 0 12px;align-items:center}
+.cf .bd img{width:132px;height:74px;object-fit:cover;border-radius:var(--r-s)}
+.cf .pair{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0 12px}
+.cf .pair img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:var(--r-s)}
+.cf .acts{display:flex;gap:8px;flex-wrap:wrap}
+.vt{width:100%;border-collapse:collapse}
+.vt th{font-size:var(--t12);font-weight:400;color:var(--muted);text-align:left;padding:8px 12px;border-bottom:1px solid var(--line)}
+.vt td{padding:0 12px;height:var(--row);border-bottom:1px solid var(--line);vertical-align:middle}
+.vt td.tmr{text-align:right;white-space:nowrap} .vt td.tmr b{font-size:var(--t20);font-weight:600} .vt td.tmr span{color:var(--muted);font-size:var(--t12)}
+.vt tr.lost td:first-child{box-shadow:inset 3px 0 0 var(--warn)}
+.vt .ty{font-weight:500} .vt .sub{font-size:var(--t12);color:var(--muted)}
+.vt .thm{width:64px;height:36px;object-fit:cover;border-radius:var(--r-s);display:block}
+.vt tr.gone td{height:44px;color:var(--muted)}
+.ph-only{display:none}
+
+.c1m{position:relative;height:100vh;min-height:760px;overflow:hidden;background:#000;color:#fff}
+.c1m .hero{position:absolute;inset:0;border-radius:0}
+.c1m .hero>.lbl,.c1m .hero>.tm{display:none}
+.c1m .hero .credit{left:24px;right:auto;bottom:16px}
+.c1m .scrim{position:absolute;left:0;right:0;top:0;height:50%;background:linear-gradient(rgba(8,9,11,.86),rgba(8,9,11,.55) 55%,transparent);pointer-events:none}
+.c1m .tl{position:absolute;left:24px;top:18px;width:660px;--warn:#F0B451}
+.c1m .tl .r{display:flex;align-items:center;gap:16px;white-space:nowrap}
+.c1m .tl .site{color:rgba(255,255,255,.86)}
+.demo.dv{color:rgba(255,255,255,.8);border-color:rgba(255,255,255,.4)}
+.c1m .phrase{font-size:var(--t28);line-height:1.3;margin-top:20px;text-shadow:0 1px 12px rgba(0,0,0,.5)}
+.c1m .caps{display:inline-flex;gap:0;margin-top:20px;padding:10px 6px}
+.c1m .caps span{display:flex;flex-direction:column;padding:0 16px;border-right:1px solid var(--vline)}
+.c1m .caps span:last-child{border-right:0}
+.c1m .caps b{font-size:var(--t28);line-height:1.1} .c1m .caps i{font-style:normal;font-size:var(--t12);color:var(--on-video-2)}
+.c1m .tr{position:absolute;right:24px;top:18px;display:flex;gap:12px;align-items:center}
+.c1m .tr .seg{border-radius:var(--r-m)}
+.c1m .pip{position:absolute;left:24px;top:330px;width:300px;aspect-ratio:16/9}
+.c1m .pip .cam{width:100%;height:100%;border:1px solid var(--vline)}
+.c1m .side{position:absolute;right:24px;top:80px;width:372px;display:flex;flex-direction:column;gap:12px}
+.c1m .panel{overflow:hidden}
+.c1m .panel .ev-row{padding:8px 14px}
+.c1m .clips{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:12px 14px}
+.c1m .clip img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:var(--r-s)}
+.c1m .clip figcaption{display:flex;justify-content:space-between;gap:6px;font-size:var(--t12);margin-top:4px}
+.c1m .clip figcaption span{color:var(--muted)}
+.c1m .strip{padding:10px 14px 8px}
+
+body:not([data-head="a"]) [data-el="head"][data-v="a"]{display:none!important}body:not([data-head="b"]) [data-el="head"][data-v="b"]{display:none!important}body:not([data-label="a"]) [data-el="label"][data-v="a"]{display:none!important}body:not([data-label="b"]) [data-el="label"][data-v="b"]{display:none!important}body:not([data-label="c"]) [data-el="label"][data-v="c"]{display:none!important}body:not([data-side="a"]) [data-el="side"][data-v="a"]{display:none!important}body:not([data-side="b"]) [data-el="side"][data-v="b"]{display:none!important}body:not([data-side="c"]) [data-el="side"][data-v="c"]{display:none!important}
+@media (max-width:600px){
+.app{display:block;height:auto;min-height:0}
+.hd{flex-wrap:wrap;gap:8px 12px;padding:10px 16px;min-height:0}
+.hd .seg,.hd .demo,.hd .site .cap{display:none}
+.hd .cnt{order:5;width:100%;gap:14px;font-size:var(--t12)}
+.hd .cnt .num{font-size:var(--t16)}
+.hdb .r1{flex-wrap:wrap;gap:8px 12px}
+.hd .clock{flex-direction:row;align-items:baseline;gap:6px;margin-left:auto} .hd .clock .cap{display:none} .hd .clock .num{font-size:var(--t16)} .hd .sp{display:none}
+.phrase-s{font-size:var(--t16)}
+.ph-only{display:block}
+
+.c1m{height:auto;min-height:0;display:flex;flex-direction:column;background:var(--bg);color:var(--text)}
+.c1m .hero{position:relative;inset:auto;order:2;aspect-ratio:16/10;margin:0}
+.c1m .hero .credit{display:none}
+.c1m .scrim,.c1m .pip{display:none}
+.c1m .tl{position:static;order:1;width:auto;padding:12px 16px;--warn:var(--warn)}
+.c1m .tl .site,.c1m .tl .demo{display:none}
+.c1m .phrase{font-size:var(--t20);margin-top:12px;text-shadow:none}
+.c1m .caps{display:grid;grid-template-columns:repeat(3,1fr);gap:8px 0;margin-top:12px}
+.c1m .caps span{border:0;padding:0 8px} .c1m .caps b{font-size:var(--t20)}
+.c1m .tr{position:static;order:3;padding:12px 16px 0;justify-content:space-between}
+.c1m .tr .seg{display:none} .c1m .tr .btn{width:100%}
+.c1m .side{position:static;order:4;width:auto;padding:12px 16px 80px}
+.c1m .panel{max-height:none}
+.tag.big b{font-size:var(--t16)} .call .cc span{display:none}
+}
+</style></head>
+<body class="c1">
+<main class="c1m">
+<figure class="cam hero"><div class="fit"><img src="img/cam1.jpg" alt="Камера 1 · дорога, кадр с 3D-рамками системы">
+<div data-el="label" data-v="a"><span class="tag" style="left:20.5%;top:66%"><span class="plate"><b>М 560 УК</b><i>159</i></span><i class="co b"></i>стоит 59 мин</span><span class="tag" style="left:44%;top:68.4%"><span class="plate"><b>В 905 ХА</b><i>159</i></span><i class="co c"></i>едет</span><span class="tag" style="left:67%;top:76.4%"><span class="plate"><b>Т 214 НО</b><i>159</i></span><i class="co c"></i>стоит 38 мин <i class="dia" title="вопрос: тот же?"></i></span></div><div data-el="label" data-v="b"><span class="tag big" style="left:20.5%;top:66%"><b>59</b><span>мин стоит<br>М 560 УК</span></span><span class="tag big" style="left:44%;top:68.4%"><b>19</b><span>мин едет<br>В 905 ХА</span></span><span class="tag big" style="left:67%;top:76.4%"><b>38</b><span>мин стоит<br>Т 214 НО</span></span></div><div data-el="label" data-v="c"><span class="call" style="left:28%;top:40%;height:25%"><span class="cc"><b>59 мин</b><span>тягач стоит, причина не указана</span></span></span><span class="call" style="left:49%;top:48%;height:19.5%"><span class="cc"><b>19 мин</b><span>бетоновоз едет к корпусу 2</span></span></span><span class="call l" style="left:66%;top:58%;height:19%"><span class="cc"><b>38 мин</b><span>тягач стоит с 14:02</span></span></span></div></div>
+<span class="credit">Камера 1 · дорога · кадр камеры кампуса 22.10, рамки — система</span></figure>
+<div class="scrim"></div>
+<div class="tl">
+ <div class="r"><div class="brand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 8V4h4M17 4h4v4M21 16v4h-4M7 20H3v-4"/><rect x="8" y="8" width="8" height="8" rx="1.5"/></svg>Сокол</div><span class="site"><b>Площадка «Кампус»</b> · смена идёт, 14:40</span><span class="demo dv">Пример: данные выдуманы, кадры настоящие</span></div>
+ <div data-el="head" data-v="a"><p class="phrase">Площадка работает: <b>14 рейсов</b> за смену, простой <b>31 %</b> — на 6 пунктов больше, чем вчера. <span class="w"><b>Два вопроса</b> ждут вашего ответа.</span></p></div>
+ <div data-el="head" data-v="b"><div class="caps glass"><span><b class="num">7</b><i>на площадке</i></span><span><b class="num">12</b><i>машин за смену</i></span><span><b class="num">14</b><i>рейсов</i></span><span><b class="num">1 ч 06</b><i>средний цикл</i></span><span><b class="num">31%</b><i>простой техники</i></span></div></div>
+</div>
+<div class="tr"><nav class="seg glass"><span class="on">Камеры</span><span class="">План</span><span class="">3D</span><span class="">Журнал</span></nav>
+<button class="btn warn big">Ответить · 2 вопроса</button></div>
+<figure class="pip"><figure class="cam  "><div class="fit"><img src="img/cam3-s.jpg" alt="Камера 3 · котлован"><span class="box cr" style="left:0.5%;top:14%;width:14%;height:42%"></span><span class="tag" style="left:12%;top:40%;transform:none">автокран · стоит 12 мин</span><span class="tag" style="left:16%;top:74%;transform:none">экскаватор · работает</span></div><figcaption class="lbl"><i class="live"></i>Камера 3 · котлован</figcaption><span class="tm">14:40:03</span></figure></figure>
+<div class="side">
+ <aside class="glass panel" data-el="side" data-v="a"><div class="win-h"><h2>События</h2><a>весь журнал · 22</a></div><div class="ev-row wv "><img class="th" src="img/th-mix2.jpg" alt=""><div><div class="t1"><i class="dia"></i>Подтверди номер <span class="plate doubt"><b>Е 482 КМ</b><i>159</i></span><span class="w" aria-label="сомнительно">?</span></div><div class="t2">бетоновоз · 2 из 5 кадров</div></div><span class="t">14:33</span></div><div class="ev-row wv "><img class="th" src="img/th-tr2.jpg" alt=""><div><div class="t1"><i class="dia"></i>Тот же тягач? </div><div class="t2">Т 214 НО закрыт бетоновозом 14:24–14:26</div></div><span class="t">14:26</span></div><div class="ev-row  "><img class="th" src="img/th-mix.jpg" alt=""><div><div class="t1"><i class="st go" aria-hidden="true"></i>Въехал бетоновоз <span class="plate"><b>В 905 ХА</b><i>159</i></span></div><div class="t2">Камера 1 · въезд</div></div><span class="t">14:21</span></div><div class="ev-row  "><img class="th" src="img/th-tl.jpg" alt=""><div><div class="t1"><i class="st stop" aria-hidden="true"></i>Стоит 30 мин <span class="plate"><b>М 560 УК</b><i>159</i></span></div><div class="t2">тягач · причина не указана</div></div><span class="t">14:11</span></div><div class="ev-row  "><img class="th" src="img/th-mix3.jpg" alt=""><div><div class="t1"><i class="st" style="border:2px solid var(--text)"></i>Выехал бетоновоз <span class="plate"><b>А 118 ОР</b><i>159</i></span></div><div class="t2">на площадке 41 мин</div></div><span class="t">14:05</span></div></aside>
+ <aside class="glass panel" data-el="side" data-v="b"><div class="win-h"><h2>Клипы событий</h2><a>все 22</a></div><div class="clips"><figure class="clip"><img src="img/th-mix2.jpg" alt=""><figcaption><b class="w">Подтверди номер</b><span>14:33</span></figcaption></figure><figure class="clip"><img src="img/th-tr2.jpg" alt=""><figcaption><b class="w">Тот же тягач?</b><span>14:26</span></figcaption></figure><figure class="clip"><img src="img/th-mix.jpg" alt=""><figcaption><b class="">Въехал бетоновоз</b><span>14:21</span></figcaption></figure><figure class="clip"><img src="img/th-tl.jpg" alt=""><figcaption><b class="">Стоит 30 мин</b><span>14:11</span></figcaption></figure><figure class="clip"><img src="img/th-mix3.jpg" alt=""><figcaption><b class="">Выехал бетоновоз</b><span>14:05</span></figcaption></figure><figure class="clip"><img src="img/th-c4.jpg" alt=""><figcaption><b class="">Не видно самосвал</b><span>14:03</span></figcaption></figure></div></aside>
+ <aside class="glass panel" data-el="side" data-v="c"><div class="confirm"><div class="win-h"><h2>Подтверди <span class="w">2</span></h2><a>все вопросы</a></div><div class="cf"><h3><i class="dia"></i>Номер верный?</h3><div class="bd"><img src="img/th-mix2.jpg" alt="Бетоновоз, кадр въезда"><div><span class="plate doubt lg"><b>Е 482 КМ</b><i>159</i></span><span class="w" aria-label="сомнительно">?</span><div class="cap" style="margin-top:6px">бетоновоз · 2 из 5 кадров<br>Камера 1, 14:33</div></div></div><div class="acts"><button class="btn pri">Верно</button><button class="btn">Исправить</button><button class="btn">Номера не видно</button></div></div><div class="cf"><h3><i class="dia"></i>Тот же тягач?</h3><div class="pair"><figure><img src="img/th-tr.jpg" alt=""><figcaption class="cap">Т 214 НО 159 · до 14:24</figcaption></figure><figure><img src="img/th-tr2.jpg" alt=""><figcaption class="cap">номер закрыт · с 14:26</figcaption></figure></div><div class="acts"><button class="btn">Тот же</button><button class="btn">Разные</button></div></div></div></aside>
+ <div class="glass strip"><div class="cap" style="display:flex;justify-content:space-between"><span>Машин на площадке · смена 08–20</span><span>◆ вопросы</span></div><div class="shift"><svg viewBox="0 0 330 70" role="img" aria-label="Шкала смены 08:00–20:00, сейчас 14:40"><rect x="40" y="30" width="155.6" height="22" rx="4" fill="var(--surface-2)"/><rect x="195.6" y="30" width="124.4" height="22" rx="4" fill="none" stroke="var(--line)" stroke-dasharray="3 3"/><polyline points="40.0,47.4 51.7,47.4 51.7,44.8 63.3,44.8 63.3,42.2 75.0,42.2 75.0,42.2 86.7,42.2 86.7,39.6 98.3,39.6 98.3,42.2 110.0,42.2 110.0,39.6 121.7,39.6 121.7,37.0 133.3,37.0 133.3,39.6 145.0,39.6 145.0,39.6 156.7,39.6 156.7,37.0 168.3,37.0 168.3,34.4 180.0,34.4 180.0,34.4 191.7,34.4 191.7,31.8 195.6,31.8" fill="none" stroke="var(--text)" stroke-width="1.5"/><rect x="175.2" y="16.0" width="8" height="8" fill="var(--warn)" transform="rotate(45 179.2 20.0)"/><rect x="186.1" y="16.0" width="8" height="8" fill="var(--warn)" transform="rotate(45 190.1 20.0)"/><rect x="188.8" y="16.0" width="8" height="8" fill="var(--warn)" transform="rotate(45 192.8 20.0)"/><text x="40.0" y="68" text-anchor="middle">08:00</text><text x="86.7" y="68" text-anchor="middle">10:00</text><text x="133.3" y="68" text-anchor="middle">12:00</text><text x="180.0" y="68" text-anchor="middle">14:00</text><text x="226.7" y="68" text-anchor="middle">16:00</text><text x="273.3" y="68" text-anchor="middle">18:00</text><text x="320.0" y="68" text-anchor="middle">20:00</text><line x1="195.6" x2="195.6" y1="0" y2="56" stroke="var(--text)" stroke-width="2"/></svg></div></div>
+</div>
+</main>
+<script>window.ELS={"head": {"name": "Шапка", "opts": [["a", "итог фразой"], ["b", "числа капсулой"]]}, "label": {"name": "Подписи на кадре", "opts": [["a", "номер табличкой"], ["b", "бирка с минутами"], ["c", "выноски-цифры"]]}, "side": {"name": "Правая колонка", "opts": [["a", "лента событий"], ["b", "клипы плиткой"], ["c", "только вопросы"]]}};</script>
+<script>
+(function(){
+var E=window.ELS,b=document.body,keys=Object.keys(E);
+function parse(){var h={};location.hash.replace(/^#/,'').split('&').forEach(function(p){var kv=p.split('=');if(kv[0])h[kv[0]]=decodeURIComponent(kv[1]||'1')});return h}
+var h=parse();
+keys.forEach(function(k){var v=h[k];if(!v||!E[k].opts.some(function(o){return o[0]===v}))v=E[k].opts[0][0];b.dataset[k]=v});
+if(h.theme)document.documentElement.dataset.theme=h.theme;
+if(h.shot)b.classList.add('shot');
+function hash(){var p=keys.map(function(k){return k+'='+b.dataset[k]});var t=document.documentElement.dataset.theme;if(t)p.push('theme='+t);history.replaceState(null,'','#'+p.join('&'))}
+var vp=document.createElement('div');vp.id='vp';
+var html='<div class="pn" hidden>';
+keys.forEach(function(k){html+='<h4>'+E[k].name+'</h4><div class="opts" data-k="'+k+'">';E[k].opts.forEach(function(o){html+='<button type="button" data-v="'+o[0]+'">'+o[0].toUpperCase()+' · '+o[1]+'</button>'});html+='</div>'});
+html+='<div class="row"><button type="button" id="vpt">Тема</button><a href="index.html">Все концепты</a></div></div><button type="button" id="vpb" aria-expanded="false"></button>';
+vp.innerHTML=html;document.body.appendChild(vp);
+var pn=vp.querySelector('.pn'),bt=vp.querySelector('#vpb');
+function paint(){vp.querySelectorAll('.opts').forEach(function(g){var k=g.dataset.k;g.querySelectorAll('button').forEach(function(x){x.setAttribute('aria-pressed',String(x.dataset.v===b.dataset[k]))})});
+ bt.textContent='Варианты: '+keys.map(function(k){return E[k].name.toLowerCase()+' '+b.dataset[k].toUpperCase()}).join(' · ')}
+vp.addEventListener('click',function(e){var x=e.target.closest('.opts button');if(!x)return;b.dataset[x.parentNode.dataset.k]=x.dataset.v;paint();hash()});
+bt.onclick=function(){pn.hidden=!pn.hidden;bt.setAttribute('aria-expanded',String(!pn.hidden))};
+vp.querySelector('#vpt').onclick=function(){var r=document.documentElement;r.dataset.theme=r.dataset.theme==='light'?'dark':'light';hash()};
+paint();
+})();
+</script>
+</body></html>
