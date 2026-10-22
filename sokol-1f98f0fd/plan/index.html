@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Сокол · план функций</title>
+<meta name="description" content="Функции QMonitoring, которых у «Сокола» нет вживую: что соберём сами к показу 26.10, что тяжёлое, что только пример; уведомление о въезде в Telegram; три дня данных кампуса.">
+<script>try{var q=new URLSearchParams(location.search).get("theme");if(q)document.documentElement.dataset.theme=q}catch(e){}</script>
+<style>
+@font-face{font-family:"Golos Text";src:url("assets/GolosText-wght.woff2") format("woff2");font-weight:400 900;font-display:swap}
+:root{
+ --font:"Golos Text",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+ --bg:#F3F4F6;--surface:#FFFFFF;--surface-2:#ECEEF1;--text:#14171A;--muted:#565C66;--faint:#6E747D;--line:#D5D8DD;--line-2:#C3C7CD;
+ --ok:#3F7A3C;--ok-soft:#E6F0E4;--warn:#8F5200;--warn-soft:#FBF1E1;--grey:#6E747D;--grey-soft:#ECEEF1;--code:#ECEEF1;
+ color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+ --bg:#0F1114;--surface:#171A1E;--surface-2:#20242A;--text:#ECEEF1;--muted:#A9B0BA;--faint:#7D848E;--line:#2A2F35;--line-2:#3A4048;
+ --ok:#8DB38A;--ok-soft:#1C2A1C;--warn:#F0B451;--warn-soft:#2B2213;--grey:#9AA1AB;--grey-soft:#22262C;--code:#20242A;color-scheme:dark}}
+:root[data-theme="dark"]{
+ --bg:#0F1114;--surface:#171A1E;--surface-2:#20242A;--text:#ECEEF1;--muted:#A9B0BA;--faint:#7D848E;--line:#2A2F35;--line-2:#3A4048;
+ --ok:#8DB38A;--ok-soft:#1C2A1C;--warn:#F0B451;--warn-soft:#2B2213;--grey:#9AA1AB;--grey-soft:#22262C;--code:#20242A;color-scheme:dark}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:16px;line-height:1.45}
+.wrap{max-width:1160px;margin:0 auto;padding:28px 16px 64px}
+.ic{fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+header .k{font-size:13px;color:var(--faint);letter-spacing:.02em}
+h1{font-size:28px;line-height:1.15;font-weight:700;margin:6px 0 8px;letter-spacing:-.01em}
+header p{color:var(--muted);font-size:15px;max-width:760px}
+h2{display:flex;align-items:center;gap:10px;font-size:22px;font-weight:700;margin:44px 0 6px}
+h2 .ic{color:var(--muted)}
+.lead{color:var(--muted);font-size:15px;max-width:780px;margin-bottom:16px}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.88em;background:var(--code);padding:1px 5px;border-radius:4px}
+/* дашборд */
+.dash{margin-top:22px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.kpi{padding:4px 0}
+.kpi .v{font-size:40px;font-weight:700;line-height:1;font-variant-numeric:tabular-nums}
+.kpi .l{font-size:13px;color:var(--muted);margin-top:6px}
+.kpi.g .v{color:var(--ok)}.kpi.o .v{color:var(--warn)}.kpi.w .v{color:var(--grey)}
+.bar{display:flex;gap:3px;height:28px;margin:16px 0 4px;border-radius:6px;overflow:hidden}
+.seg{display:flex;align-items:center;padding-left:8px;font-size:13px;color:#fff;min-width:28px}
+.seg b{font-weight:700}
+.s-g{background:var(--ok)}.s-o{background:var(--warn)}.s-w{background:var(--grey)}
+:root[data-theme="dark"] .seg{color:#0F1114}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .seg{color:#0F1114}}
+.legend{font-size:12px;color:var(--faint)}
+.mains{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px}
+.main{border-top:3px solid var(--line-2);padding-top:12px}
+.main.g{border-color:var(--ok)}.main.o{border-color:var(--warn)}
+.main .big{font-size:20px;font-weight:700;line-height:1.25}
+.main p{font-size:14px;color:var(--muted);margin-top:6px}
+.livebox{margin-top:18px;padding-top:14px;border-top:1px solid var(--line)}
+.livebox .h{display:flex;align-items:center;gap:8px;font-weight:700;font-size:15px}
+.livebox .h .ic{color:var(--ok)}
+.livebox ul{list-style:none;display:flex;flex-wrap:wrap;gap:6px 8px;margin:10px 0 8px}
+.livebox li{font-size:13px;background:var(--surface-2);border-radius:6px;padding:4px 8px;display:flex;gap:6px;align-items:center}
+.livebox .note{font-size:13px;color:var(--warn)}
+.num{font-size:12px;color:var(--faint);font-variant-numeric:tabular-nums;min-width:22px}
+/* звёзды */
+.stars{list-style:none;display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.star{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:6px}
+.star.t-o{background:var(--warn-soft);border-color:transparent}
+.star b{font-size:16px;line-height:1.3}
+.star>span{font-size:14px;color:var(--muted)}
+.sh{display:flex;justify-content:space-between;align-items:center}
+.sn{font-size:12px;color:var(--faint)}
+.tag{font-size:12px;border-radius:999px;padding:2px 8px}
+.tag-g{background:var(--ok-soft);color:var(--ok)}.tag-o{background:var(--warn-soft);color:var(--warn)}
+.star.t-o .tag-o{background:var(--surface)}
+/* уведомления */
+.flow{list-style:none;display:flex;flex-wrap:wrap;align-items:stretch;gap:8px;margin:6px 0 18px}
+.flow li{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:14px;flex:1 1 140px;position:relative}
+.flow li b{display:block;font-size:15px}
+.flow li span{color:var(--muted);font-size:13px}
+.flow li.miss{border-style:dashed;border-color:var(--warn)}
+.flow li.miss b::after{content:" · нет";color:var(--warn);font-weight:600}
+.vars{width:100%;border-collapse:collapse;font-size:14px;background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.vars th,.vars td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+.vars th{font-size:12px;color:var(--faint);font-weight:600}
+.vars tr:last-child td{border-bottom:0}
+.vars td:first-child{font-weight:700;white-space:nowrap}
+.vars .rec td:first-child{color:var(--ok)}
+.delay{font-weight:700;font-variant-numeric:tabular-nums}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.card h3{font-size:16px;margin-bottom:8px}
+.card ul{padding-left:18px;font-size:14px;color:var(--muted)}
+.card li{margin:4px 0}
+.card li b{color:var(--text);font-weight:600}
+.verdict{margin-top:12px;background:var(--ok-soft);border-radius:12px;padding:14px 16px;font-size:15px}
+.verdict b{color:var(--ok)}
+/* 3 дня */
+.screens{list-style:none;display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.screens li{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px;font-size:14px}
+.screens b{display:block;font-size:15px;margin-bottom:4px}
+.screens span{color:var(--muted);font-size:13px}
+.budget{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:14px 0}
+.bud{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px}
+.bud .v{font-size:28px;font-weight:700;font-variant-numeric:tabular-nums}
+.bud .v.bad{color:var(--warn)}.bud .v.ok{color:var(--ok)}
+.bud .l{font-size:13px;color:var(--muted)}
+.steps{counter-reset:s;list-style:none;font-size:14px}
+.steps li{counter-increment:s;padding:8px 0 8px 34px;position:relative;border-bottom:1px solid var(--line)}
+.steps li::before{content:counter(s);position:absolute;left:0;top:8px;width:24px;height:24px;border-radius:50%;background:var(--surface-2);font-size:12px;display:grid;place-items:center;font-weight:700}
+.steps li span{color:var(--muted)}
+/* ступени */
+.tier{background:var(--surface);border:1px solid var(--line);border-radius:12px;margin-top:12px}
+.tier summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:10px;padding:14px 16px;min-height:44px}
+.tier summary::-webkit-details-marker{display:none}
+.tier summary::after{content:"";width:8px;height:8px;border-right:2px solid var(--faint);border-bottom:2px solid var(--faint);transform:rotate(45deg);margin-left:4px;transition:transform .16s}
+.tier[open] summary::after{transform:rotate(-135deg)}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:7px;vertical-align:1px}
+.d-g{background:var(--ok)}.d-o{background:var(--warn)}.d-w{background:var(--grey)}
+.sv{width:14px;height:14px;fill:var(--warn);vertical-align:-2px}
+.tt{font-weight:700;font-size:17px;flex:1}
+.tc{font-size:20px;font-weight:700;font-variant-numeric:tabular-nums}
+.tsub{padding:0 16px 10px;font-size:13px;color:var(--muted)}
+.rows{list-style:none;border-top:1px solid var(--line)}
+.row{display:grid;grid-template-columns:30px 1fr auto;gap:10px;padding:10px 16px;border-bottom:1px solid var(--line);align-items:baseline}
+.row:last-child{border-bottom:0}
+.rb b{font-size:15px;font-weight:600}
+.rb .why{display:block;font-size:13px;color:var(--muted);margin-top:2px}
+.st{margin-left:6px;font-size:13px}
+.hrs{font-size:13px;font-weight:700;color:var(--ok);white-space:nowrap;font-variant-numeric:tabular-nums}
+.foot{margin-top:40px;font-size:13px;color:var(--faint);border-top:1px solid var(--line);padding-top:14px}
+.foot li{margin:4px 0 4px 18px}
+a{color:inherit;text-underline-offset:3px}
+@media (max-width:900px){
+ .stars{grid-template-columns:1fr 1fr}.screens{grid-template-columns:1fr 1fr}.mains{grid-template-columns:1fr}
+}
+@media (max-width:620px){
+ h1{font-size:24px}
+ .kpis{grid-template-columns:1fr 1fr;gap:14px}.kpi .v{font-size:34px}
+ .stars,.screens,.cols,.budget{grid-template-columns:1fr}
+ .flow{flex-direction:column}.flow li{flex:none}
+ .vars thead{display:none}
+ .vars,.vars tbody,.vars tr,.vars td{display:block;width:100%}
+ .vars tr{border-bottom:1px solid var(--line);padding:6px 0}
+ .vars td{border:0;padding:4px 12px}
+ .vars td[data-l]::before{content:attr(data-l) " · ";color:var(--faint);font-size:12px}
+ .row{grid-template-columns:26px 1fr;padding:10px 12px}
+ .hrs{grid-column:2}
+}
+</style>
+</head><body><div class="wrap">
+
+<header>
+<div class="k">«Сокол» · к показу «ПроИИ» пн 26.10 · 23.10.2026 · для Юлая</div>
+<h1>Что из QMonitoring мы соберём сами и оно будет работать</h1>
+<p>Все функции конкурента, которых у нас нет вживую, — по трём ступеням: заработает на живых данных кампуса к понедельнику, тяжёлое, только страница-пример. Номера — как в <a href="../pages/qmonitoring-functions.md">таблице 94 функций</a>.</p>
+</header>
+
+<section class="dash" aria-label="Главное">
+<div class="kpis">
+ <div class="kpi"><div class="v">76</div><div class="l">функций ещё не вживую: 72 у QMonitoring и 4 наших</div></div>
+ <div class="kpi g"><div class="v">26</div><div class="l"><i class="dot d-g"></i>заработают на данных кампуса, лёгкий код</div></div>
+ <div class="kpi o"><div class="v">23</div><div class="l"><i class="dot d-o"></i>тяжёлые: модель, разметка, другая камера</div></div>
+ <div class="kpi w"><div class="v">27</div><div class="l"><i class="dot d-w"></i>только страница-пример</div></div>
+</div>
+<div class="bar" role="img" aria-label="26 лёгких, 23 тяжёлых, 27 примеров"><span class="seg s-g" style="flex:26"><b>26</b></span><span class="seg s-o" style="flex:23"><b>23</b></span><span class="seg s-w" style="flex:27"><b>27</b></span></div>
+<div class="legend">Часы — грубо, без замеров: работа сборщика с проверкой приёмщиком.</div>
+<div class="mains">
+ <div class="main g"><div class="big">26 функций — из того, что уже есть: ≈ 49 ч сборки</div><p>Если параллельно работают 3–4 сборщика, это пятница и суббота. Половина из них оживает только от записи трёх дней — без неё будут пустые экраны.</p></div>
+ <div class="main g"><div class="big">«Машина въехала» в Telegram — будет работать</div><p>Почти вживую (через 1–2 минуты) — ≈ 5 ч сборки плюс 2–3 ч на бота. Вживую (≈ 5 с плюс задержка самой трансляции) — 8–12 ч. Сначала нужна правка линии въезда камеры 1.</p></div>
+ <div class="main o"><div class="big">Каски, дым, объём здания, номер — тяжёлые</div><p>Модели есть, но кампус их не покажет: головы меньше 32 px, дыма нет, номер — 0 из 101 машины. Честный ответ: «на ваших камерах, после замера».</p></div>
+</div>
+<div class="livebox">
+ <div class="h"><svg class="ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg> Уже работает на записях кампуса — 12 функций (в таблицу ниже не входят)</div>
+ <ul><li><span class="num">10</span>Типы техники и трудочасы</li><li><span class="num">12</span>Техника на объекте списком</li><li><span class="num">19</span>Лента событий по камерам на шкале</li><li><span class="num">28</span>Журнал въездов и выездов</li><li><span class="num">30</span>Работа с готовыми камерами</li><li><span class="num">32</span>Состояние камер</li><li><span class="num">34</span>Наблюдение: камеры, рамки, слои</li><li><span class="num">35</span>Переключатель рамок</li><li><span class="num">36</span>Шапка «Запись / В эфире»</li><li><span class="num">44</span>Простой как интервал</li><li><span class="num">51</span>Выгрузка в Excel / CSV</li><li><span class="num">52</span>Выгрузка для 1С</li></ul>
+ <div class="note">Оговорка: цифры кампуса сейчас врут и чинятся в ветке 005-fix — 10 машин вместо 7, рейс = визит, ложный выезд из-за линии посреди кадра, «состояние неизвестно».</div>
+</div>
+</section>
+
+<h2><svg class="ic" width="28" height="28" viewBox="0 0 24 24" aria-hidden="true"><path d="M11.5 2.3a.53.53 0 0 1 .95 0l2.31 4.68a2.1 2.1 0 0 0 1.6 1.16l5.16.76a.53.53 0 0 1 .3.9l-3.74 3.64a2.1 2.1 0 0 0-.61 1.88l.88 5.14a.53.53 0 0 1-.77.56l-4.62-2.43a2.1 2.1 0 0 0-1.97 0L6.4 21.01a.53.53 0 0 1-.77-.56l.88-5.14a2.1 2.1 0 0 0-.61-1.88L2.16 9.8a.53.53 0 0 1 .3-.9l5.16-.76a2.1 2.1 0 0 0 1.6-1.16z"/></svg> Очень желательно для «ПроИИ»</h2>
+<p class="lead">Двенадцать функций, которые заказчик видеоконтроля стройки спросит первыми: деньги, подрядчики, госзаказ, охрана труда. Девять соберём к понедельнику, три — честно «на ваших камерах».</p>
+<ul class="stars"><li class="star t-g"><div class="sh"><span class="sn">№ 20</span><span class="tag tag-g"><i class="dot d-g"></i> лёгкое</span></div><b>Уведомление «машина въехала» в Telegram</b><span>Руководитель узнаёт о машине без пульта. На показе телефон звякнет прямо в зале.</span></li><li class="star t-g"><div class="sh"><span class="sn">№ 50</span><span class="tag tag-g"><i class="dot d-g"></i> лёгкое</span></div><b>Ежедневный отчёт по объекту</b><span>Строка в день на объект: то, что сдают госзаказчику (у QMonitoring — для Казначейства). «ПроИИ» говорит о регионах.</span></li><li class="star t-g"><div class="sh"><span class="sn">№ 42·43</span><span class="tag tag-g"><i class="dot d-g"></i> лёгкое</span></div><b>Журнал инцидентов с фото и видео</b><span>Доказательство для претензии подрядчику — фото и клип одним нажатием.</span></li><li class="star t-g"><div class="sh"><span class="sn">№ 13</span><span class="tag tag-g"><i class="dot d-g"></i> лёгкое</span></div><b>Простой в рублях</b><span>Язык директора: не «стоял 4 часа», а «потеряли 38 тыс. ₽».</span></li><li class="star t-g"><div class="sh"><span class="sn">№ 88</span><span class="tag tag-g"><i class="dot d-g"></i> лёгкое</span></div><b>«Кампус: 3 дня» — что увидела система</b><span>Не обещание, а факт: что система увидела за три дня на настоящей стройке в Перми.</span></li><li class="star t-g"><div class="sh"><span class="sn">№ 87</span><span class="tag tag-g"><i class="dot d-g"></i> лёгкое</span></div><b>Калькулятор экономии</b><span>«ПроИИ» продаёт дальше — им нужна цифра экономии для своих клиентов.</span></li><li class="star t-g"><div class="sh"><span class="sn">№ 5</span><span class="tag tag-g"><i class="dot d-g"></i> лёгкое</span></div><b>Опасная зона</b><span>Охрана труда: штрафы и ответственность прораба. Работает и без касок.</span></li><li class="star t-g"><div class="sh"><span class="sn">№ 9</span><span class="tag tag-g"><i class="dot d-g"></i> лёгкое</span></div><b>Люди: факт против графика</b><span>Подрядчик пишет в табель 40 человек, камера видит 25.</span></li><li class="star t-g"><div class="sh"><span class="sn">№ 37</span><span class="tag tag-g"><i class="dot d-g"></i> лёгкое</span></div><b>«Мои объекты» — много площадок</b><span>«ПроИИ» продаёт тиражом — им нужен кабинет на много объектов.</span></li><li class="star t-o"><div class="sh"><span class="sn">№ 1</span><span class="tag tag-o"><i class="dot d-o"></i> тяжёлое</span></div><b>Каски и жилеты</b><span>Первый вопрос любого стройконтроля. Честный ответ: на ваших камерах, ближе, после замера.</span></li><li class="star t-o"><div class="sh"><span class="sn">№ 21</span><span class="tag tag-o"><i class="dot d-o"></i> тяжёлое</span></div><b>Объём здания и готовность</b><span>Главный вопрос госзаказчика — сколько построено к дате.</span></li><li class="star t-o"><div class="sh"><span class="sn">№ 25</span><span class="tag tag-o"><i class="dot d-o"></i> тяжёлое</span></div><b>Номер на КПП</b><span>Пропускной режим без бумажного журнала. Чтец готов, не хватает камеры въезда крупным планом.</span></li></ul>
+
+<h2 id="tg"><svg class="ic" width="28" height="28" viewBox="0 0 24 24" aria-hidden="true"><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/><path d="M3.26 15.33A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.67C19.41 13.96 18 12.5 18 8A6 6 0 0 0 6 8c0 4.5-1.41 5.96-2.74 7.33"/></svg> «Машина въехала» — уведомление в Telegram</h2>
+<p class="lead">Идея Юлая: машина заезжает на кампус — телефон сразу получает кадр с подписью. Это правда будет работать: детектор, треки, линии въезда и отправка в Telegram у нас уже есть. Не хватает цикла, который отправляет событие сразу, а не в конце прогона.</p>
+<ol class="flow">
+ <li><b>Трансляция кампуса</b><span>открытый поток (HLS); запись на ПК идёт до пн 09:00</span></li>
+ <li><b>ПК, GTX 1650</b><span>RF-DETR S, до 5 к/с на одну камеру (замер: 30,6 с счёта на минуту 1080p)</span></li>
+ <li><b>Трек</b><span><code>track.Tracker.update</code> — уже пошаговый</span></li>
+ <li class="miss"><b>Линия въезда</b><span>камера 1: линия переносится (005-fix), сейчас ложные выезды</span></li>
+ <li class="miss"><b>Событие сразу</b><span>сейчас события считаются после прогона (<code>Run.events()</code>)</span></li>
+ <li class="miss"><b>Кадр + подпись</b><span>«самосвал · 14:32 · въезд, камера 1» и рамка на кадре</span></li>
+ <li class="miss"><b>Бот → телефон</b><span>сейчас <code>send_summary.py</code> шлёт только текст сводки</span></li>
+</ol>
+<table class="vars">
+<thead><tr><th>Вариант</th><th>Путь</th><th>Задержка от появления в трансляции</th><th>Сборка, грубо</th></tr></thead>
+<tbody>
+<tr class="rec"><td>А · почти вживую</td><td data-l="Путь">Запись на ПК режется на куски по 60 с → конвейер на видеокарте с продолжением открытых визитов (<code>resume</code>, уже есть) → новые въезды → «кадр въезда» (уже есть в выгрузке) → бот</td><td data-l="Задержка"><span class="delay">1–2 мин</span><br>ожидание куска 0–60 с + счёт 30–50 с + отправка ≈ 1 с</td><td data-l="Сборка">≈ 5 ч</td></tr>
+<tr><td>Б · вживую на ПК</td><td data-l="Путь">Свой цикл: поток → кадр 5 к/с → трек → пересечение линии → 3 с подтверждения (<code>entry_confirm_s</code>) → бот сразу</td><td data-l="Задержка"><span class="delay">≈ 5 с</span><br>подтверждение 3 с + счёт кадра 0,2–0,5 с + отправка ≈ 1 с</td><td data-l="Сборка">8–12 ч</td></tr>
+<tr><td>В · запасной на сервере</td><td data-l="Путь">Процессор, ~47 кадров детектора в минуту (≈ 0,8 к/с), только самосвалы, одна камера</td><td data-l="Задержка"><span class="delay">10–40 с</span><br>очередь кадров отстаёт (по техспеку — до ~40 с)</td><td data-l="Сборка">+3 ч · риск: 2 ГБ памяти, падение 15.10</td></tr>
+</tbody></table>
+<p class="lead" style="margin-top:8px">К любому варианту добавляется задержка самой трансляции HLS — обычно 6–30 с. Её не мерили: сверить часы в кадре с часами ПК.</p>
+<div class="cols">
+ <div class="card"><h3>Что уже есть в коде</h3><ul>
+  <li><b>Чтение потока и здоровье камеры</b> — <code>video.FrameSource</code>, <code>motion.scan_live</code>. Но потоком считается только <code>rtsp://</code>; HLS кампуса — правка в одну строку.</li>
+  <li><b>Детектор на видеокарте</b> — <code>tools/detect.py</code> (наши веса RF-DETR S), запасной на процессоре — <code>pipeline.live_row</code>.</li>
+  <li><b>Трек и линия</b> — <code>track.Tracker</code>, <code>zones.crossed</code>, <code>rules.stays</code> (въезд — 3 с за линией); линии камер 1, 6, 7 — в <code>config/sites/kampus.yaml</code>.</li>
+  <li><b>Отправка в Telegram</b> — <code>tools/send_summary.py</code>: токен только из окружения ПК, сеть только к <code>api.telegram.org</code>, запись в журнал без текста.</li>
+ </ul></div>
+ <div class="card"><h3>Чего не хватает</h3><ul>
+  <li><b>Событие сразу</b>: цикл, который отдаёт въезд в момент подтверждения (Б) или по куску (А).</li>
+  <li><b>Фото</b>: <code>sendPhoto</code> с рамкой и подписью, не чаще одного на машину, с «склеиванием» дублей.</li>
+  <li><b>Сторож на ПК</b>: задача в Планировщике, перезапуск, сообщение «камера молчит N мин».</li>
+  <li><b>Линия въезда камеры 1</b> — сначала правки 005-fix.</li>
+  <li><b>Ваше «да»</b> на сеть с ПК к Telegram для этой команды — тот же вопрос, что по сводке 024.</li>
+ </ul></div>
+ <div class="card"><h3>Риски</h3><ul>
+  <li><b>ПК выключен или перезагрузился</b> (обновление Windows) — уведомлений нет. Сторож + отключить перезагрузку до вторника.</li>
+  <li><b>Трансляция падает</b> — переподключение и строка «нет связи с камерой 1» вместо тишины.</li>
+  <li><b>Ложные въезды</b>: линия камеры 1 переносится, тени, прохожие, одна машина распалась на два трека → два уведомления. Защита — 3 с за линией, порог уверенности, одно на машину.</li>
+  <li><b>На показе никто не въедет</b> — кнопка «повтор последнего въезда» с честной подписью времени.</li>
+  <li><b>Видеокарта занята</b> ночным пересчётом записи — днём показа её держит живой путь, пересчёт только ночью.</li>
+ </ul></div>
+ <div class="card"><h3>Какой бот</h3><ul>
+  <li><b>Наш бот, отдельная тема «Сокол · события»</b> — ≈ 0,5 ч. Но токен главного бота пришлось бы держать на ПК, заказчика туда не позовёшь, а новую тему заводим только по вашей просьбе.</li>
+  <li><b>Новый бот «Сокол»</b> — +2–3 ч на оформление по чек-листу фабрики ботов: описание, аватар, обложка 640×360, команды, приветствие с картинкой. Свой токен только на ПК; на показе Владимир может сам нажать /start и получить въезд на свой телефон (это решаете вы).</li>
+  <li>Совет — <b>новый бот</b>: показ для заказчика, и его телефон убеждает сильнее нашего.</li>
+ </ul></div>
+</div>
+<div class="verdict"><b>Совет:</b> к вечеру пятницы — вариант А как надёжная основа (≈ 5 ч + бот 2–3 ч), параллельно сборщик делает Б. Если Б проработает ночь с субботы на воскресенье без сбоев и ложных — на показе включаем Б, иначе А. Начинать после правки линии въезда в 005-fix.</div>
+
+<h2 id="data"><svg class="ic" width="28" height="28" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg> Настоящие данные за 3 дня к показу</h2>
+<p class="lead">Запись камер кампуса идёт на ПК до пн 09:00. Вот какие экраны от неё оживут — и что для этого посчитать ночью.</p>
+<ul class="screens">
+ <li><b>Рейсы по дням</b><span>въезд → выезд, N мин; пт / сб / вс (п. 11, 28)</span></li>
+ <li><b>Простой</b><span>интервалы «стоит» по машинам; рубли — после ввода ставки (п. 13, 44)</span></li>
+ <li><b>Люди по часам</b><span>стопки 08–20, зоны (п. 6, 8)</span></li>
+ <li><b>Таймлапс дня + погода</b><span>ролик 30–60 с на день, дождь рядом с простоем (п. 62)</span></li>
+ <li><b>Тепловая карта</b><span>люди и машины на схеме кампуса (п. 64)</span></li>
+ <li><b>Ежедневный отчёт</b><span>строка в день × камера: доступна, люди, техника, кадр (п. 50)</span></li>
+ <li><b>Статистика</b><span>плитки и динамика по дням, топ камер (п. 40, 41)</span></li>
+ <li><b>Итог «Кампус: 3 дня»</b><span>одна страница для показа (п. 88)</span></li>
+</ul>
+<div class="budget">
+ <div class="bud"><div class="v">≈ 108 ч</div><div class="l">видео: 3 камеры × 3 дня × ~12 светлых часов (ночью в ИК детектор видит 0 рамок — не считаем)</div></div>
+ <div class="bud"><div class="v bad">54–86 ч</div><div class="l">счёта на GTX 1650 при полных 5 к/с (0,51–0,80 реального времени) — не влезает до пн 09:00</div></div>
+ <div class="bud"><div class="v ok">≈ 16–27 ч</div><div class="l">если статистику считать на 1 к/с, а 5 к/с — только окна у линий въезда. Оценка, не замер: узкое место — распаковка на процессоре</div></div>
+</div>
+<ol class="steps">
+ <li>Пятница днём — замер на первом часе записи: сколько реально идёт 1 к/с на 1650. <span>Без замера план ночей — догадка.</span></li>
+ <li>Каждую ночь — детектор по записи прошедшего дня: 1 к/с для людей, тепловой карты и простоя; 5 к/с — только минуты, где у линии въезда есть движение. <span>Видеокарта днём свободна для живого пути.</span></li>
+ <li>Таймлапс — кадр раз в минуту через ffmpeg, без видеокарты; погода — архив Open-Meteo по часам.</li>
+ <li>Всё в базу (<code>tools/run.py</code>) → строки отчёта, табеля и людей → экраны.</li>
+ <li>Утром — снимки экранов и проверка глазами другим исполнителем, не тем, кто считал.</li>
+</ol>
+<p class="lead" style="margin-top:12px">Риск: суббота и воскресенье — на стройке может быть мало работ. Это честный результат («в выходные техника стояла»), но графики будут бедные — основной день пятница. Какие камеры пишутся (1, 6, 7?) и пишет ли запись кусками — уточнить у агента записи: не проверено.</p>
+
+<h2 id="all"><svg class="ic" width="28" height="28" viewBox="0 0 24 24" aria-hidden="true"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></svg> Все 76 функций по ступеням</h2>
+<p class="lead"><span class="st"><svg class="sv" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/></svg></span> — очень желательно для «ПроИИ». У лёгких — из чего собираем и часы; у тяжёлых — чего не хватает; у примеров — почему не заработает к понедельнику.</p>
+<details class="tier t-g" open><summary><span class="tt"><i class="dot d-g"></i>Работает на живых данных, лёгкий код</span><span class="tc">26</span></summary><p class="tsub">Собирается из того, что уже есть: детектор, треки, линии, люди (015), сводка (024), запись трёх дней. Всего ≈ 49 ч сборки, грубо, без замеров.</p><ol class="rows"><li class="row t-g"><span class="num">2</span><div class="rb"><b>«Нарушения по типам» — полосы</b><span class="why">Из тревог «опасная зона» и «человек у техники» (этап 016, код в ветке). Типы «без каски» и «курение» — нет, это тяжёлое.</span></div><span class="hrs">1 ч</span></li><li class="row t-g"><span class="num">4</span><div class="rb"><b>Плитка «нарушений за смену»</b><span class="why">Счёт тревог этапа 016 за смену. Вторая плитка «соответствие СИЗ, %» — тяжёлое, как п. 1.</span></div><span class="hrs">0,5 ч</span></li><li class="row t-g"><span class="num">5</span><div class="rb"><b>Опасная зона: тревога при входе человека<span class="st" title="Очень желательно для «ПроИИ»"><svg class="sv" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/></svg></span></b><span class="why">Этап 016 (ветка, не влит): зона на схеме кампуса, люди этапа 015, карточка «подтвердить / отклонить». Влить и нарисовать зону у крана.</span></div><span class="hrs">3 ч</span></li><li class="row t-g"><span class="num">6</span><div class="rb"><b>Численность людей на площадке</b><span class="why">Люди по часам и зонам — этап 015 влит; вывести блок «Люди» на пульт и посчитать по записи.</span></div><span class="hrs">1,5 ч</span></li><li class="row t-g"><span class="num">8</span><div class="rb"><b>Активность людей по часам 08–20</b><span class="why">Этап 015 по часам; стопки по каждому дню записи.</span></div><span class="hrs">1 ч</span></li><li class="row t-g"><span class="num">9</span><div class="rb"><b>«Людей N из M по графику»<span class="st" title="Очень желательно для «ПроИИ»"><svg class="sv" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/></svg></span></b><span class="why">Человеко-часы против заявки — этап 018 (ветка). «Заявлено» вводим сами как пример, с подписью.</span></div><span class="hrs">1,5 ч</span></li><li class="row t-g"><span class="num">11</span><div class="rb"><b>Наработка техники по дням</b><span class="why">Визиты и машино-часы (этап 004) по трём дням записи.</span></div><span class="hrs">1,5 ч</span></li><li class="row t-g"><span class="num">13</span><div class="rb"><b>Простой за смену и «потери ≈ ₽»<span class="st" title="Очень желательно для «ПроИИ»"><svg class="sv" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/></svg></span></b><span class="why">Интервалы «стоит» (003a) × ставка часа, введённая вручную (020 — спека, без кода). После правки простоя в 005-fix.</span></div><span class="hrs">2 ч</span></li><li class="row t-g"><span class="num">15</span><div class="rb"><b>Фильтр по типу техники</b><span class="why">Тип техники уже в журнале (второй голос SigLIP 2, влит) — фильтр на ленте и в рейсах.</span></div><span class="hrs">0,5 ч</span></li><li class="row t-g"><span class="num">20</span><div class="rb"><b>Уведомление в Telegram с фото<span class="st" title="Очень желательно для «ПроИИ»"><svg class="sv" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/></svg></span></b><span class="why">Подробно — в блоке «Машина въехала». Сводка смены (024) уже шлёт текст; не хватает событийного цикла, отправки фото и бота.</span></div><span class="hrs">5 ч + бот 2–3 ч</span></li><li class="row t-g"><span class="num">33</span><div class="rb"><b>Причины недоступности камеры</b><span class="why">Ошибки чтения потока уже ловятся — перевести в «таймаут / нет связи / поток не найден». Сбои трансляции кампуса — настоящие.</span></div><span class="hrs">1 ч</span></li><li class="row t-g"><span class="num">37</span><div class="rb"><b>«Мои объекты»: несколько площадок<span class="st" title="Очень желательно для «ПроИИ»"><svg class="sv" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/></svg></span></b><span class="why">Две площадки уже в настройках (кампус и демо) → карточки с камерами и «сегодня» из базы.</span></div><span class="hrs">2 ч</span></li><li class="row t-g"><span class="num">40</span><div class="rb"><b>Статистика: плитки, динамика, топ камер</b><span class="why">Страница 04 «Сводка» на настоящих строках отчёта (004) за 3 дня вместо примера.</span></div><span class="hrs">2 ч</span></li><li class="row t-g"><span class="num">41</span><div class="rb"><b>Отчёт: график или таблица, часы или дни</b><span class="why">То же + выгрузка (004, 030).</span></div><span class="hrs">1 ч</span></li><li class="row t-g"><span class="num">42</span><div class="rb"><b>Журнал инцидентов: таблица, фильтры, «Скачать»<span class="st" title="Очень желательно для «ПроИИ»"><svg class="sv" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/></svg></span></b><span class="why">Режим «Журнал» пульта (005, влит) + тревоги 016.</span></div><span class="hrs">2 ч</span></li><li class="row t-g"><span class="num">43</span><div class="rb"><b>Материалы инцидента: фото +15…+60 с, видео<span class="st" title="Очень желательно для «ПроИИ»"><svg class="sv" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/></svg></span></b><span class="why">Запись трёх дней на ПК + нарезка кадров и клипов (tools/box_clip.py, show_media).</span></div><span class="hrs">2,5 ч</span></li><li class="row t-g"><span class="num">45</span><div class="rb"><b>Модерация: очередь, «подтвердить / отклонить»</b><span class="why">«Подтверди» и ответы оператора с журналом (005, влит) + очередь и «вернуть в пул».</span></div><span class="hrs">2 ч</span></li><li class="row t-g"><span class="num">46</span><div class="rb"><b>Удаление инцидента с отметкой «кем и когда»</b><span class="why">Журнал действий уже есть; пометка «скрыт», а не стирание.</span></div><span class="hrs">1 ч</span></li><li class="row t-g"><span class="num">47</span><div class="rb"><b>Роли: клиент, оператор, руководитель</b><span class="why">Вход по паролю уже есть (005); поле роли и разные меню.</span></div><span class="hrs">3 ч</span></li><li class="row t-g"><span class="num">48</span><div class="rb"><b>Профиль пользователя, смена пароля</b><span class="why">Вход и хеш пароля есть (005). Английский язык — нет.</span></div><span class="hrs">1,5 ч</span></li><li class="row t-g"><span class="num">50</span><div class="rb"><b>Ежедневный отчёт по объекту<span class="st" title="Очень желательно для «ПроИИ»"><svg class="sv" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/></svg></span></b><span class="why">Всё из трёх дней записи: камера доступна (003a), люди были (015), техника работала (004), кадр дня. Колонка «пожар» — пусто (тяжёлое).</span></div><span class="hrs">3 ч</span></li><li class="row t-g"><span class="num">57</span><div class="rb"><b>Табель «заявлено ↔ видела камера»</b><span class="why">Расчёт табеля (030, влит). На кампусе подрядчиков нет — «заявлено» вводим как пример, честно подписав.</span></div><span class="hrs">1,5 ч</span></li><li class="row t-g"><span class="num">62</span><div class="rb"><b>Таймлапс дня и погода у простоя</b><span class="why">Этап 023 (ветка): кадр раз в минуту из записи + погода Open-Meteo по часам.</span></div><span class="hrs">2 ч</span></li><li class="row t-g"><span class="num">64</span><div class="rb"><b>Тепловая карта людей и машин</b><span class="why">Этап 018 (ветка) + точки треков на схеме кампуса (пересчёт в метры есть).</span></div><span class="hrs">2 ч</span></li><li class="row t-g"><span class="num">87</span><div class="rb"><b>Калькулятор экономии<span class="st" title="Очень желательно для «ПроИИ»"><svg class="sv" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/></svg></span></b><span class="why">Арифметика: камеры × месяцы × ставка простоя; подставить простой кампуса за 3 дня.</span></div><span class="hrs">3 ч</span></li><li class="row t-g"><span class="num">88</span><div class="rb"><b>«Через неделю покажем, что увидела система»<span class="st" title="Очень желательно для «ПроИИ»"><svg class="sv" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/></svg></span></b><span class="why">Страница «Кампус: 3 дня» — рейсы, простой, люди, таймлапс по дням. Наш ответ на их пилот.</span></div><span class="hrs">2 ч</span></li></ol></details>
+<details class="tier t-o"><summary><span class="tt"><i class="dot d-o"></i>Тяжёлое</span><span class="tc">23</span></summary><p class="tsub">Нужна модель, обучение, разметка, другая камера или данные, которых нет.</p><ol class="rows"><li class="row t-o"><span class="num">1</span><div class="rb"><b>Каски и жилеты (СИЗ) на кадре<span class="st" title="Очень желательно для «ПроИИ»"><svg class="sv" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/></svg></span></b><span class="why">Готовая модель касок есть (на открытом наборе 133 из 146), но на кампусе голова меньше 32 px — модель её не видит. Нужна камера ближе или записи «ПроИИ» и своя разметка; этап 028 — 30 дней тихого замера.</span></div></li><li class="row t-o"><span class="num">3</span><div class="rb"><b>«СИЗ по локациям, %»</b><span class="why">Нужны каски (п. 1) — без них процент считать не из чего; зоны схемы есть.</span></div></li><li class="row t-o"><span class="num">7</span><div class="rb"><b>Бригады по зонам с видом работ</b><span class="why">Нужна модель «вид работ» (опалубка, арматура) по позам и инструменту — нет ни модели, ни разметки.</span></div></li><li class="row t-o"><span class="num">14</span><div class="rb"><b>Часы техники против прогресса стройки</b><span class="why">Прогресс (этап 026, размер L) требует меры объёма по съёмке одной камеры за ≥ 2 дня и разметки.</span></div></li><li class="row t-o"><span class="num">17</span><div class="rb"><b>Дым и огонь: тревога за 10–15 с</b><span class="why">Готовая модель (этап 027) проверена только на открытом наборе. На кампусе дыма нет — вживую показать нечего; ложные срабатывания на пыли и паре не мерены.</span></div></li><li class="row t-o"><span class="num">18</span><div class="rb"><b>Подтопление котлована</b><span class="why">Модели воды нет; нужны набор и разметка.</span></div></li><li class="row t-o"><span class="num">21</span><div class="rb"><b>Объём здания: готовность и этажность<span class="st" title="Очень желательно для «ПроИИ»"><svg class="sv" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/></svg></span></b><span class="why">Нужна мера по кадрам (контур здания, этажи) и проект или BIM заказчика; размер L.</span></div></li><li class="row t-o"><span class="num">24</span><div class="rb"><b>Окна и балконы: счёт этажей</b><span class="why">Нужна своя модель фасада и разметка.</span></div></li><li class="row t-o"><span class="num">25</span><div class="rb"><b>Номер машины на КПП<span class="st" title="Очень желательно для «ПроИИ»"><svg class="sv" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/></svg></span></b><span class="why">Чтец готов (95,7 % на отложенных AUTO.RIA), но камеры кампуса далеко: 0 номеров из 101 машины (проверка 22.10). Нужна камера въезда крупно — своя съёмка или «ПроИИ».</span></div></li><li class="row t-o"><span class="num">26</span><div class="rb"><b>Кузов: пустой или гружёный</b><span class="why">Классификатор по вырезке кузова — нет разметки; нужна камера сверху у въезда.</span></div></li><li class="row t-o"><span class="num">65</span><div class="rb"><b>Падение, «человек лежит», высота</b><span class="why">Этап 029 — спека. Модели поз в мире есть, но событий на кампусе и разметки нет.</span></div></li><li class="row t-o"><span class="num">66</span><div class="rb"><b>МКД: загрязнение территории</b><span class="why">Своя модель мусора и разметка.</span></div></li><li class="row t-o"><span class="num">67</span><div class="rb"><b>МКД: девиантное поведение, оружие</b><span class="why">Модели действий и оружия; высокий риск ложных.</span></div></li><li class="row t-o"><span class="num">68</span><div class="rb"><b>МКД: падение человека</b><span class="why">Как п. 65.</span></div></li><li class="row t-o"><span class="num">73</span><div class="rb"><b>Ретейл: полки, ценники, планограмма</b><span class="why">Своя модель товара и планограмма.</span></div></li><li class="row t-o"><span class="num">74</span><div class="rb"><b>Ретейл: тележки</b><span class="why">Тележек нет в стандартных классах — модель и разметка.</span></div></li><li class="row t-o"><span class="num">75</span><div class="rb"><b>Ретейл: пол и возраст</b><span class="why">Модель по лицу — биометрия, юридический риск.</span></div></li><li class="row t-o"><span class="num">76</span><div class="rb"><b>Ретейл: антифрод касс</b><span class="why">Модели действий на кассе и доступ к чекам.</span></div></li><li class="row t-o"><span class="num">77</span><div class="rb"><b>Ретейл: персонал и чистота зала</b><span class="why">Модели формы персонала и чистоты.</span></div></li><li class="row t-o"><span class="num">78</span><div class="rb"><b>Промышленность: СИЗ и опасные зоны</b><span class="why">Зоны — тот же код, что п. 5; каски — как п. 1.</span></div></li><li class="row t-o"><span class="num">80</span><div class="rb"><b>Промышленность: брак на линии</b><span class="why">Своя модель дефектов под каждое изделие.</span></div></li><li class="row t-o"><span class="num">81</span><div class="rb"><b>Промышленность: запасы, зоны отгрузки</b><span class="why">Мера штабелей и паллет — модель и разметка.</span></div></li><li class="row t-o"><span class="num">82</span><div class="rb"><b>Промышленность: станки — простой</b><span class="why">Логика «работает / стоит» есть (003a), но нужна камера на станок и признак его работы.</span></div></li></ol></details>
+<details class="tier t-w"><summary><span class="tt"><i class="dot d-w"></i>Только страница-пример</span><span class="tc">27</span></summary><p class="tsub">Не заработает к понедельнику: нет данных заказчика, другая отрасль, решение Юлая или это не функция продукта.</p><ol class="rows"><li class="row t-w"><span class="num">16</span><div class="rb"><b>Кто управляет машиной</b><span class="why">Водителя в кабине камера не видит, а узнавание по лицу — биометрия. Не делаем.</span></div></li><li class="row t-w"><span class="num">22</span><div class="rb"><b>Работы по этажам: план и факт</b><span class="why">Нужен график работ заказчика — у кампуса его нет.</span></div></li><li class="row t-w"><span class="num">23</span><div class="rb"><b>Интеграция с BIM</b><span class="why">Нет BIM-модели кампуса; наш 3D — своя сцена.</span></div></li><li class="row t-w"><span class="num">27</span><div class="rb"><b>Сверка кузова с накладной</b><span class="why">Накладных нет (этап 025 — спека). Только экран-пример.</span></div></li><li class="row t-w"><span class="num">29</span><div class="rb"><b>«Без биометрии» (152-ФЗ)</b><span class="why">Это заявление, а не экран: лиц не распознаём, но позицию юрист не проверял — говорим словами.</span></div></li><li class="row t-w"><span class="num">31</span><div class="rb"><b>Видео на объекте, в облако — только данные</b><span class="why">Схема устройства, а не функция экрана. У нас всё считается на ПК — рассказать на схеме.</span></div></li><li class="row t-w"><span class="num">38</span><div class="rb"><b>Профиль объекта: сроки и прогресс</b><span class="why">Сроки и процент готовности — данные заказчика.</span></div></li><li class="row t-w"><span class="num">39</span><div class="rb"><b>План строительства</b><span class="why">График работ заказчика.</span></div></li><li class="row t-w"><span class="num">49</span><div class="rb"><b>Восстановление доступа</b><span class="why">Нужна почта или СМС — для показа лишнее.</span></div></li><li class="row t-w"><span class="num">53</span><div class="rb"><b>ГИИС «Электронный бюджет»</b><span class="why">Госинтеграция; доступ только у госзаказчика.</span></div></li><li class="row t-w"><span class="num">54</span><div class="rb"><b>Цифры доверия, реестр, логотипы</b><span class="why">Клиентов нет — не выдумываем.</span></div></li><li class="row t-w"><span class="num">61</span><div class="rb"><b>Наши люди и машины в 3D «ПроИИ»</b><span class="why">API v0 есть (004), но нужна их сторона — подключат после показа.</span></div></li><li class="row t-w"><span class="num">69</span><div class="rb"><b>МКД: спецтранспорт</b><span class="why">Тип машины уже есть; на кампусе спецтранспорта нет, это другая отрасль.</span></div></li><li class="row t-w"><span class="num">70</span><div class="rb"><b>МКД: событие ↔ камера ↔ подъезд</b><span class="why">Событие ↔ камера ↔ зона у нас уже есть; «подъезд» — другой объект.</span></div></li><li class="row t-w"><span class="num">71</span><div class="rb"><b>МКД: клининг и охрана</b><span class="why">Другая отрасль, нет камер двора.</span></div></li><li class="row t-w"><span class="num">72</span><div class="rb"><b>Ретейл: тепловая карта магазина</b><span class="why">Тот же код, что п. 64; нет камер магазина.</span></div></li><li class="row t-w"><span class="num">79</span><div class="rb"><b>Промышленность: хронометраж бригад</b><span class="why">Люди по часам и зонам (015) — тот же код; нет камер цеха.</span></div></li><li class="row t-w"><span class="num">83</span><div class="rb"><b>Промышленность: логистика материалов</b><span class="why">Въезд и номер есть; накладных и склада нет.</span></div></li><li class="row t-w"><span class="num">84</span><div class="rb"><b>Офис: контроль доступа</b><span class="why">Другая отрасль, нужна СКУД.</span></div></li><li class="row t-w"><span class="num">85</span><div class="rb"><b>Офис: учёт присутствия</b><span class="why">Люди по часам — тот же код; нет камер офиса.</span></div></li><li class="row t-w"><span class="num">86</span><div class="rb"><b>Офис: загрузка помещений и склада</b><span class="why">Зоны и люди — тот же код; нет камер.</span></div></li><li class="row t-w"><span class="num">89</span><div class="rb"><b>Модель цены</b><span class="why">Решает Юлай.</span></div></li><li class="row t-w"><span class="num">90</span><div class="rb"><b>Сроки внедрения</b><span class="why">Решает Юлай; текстом на «Что дальше».</span></div></li><li class="row t-w"><span class="num">91</span><div class="rb"><b>Кейсы с цифрами</b><span class="why">Клиентов нет.</span></div></li><li class="row t-w"><span class="num">92</span><div class="rb"><b>Формы заявок</b><span class="why">Не функция продукта.</span></div></li><li class="row t-w"><span class="num">93</span><div class="rb"><b>Блог и новости</b><span class="why">Не функция продукта.</span></div></li><li class="row t-w"><span class="num">94</span><div class="rb"><b>Политики ПДн и cookies</b><span class="why">Для показа не нужно.</span></div></li></ol></details>
+
+<footer class="foot">
+<b>Метод и оговорки</b>
+<ul>
+<li>Основа — таблица 94 функций QMonitoring (23.10, агент <code>qm-funcs</code>): сайт qmonitoring.ru, публичный код кабинета, наша карта кадров. Цифры QMonitoring — заявления их сайта.</li>
+<li>«Уже работает» — в master <code>sokol-starter</code> на 23.10 (пульт 005 влит, правки цифр — в 005-fix). Ветки 016, 018, 023 не влиты.</li>
+<li>Часы — грубо, без замеров; задержки уведомлений — оценка по замеру 013 (камера 1, 30,6 с счёта на минуту) и порогу въезда 3 с, задержка HLS не мерена.</li>
+<li>Ничего из этого не отправлено людям и не включено: страница — план.</li>
+</ul>
+</footer>
+</div></body></html>
