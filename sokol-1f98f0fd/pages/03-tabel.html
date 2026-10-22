@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Табель · пример</title>
+<meta name="description" content="Табель «заявлено подрядчиком ↔ подтвердила камера» по машинам за декаду, с флагом расхождения и сверкой. Пример.">
+<script>try{var q=new URLSearchParams(location.search).get("theme");document.documentElement.dataset.theme=q||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark")}catch(e){}</script>
+<link rel="stylesheet" href="assets/tokens.css">
+<link rel="stylesheet" href="assets/pages.css">
+<style>
+.ttl{margin-left:12px;padding-left:16px;border-left:1px solid var(--line)}
+.tw{overflow:hidden}
+.tab td{height:48px}
+.tab .grp td{background:var(--surface-2);height:52px}
+.tab .grp .gc{display:flex;flex-direction:column;justify-content:center;gap:2px}
+.tab .grp small{font-size:var(--fs-12);color:var(--muted);padding-left:26px}
+.tw .tw{display:inline-flex;align-items:center;gap:8px}
+.tab .grp .who-c{color:var(--text);font-weight:600}
+.tab .m td:first-child{padding-left:40px}
+.mm{display:inline-flex;align-items:center;gap:10px}.mm small{color:var(--muted);font-size:var(--fs-12)}
+.tab .bad td:first-child{box-shadow:inset 3px 0 0 var(--warn)}
+.ok{display:inline-flex;align-items:center;gap:6px;color:var(--muted);font-size:var(--fs-12)}
+.tab tfoot td{border-top:1px solid var(--control-line);height:52px}
+.tab .btn{min-height:30px}
+@media (max-width:760px){
+ .ttl{display:none}
+ .tab thead{display:none}
+ .tab,.tab tbody,.tab tfoot{display:block}
+ .tab tr{display:grid;grid-template-columns:1fr 1fr 1fr;gap:2px 8px;padding:10px 14px;border-bottom:1px solid var(--line)}
+ .tab td{display:block;padding:0;border:0;height:auto!important;text-align:left!important}
+ .tab td:first-child{grid-column:1 / -1;padding-left:0!important}
+ .tab td:nth-child(2)::before{content:"заявлено ";color:var(--muted);font-size:var(--fs-12)}
+ .tab td:nth-child(3)::before{content:"камера ";color:var(--muted);font-size:var(--fs-12)}
+ .tab td:nth-child(4)::before{content:"спорно ";color:var(--muted);font-size:var(--fs-12)}
+ .tab td:nth-child(5){display:none}
+ .tab td:nth-child(6),.tab td:nth-child(7){grid-column:span 3}
+ .tab .grp td{background:none}.tab .grp{background:var(--surface-2)}
+ .tab tfoot td:nth-child(6){display:none}
+ .tab .bad{box-shadow:inset 3px 0 0 var(--warn)}
+ .tab .bad td:first-child{box-shadow:none}
+ .tab tfoot td{border-top:0}
+ .tab tfoot tr{border-top:1px solid var(--control-line)}
+}</style>
+</head><body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<symbol id="i-video" viewBox="0 0 24 24"><path d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.870a.5.5 0 0 0-.752-.432L16 10.5"/><rect x="2" y="6" width="14" height="12" rx="2"/></symbol>
+<symbol id="i-list" viewBox="0 0 24 24"><path d="M3 12h.01M3 18h.01M3 6h.01M8 12h13M8 18h13M8 6h13"/></symbol>
+<symbol id="i-table" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18"/></symbol>
+<symbol id="i-bar" viewBox="0 0 24 24"><path d="M3 3v16a2 2 0 0 0 2 2h16M18 17V9M13 17V5M8 17v-3"/></symbol>
+<symbol id="i-building" viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M9 22v-4h6v4M8 6h.01M12 6h.01M16 6h.01M8 10h.01M12 10h.01M16 10h.01M8 14h.01M12 14h.01M16 14h.01"/></symbol>
+<symbol id="i-flag" viewBox="0 0 24 24"><path d="M4 22V4a1 1 0 0 1 .4-.8A6 6 0 0 1 8 2c3 0 5 2 7.333 2q2 0 3.067-.8A1 1 0 0 1 20 4v10a1 1 0 0 1-.4.8A6 6 0 0 1 16 16c-3 0-5-2-8-2a6 6 0 0 0-4 1.528"/></symbol>
+<symbol id="i-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+<symbol id="i-chev" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+<symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol>
+<symbol id="i-dl" viewBox="0 0 24 24"><path d="M12 15V3M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5"/></symbol>
+<symbol id="i-cal" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+<symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+<symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></symbol>
+<symbol id="i-more" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></symbol>
+<symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+<symbol id="i-logo" viewBox="0 0 24 24"><path d="M3 8V4h4M17 4h4v4M21 16v4h-4M7 20H3v-4"/><circle cx="12" cy="12" r="3.2"/></symbol>
+</svg>
+<div class="app">
+<nav class="rail" aria-label="Разделы"><a class="logo" href="index.html" aria-label="Сокол — все страницы"><svg class="i" aria-hidden="true"><use href="#i-logo"/></svg></a><a class="nav" href="01-pult.html"><svg class="i" aria-hidden="true"><use href="#i-video"/></svg><span>Пульт</span></a><a class="nav" href="02-reisy.html"><svg class="i" aria-hidden="true"><use href="#i-list"/></svg><span>Рейсы</span></a><a class="nav" href="03-tabel.html" aria-current="page"><svg class="i" aria-hidden="true"><use href="#i-table"/></svg><span>Табель</span></a><a class="nav" href="04-svodka.html"><svg class="i" aria-hidden="true"><use href="#i-bar"/></svg><span>Сводка</span></a><a class="nav" href="05-obekty.html"><svg class="i" aria-hidden="true"><use href="#i-building"/></svg><span>Объекты</span></a><a class="nav" href="06-dalshe.html"><svg class="i" aria-hidden="true"><use href="#i-flag"/></svg><span>Что дальше</span></a><span class="who" title="Оператор площадки">ОП</span></nav>
+<div class="main">
+<header class="top"><div class="site"><small>Площадка</small><b>«Кампус», Пермь<svg class="i i--s" aria-hidden="true"><use href="#i-down"/></svg></b></div><h1 class="ttl">Табель подрядчиков</h1><span class="sp"></span><span class="example" title="Страница-пример: данные правдоподобные, не с площадки">Пример · в разработке</span>
+<button class="btn hide-m"><svg class="i i--s" aria-hidden="true"><use href="#i-dl"/></svg>Excel</button><button class="btn hide-m">Файл для 1С</button></header>
+<main class="page"><div class="filters"><div class="seg"><button aria-pressed="false">День</button><button aria-pressed="true">Декада</button></div>
+<span class="sel"><svg class="i i--s" aria-hidden="true"><use href="#i-cal"/></svg>11–20 октября 2026<svg class="i i--s" aria-hidden="true"><use href="#i-down"/></svg></span>
+<span class="sel"><small>Подрядчик</small>все 3<svg class="i i--s" aria-hidden="true"><use href="#i-down"/></svg></span><span class="sp"></span>
+<span class="count hide-m">часы — машино-часы по камере</span></div>
+<p class="lead">За декаду подрядчики заявили <b class="num">212,0 машино-ч</b>, камера подтвердила <b class="num">188,4</b>, спорно <b class="num">9,1</b>. Расхождение больше спорного — <b class="warn">у 4 машин</b> двух подрядчиков.</p>
+<div class="card tw"><table class="tbl tab"><thead><tr><th>Подрядчик · машина</th><th class="r">Заявлено, ч</th><th class="r">Камера подтвердила, ч</th><th class="r">Спорно, ч</th><th class="r">Сверх камеры, ч</th><th>Сверка</th><th>Сверено</th></tr></thead>
+<tbody><tr class="grp" aria-expanded="true"><td><div class="gc"><span class="tw"><svg class="i i--s" aria-hidden="true"><use href="#i-down"/></svg><b class="who-c" data-i="У">УралГрунт</b></span><small>7 машин</small></div></td>
+<td class="r num">126,0</td><td class="r num">109,5</td><td class="r num">5,0</td><td class="r num"><b>+16,5</b></td><td><span class="flag">расхождение · 3</span></td><td></td></tr><tr class="m"><td><span class="mm"><span class="plate "><b>К093ТМ</b><i>159</i></span><small>Самосвал</small></span></td>
+<td class="r num">20,0</td><td class="r num">19,2</td><td class="r num">0,6</td><td class="r num">+0,8</td><td><span class="muted">в пределах</span></td><td><span class="ok"><svg class="i i--s" aria-hidden="true"><use href="#i-check"/></svg>диспетчер, 21.10 09:12</span></td></tr><tr class="m bad"><td><span class="mm"><span class="plate "><b>А123ВС</b><i>59</i></span><small>Самосвал</small></span></td>
+<td class="r num">20,0</td><td class="r num">14,5</td><td class="r num">0,9</td><td class="r num">+5,5</td><td><span class="flag">расхождение</span></td><td><button class="btn">Сверить</button></td></tr><tr class="m"><td><span class="mm"><span class="plate "><b>Х731АМ</b><i>159</i></span><small>Самосвал</small></span></td>
+<td class="r num">18,0</td><td class="r num">17,1</td><td class="r num">0,7</td><td class="r num">+0,9</td><td><span class="muted">в пределах</span></td><td><span class="ok"><svg class="i i--s" aria-hidden="true"><use href="#i-check"/></svg>диспетчер, 21.10 09:14</span></td></tr><tr class="m bad"><td><span class="mm"><span class="plate "><b>М560УК</b><i>159</i></span><small>Самосвал</small></span></td>
+<td class="r num">18,0</td><td class="r num">12,8</td><td class="r num">1,2</td><td class="r num">+5,2</td><td><span class="flag">расхождение</span></td><td><button class="btn">Сверить</button></td></tr><tr class="m"><td><span class="mm"><span class="plate "><b>Т317ОР</b><i>159</i></span><small>Самосвал</small></span></td>
+<td class="r num">16,0</td><td class="r num">15,6</td><td class="r num">0,4</td><td class="r num">+0,4</td><td><span class="muted">в пределах</span></td><td><span class="ok"><svg class="i i--s" aria-hidden="true"><use href="#i-check"/></svg>диспетчер, 21.10 09:15</span></td></tr><tr class="m"><td><span class="mm"><span class="plate "><b>О218ВК</b><i>159</i></span><small>Самосвал</small></span></td>
+<td class="r num">14,0</td><td class="r num">13,1</td><td class="r num">0,8</td><td class="r num">+0,9</td><td><span class="muted">в пределах</span></td><td><span class="ok"><svg class="i i--s" aria-hidden="true"><use href="#i-check"/></svg>диспетчер, 21.10 09:15</span></td></tr><tr class="m bad"><td><span class="mm"><span class="noplate">бортовой № 1</span><small>Экскаватор</small></span></td>
+<td class="r num">20,0</td><td class="r num">17,2</td><td class="r num">0,4</td><td class="r num">+2,8</td><td><span class="flag">расхождение</span></td><td><button class="btn">Сверить</button></td></tr><tr class="grp" aria-expanded="false"><td><div class="gc"><span class="tw"><svg class="i i--s" aria-hidden="true"><use href="#i-chev"/></svg><b class="who-c" data-i="Б">Бетон-59</b></span><small>2 машины</small></div></td>
+<td class="r num">46,0</td><td class="r num">44,9</td><td class="r num">1,1</td><td class="r num"><b>+1,1</b></td><td><span class="muted">в пределах</span></td><td></td></tr><tr class="grp" aria-expanded="true"><td><div class="gc"><span class="tw"><svg class="i i--s" aria-hidden="true"><use href="#i-down"/></svg><b class="who-c" data-i="К">Кран-Сервис</b></span><small>1 машина</small></div></td>
+<td class="r num">40,0</td><td class="r num">34,0</td><td class="r num">3,0</td><td class="r num"><b>+6,0</b></td><td><span class="flag">расхождение · 1</span></td><td></td></tr><tr class="m bad"><td><span class="mm"><span class="plate "><b>У352КС</b><i>159</i></span><small>Автокран</small></span></td>
+<td class="r num">40,0</td><td class="r num">34,0</td><td class="r num">3,0</td><td class="r num">+6,0</td><td><span class="flag">расхождение</span></td><td><button class="btn">Сверить</button></td></tr></tbody>
+<tfoot><tr><td><b>Итого</b></td><td class="r num"><b>212,0</b></td><td class="r num"><b>188,4</b></td><td class="r num"><b>9,1</b></td><td class="r num"><b>+23,6</b></td><td colspan="2"></td></tr></tfoot></table></div>
+<p class="note">Черновик для сверки с путевым листом и рапортом подрядчика (ЭСМ-2, ЭСМ-3). «Сверх камеры» — заявлено минус подтверждено. Расхождение — когда это больше спорного интервала и ещё 15 минут. «Не видно» в подтверждённое не идёт. Деньги табель не считает.</p></main>
+</div>
+</div>
+<nav class="tabbar" aria-label="Разделы"><a href="01-pult.html"><svg class="i" aria-hidden="true"><use href="#i-video"/></svg><span>Пульт</span></a><a href="02-reisy.html"><svg class="i" aria-hidden="true"><use href="#i-list"/></svg><span>Рейсы</span></a><a href="03-tabel.html" aria-current="page"><svg class="i" aria-hidden="true"><use href="#i-table"/></svg><span>Табель</span></a><a href="04-svodka.html"><svg class="i" aria-hidden="true"><use href="#i-bar"/></svg><span>Сводка</span></a><a href="05-obekty.html"><svg class="i" aria-hidden="true"><use href="#i-building"/></svg><span>Объекты</span></a></nav>
+</body></html>

@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Пульт · схема</title>
+<meta name="description" content="Схема блоков главного экрана «Сокола»: список машин, цифры смены, окно камеры (модуль), лента событий, схема площадки.">
+<script>try{var q=new URLSearchParams(location.search).get("theme");document.documentElement.dataset.theme=q||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark")}catch(e){}</script>
+<link rel="stylesheet" href="assets/tokens.css">
+<link rel="stylesheet" href="assets/pages.css">
+<style>
+.schema-note{font-size:var(--fs-12);color:var(--muted);margin-top:-4px}
+.cnt{font-size:var(--fs-14);color:var(--muted);white-space:nowrap}.cnt b{color:var(--text);font-weight:600}.cnt b.warn{color:var(--warn)}
+.clock{display:flex;flex-direction:column;align-items:flex-end;line-height:1.2}.clock b{font-size:var(--fs-20);font-weight:600}.clock small{font-size:var(--fs-12);color:var(--muted)}
+.pult{display:grid;grid-template-columns:420px minmax(0,1fr);gap:var(--gap);align-items:start}
+.blk{position:relative;min-width:0;background:var(--surface);border:1px dashed var(--control-line);border-radius:var(--radius);padding:12px}
+.tag{display:flex;align-items:baseline;gap:8px;font-size:var(--fs-14);font-weight:600;margin-bottom:10px;flex-wrap:wrap}
+.tag b{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:4px;background:var(--text);color:var(--bg);font-size:var(--fs-12)}
+.tag small{font-weight:400;font-size:var(--fs-12);color:var(--muted)}
+.tag--in{margin:0}
+.list .seg{margin-bottom:10px}
+.mhead{display:grid;grid-template-columns:14px 128px 1fr 60px;gap:10px;font-size:var(--fs-12);color:var(--muted);padding:0 4px 6px;border-bottom:1px solid var(--line)}
+.mhead span:last-child{text-align:right}
+.mrow{display:grid;grid-template-columns:14px 128px 1fr 60px;gap:10px;align-items:center;min-height:var(--row);padding:6px 4px;border-bottom:1px solid var(--line)}
+.mrow--q{box-shadow:inset 3px 0 0 var(--warn)}
+.mrow .m1,.mrow .m2{display:flex;flex-direction:column;gap:3px;min-width:0}
+.mrow .m2 b{font-weight:600}.mrow small{font-size:var(--fs-12)}
+.mrow .m3{text-align:right;font-size:var(--fs-16);font-weight:600;white-space:nowrap}
+.mrow--sk i{display:block;height:10px;border-radius:5px;background:var(--surface-2)}
+.mrow--sk i:first-child{width:9px;height:9px}
+.more{font-size:var(--fs-12);padding:8px 4px 0}
+.cs{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--text)}
+.cs--part{background:none;border:1.5px dashed var(--warn)}
+.limits{margin-top:10px;font-size:var(--fs-12);color:var(--muted)}
+.center{display:flex;flex-direction:column;gap:var(--gap);min-width:0}
+.kt{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.kt div{display:flex;flex-direction:column}
+.kt .k{font-size:var(--fs-12);color:var(--muted)}
+.kt .v{font-size:var(--fs-28);font-weight:600;line-height:1.15}.kt .v small{font-size:var(--fs-14);color:var(--muted);font-weight:500}
+.camtabs{display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+.camtabs .sp{flex:1}
+.slot{position:relative;aspect-ratio:16/9;width:min(100%,calc((100vh - 590px) * 16 / 9));min-width:min(100%,520px);margin:0 auto;border-radius:var(--radius-control);overflow:hidden;background:var(--frame) url("assets/img/cam-1.jpg") center/cover}
+.slot::after{content:"";position:absolute;inset:0;background:var(--bg);opacity:.55}
+.slot-in{position:absolute;inset:0;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;padding:24px}
+.slot-in b{font-size:var(--fs-20);font-weight:600}
+.slot-in span{font-size:var(--fs-14);color:var(--muted);max-width:48ch}
+.slot-src{position:absolute;z-index:1;left:10px;bottom:10px;font-size:var(--fs-12);padding:3px 8px;border-radius:4px;background:var(--surface);color:var(--muted)}
+.row3{display:grid;grid-template-columns:minmax(0,1fr) 280px;gap:var(--gap)}
+.lanes{position:relative;display:flex;flex-direction:column;gap:6px}
+.lane{display:grid;grid-template-columns:78px 1fr;gap:6px;align-items:center;font-size:var(--fs-12);color:var(--muted)}
+.track{position:relative;height:16px;border-radius:8px;background:var(--surface-2)}
+.mk{position:absolute;top:50%;width:10px;height:10px;margin:-5px 0 0 -5px;border-radius:50%;display:inline-block}
+.mk--in{background:var(--text)}
+.mk--out{background:var(--surface);border:2px solid var(--text);border-radius:2px;width:9px;height:9px;margin:-4.5px 0 0 -4.5px}
+.seg-idle,.seg-unseen{position:absolute;top:3px;height:10px;border-radius:5px;display:inline-block}
+.seg-idle{background:var(--control-line)}
+.seg-unseen{border:1.5px dashed var(--warn);background:var(--warn-soft)}
+.axis{position:relative;height:16px;margin-left:84px;font-size:var(--fs-12);color:var(--muted)}
+.axis span{position:absolute;transform:translateX(-50%)}.axis span:first-child{transform:none}.axis span:last-child{transform:translateX(-100%)}
+.now{position:absolute;top:-4px;bottom:16px;width:0;border-left:2px solid var(--text)}
+.now i{position:absolute;top:-18px;left:-20px;font-style:normal;font-size:var(--fs-12);font-weight:600;background:var(--text);color:var(--bg);padding:0 5px;border-radius:3px}
+.strip .lanes{margin-top:18px}
+.leg{display:flex;gap:14px;margin-top:8px;font-size:var(--fs-12);color:var(--muted);flex-wrap:wrap}
+.leg span{display:inline-flex;align-items:center;gap:6px}
+.leg .mk{position:static;margin:0}.leg .seg-idle,.leg .seg-unseen{position:static;width:18px}
+.planv{width:100%;height:auto;max-height:140px;display:block}
+.planv .z{fill:var(--surface-2);stroke:var(--control-line);stroke-width:1}
+.planv .z--pit{stroke-dasharray:4 3}
+.planv text{font-size:10px;fill:var(--muted);font-family:var(--font-text)}
+.planv .dm{fill:var(--text)}.planv .di{fill:var(--surface);stroke:var(--muted);stroke-width:1.5}.planv .du{fill:none;stroke:var(--warn);stroke-width:1.5;stroke-dasharray:2.5 2}
+@media (max-width:760px){
+ .pult{grid-template-columns:minmax(0,1fr)}
+ .center{display:contents}
+ .kpi{order:-1}
+ .kt{grid-template-columns:repeat(2,1fr)}
+ .row3{grid-template-columns:1fr}
+ .mhead{display:none}
+ .mrow{grid-template-columns:14px 1fr 56px;grid-template-areas:"s a t" "s b t"}
+ .mrow .st{grid-area:s}.mrow .m1{grid-area:a;flex-direction:row;align-items:center;gap:8px}.mrow .m2{grid-area:b}.mrow .m3{grid-area:t;font-size:var(--fs-16)}
+ .mrow--sk{display:none}
+ .camtabs .seg{overflow-x:auto;max-width:100%}
+ .slot-in span{display:none}
+ .slot{width:100%;min-width:0}
+ .schema-note{display:none}
+}</style>
+</head><body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<symbol id="i-video" viewBox="0 0 24 24"><path d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.870a.5.5 0 0 0-.752-.432L16 10.5"/><rect x="2" y="6" width="14" height="12" rx="2"/></symbol>
+<symbol id="i-list" viewBox="0 0 24 24"><path d="M3 12h.01M3 18h.01M3 6h.01M8 12h13M8 18h13M8 6h13"/></symbol>
+<symbol id="i-table" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18"/></symbol>
+<symbol id="i-bar" viewBox="0 0 24 24"><path d="M3 3v16a2 2 0 0 0 2 2h16M18 17V9M13 17V5M8 17v-3"/></symbol>
+<symbol id="i-building" viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M9 22v-4h6v4M8 6h.01M12 6h.01M16 6h.01M8 10h.01M12 10h.01M16 10h.01M8 14h.01M12 14h.01M16 14h.01"/></symbol>
+<symbol id="i-flag" viewBox="0 0 24 24"><path d="M4 22V4a1 1 0 0 1 .4-.8A6 6 0 0 1 8 2c3 0 5 2 7.333 2q2 0 3.067-.8A1 1 0 0 1 20 4v10a1 1 0 0 1-.4.8A6 6 0 0 1 16 16c-3 0-5-2-8-2a6 6 0 0 0-4 1.528"/></symbol>
+<symbol id="i-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+<symbol id="i-chev" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+<symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol>
+<symbol id="i-dl" viewBox="0 0 24 24"><path d="M12 15V3M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5"/></symbol>
+<symbol id="i-cal" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+<symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+<symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></symbol>
+<symbol id="i-more" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></symbol>
+<symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+<symbol id="i-logo" viewBox="0 0 24 24"><path d="M3 8V4h4M17 4h4v4M21 16v4h-4M7 20H3v-4"/><circle cx="12" cy="12" r="3.2"/></symbol>
+</svg>
+<div class="app">
+<nav class="rail" aria-label="Разделы"><a class="logo" href="index.html" aria-label="Сокол — все страницы"><svg class="i" aria-hidden="true"><use href="#i-logo"/></svg></a><a class="nav" href="01-pult.html" aria-current="page"><svg class="i" aria-hidden="true"><use href="#i-video"/></svg><span>Пульт</span></a><a class="nav" href="02-reisy.html"><svg class="i" aria-hidden="true"><use href="#i-list"/></svg><span>Рейсы</span></a><a class="nav" href="03-tabel.html"><svg class="i" aria-hidden="true"><use href="#i-table"/></svg><span>Табель</span></a><a class="nav" href="04-svodka.html"><svg class="i" aria-hidden="true"><use href="#i-bar"/></svg><span>Сводка</span></a><a class="nav" href="05-obekty.html"><svg class="i" aria-hidden="true"><use href="#i-building"/></svg><span>Объекты</span></a><a class="nav" href="06-dalshe.html"><svg class="i" aria-hidden="true"><use href="#i-flag"/></svg><span>Что дальше</span></a><span class="who" title="Оператор площадки">ОП</span></nav>
+<div class="main">
+<header class="top"><div class="site"><small>Площадка</small><b>«Кампус», Пермь<svg class="i i--s" aria-hidden="true"><use href="#i-down"/></svg></b></div><span class="live">Запись · 20.10.2026</span><span class="sel hide-m"><small>Смена</small>08:00–20:00</span>
+<span class="sp"></span>
+<span class="cnt hide-m">не видно <b class="warn">1</b> · номер не прочитан <b>2</b> · сомнительно <b class="warn">1</b></span>
+<button class="btn btn--warn">Подтвердить · 4</button>
+<span class="clock hide-m"><b class="num">10:52</b><small>обновлено 3 с назад</small></span></header>
+<main class="page"><div class="pult">
+<section class="blk list" aria-label="A · Список машин">
+  <div class="tag"><b>A</b> Список машин <small>строка 56 px · visit + machine + interval</small></div>
+  <div class="seg"><button aria-pressed="true">Машины · 6</button><button aria-pressed="false">Подтвердить · 4</button><button aria-pressed="false">События</button></div>
+  <div class="mhead"><span></span><span>Номер · чей</span><span>Техника · въехал · состояние</span><span>На площадке</span></div>
+  <div class="mrow">
+<span class="st st--move" aria-label="в движении"></span>
+<div class="m1"><span class="plate "><b>К093ТМ</b><i>159</i></span><small class="who-c" data-i="У">УралГрунт</small></div>
+<div class="m2"><b>Самосвал</b><small class="muted">въехал 10:31 · в движении</small></div>
+<div class="m3 num">21 мин</div></div><div class="mrow mrow--q">
+<span class="st st--unseen" aria-label="не видно с 10:51 · таймер идёт"></span>
+<div class="m1"><span class="noplate">номер не читается</span><small class="who-c" data-i="?">чей — не указан</small></div>
+<div class="m2"><b>Самосвал № 1</b><small class="warn">въехал 10:44 · не видно с 10:51 · таймер идёт</small></div>
+<div class="m3 num">8 мин</div></div><div class="mrow">
+<span class="st st--idle" aria-label="стоит 6 мин · причина?"></span>
+<div class="m1"><span class="plate "><b>Х731АМ</b><i>159</i></span><small class="who-c" data-i="У">УралГрунт</small></div>
+<div class="m2"><b>Самосвал</b><small class="muted">въехал 10:38 · стоит 6 мин · причина?</small></div>
+<div class="m3 num">14 мин</div></div><div class="mrow mrow--sk" aria-hidden="true"><i></i><i></i><i></i><i></i></div><div class="mrow mrow--sk" aria-hidden="true"><i></i><i></i><i></i><i></i></div><div class="mrow mrow--sk" aria-hidden="true"><i></i><i></i><i></i><i></i></div><div class="mrow mrow--sk" aria-hidden="true"><i></i><i></i><i></i><i></i></div><div class="mrow mrow--sk" aria-hidden="true"><i></i><i></i><i></i><i></i></div><p class="more muted">ещё 3 машины · прокрутка списка</p>
+  <div class="limits">Подвал — пределы: номер читаем, где он виден · уход из кадра — не выезд · спорное подтверждает человек</div>
+</section>
+<div class="center">
+  <section class="blk kpi" aria-label="B · Цифры смены">
+    <div class="tag"><b>B</b> Цифры смены <small>report_row за смену</small></div>
+    <div class="kt"><div><span class="k">На площадке</span><span class="v num">6</span></div><div><span class="k">Рейсов</span><span class="v num">9</span></div><div><span class="k">Средний цикл</span><span class="v num">24 <small>мин</small></span></div><div><span class="k">Простой</span><span class="v num">18 <small>%</small></span></div></div>
+  </section>
+  <section class="blk cam" aria-label="C · Окно камеры">
+    <div class="camtabs"><div class="seg"><button aria-pressed="true" title="видно"><i class="cs cs--ok" aria-label="видно"></i>Камера 1 · дорога</button><button aria-pressed="false" title="частично загорожена"><i class="cs cs--part" aria-label="частично загорожена"></i>Камера 3 · котлован</button><button aria-pressed="false" title="видно"><i class="cs cs--ok" aria-label="видно"></i>Камера 4 · стоянка</button><button aria-pressed="false" title="видно"><i class="cs cs--ok" aria-label="видно"></i>Камера 7 · общий план</button><button aria-pressed="false"><svg class="i i--s" aria-hidden="true"><use href="#i-grid"/></svg>Все 4</button></div><span class="sp"></span><span class="tag tag--in"><b>C</b> Окно камеры</span></div>
+    <div id="cam-slot" class="slot" data-module="camera-window" data-camera="campus-1">
+      <div class="slot-in"><b>Модуль окна камеры</b><span>#cam-slot · 16:9 · видео, рамки и номера треков, переключатель рамок — монтируется целиком</span></div>
+      <span class="slot-src">Камера 1 · дорога — открытая трансляция стройки в Перми · 10:52:07</span>
+    </div>
+  </section>
+  <div class="row3">
+    <section class="blk strip" id="cam-strip" data-module="event-strip" aria-label="D · Лента событий">
+      <div class="tag"><b>D</b> Лента событий по камерам <small>event: entry · exit · interval</small></div>
+      <div class="lanes"><div class="lane"><span>Камера 1</span><div class="track"><span class="mk mk--in" style="left:1.7%"></span><span class="mk mk--in" style="left:13.3%"></span><span class="mk mk--in" style="left:23.3%"></span><span class="mk mk--out" style="left:28.3%"></span><span class="seg-idle" style="left:13.3%;width:10.0%"></span></div></div><div class="lane"><span>Камера 3</span><div class="track"><span class="mk mk--in" style="left:23.3%"></span><span class="seg-unseen" style="left:35.0%;width:13.3%"></span><span class="mk mk--out" style="left:58.3%"></span></div></div><div class="lane"><span>Камера 4</span><div class="track"><span class="seg-idle" style="left:5.0%;width:21.7%"></span><span class="mk mk--in" style="left:33.3%"></span><span class="mk mk--out" style="left:43.3%"></span></div></div><div class="lane"><span>Камера 7</span><div class="track"><span class="mk mk--in" style="left:8.3%"></span><span class="mk mk--out" style="left:68.3%"></span><span class="mk mk--in" style="left:78.3%"></span></div></div><div class="axis"><span style="left:0.0%">10:30</span><span style="left:25.0%">10:45</span><span style="left:50.0%">11:00</span><span style="left:75.0%">11:15</span><span style="left:100.0%">11:30</span></div><span class="now" style="left:calc(84px + (100% - 84px) * 0.367)"><i>10:52</i></span></div>
+      <div class="leg"><span><i class="mk mk--in"></i>въезд</span><span><i class="mk mk--out"></i>выезд</span><span><i class="seg-idle"></i>стоит</span><span><i class="seg-unseen"></i>не видно</span></div>
+    </section>
+    <section class="blk plan" aria-label="E · Схема площадки">
+      <div class="tag"><b>E</b> Схема площадки <small>plan_xy</small></div>
+      <svg viewBox="0 0 260 120" class="planv" role="img" aria-label="Схема: въезд, стоянка, котлован, бытовки и 6 машин">
+        <rect x="4" y="44" width="58" height="34" rx="4" class="z"/><text x="10" y="40">въезд</text>
+        <rect x="74" y="10" width="76" height="50" rx="4" class="z"/><text x="80" y="74">стоянка</text>
+        <rect x="160" y="10" width="94" height="96" rx="4" class="z z--pit"/><text x="166" y="24">котлован</text>
+        <rect x="74" y="84" width="60" height="26" rx="4" class="z"/><text x="80" y="101">бытовки</text>
+        <circle cx="40" cy="62" r="4.5" class="dm"/><circle cx="96" cy="30" r="4.5" class="di"/><circle cx="120" cy="40" r="4.5" class="dm"/>
+        <circle cx="190" cy="60" r="4.5" class="dm"/><circle cx="220" cy="82" r="4.5" class="di"/><circle cx="236" cy="40" r="5" class="du"/>
+      </svg>
+      <small class="muted">схема, не GPS</small>
+    </section>
+  </div>
+</div>
+</div></main>
+</div>
+</div>
+<nav class="tabbar" aria-label="Разделы"><a href="01-pult.html" aria-current="page"><svg class="i" aria-hidden="true"><use href="#i-video"/></svg><span>Пульт</span></a><a href="02-reisy.html"><svg class="i" aria-hidden="true"><use href="#i-list"/></svg><span>Рейсы</span></a><a href="03-tabel.html"><svg class="i" aria-hidden="true"><use href="#i-table"/></svg><span>Табель</span></a><a href="04-svodka.html"><svg class="i" aria-hidden="true"><use href="#i-bar"/></svg><span>Сводка</span></a><a href="05-obekty.html"><svg class="i" aria-hidden="true"><use href="#i-building"/></svg><span>Объекты</span></a></nav>
+</body></html>

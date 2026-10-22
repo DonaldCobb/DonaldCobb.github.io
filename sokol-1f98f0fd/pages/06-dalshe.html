@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Что дальше</title>
+<meta name="description" content="План внедрения «Сокола»: какие страницы оживают на каком этапе пилота и что нужно от заказчика.">
+<script>try{var q=new URLSearchParams(location.search).get("theme");document.documentElement.dataset.theme=q||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark")}catch(e){}</script>
+<link rel="stylesheet" href="assets/tokens.css">
+<link rel="stylesheet" href="assets/pages.css">
+<style>
+.pgs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+.pg{display:flex;flex-direction:column;gap:2px;padding:12px 14px;border:1px solid var(--line);border-radius:var(--radius);background:var(--surface);text-decoration:none}
+.pg span{font-size:var(--fs-12);color:var(--muted)}
+.pg--now{border-color:var(--text);box-shadow:inset 0 0 0 1px var(--text)}
+.pg--now span{color:var(--text);font-weight:600}
+.pg--now span::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--text);margin-right:6px;vertical-align:1px}
+.stgs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--gap)}
+.stg{padding:16px 18px 18px;display:flex;flex-direction:column;gap:10px}
+.sh{display:flex;justify-content:space-between;align-items:center}
+.n{font-size:var(--fs-12);font-weight:600;padding:2px 8px;border-radius:4px;background:var(--text);color:var(--bg)}
+.when{font-size:var(--fs-12);color:var(--muted);border:1px dashed var(--control-line);border-radius:999px;padding:2px 10px}
+.it,.nd{list-style:none;display:flex;flex-direction:column;gap:6px}
+.it li{padding-left:16px;position:relative}.it li::before{content:"";position:absolute;left:0;top:.55em;width:7px;height:7px;border-radius:50%;background:var(--text)}
+.nd li{padding-left:16px;position:relative;color:var(--muted)}.nd li::before{content:"–";position:absolute;left:0;top:0}
+.lbl{font-size:var(--fs-12);color:var(--muted);margin-top:4px;padding-top:10px;border-top:1px solid var(--line)}
+@media (max-width:1000px){.stgs{grid-template-columns:1fr}.pgs{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:760px){.pgs{grid-template-columns:1fr 1fr}}</style>
+</head><body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<symbol id="i-video" viewBox="0 0 24 24"><path d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.870a.5.5 0 0 0-.752-.432L16 10.5"/><rect x="2" y="6" width="14" height="12" rx="2"/></symbol>
+<symbol id="i-list" viewBox="0 0 24 24"><path d="M3 12h.01M3 18h.01M3 6h.01M8 12h13M8 18h13M8 6h13"/></symbol>
+<symbol id="i-table" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18"/></symbol>
+<symbol id="i-bar" viewBox="0 0 24 24"><path d="M3 3v16a2 2 0 0 0 2 2h16M18 17V9M13 17V5M8 17v-3"/></symbol>
+<symbol id="i-building" viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M9 22v-4h6v4M8 6h.01M12 6h.01M16 6h.01M8 10h.01M12 10h.01M16 10h.01M8 14h.01M12 14h.01M16 14h.01"/></symbol>
+<symbol id="i-flag" viewBox="0 0 24 24"><path d="M4 22V4a1 1 0 0 1 .4-.8A6 6 0 0 1 8 2c3 0 5 2 7.333 2q2 0 3.067-.8A1 1 0 0 1 20 4v10a1 1 0 0 1-.4.8A6 6 0 0 1 16 16c-3 0-5-2-8-2a6 6 0 0 0-4 1.528"/></symbol>
+<symbol id="i-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+<symbol id="i-chev" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+<symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol>
+<symbol id="i-dl" viewBox="0 0 24 24"><path d="M12 15V3M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5"/></symbol>
+<symbol id="i-cal" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+<symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+<symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></symbol>
+<symbol id="i-more" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></symbol>
+<symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+<symbol id="i-logo" viewBox="0 0 24 24"><path d="M3 8V4h4M17 4h4v4M21 16v4h-4M7 20H3v-4"/><circle cx="12" cy="12" r="3.2"/></symbol>
+</svg>
+<div class="app">
+<nav class="rail" aria-label="Разделы"><a class="logo" href="index.html" aria-label="Сокол — все страницы"><svg class="i" aria-hidden="true"><use href="#i-logo"/></svg></a><a class="nav" href="01-pult.html"><svg class="i" aria-hidden="true"><use href="#i-video"/></svg><span>Пульт</span></a><a class="nav" href="02-reisy.html"><svg class="i" aria-hidden="true"><use href="#i-list"/></svg><span>Рейсы</span></a><a class="nav" href="03-tabel.html"><svg class="i" aria-hidden="true"><use href="#i-table"/></svg><span>Табель</span></a><a class="nav" href="04-svodka.html"><svg class="i" aria-hidden="true"><use href="#i-bar"/></svg><span>Сводка</span></a><a class="nav" href="05-obekty.html"><svg class="i" aria-hidden="true"><use href="#i-building"/></svg><span>Объекты</span></a><a class="nav" href="06-dalshe.html" aria-current="page"><svg class="i" aria-hidden="true"><use href="#i-flag"/></svg><span>Что дальше</span></a><span class="who" title="Оператор площадки">ОП</span></nav>
+<div class="main">
+<header class="top"><div class="site"><small>План внедрения</small><b>Что дальше</b></div><span class="sp"></span><span class="example">План · сроки уточняются</span></header>
+<main class="page"><p class="lead">Сегодня работает <b>пульт</b> на живых данных. Остальные страницы вы видели примерами — они оживают по этапам пилота на ваших камерах.</p>
+<div class="pgs"><a class="pg pg--now" href="01-pult.html"><b>Пульт</b><span>работает сейчас</span></a><a class="pg pg--1" href="02-reisy.html"><b>Рейсы</b><span>этап 1</span></a><a class="pg pg--1" href="03-tabel.html"><b>Табель</b><span>этап 1</span></a><a class="pg pg--2" href="04-svodka.html"><b>Сводка</b><span>этап 2</span></a><a class="pg pg--2" href="05-obekty.html"><b>Объекты</b><span>этап 2</span></a></div>
+<div class="stgs"><section class="card stg"><div class="sh"><span class="n">Этап 1</span><span class="when">срок — уточняется</span></div>
+<h2>Ваши камеры, рейсы и табель</h2><ul class="it"><li>Пульт на 2–4 ваших камерах: въезд и площадка</li><li>Рейсы: номер, чей, въехал, выехал, кадры</li><li>Табель «заявлено ↔ видели» по подрядчикам</li><li>Выгрузка в Excel и файл для 1С</li></ul><p class="lbl">Нужно от вас</p><ul class="nd"><li>Записи или поток камер въезда и площадки</li><li>Список подрядчиков и их машин</li></ul></section><section class="card stg"><div class="sh"><span class="n">Этап 2</span><span class="when">срок — уточняется</span></div>
+<h2>Руководителю и заказчику</h2><ul class="it"><li>Сводка за день, неделю, декаду</li><li>Несколько площадок на одной странице</li><li>Итог смены в Telegram</li><li>Простой в рублях по вашим ставкам</li></ul><p class="lbl">Нужно от вас</p><ul class="nd"><li>Ставки часа техники по подрядчикам</li><li>Кто получает итог смены</li></ul></section><section class="card stg"><div class="sh"><span class="n">Этап 3</span><span class="when">срок — уточняется</span></div>
+<h2>По вашим данным</h2><ul class="it"><li>Каски и жилеты</li><li>Дым и огонь</li><li>Люди по часам и зонам</li><li>Объём котлована</li></ul><p class="lbl">Нужно от вас</p><ul class="nd"><li>Записи ваших камер для дообучения</li><li>Какие нарушения важны вам</li></ul></section></div>
+<p class="note">Сроки и стоимость этапов обсуждаем отдельно. Каждый этап заканчивается проверкой на ваших записях: что видно, что нет, где нужен человек.</p></main>
+</div>
+</div>
+<nav class="tabbar" aria-label="Разделы"><a href="01-pult.html"><svg class="i" aria-hidden="true"><use href="#i-video"/></svg><span>Пульт</span></a><a href="02-reisy.html"><svg class="i" aria-hidden="true"><use href="#i-list"/></svg><span>Рейсы</span></a><a href="03-tabel.html"><svg class="i" aria-hidden="true"><use href="#i-table"/></svg><span>Табель</span></a><a href="04-svodka.html"><svg class="i" aria-hidden="true"><use href="#i-bar"/></svg><span>Сводка</span></a><a href="05-obekty.html"><svg class="i" aria-hidden="true"><use href="#i-building"/></svg><span>Объекты</span></a></nav>
+</body></html>

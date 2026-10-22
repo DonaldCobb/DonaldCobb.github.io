@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Рейсы · пример</title>
+<meta name="description" content="Журнал рейсов «Сокола»: номер, чей, въехал, выехал, время на площадке с кадрами-доказательствами. Пример.">
+<script>try{var q=new URLSearchParams(location.search).get("theme");document.documentElement.dataset.theme=q||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark")}catch(e){}</script>
+<link rel="stylesheet" href="assets/tokens.css">
+<link rel="stylesheet" href="assets/pages.css">
+<style>
+.ttl{margin-left:12px;padding-left:16px;border-left:1px solid var(--line)}
+.split{display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:var(--gap);align-items:start}
+.split .tbl th,.split .tbl td{padding:10px 8px}
+.split .tbl td:nth-child(6) .st{white-space:normal;max-width:150px;align-items:flex-start}
+.split .tbl td:nth-child(6) .st::before{margin-top:5px}
+.tw{overflow:hidden}
+.drawer{padding:16px;display:flex;flex-direction:column;gap:12px;position:sticky;top:16px}
+.dh{display:flex;justify-content:space-between;gap:8px}.dh p{margin-top:8px;display:flex;gap:6px;align-items:center}
+.big{font-size:var(--fs-28);font-weight:600;line-height:1.1}.big small{font-size:var(--fs-14);font-weight:500;color:var(--muted);margin-left:6px}
+.frames{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.frames figure{display:flex;flex-direction:column;gap:4px}
+.frames figcaption{font-size:var(--fs-12);color:var(--muted)}
+.fr{display:block;aspect-ratio:16/10;border-radius:var(--radius-control);background:var(--frame) center/cover;border:1px solid var(--line)}
+.fr--plate{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;background:var(--frame)}
+.fr--plate small{font-size:var(--fs-12);color:var(--frame-ink)}
+.bar{display:flex;gap:2px;height:12px}
+.bar span{border-radius:3px}
+.b-move{background:var(--text)}.b-idle{background:var(--control-line)}.b-unseen{border:1.5px dashed var(--warn);background:var(--warn-soft)}
+.bar-l{display:flex;justify-content:space-between;font-size:var(--fs-12);color:var(--muted);margin-top:-6px}
+.two{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--line);border-radius:var(--radius-control)}
+.two div{padding:10px 12px;display:flex;flex-direction:column;gap:2px}.two div+div{border-left:1px solid var(--line)}
+.two small{font-size:var(--fs-12);color:var(--muted)}.two b{font-size:var(--fs-20);font-weight:600}
+.lbl{font-size:var(--fs-12);color:var(--muted);margin-bottom:-4px}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chips button{min-height:34px;padding:0 12px;border:1px solid var(--control-line);border-radius:999px;display:inline-flex;align-items:center;gap:4px}
+.chips [aria-pressed="true"]{background:var(--text);color:var(--bg);border-color:var(--text)}
+.acts{display:flex;gap:8px}
+@media (max-width:1180px){.split{grid-template-columns:1fr}.drawer{position:static}}
+@media (max-width:760px){
+ .ttl{display:none}
+ .tbl thead{display:none}
+ .tbl,.tbl tbody{display:block}
+ .tbl tr{display:grid;grid-template-columns:1fr auto;gap:4px 10px;padding:12px 14px;border-bottom:1px solid var(--line)}
+ .tbl td{display:block;padding:0;border:0;height:auto}
+ .tbl td:nth-child(1){grid-column:1}.tbl td:nth-child(5){grid-column:2;grid-row:1 / span 2}
+ .tbl td:nth-child(2){grid-column:1}.tbl td:nth-child(3),.tbl td:nth-child(4){display:none}
+ .tbl td:nth-child(3),.tbl td:nth-child(4){display:none}
+ .tbl td:nth-child(6){grid-column:1 / -1}.tbl td:nth-child(7){display:none}
+ .drawer{display:none}
+ .tbl tr[aria-selected="true"]{background:var(--surface-2);box-shadow:inset 3px 0 0 var(--text)}
+ .tbl tr[aria-selected="true"] td{background:none;box-shadow:none!important}
+ .count{font-size:var(--fs-14)}
+}</style>
+</head><body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<symbol id="i-video" viewBox="0 0 24 24"><path d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.870a.5.5 0 0 0-.752-.432L16 10.5"/><rect x="2" y="6" width="14" height="12" rx="2"/></symbol>
+<symbol id="i-list" viewBox="0 0 24 24"><path d="M3 12h.01M3 18h.01M3 6h.01M8 12h13M8 18h13M8 6h13"/></symbol>
+<symbol id="i-table" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18"/></symbol>
+<symbol id="i-bar" viewBox="0 0 24 24"><path d="M3 3v16a2 2 0 0 0 2 2h16M18 17V9M13 17V5M8 17v-3"/></symbol>
+<symbol id="i-building" viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M9 22v-4h6v4M8 6h.01M12 6h.01M16 6h.01M8 10h.01M12 10h.01M16 10h.01M8 14h.01M12 14h.01M16 14h.01"/></symbol>
+<symbol id="i-flag" viewBox="0 0 24 24"><path d="M4 22V4a1 1 0 0 1 .4-.8A6 6 0 0 1 8 2c3 0 5 2 7.333 2q2 0 3.067-.8A1 1 0 0 1 20 4v10a1 1 0 0 1-.4.8A6 6 0 0 1 16 16c-3 0-5-2-8-2a6 6 0 0 0-4 1.528"/></symbol>
+<symbol id="i-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+<symbol id="i-chev" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+<symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol>
+<symbol id="i-dl" viewBox="0 0 24 24"><path d="M12 15V3M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5"/></symbol>
+<symbol id="i-cal" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+<symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+<symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></symbol>
+<symbol id="i-more" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></symbol>
+<symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+<symbol id="i-logo" viewBox="0 0 24 24"><path d="M3 8V4h4M17 4h4v4M21 16v4h-4M7 20H3v-4"/><circle cx="12" cy="12" r="3.2"/></symbol>
+</svg>
+<div class="app">
+<nav class="rail" aria-label="Разделы"><a class="logo" href="index.html" aria-label="Сокол — все страницы"><svg class="i" aria-hidden="true"><use href="#i-logo"/></svg></a><a class="nav" href="01-pult.html"><svg class="i" aria-hidden="true"><use href="#i-video"/></svg><span>Пульт</span></a><a class="nav" href="02-reisy.html" aria-current="page"><svg class="i" aria-hidden="true"><use href="#i-list"/></svg><span>Рейсы</span></a><a class="nav" href="03-tabel.html"><svg class="i" aria-hidden="true"><use href="#i-table"/></svg><span>Табель</span></a><a class="nav" href="04-svodka.html"><svg class="i" aria-hidden="true"><use href="#i-bar"/></svg><span>Сводка</span></a><a class="nav" href="05-obekty.html"><svg class="i" aria-hidden="true"><use href="#i-building"/></svg><span>Объекты</span></a><a class="nav" href="06-dalshe.html"><svg class="i" aria-hidden="true"><use href="#i-flag"/></svg><span>Что дальше</span></a><span class="who" title="Оператор площадки">ОП</span></nav>
+<div class="main">
+<header class="top"><div class="site"><small>Площадка</small><b>«Кампус», Пермь<svg class="i i--s" aria-hidden="true"><use href="#i-down"/></svg></b></div><h1 class="ttl">Рейсы</h1><span class="sp"></span><span class="example" title="Страница-пример: данные правдоподобные, не с площадки">Пример · в разработке</span>
+<button class="btn hide-m"><svg class="i i--s" aria-hidden="true"><use href="#i-dl"/></svg>Excel</button><button class="btn hide-m">CSV</button></header>
+<main class="page"><div class="filters">
+<span class="sel"><svg class="i i--s" aria-hidden="true"><use href="#i-cal"/></svg>20.10.2026<svg class="i i--s" aria-hidden="true"><use href="#i-down"/></svg></span>
+<span class="sel"><small>Техника</small>все<svg class="i i--s" aria-hidden="true"><use href="#i-down"/></svg></span>
+<span class="sel"><small>Подрядчик</small>все<svg class="i i--s" aria-hidden="true"><use href="#i-down"/></svg></span>
+<span class="sel"><small>Камера</small>все 4<svg class="i i--s" aria-hidden="true"><use href="#i-down"/></svg></span>
+<div class="seg"><button aria-pressed="true">Все</button><button aria-pressed="false">На площадке</button><button aria-pressed="false">Выехали</button><button aria-pressed="false">Не видно</button></div>
+<span class="sp"></span><span class="field"><svg class="i i--s" aria-hidden="true"><use href="#i-search"/></svg>Номер или техника</span></div>
+<p class="count">Найдено <b>9 рейсов</b> · подтверждено камерой <b>4 ч 07 мин</b> · спорно <b>12 мин</b> · номер не прочитан у 1, сомнительный у 1</p>
+<div class="split">
+<div class="card tw"><table class="tbl"><thead><tr><th>Номер</th><th>Техника · чей</th><th>Въехал</th><th>Выехал</th><th class="r">На площадке</th><th>Статус</th><th>Кадр</th></tr></thead><tbody><tr><td><span class="plate "><b>К093ТМ</b><i>159</i></span></td><td><b>Самосвал</b><small class="who-c" data-i="У">УралГрунт</small></td>
+<td class="num">10:31<small>камера 1</small></td><td class="num">10:58<small>камера 1</small></td>
+<td class="num r"><b>27 мин</b><small>подтв. 27 мин</small></td>
+<td><span class="st st--done ">выехал</span></td>
+<td><span class="thumb" style="background-image:url(assets/img/cam-1-s.jpg)" title="кадры въезда и выезда"></span></td></tr><tr><td><span class="plate "><b>А123ВС</b><i>59</i></span></td><td><b>Самосвал</b><small class="who-c" data-i="У">УралГрунт</small></td>
+<td class="num">10:34<small>камера 1</small></td><td class="num"><span class="muted">—</span></td>
+<td class="num r"><b>18 мин</b><small>подтв. 18 мин</small></td>
+<td><span class="st st--move ">на площадке</span></td>
+<td><span class="thumb" style="background-image:url(assets/img/cam-1-s.jpg)" title="кадры въезда и выезда"></span></td></tr><tr><td><span class="plate plate--q"><b>Х731АМ</b><i>159</i></span></td><td><b>Самосвал</b><small class="who-c" data-i="У">УралГрунт</small></td>
+<td class="num">10:38<small>камера 1</small></td><td class="num"><span class="muted">—</span></td>
+<td class="num r"><b>14 мин</b><small>подтв. 14 мин</small></td>
+<td><span class="st st--idle warn">стоит · номер под вопросом</span></td>
+<td><span class="thumb" style="background-image:url(assets/img/cam-1-s.jpg)" title="кадры въезда и выезда"></span></td></tr><tr><td><span class="plate "><b>У352КС</b><i>159</i></span></td><td><b>Автокран</b><small class="who-c" data-i="К">Кран-Сервис</small></td>
+<td class="num">до 10:30<small>камера 1</small></td><td class="num"><span class="muted">—</span></td>
+<td class="num r"><b>52 мин</b><small>подтв. 52 мин</small></td>
+<td><span class="st st--idle ">стоит · въехал до записи</span></td>
+<td><span class="thumb" style="background-image:url(assets/img/cam-1-s.jpg)" title="кадры въезда и выезда"></span></td></tr><tr aria-selected="true"><td><span class="plate "><b>В905ХА</b><i>159</i></span></td><td><b>Бетоновоз</b><small class="who-c" data-i="Б">Бетон-59</small></td>
+<td class="num">10:42<small>камера 1</small></td><td class="num">11:05<small>камера 1</small></td>
+<td class="num r"><b>23 мин</b><small>подтв. 20 мин · спорно 3 мин</small></td>
+<td><span class="st st--done ">выехал</span></td>
+<td><span class="thumb" style="background-image:url(assets/img/cam-3-s.jpg)" title="кадры въезда и выезда"></span></td></tr><tr><td><span class="noplate">номер не читается</span></td><td><b>Самосвал № 1</b><small class="who-c" data-i="?">не указан</small></td>
+<td class="num">10:44<small>камера 3</small></td><td class="num"><span class="muted">—</span></td>
+<td class="num r"><b>8 мин</b><small>подтв. 7 мин · спорно идёт</small></td>
+<td><span class="st st--unseen warn">не видно с 10:51</span></td>
+<td><span class="thumb" style="background-image:url(assets/img/cam-3-s.jpg)" title="кадры въезда и выезда"></span></td></tr><tr><td><span class="plate "><b>М560УК</b><i>159</i></span></td><td><b>Самосвал</b><small class="who-c" data-i="У">УралГрунт</small></td>
+<td class="num">10:47<small>камера 1</small></td><td class="num">11:12<small>камера 1</small></td>
+<td class="num r"><b>25 мин</b><small>подтв. 25 мин</small></td>
+<td><span class="st st--done ">выехал</span></td>
+<td><span class="thumb" style="background-image:url(assets/img/cam-1-s.jpg)" title="кадры въезда и выезда"></span></td></tr><tr><td><span class="plate "><b>Т317ОР</b><i>159</i></span></td><td><b>Самосвал</b><small class="who-c" data-i="У">УралГрунт</small></td>
+<td class="num">10:50<small>камера 1</small></td><td class="num">11:16<small>камера 1</small></td>
+<td class="num r"><b>26 мин</b><small>подтв. 24 мин · спорно 2 мин</small></td>
+<td><span class="st st--done ">выехал</span></td>
+<td><span class="thumb" style="background-image:url(assets/img/cam-4-s.jpg)" title="кадры въезда и выезда"></span></td></tr><tr><td><span class="noplate">бортовой № 1</span></td><td><b>Экскаватор</b><small class="who-c" data-i="У">УралГрунт</small></td>
+<td class="num">до 10:30<small>камера 3</small></td><td class="num"><span class="muted">—</span></td>
+<td class="num r"><b>весь час</b><small>подтв. 60 мин</small></td>
+<td><span class="st st--move ">работает</span></td>
+<td><span class="thumb" style="background-image:url(assets/img/cam-3-s.jpg)" title="кадры въезда и выезда"></span></td></tr></tbody></table></div>
+<aside class="card drawer" aria-label="Рейс В905ХА 159">
+  <div class="dh"><div><span class="plate plate--l"><b>В905ХА</b><i>159</i></span><p><b>Бетоновоз</b> · <span class="who-c" data-i="Б">Бетон-59</span></p></div><button class="btn btn--ghost" aria-label="Закрыть"><svg class="i" aria-hidden="true"><use href="#i-x"/></svg></button></div>
+  <p class="big num">23 мин <small>10:42 → 11:05</small></p>
+  <div class="frames">
+    <figure><span class="fr" style="background-image:url(assets/img/cam-3.jpg)"></span><figcaption>въезд 10:42 · кадр кузова</figcaption></figure>
+    <figure><span class="fr fr--plate"><span class="plate "><b>В905ХА</b><i>159</i></span><small>0,97 · 5 из 6 кадров</small></span><figcaption>вырезка номера на въезде</figcaption></figure>
+    <figure><span class="fr" style="background-image:url(assets/img/cam-3.jpg);background-position:70% 30%"></span><figcaption>выезд 11:05 · кадр кузова</figcaption></figure>
+    <figure><span class="fr fr--plate"><span class="plate "><b>В905ХА</b><i>159</i></span><small>0,95 · 4 из 5 кадров</small></span><figcaption>вырезка номера на выезде</figcaption></figure>
+  </div>
+  <div class="bar" role="img" aria-label="10:42–10:46 едет, 10:46–10:55 стоит, 10:55–10:58 не видно, 10:58–11:05 едет">
+    <span class="b-move" style="flex:4"></span><span class="b-idle" style="flex:9"></span><span class="b-unseen" style="flex:3"></span><span class="b-move" style="flex:7"></span></div>
+  <div class="bar-l num"><span>10:42</span><span>стоит 9 мин</span><span class="warn">не видно 3 мин</span><span>11:05</span></div>
+  <div class="two"><div><small>подтверждено камерой</small><b class="num">20 мин</b></div><div><small>спорный интервал</small><b class="num">3 мин</b><small>не видно — в расчёт не идёт</small></div></div>
+  <p class="lbl">Почему стоял 10:46–10:55</p>
+  <div class="chips"><button aria-pressed="true"><svg class="i i--s" aria-hidden="true"><use href="#i-check"/></svg>нет фронта</button><button aria-pressed="false">ждём бетон</button><button aria-pressed="false">поломка</button><button aria-pressed="false">другое</button></div>
+  <div class="acts"><button class="btn btn--primary"><svg class="i i--s" aria-hidden="true"><use href="#i-check"/></svg>Сверено</button><button class="btn">К кадру въезда</button></div>
+</aside>
+</div></main>
+</div>
+</div>
+<nav class="tabbar" aria-label="Разделы"><a href="01-pult.html"><svg class="i" aria-hidden="true"><use href="#i-video"/></svg><span>Пульт</span></a><a href="02-reisy.html" aria-current="page"><svg class="i" aria-hidden="true"><use href="#i-list"/></svg><span>Рейсы</span></a><a href="03-tabel.html"><svg class="i" aria-hidden="true"><use href="#i-table"/></svg><span>Табель</span></a><a href="04-svodka.html"><svg class="i" aria-hidden="true"><use href="#i-bar"/></svg><span>Сводка</span></a><a href="05-obekty.html"><svg class="i" aria-hidden="true"><use href="#i-building"/></svg><span>Объекты</span></a></nav>
+</body></html>

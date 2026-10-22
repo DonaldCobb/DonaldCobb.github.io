@@ -1,0 +1,35 @@
+/* Сгенерировано build.py из .artifacts/sokol/proto/screens/tokens.css — не править руками */
+:root{
+  --font:"Golos Text",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --bg:#0F1114; --surface:#171A1E; --surface-2:#20242A; --surface-3:#2A2F36;
+  --text:#ECEEF1; --muted:#A9B0BA; --faint:#7D848E; --line:#2A2F35; --line-2:#3A4048; --control-line:#6B727C;
+  --accent:#ECEEF1; --on-accent:#0F1114;
+  --warn:#F0B451; --on-warn:#14110A; --warn-soft:#2B2213; --warn-line:rgba(240,180,81,.55);
+  --plate:#FFFFFF; --plate-ink:#0B0C0E;
+  --co-a:#8DB38A; --co-b:#D19AA8; --co-c:#A99BD6;          /* УралГрунт · Кран-Сервис · Бетон-59 */
+  /* поверх видео — одинаково в обеих темах */
+  --on-video:#FFFFFF; --on-video-2:rgba(255,255,255,.82); --vglass:rgba(14,16,19,.66); --vglass-2:rgba(14,16,19,.82);
+  --vline:rgba(255,255,255,.22); --scrim:rgba(8,9,11,.78); --v-warn:#F0B451;
+  /* схема и 3D */
+  --iso-top:#2C3138; --iso-l:#22262C; --iso-r:#1A1D22; --iso-ground:#14171B; --iso-grid:rgba(255,255,255,.045);
+  --plan-fill:#1B1F24; --plan-line:#3A4048; --plan-road:#23272D; --cone:rgba(236,238,241,.07); --path:rgba(236,238,241,.28);
+  /* геометрия: радиусы три ступени */
+  --r-s:4px; --r-m:8px; --r-l:14px;
+  --gap:16px; --row:56px; --hit:44px; --dur:160ms;
+  /* кегли: 12 · 14 · 16 · 20 · 28 · 40 · 64 */
+  --t12:12px; --t14:14px; --t16:16px; --t20:20px; --t28:28px; --t40:40px; --t64:64px;
+  color-scheme:dark;
+}
+:root[data-theme="light"]{
+  --bg:#F3F4F6; --surface:#FFFFFF; --surface-2:#ECEEF1; --surface-3:#E1E4E8;
+  --text:#14171A; --muted:#565C66; --faint:#6E747D; --line:#D5D8DD; --line-2:#C3C7CD; --control-line:#858B94;
+  --accent:#14171A; --on-accent:#FFFFFF;
+  --warn:#8F5200; --on-warn:#FFFFFF; --warn-soft:#FBF1E1; --warn-line:rgba(143,82,0,.5);
+  --co-a:#4E7A4B; --co-b:#9E4F63; --co-c:#6A57A8;
+  --iso-top:#FFFFFF; --iso-l:#E4E6EA; --iso-r:#D2D5DA; --iso-ground:#ECEEF1; --iso-grid:rgba(20,23,26,.05);
+  --plan-fill:#FFFFFF; --plan-line:#C3C7CD; --plan-road:#E6E8EB; --cone:rgba(20,23,26,.06); --path:rgba(20,23,26,.3);
+  color-scheme:light;
+}
+/* мост имён pages.css → общие токены концептов */
+:root{--font-text:var(--font);--fs-12:var(--t12);--fs-14:var(--t14);--fs-16:var(--t16);--fs-20:var(--t20);--fs-28:var(--t28);--fs-40:var(--t40);
+--radius:var(--r-m);--radius-control:var(--r-s);--target:var(--hit);--weight-display:600;--frame:#0B0C0E;--frame-ink:rgba(255,255,255,.82)}

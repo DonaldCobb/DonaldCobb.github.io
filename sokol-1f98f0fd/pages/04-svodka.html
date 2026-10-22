@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Сводка · пример</title>
+<meta name="description" content="Сводка руководителя за декаду: рейсы, машино-часы по камере, простой по причинам, техника и подрядчики. Пример.">
+<script>try{var q=new URLSearchParams(location.search).get("theme");document.documentElement.dataset.theme=q||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark")}catch(e){}</script>
+<link rel="stylesheet" href="assets/tokens.css">
+<link rel="stylesheet" href="assets/pages.css">
+<style>
+.ttl{margin-left:12px;padding-left:16px;border-left:1px solid var(--line)}
+.fbar{padding:10px 12px}
+.g2{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:var(--gap)}
+.g2--eq{grid-template-columns:1fr 1fr}
+.chw{padding:0 12px 10px}
+.ch{width:100%;height:auto;display:block}
+.ch .g{stroke:var(--line);stroke-width:1}
+.ch .ax{font-size:11px;fill:var(--muted);font-family:var(--font-text)}
+.ch .vl{font-size:11px;fill:var(--text);font-weight:600;font-family:var(--font-text)}
+.ch .s-w{fill:var(--text)}.ch .s-i{fill:var(--control-line)}.ch .s-u{fill:var(--warn-soft);stroke:var(--warn);stroke-width:1.2;stroke-dasharray:3 2}
+.ch rect:hover{opacity:.8}
+.leg{display:flex;gap:12px;font-size:var(--fs-12);color:var(--muted)}
+.leg span{display:inline-flex;align-items:center;gap:5px}
+.leg i{width:12px;height:10px;border-radius:2px;display:inline-block}
+.lw{background:var(--text)}.li{background:var(--control-line)}.lu{background:var(--warn-soft);border:1.2px dashed var(--warn)}
+.hbs{display:flex;flex-direction:column;gap:12px;padding:6px 16px 4px}
+.hb{display:grid;grid-template-columns:160px 1fr 60px;gap:10px;align-items:center}
+.hbt{height:10px;background:var(--surface-2);border-radius:5px}
+.hbt i{display:block;height:100%;border-radius:5px;background:var(--text)}
+.hbt i.q{background:var(--warn-soft);border:1.2px dashed var(--warn)}
+.hb b{text-align:right;font-weight:600}
+.pad{padding:12px 16px 14px}
+@media (max-width:760px){.ttl{display:none}.g2,.g2--eq{grid-template-columns:1fr}.hb{grid-template-columns:110px 1fr 54px}.leg{display:none}.fbar{padding:8px;margin:0}.fbar .btn--ghost{display:none}}</style>
+</head><body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<symbol id="i-video" viewBox="0 0 24 24"><path d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.870a.5.5 0 0 0-.752-.432L16 10.5"/><rect x="2" y="6" width="14" height="12" rx="2"/></symbol>
+<symbol id="i-list" viewBox="0 0 24 24"><path d="M3 12h.01M3 18h.01M3 6h.01M8 12h13M8 18h13M8 6h13"/></symbol>
+<symbol id="i-table" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18"/></symbol>
+<symbol id="i-bar" viewBox="0 0 24 24"><path d="M3 3v16a2 2 0 0 0 2 2h16M18 17V9M13 17V5M8 17v-3"/></symbol>
+<symbol id="i-building" viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M9 22v-4h6v4M8 6h.01M12 6h.01M16 6h.01M8 10h.01M12 10h.01M16 10h.01M8 14h.01M12 14h.01M16 14h.01"/></symbol>
+<symbol id="i-flag" viewBox="0 0 24 24"><path d="M4 22V4a1 1 0 0 1 .4-.8A6 6 0 0 1 8 2c3 0 5 2 7.333 2q2 0 3.067-.8A1 1 0 0 1 20 4v10a1 1 0 0 1-.4.8A6 6 0 0 1 16 16c-3 0-5-2-8-2a6 6 0 0 0-4 1.528"/></symbol>
+<symbol id="i-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+<symbol id="i-chev" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+<symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol>
+<symbol id="i-dl" viewBox="0 0 24 24"><path d="M12 15V3M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5"/></symbol>
+<symbol id="i-cal" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+<symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+<symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></symbol>
+<symbol id="i-more" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></symbol>
+<symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+<symbol id="i-logo" viewBox="0 0 24 24"><path d="M3 8V4h4M17 4h4v4M21 16v4h-4M7 20H3v-4"/><circle cx="12" cy="12" r="3.2"/></symbol>
+</svg>
+<div class="app">
+<nav class="rail" aria-label="Разделы"><a class="logo" href="index.html" aria-label="Сокол — все страницы"><svg class="i" aria-hidden="true"><use href="#i-logo"/></svg></a><a class="nav" href="01-pult.html"><svg class="i" aria-hidden="true"><use href="#i-video"/></svg><span>Пульт</span></a><a class="nav" href="02-reisy.html"><svg class="i" aria-hidden="true"><use href="#i-list"/></svg><span>Рейсы</span></a><a class="nav" href="03-tabel.html"><svg class="i" aria-hidden="true"><use href="#i-table"/></svg><span>Табель</span></a><a class="nav" href="04-svodka.html" aria-current="page"><svg class="i" aria-hidden="true"><use href="#i-bar"/></svg><span>Сводка</span></a><a class="nav" href="05-obekty.html"><svg class="i" aria-hidden="true"><use href="#i-building"/></svg><span>Объекты</span></a><a class="nav" href="06-dalshe.html"><svg class="i" aria-hidden="true"><use href="#i-flag"/></svg><span>Что дальше</span></a><span class="who" title="Оператор площадки">ОП</span></nav>
+<div class="main">
+<header class="top"><div class="site"><small>Площадка</small><b>«Кампус», Пермь<svg class="i i--s" aria-hidden="true"><use href="#i-down"/></svg></b></div><h1 class="ttl">Сводка</h1><span class="sp"></span><span class="example" title="Страница-пример: данные правдоподобные, не с площадки">Пример · в разработке</span><button class="btn hide-m"><svg class="i i--s" aria-hidden="true"><use href="#i-dl"/></svg>Скачать</button></header>
+<main class="page"><div class="filters card fbar">
+<span class="sel"><svg class="i i--s" aria-hidden="true"><use href="#i-cal"/></svg>11–20 октября 2026<svg class="i i--s" aria-hidden="true"><use href="#i-down"/></svg></span>
+<span class="sel"><small>Шаг</small>день<svg class="i i--s" aria-hidden="true"><use href="#i-down"/></svg></span>
+<span class="sel"><small>Камеры</small>все 4<svg class="i i--s" aria-hidden="true"><use href="#i-down"/></svg></span>
+<span class="sel"><small>Техника</small>все типы<svg class="i i--s" aria-hidden="true"><use href="#i-down"/></svg></span>
+<span class="sp"></span><button class="btn btn--ghost">Сбросить</button><button class="btn btn--primary">Применить</button></div>
+<p class="lead">Декада: <b>214 рейсов</b>, простой <b>27 %</b> — на 4 пункта меньше прошлой декады. Больше всего стояли самосвалы УралГрунта: «нет фронта», 21,4 ч.</p>
+<div class="tiles">
+<div class="card tile"><span class="k">Рейсов</span><span class="v">214</span><span class="d">прошлая декада 187</span></div>
+<div class="card tile"><span class="k">Машино-часов по камере</span><span class="v">188,4</span><span class="d">прошлая 171,2</span></div>
+<div class="card tile"><span class="k">Простой</span><span class="v">27 <small>%</small></span><span class="d">прошлая 31 % · в рублях — после ввода ставок</span></div>
+<div class="card tile"><span class="k">Не видно</span><span class="v">4 <small>%</small></span><span class="d">в расчёт не идёт · камера 3 чаще всего</span></div>
+</div>
+<div class="g2">
+<section class="card"><div class="card-h"><h2>Машино-часы по дням</h2><span class="sp"></span><div class="leg"><span><i class="lw"></i>работа</span><span><i class="li"></i>стоит</span><span><i class="lu"></i>не видно</span></div></div><div class="chw"><svg viewBox="0 0 660 230" class="ch" role="img" aria-label="Машино-часы по дням 11–20 октября: работа, стоит, не видно"><line x1="34" x2="660" y1="204.0" y2="204.0" class="g"/><text x="28" y="208.0" class="ax" text-anchor="end">0</text><line x1="34" x2="660" y1="139.3" y2="139.3" class="g"/><text x="28" y="143.3" class="ax" text-anchor="end">10</text><line x1="34" x2="660" y1="74.7" y2="74.7" class="g"/><text x="28" y="78.7" class="ax" text-anchor="end">20</text><line x1="34" x2="660" y1="10.0" y2="10.0" class="g"/><text x="28" y="14.0" class="ax" text-anchor="end">30</text><rect x="45.1" y="164.0" width="39.4" height="39.0" rx="2" class="s-w"><title>11.10 · работа 6,3 ч из 9,6</title></rect><rect x="45.1" y="145.4" width="39.4" height="16.6" rx="2" class="s-i"><title>11.10 · стоит 2,9 ч из 9,6</title></rect><rect x="45.1" y="142.9" width="39.4" height="1.0" rx="2" class="s-u"><title>11.10 · не видно 0,4 ч из 9,6</title></rect><text x="64.8" y="222" class="ax" text-anchor="middle">11 вс</text><rect x="106.7" y="119.2" width="39.4" height="83.8" rx="2" class="s-w"><title>12.10 · работа 13,3 ч из 19,8</title></rect><rect x="106.7" y="82.1" width="39.4" height="35.1" rx="2" class="s-i"><title>12.10 · стоит 5,7 ч из 19,8</title></rect><rect x="106.7" y="77.0" width="39.4" height="3.1" rx="2" class="s-u"><title>12.10 · не видно 0,8 ч из 19,8</title></rect><text x="126.4" y="222" class="ax" text-anchor="middle">12 пн</text><rect x="168.3" y="93.3" width="39.4" height="109.7" rx="2" class="s-w"><title>13.10 · работа 17,3 ч из 24,0</title></rect><rect x="168.3" y="56.0" width="39.4" height="35.2" rx="2" class="s-i"><title>13.10 · стоит 5,8 ч из 24,0</title></rect><rect x="168.3" y="49.8" width="39.4" height="4.2" rx="2" class="s-u"><title>13.10 · не видно 1,0 ч из 24,0</title></rect><text x="188.0" y="222" class="ax" text-anchor="middle">13 вт</text><rect x="229.9" y="85.4" width="39.4" height="117.6" rx="2" class="s-w"><title>14.10 · работа 18,5 ч из 25,0</title></rect><rect x="229.9" y="49.8" width="39.4" height="33.6" rx="2" class="s-i"><title>14.10 · стоит 5,5 ч из 25,0</title></rect><rect x="229.9" y="43.3" width="39.4" height="4.5" rx="2" class="s-u"><title>14.10 · не видно 1,0 ч из 25,0</title></rect><text x="249.6" y="222" class="ax" text-anchor="middle">14 ср</text><text x="249.6" y="37.3" class="vl" text-anchor="middle">25,0</text><rect x="291.5" y="122.6" width="39.4" height="80.4" rx="2" class="s-w"><title>15.10 · работа 12,7 ч из 19,6</title></rect><rect x="291.5" y="83.3" width="39.4" height="37.3" rx="2" class="s-i"><title>15.10 · стоит 6,1 ч из 19,6</title></rect><rect x="291.5" y="78.3" width="39.4" height="3.1" rx="2" class="s-u"><title>15.10 · не видно 0,8 ч из 19,6</title></rect><text x="311.2" y="222" class="ax" text-anchor="middle">15 чт</text><rect x="353.1" y="131.3" width="39.4" height="71.7" rx="2" class="s-w"><title>16.10 · работа 11,4 ч из 18,1</title></rect><rect x="353.1" y="92.6" width="39.4" height="36.6" rx="2" class="s-i"><title>16.10 · стоит 6,0 ч из 18,1</title></rect><rect x="353.1" y="88.0" width="39.4" height="2.7" rx="2" class="s-u"><title>16.10 · не видно 0,7 ч из 18,1</title></rect><text x="372.8" y="222" class="ax" text-anchor="middle">16 пт</text><rect x="414.7" y="148.1" width="39.4" height="54.9" rx="2" class="s-w"><title>17.10 · работа 8,8 ч из 12,4</title></rect><rect x="414.7" y="128.0" width="39.4" height="18.0" rx="2" class="s-i"><title>17.10 · стоит 3,1 ч из 12,4</title></rect><rect x="414.7" y="124.8" width="39.4" height="1.2" rx="2" class="s-u"><title>17.10 · не видно 0,5 ч из 12,4</title></rect><text x="434.4" y="222" class="ax" text-anchor="middle">17 сб</text><rect x="476.3" y="165.9" width="39.4" height="37.1" rx="2" class="s-w"><title>18.10 · работа 6,1 ч из 8,9</title></rect><rect x="476.3" y="149.7" width="39.4" height="14.1" rx="2" class="s-i"><title>18.10 · стоит 2,5 ч из 8,9</title></rect><rect x="476.3" y="147.4" width="39.4" height="1.0" rx="2" class="s-u"><title>18.10 · не видно 0,4 ч из 8,9</title></rect><text x="496.0" y="222" class="ax" text-anchor="middle">18 вс</text><rect x="537.9" y="90.9" width="39.4" height="112.1" rx="2" class="s-w"><title>19.10 · работа 17,6 ч из 25,2</title></rect><rect x="537.9" y="48.6" width="39.4" height="40.4" rx="2" class="s-i"><title>19.10 · стоит 6,6 ч из 25,2</title></rect><rect x="537.9" y="42.0" width="39.4" height="4.5" rx="2" class="s-u"><title>19.10 · не видно 1,0 ч из 25,2</title></rect><text x="557.6" y="222" class="ax" text-anchor="middle">19 пн</text><rect x="599.5" y="89.9" width="39.4" height="113.1" rx="2" class="s-w"><title>20.10 · работа 17,8 ч из 25,8</title></rect><rect x="599.5" y="44.8" width="39.4" height="43.0" rx="2" class="s-i"><title>20.10 · стоит 7,0 ч из 25,8</title></rect><rect x="599.5" y="38.2" width="39.4" height="4.7" rx="2" class="s-u"><title>20.10 · не видно 1,0 ч из 25,8</title></rect><text x="619.2" y="222" class="ax" text-anchor="middle">20 вт</text><text x="619.2" y="32.2" class="vl" text-anchor="middle">25,8</text></svg></div></section>
+<section class="card"><div class="card-h"><h2>Простой по причинам</h2><span class="sp"></span><small class="muted num">50,9 ч</small></div><div class="hbs"><div class="hb"><span>нет фронта</span><div class="hbt"><i style="width:100%"></i></div><b class="num">21,4 ч</b></div><div class="hb"><span>ждём бетон</span><div class="hbt"><i style="width:60%"></i></div><b class="num">12,8 ч</b></div><div class="hb"><span>причина не указана</span><div class="hbt"><i style="width:50%" class="q"></i></div><b class="num">10,6 ч</b></div><div class="hb"><span>поломка</span><div class="hbt"><i style="width:29%"></i></div><b class="num">6,1 ч</b></div></div>
+<p class="note pad">Причину ставит прораб одним нажатием в карточке рейса; без причины — янтарём.</p></section>
+</div>
+<div class="g2 g2--eq">
+<section class="card"><div class="card-h"><h2>Техника по типам</h2></div><table class="tbl"><thead><tr><th>Тип</th><th class="r">Машин</th><th class="r">Машино-ч</th></tr></thead><tbody><tr><td>Самосвалы</td><td class="r num">7</td><td class="r num">108,1</td></tr><tr><td>Автокран</td><td class="r num">1</td><td class="r num">34,0</td></tr><tr><td>Бетоновоз</td><td class="r num">1</td><td class="r num">29,1</td></tr><tr><td>Экскаватор</td><td class="r num">1</td><td class="r num">17,2</td></tr></tbody></table></section>
+<section class="card"><div class="card-h"><h2>Подрядчики</h2></div><table class="tbl"><thead><tr><th>Подрядчик</th><th class="r">Машино-ч</th><th class="r">Простой</th></tr></thead><tbody><tr><td><span class="who-c" data-i="У">УралГрунт</span></td><td class="r num">109,5</td><td class="r num">29 %</td></tr><tr><td><span class="who-c" data-i="Б">Бетон-59</span></td><td class="r num">44,9</td><td class="r num">21 %</td></tr><tr><td><span class="who-c" data-i="К">Кран-Сервис</span></td><td class="r num">34,0</td><td class="r num">28 %</td></tr></tbody></table></section>
+</div></main>
+</div>
+</div>
+<nav class="tabbar" aria-label="Разделы"><a href="01-pult.html"><svg class="i" aria-hidden="true"><use href="#i-video"/></svg><span>Пульт</span></a><a href="02-reisy.html"><svg class="i" aria-hidden="true"><use href="#i-list"/></svg><span>Рейсы</span></a><a href="03-tabel.html"><svg class="i" aria-hidden="true"><use href="#i-table"/></svg><span>Табель</span></a><a href="04-svodka.html" aria-current="page"><svg class="i" aria-hidden="true"><use href="#i-bar"/></svg><span>Сводка</span></a><a href="05-obekty.html"><svg class="i" aria-hidden="true"><use href="#i-building"/></svg><span>Объекты</span></a></nav>
+</body></html>
