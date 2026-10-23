@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Сокол · Стена камер</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="tokens.css">
+<style>
+.cam .fit{position:absolute;left:50%;top:50%;width:max(100%,calc(100cqh*16/9));aspect-ratio:16/9;transform:translate(-50%,-50%)}
+.cam{container-type:size}
+.cam .fit>img{width:100%;height:100%;object-fit:cover}
+.tag.big{align-items:flex-end;gap:8px;padding:6px 10px 6px 8px;border-left:3px solid var(--on-video)}
+.tag.big b{font-size:var(--t28);line-height:1;font-weight:600}
+.tag.big span{font-size:var(--t12);line-height:1.2;color:var(--on-video-2)}
+.tag.big.w{border-left-color:var(--warn)} .tag.big.w b{color:var(--warn)}
+.call{position:absolute;width:0;border-left:1px solid rgba(255,255,255,.8)}
+.call::after{content:"";position:absolute;left:-4px;bottom:-4px;width:7px;height:7px;border-radius:50%;background:#fff}
+.call .cc{position:absolute;left:8px;top:-10px;display:flex;flex-direction:column;padding:6px 12px 8px;background:var(--vglass-2);border-radius:var(--r-m);white-space:nowrap;backdrop-filter:blur(10px)}
+.call.l .cc{left:auto;right:8px;align-items:flex-end}
+.call b{font-size:clamp(14px,2.6cqw,40px);line-height:1.05;font-weight:500;color:#fff}
+.call .cc span{font-size:var(--t12);color:var(--on-video-2)}
+.tag.cp2{gap:.5em;padding:.2em .4em .2em .25em}
+.cpn{display:inline-flex;align-items:center;gap:.4em;padding:.15em .75em .15em .55em;border-radius:999px;background:rgba(255,255,255,.18);font-weight:600;font-size:1.3em;line-height:1.1}
+.cpn small{font-size:.62em;font-weight:500;color:var(--on-video-2)}
+.cpn .st{width:.55em;height:.55em;border-width:.14em}
+.ccaps{position:absolute;left:50%;top:10px;transform:translateX(-50%);display:flex;padding:.55em .2em;z-index:3;pointer-events:none}
+.ccaps span{display:flex;flex-direction:column;padding:0 1.1em;border-right:1px solid var(--vline);white-space:nowrap}
+.ccaps span:last-child{border-right:0}
+.ccaps b{font-size:var(--t20);line-height:1.1} .ccaps i{font-style:normal;font-size:11px;color:var(--on-video-2)}
+.cam .ccaps{top:44px;left:10px;transform:none;padding:.4em .1em}
+.cam .ccaps b{font-size:clamp(14px,2.2cqw,22px)}
+@container (max-width:330px){.ccaps span:nth-child(n+3){display:none}}
+@container (max-height:200px){.cam .ccaps{display:none}}
+@container (max-width:360px){.cam:has(.tag) .tm{display:none}}
+@container (max-width:420px){.cam [data-el="label"]>.tag:nth-of-type(2){display:none}}
+@container (max-width:330px){.cam .tag .lg{display:none}}
+@container (max-width:760px){.cam .cp2 .cpn small{display:none}}
+@container (max-width:760px){.cam .tag .stx{display:none}}
+
+
+.plan{display:block;width:100%;height:100%}
+.plan .pl{font:400 12px var(--font);fill:var(--muted)} .plan .pl.b{fill:var(--text);font-weight:600} .plan .pl.w{fill:var(--warn)}
+.plan .vl{font:500 15px var(--font);fill:var(--text);paint-order:stroke;stroke:var(--plan-fill);stroke-width:4px;stroke-linejoin:round} .plan .vl.w{fill:var(--warn)}
+.plan .pvh.dim{opacity:.3}
+.plan .pvh[data-vid]:has(.hit){cursor:pointer} .plan .pvh .ring{opacity:0;transition:opacity var(--dur)} .plan .pvh:hover .ring{opacity:.35}
+.plan .pvh:focus-visible{outline:none} .plan .pvh:focus-visible .ring{opacity:.8}
+
+.iso{display:block;width:100%;height:100%}
+.iso .pl{font:500 14px var(--font);fill:var(--muted);paint-order:stroke;stroke:var(--iso-ground);stroke-width:3px} .iso .pl.b{fill:var(--text)} .iso .ic{font:600 11px var(--font)}
+
+.evc .evl{display:flex;gap:16px;flex-wrap:wrap;font-size:var(--t12);color:var(--muted);margin-bottom:6px}
+.evc .evl span{display:inline-flex;align-items:center;gap:6px} .evc .evl i{width:10px;height:10px;border-radius:2px;display:inline-block}
+.evc .evl i.dia{width:8px;height:8px;border-radius:0}
+.evs .eb:hover rect:not(.hit),.evs .eb:focus-visible rect:not(.hit){filter:brightness(1.25)} .evs .eb{cursor:default;outline:none}
+#tt{position:fixed;z-index:60;pointer-events:none;padding:6px 10px;background:#0B0C0E;color:#ECEEF1;border:1px solid #3A4048;border-radius:6px;font:400 12px/1.35 var(--font);max-width:260px;box-shadow:0 6px 20px rgba(0,0,0,.4)}
+body.shot #tt{display:none}
+
+.vcs .vc{display:none}
+body:not([data-sel]) .vcs{display:none}
+.mc .mcb{padding:14px 16px}
+.mc .mt{display:flex;gap:12px;align-items:center}
+.mc .ty{font-weight:600}
+.mc .big{margin:14px 0 10px;font-size:var(--t16)} .mc .big b{font-size:var(--t40);line-height:1} .mc .big span{display:block;color:var(--muted);font-size:var(--t12);margin-top:4px}
+.mc .dl{display:flex;justify-content:space-between;margin-top:4px}
+.mc .dbar{width:100%;height:12px}
+.mc .frames{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
+.mc .frames img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:var(--r-s)}
+.mc .kv{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.mc .kv div{display:flex;flex-direction:column;padding:8px 10px;border:1px solid var(--line);border-radius:var(--r-s)}
+.mc .acts{display:flex;flex-wrap:wrap;gap:6px}
+.mc .win-h button.lnk{min-height:32px;padding:0 4px}
+body[data-sel="t1"] .vcs .vc[data-vid="t1"]{display:block}body[data-sel="m1"] .vcs .vc[data-vid="m1"]{display:block}body[data-sel="m2"] .vcs .vc[data-vid="m2"]{display:block}body[data-sel="t2"] .vcs .vc[data-vid="t2"]{display:block}body[data-sel="k1"] .vcs .vc[data-vid="k1"]{display:block}body[data-sel="ex"] .vcs .vc[data-vid="ex"]{display:block}body[data-sel="kr"] .vcs .vc[data-vid="kr"]{display:block}body[data-sel="t1"] .vc-none{display:none}body[data-sel="m1"] .vc-none{display:none}body[data-sel="m2"] .vc-none{display:none}body[data-sel="t2"] .vc-none{display:none}body[data-sel="k1"] .vc-none{display:none}body[data-sel="ex"] .vc-none{display:none}body[data-sel="kr"] .vc-none{display:none}body[data-sel="t1"] .plan .pvh[data-vid="t1"] .ring{opacity:.9;stroke-width:2.5}body[data-sel="m1"] .plan .pvh[data-vid="m1"] .ring{opacity:.9;stroke-width:2.5}body[data-sel="m2"] .plan .pvh[data-vid="m2"] .ring{opacity:.9;stroke-width:2.5}body[data-sel="t2"] .plan .pvh[data-vid="t2"] .ring{opacity:.9;stroke-width:2.5}body[data-sel="k1"] .plan .pvh[data-vid="k1"] .ring{opacity:.9;stroke-width:2.5}body[data-sel="ex"] .plan .pvh[data-vid="ex"] .ring{opacity:.9;stroke-width:2.5}body[data-sel="kr"] .plan .pvh[data-vid="kr"] .ring{opacity:.9;stroke-width:2.5}
+.ctl{display:inline-flex;gap:2px;padding:2px;border:1px solid var(--line);border-radius:var(--r-m);background:transparent}
+.ctl button{min-height:32px;padding:0 12px;border-radius:6px;color:var(--muted);font-weight:500;white-space:nowrap}
+.ctl button[aria-pressed=true]{background:var(--surface-3);color:var(--text)}
+.ctl button:hover{color:var(--text)}
+.ctl:focus-within{box-shadow:0 0 0 2px var(--control-line)}
+#vp .lg{margin-top:12px;font-size:12px;color:#A9B0BA}
+
+.clock{display:flex;flex-direction:column;align-items:flex-end;line-height:1.2} .clock .num{font-size:var(--t20)}
+
+.app{display:grid;grid-template-rows:auto 1fr;height:100vh;min-height:760px}
+.hd{display:flex;align-items:center;gap:20px;min-height:64px;padding:0 16px;border-bottom:1px solid var(--line);background:var(--bg)}
+.hd .site{display:flex;flex-direction:column;line-height:1.25;white-space:nowrap}
+.hd .cnt{display:flex;gap:18px;align-items:center;white-space:nowrap}
+.hd .cnt .num{font-size:var(--t20)}
+.hd .cnt span{display:inline-flex;align-items:center;gap:6px}
+.hd .sp{flex:1}
+.hdb{flex-direction:column;align-items:stretch;gap:6px;padding:12px 16px 14px}
+.hdb .r1{display:flex;align-items:center;gap:20px}
+.phrase-s{font-size:var(--t20);line-height:1.35;max-width:1100px}
+.confirm{display:flex;flex-direction:column}
+.cf{padding:14px 16px;border-bottom:1px solid var(--line);box-shadow:inset 3px 0 0 var(--warn)}
+.cf:last-child{border-bottom:0}
+.cf h3{font-size:var(--t16);font-weight:600;color:var(--warn);display:flex;align-items:center;gap:8px}
+.cf .bd{display:grid;grid-template-columns:132px 1fr;gap:12px;margin:10px 0 12px;align-items:center}
+.cf .bd img{width:132px;height:74px;object-fit:cover;border-radius:var(--r-s)}
+.cf .pair{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0 12px}
+.cf .pair img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:var(--r-s)}
+.cf .acts{display:flex;gap:8px;flex-wrap:wrap}
+.vt{width:100%;border-collapse:collapse}
+.vt th{font-size:var(--t12);font-weight:400;color:var(--muted);text-align:left;padding:8px 12px;border-bottom:1px solid var(--line)}
+.vt td{padding:0 12px;height:var(--row);border-bottom:1px solid var(--line);vertical-align:middle}
+.vt td.tmr{text-align:right;white-space:nowrap} .vt td.tmr b{font-size:var(--t20);font-weight:600} .vt td.tmr span{color:var(--muted);font-size:var(--t12)}
+.vt tr.lost td:first-child{box-shadow:inset 3px 0 0 var(--warn)}
+.vt .ty{font-weight:500} .vt .sub{font-size:var(--t12);color:var(--muted)}
+.vt .thm{width:64px;height:36px;object-fit:cover;border-radius:var(--r-s);display:block}
+.vt tr.gone td{height:44px;color:var(--muted)}
+.ph-only{display:none}
+
+.c3g{display:grid;grid-template-columns:1fr 380px;grid-template-rows:1fr auto;gap:16px;padding:16px;min-height:0}
+.c3g .wall{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:8px;min-height:0}
+body[data-grid="b"] .c3g .wall{grid-template-columns:2.2fr 1fr;grid-template-rows:repeat(3,1fr)}
+body[data-grid="b"] .c3g .k1{grid-row:1/4}
+body[data-grid="c"] .c3g .wall{grid-template-columns:repeat(3,1fr);grid-template-rows:2.6fr 1fr}
+body[data-grid="c"] .c3g .k1{grid-column:1/4}
+.c3g .wall{grid-column:1;grid-row:1} .c3g .line{grid-column:1;grid-row:2}
+.c3g .feed{grid-column:2;grid-row:1/3;overflow:hidden}
+.c3g .line{padding:10px 16px}
+.c3g .lh{display:flex;justify-content:space-between;margin-bottom:4px}
+.c3g .grp .gh{padding:10px 16px 6px;font-size:var(--t12);font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.c3g .grp .gh.w{color:var(--warn)}
+body:not([data-grid="a"]) .c3g .cam:not(.k1) .tag{font-size:10px} body:not([data-grid="a"]) .c3g .cam:not(.k1) .tag .plate{height:16px;font-size:10px}
+
+body:not([data-grid="a"]) [data-el="grid"][data-v="a"]{display:none!important}body:not([data-grid="b"]) [data-el="grid"][data-v="b"]{display:none!important}body:not([data-grid="c"]) [data-el="grid"][data-v="c"]{display:none!important}body:not([data-feed="b"]) [data-el="feed"][data-v="b"]{display:none!important}body:not([data-feed="a"]) [data-el="feed"][data-v="a"]{display:none!important}body:not([data-line="a"]) [data-el="line"][data-v="a"]{display:none!important}body:not([data-line="b"]) [data-el="line"][data-v="b"]{display:none!important}body:not([data-label="a"]) [data-el="label"][data-v="a"]{display:none!important}body:not([data-label="d"]) [data-el="label"][data-v="d"]{display:none!important}body:not([data-label="b"]) [data-el="label"][data-v="b"]{display:none!important}body:not([data-label="c"]) [data-el="label"][data-v="c"]{display:none!important}body:not([data-caps="on"]) [data-el="caps"][data-v="on"]{display:none!important}body:not([data-caps="off"]) [data-el="caps"][data-v="off"]{display:none!important}
+@media (max-width:600px){
+.app{display:block;height:auto;min-height:0}
+.hd{flex-wrap:wrap;gap:8px 12px;padding:10px 16px;min-height:0}
+.hd .seg,.hd .demo,.hd .site .cap{display:none}
+.hd .cnt{order:5;width:100%;gap:14px;font-size:var(--t12)}
+.hd .cnt .num{font-size:var(--t16)}
+.hdb .r1{flex-wrap:wrap;gap:8px 12px}
+.hd .clock{flex-direction:row;align-items:baseline;gap:6px;margin-left:auto} .hd .clock .cap{display:none} .hd .clock .num{font-size:var(--t16)} .hd .sp{display:none}
+.phrase-s{font-size:var(--t16)}
+.ph-only{display:block}
+
+.c3g{display:block;padding:12px 16px 80px}
+.c3g .wall{display:grid;grid-template-columns:1fr 1fr!important;grid-template-rows:none!important;gap:6px}
+.c3g .wall .cam{aspect-ratio:16/10}
+.c3g .wall .k1{grid-column:1/3!important;grid-row:auto!important}
+.c3g .cam:not(.k1) .tag,.c3g .cam:not(.k1) .box{display:none}
+.c3g .cam .evh{font-size:10px;padding:4px 6px}
+.c3g .line{margin:12px 0}
+.c3g .feed{margin-top:12px}
+}
+</style></head>
+<body class="c3">
+<div class="app"><header class="hd"><div class="brand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 8V4h4M17 4h4v4M21 16v4h-4M7 20H3v-4"/><rect x="8" y="8" width="8" height="8" rx="1.5"/></svg>Сокол</div><div class="site"><b>Площадка «Кампус»</b><span class="cap">Смена 08:00–20:00</span></div><nav class="seg" aria-label="Разделы"><span class="">Пульт</span><span class="on">Камеры</span><span class="">План</span><span class="">3D</span><span class="">Журнал</span></nav><div class="cnt"><span><b class="num">7</b> на площадке</span><span class="w"><i class="st lost"></i><b class="num">1</b> не видно</span><span class="w"><i class="dia"></i><b class="num">2</b> вопроса</span></div><div class="sp"></div><span class="demo">Пример: данные выдуманы, кадры настоящие</span><div class="clock"><b class="num">14:40</b><span class="cap">Пермь · данные 3 с назад</span></div></header>
+<main class="c3g">
+<section class="wall"><figure class="cam k1 "><div class="fit"><img src="img/cam1.jpg" alt="Камера 1 · дорога"><div data-el="label" data-v="a"><span class="tag" style="left:20.5%;top:66%"><span class="plate"><b>М 560 УК</b><i>159</i></span><i class="co b"></i><span class="stx">стоит 46 мин</span></span><span class="tag" style="left:44%;top:68.4%"><span class="plate"><b>В 905 ХА</b><i>159</i></span><i class="co c"></i><span class="stx">едет</span></span><span class="tag" style="left:auto;right:8%;top:79%;transform:none"><span class="plate"><b>Т 214 НО</b><i>159</i></span><i class="co c"></i><span class="stx">стоит 38 мин</span> <i class="dia" title="вопрос: тот же?"></i></span></div><div data-el="label" data-v="d"><span class="tag cp2" style="left:20.5%;top:66%"><span class="plate"><b>М 560 УК</b><i>159</i></span><b class="cpn"><i class="st stop"></i>46<small>мин</small></b></span><span class="tag cp2" style="left:44%;top:68.4%"><span class="plate"><b>В 905 ХА</b><i>159</i></span><b class="cpn"><i class="st go"></i>19<small>мин</small></b></span><span class="tag cp2" style="left:auto;right:8%;top:79%;transform:none"><span class="plate"><b>Т 214 НО</b><i>159</i></span><b class="cpn"><i class="st stop"></i>38<small>мин</small></b><i class="dia" title="вопрос: тот же?"></i></span></div><div data-el="label" data-v="b"><span class="tag big" style="left:20.5%;top:66%"><b>46</b><span>мин стоит<br>М 560 УК</span></span><span class="tag big" style="left:44%;top:68.4%"><b>19</b><span>мин едет<br>В 905 ХА</span></span><span class="tag big" style="left:67%;top:76.4%"><b>38</b><span>мин стоит<br>Т 214 НО</span></span></div><div data-el="label" data-v="c"><span class="call" style="left:28%;top:40%;height:25%"><span class="cc"><b>46 мин</b><span>тягач стоит, причина не указана</span></span></span><span class="call" style="left:49%;top:48%;height:19.5%"><span class="cc"><b>19 мин</b><span>бетоновоз едет к корпусу 2</span></span></span><span class="call l" style="left:66%;top:58%;height:19%"><span class="cc"><b>38 мин</b><span>тягач стоит с 14:02</span></span></span></div></div><figcaption class="lbl"><i class="live"></i>Камера 1 · дорога</figcaption><span class="tm">14:40:03</span><div class="ccaps glass " data-el="caps" data-v="on"><span><b class="num">7</b><i>на площадке</i></span><span><b class="num">14</b><i>рейсов</i></span><span><b class="num">31%</b><i>простой техники</i></span></div></figure><figure class="cam k3 "><div class="fit"><img src="img/cam3.jpg" alt="Камера 3 · котлован"><span class="box cr" style="left:0.5%;top:14%;width:14%;height:42%"></span><span class="tag" style="left:12%;top:40%;transform:none">автокран · стоит 12 мин</span><span class="tag" style="left:16%;top:74%;transform:none">экскаватор · работает</span></div><figcaption class="lbl"><i class="live"></i>Камера 3 · котлован</figcaption><span class="tm">14:40:03</span></figure><figure class="cam k4 ev"><div class="fit"><img src="img/cam4.jpg" alt="Камера 4 · стоянка"><span class="box wb" style="left:58%;top:70%;width:20%;height:16%"></span><span class="tag w" style="left:58%;top:69%">К 093 ТМ<span class="lg"> · последний кадр 14:03</span></span></div><div class="evh"><i class="dia" style="background:var(--on-warn)"></i>не видно: самосвал К 093 ТМ с 14:03</div><figcaption class="lbl"><i class="live"></i>Камера 4 · стоянка</figcaption><span class="tm">14:40:03</span></figure><figure class="cam k7 "><div class="fit"><img src="img/cam7.jpg" alt="Камера 7 · общий план"><span class="tag" style="left:30%;top:88%;transform:none"><span class="lg">общий план · </span>техники <span class="lg">в кадре </span>нет</span></div><figcaption class="lbl"><i class="live"></i>Камера 7 · общий план</figcaption><span class="tm">14:40:03</span></figure></section>
+<aside class="win feed"><div class="win-h"><h2>События <span class="muted" style="font-weight:400">22</span></h2><a>весь журнал</a></div>
+<div data-el="feed" data-v="a"><div class="ev-row wv "><img class="th" src="img/th-mix2.jpg" alt=""><div><div class="t1"><i class="dia"></i>Подтверди номер <span class="plate doubt"><b>Е 482 КМ</b><i>159</i></span><span class="w" aria-label="сомнительно">?</span></div><div class="t2">бетоновоз · 2 из 5 кадров</div></div><span class="t">14:33</span></div><div class="ev-row wv "><img class="th" src="img/th-tr2.jpg" alt=""><div><div class="t1"><i class="dia"></i>Тот же тягач? </div><div class="t2">Т 214 НО закрыт бетоновозом 14:24–14:26</div></div><span class="t">14:26</span></div><div class="ev-row  "><img class="th" src="img/th-tl.jpg" alt=""><div><div class="t1"><i class="st stop" aria-hidden="true"></i>Стоит 30 мин <span class="plate"><b>М 560 УК</b><i>159</i></span></div><div class="t2">тягач · с 13:54 · причина не указана</div></div><span class="t">14:24</span></div><div class="ev-row  "><img class="th" src="img/th-mix.jpg" alt=""><div><div class="t1"><i class="st go" aria-hidden="true"></i>Въехал бетоновоз <span class="plate"><b>В 905 ХА</b><i>159</i></span></div><div class="t2">Камера 1 · въезд</div></div><span class="t">14:21</span></div><div class="ev-row  "><img class="th" src="img/th-mix3.jpg" alt=""><div><div class="t1"><i class="st" style="border:2px solid var(--text)"></i>Выехал бетоновоз <span class="plate"><b>А 118 ОР</b><i>159</i></span></div><div class="t2">на площадке 41 мин</div></div><span class="t">14:05</span></div><div class="ev-row lv "><img class="th" src="img/th-c4.jpg" alt=""><div><div class="t1"><i class="st lost" aria-hidden="true"></i>Не видно самосвал <span class="plate"><b>К 093 ТМ</b><i>159</i></span></div><div class="t2">последний кадр — Камера 4 · стоянка</div></div><span class="t">14:03</span></div><div class="ev-row  "><img class="th" src="img/th-tr.jpg" alt=""><div><div class="t1"><i class="st go" aria-hidden="true"></i>Въехал тягач <span class="plate"><b>Т 214 НО</b><i>159</i></span></div><div class="t2">Камера 1 · въезд</div></div><span class="t">14:02</span></div><div class="ev-row  "><img class="th" src="img/th-tl.jpg" alt=""><div><div class="t1"><i class="st go" aria-hidden="true"></i>Въехал тягач <span class="plate"><b>М 560 УК</b><i>159</i></span></div><div class="t2">Камера 1 · въезд</div></div><span class="t">13:41</span></div><div class="ev-row  "><img class="th" src="img/th-c3a.jpg" alt=""><div><div class="t1"><i class="st stop" aria-hidden="true"></i>Стоял 1 ч 20 мин </div><div class="t2">экскаватор · ждали бетон</div></div><span class="t">10:12</span></div></div><div data-el="feed" data-v="b"><div class="grp"><div class="gh w">Ждут ответа · 2</div><div class="ev-row wv "><img class="th" src="img/th-mix2.jpg" alt=""><div><div class="t1"><i class="dia"></i>Подтверди номер <span class="plate doubt"><b>Е 482 КМ</b><i>159</i></span><span class="w" aria-label="сомнительно">?</span></div><div class="t2">бетоновоз · 2 из 5 кадров</div></div><span class="t">14:33</span></div><div class="ev-row wv "><img class="th" src="img/th-tr2.jpg" alt=""><div><div class="t1"><i class="dia"></i>Тот же тягач? </div><div class="t2">Т 214 НО закрыт бетоновозом 14:24–14:26</div></div><span class="t">14:26</span></div></div><div class="grp"><div class="gh">Сейчас на площадке · 6</div><div class="ev-row"><img class="th" src="img/th-tl.jpg" alt=""><div><div class="t1"><i class="st stop" aria-hidden="true"></i>Тягач с полуприцепом <span class="plate"><b>М 560 УК</b><i>159</i></span></div><div class="t2">стоит 46 мин · Камера 1</div></div><span class="t">13:41</span></div><div class="ev-row"><img class="th" src="img/th-mix.jpg" alt=""><div><div class="t1"><i class="st go" aria-hidden="true"></i>Бетоновоз <span class="plate"><b>В 905 ХА</b><i>159</i></span></div><div class="t2">едет · Камера 1</div></div><span class="t">14:21</span></div><div class="ev-row"><img class="th" src="img/th-mix2.jpg" alt=""><div><div class="t1"><i class="st go" aria-hidden="true"></i>Бетоновоз <span class="plate doubt"><b>Е 482 КМ</b><i>159</i></span><span class="w" aria-label="сомнительно">?</span></div><div class="t2">едет · Камера 1</div></div><span class="t">14:33</span></div><div class="ev-row"><img class="th" src="img/th-tr.jpg" alt=""><div><div class="t1"><i class="st stop" aria-hidden="true"></i>Тягач с полуприцепом <span class="plate"><b>Т 214 НО</b><i>159</i></span></div><div class="t2">стоит 38 мин · Камера 1</div></div><span class="t">14:02</span></div></div><div class="grp"><div class="gh">Закрыто · 14</div><div class="ev-row  "><img class="th" src="img/th-mix3.jpg" alt=""><div><div class="t1"><i class="st" style="border:2px solid var(--text)"></i>Выехал бетоновоз <span class="plate"><b>А 118 ОР</b><i>159</i></span></div><div class="t2">на площадке 41 мин</div></div><span class="t">14:05</span></div></div></div></aside>
+<section class="win line"><div class="lh"><span class="cap">Смена 08:00–20:00 · сейчас 14:40 · ◆ вопросы</span><span class="cap">въезд 13 · выезд 6</span></div>
+<div class="shift" data-el="line" data-v="a"><svg viewBox="0 0 1000 96" role="img" aria-label="Шкала смены 08:00–20:00, сейчас 14:40"><text x="0" y="17">Кам 1</text><line x1="40" x2="990" y1="13.2" y2="13.2" stroke="var(--line)"/><line x1="55.8" x2="55.8" y1="7.2" y2="19.2" stroke="var(--text)" stroke-width="2"/><line x1="127.1" x2="127.1" y1="7.2" y2="19.2" stroke="var(--text)" stroke-width="2"/><line x1="230.0" x2="230.0" y1="7.2" y2="19.2" stroke="var(--text)" stroke-width="2"/><line x1="325.0" x2="325.0" y1="7.2" y2="19.2" stroke="var(--text)" stroke-width="2"/><line x1="380.4" x2="380.4" y1="7.2" y2="19.2" stroke="var(--text)" stroke-width="2"/><line x1="489.7" x2="489.7" y1="7.2" y2="19.2" stroke="var(--text)" stroke-width="2"/><line x1="517.4" x2="517.4" y1="7.2" y2="19.2" stroke="var(--text)" stroke-width="2"/><line x1="542.7" x2="542.7" y1="7.2" y2="19.2" stroke="var(--text)" stroke-width="2"/><rect x="554.5" y="9.2" width="8" height="8" fill="var(--warn)" transform="rotate(45 558.5 13.2)"/><text x="0" y="36">Кам 3</text><line x1="40" x2="990" y1="31.8" y2="31.8" stroke="var(--line)"/><line x1="40.0" x2="40.0" y1="25.8" y2="37.8" stroke="var(--text)" stroke-width="2"/><line x1="63.8" x2="63.8" y1="25.8" y2="37.8" stroke="var(--text)" stroke-width="2"/><line x1="214.2" x2="214.2" y1="25.8" y2="37.8" stroke="var(--text)" stroke-width="2"/><line x1="309.2" x2="309.2" y1="25.8" y2="37.8" stroke="var(--text)" stroke-width="2"/><line x1="443.8" x2="443.8" y1="25.8" y2="37.8" stroke="var(--text)" stroke-width="2"/><text x="0" y="54">Кам 4</text><line x1="40" x2="990" y1="50.2" y2="50.2" stroke="var(--line)"/><line x1="150.8" x2="150.8" y1="44.2" y2="56.2" stroke="var(--text)" stroke-width="2"/><line x1="420.0" x2="420.0" y1="44.2" y2="56.2" stroke="var(--text)" stroke-width="2"/><rect x="542.7" y="46.2" width="8" height="8" fill="var(--warn)" transform="rotate(45 546.7 50.2)"/><text x="0" y="73">Кам 7</text><line x1="40" x2="990" y1="68.8" y2="68.8" stroke="var(--line)"/><line x1="269.6" x2="269.6" y1="62.8" y2="74.8" stroke="var(--text)" stroke-width="2"/><line x1="507.1" x2="507.1" y1="62.8" y2="74.8" stroke="var(--text)" stroke-width="2"/><text x="40.0" y="94" text-anchor="middle">08:00</text><text x="198.3" y="94" text-anchor="middle">10:00</text><text x="356.7" y="94" text-anchor="middle">12:00</text><text x="515.0" y="94" text-anchor="middle">14:00</text><text x="673.3" y="94" text-anchor="middle">16:00</text><text x="831.7" y="94" text-anchor="middle">18:00</text><text x="990.0" y="94" text-anchor="middle">20:00</text><line x1="567.8" x2="567.8" y1="0" y2="82" stroke="var(--text)" stroke-width="2"/></svg></div><div class="shift" data-el="line" data-v="b"><svg viewBox="0 0 1000 70" role="img" aria-label="Шкала смены 08:00–20:00, сейчас 14:40"><rect x="40" y="30" width="527.8" height="22" rx="4" fill="var(--surface-2)"/><rect x="567.8" y="30" width="422.2" height="22" rx="4" fill="none" stroke="var(--line)" stroke-dasharray="3 3"/><polyline points="40.0,47.4 79.6,47.4 79.6,44.8 119.2,44.8 119.2,42.2 158.8,42.2 158.8,42.2 198.3,42.2 198.3,39.6 237.9,39.6 237.9,42.2 277.5,42.2 277.5,39.6 317.1,39.6 317.1,37.0 356.7,37.0 356.7,39.6 396.2,39.6 396.2,39.6 435.8,39.6 435.8,37.0 475.4,37.0 475.4,34.4 515.0,34.4 515.0,34.4 554.6,34.4 554.6,31.8 567.8,31.8" fill="none" stroke="var(--text)" stroke-width="1.5"/><rect x="508.4" y="16.0" width="8" height="8" fill="var(--warn)" transform="rotate(45 512.4 20.0)"/><rect x="545.3" y="16.0" width="8" height="8" fill="var(--warn)" transform="rotate(45 549.3 20.0)"/><rect x="554.5" y="16.0" width="8" height="8" fill="var(--warn)" transform="rotate(45 558.5 20.0)"/><text x="40.0" y="68" text-anchor="middle">08:00</text><text x="198.3" y="68" text-anchor="middle">10:00</text><text x="356.7" y="68" text-anchor="middle">12:00</text><text x="515.0" y="68" text-anchor="middle">14:00</text><text x="673.3" y="68" text-anchor="middle">16:00</text><text x="831.7" y="68" text-anchor="middle">18:00</text><text x="990.0" y="68" text-anchor="middle">20:00</text><line x1="567.8" x2="567.8" y1="0" y2="56" stroke="var(--text)" stroke-width="2"/></svg></div></section>
+</main></div>
+<script>window.ELS={"grid": {"name": "Сетка камер", "opts": [["a", "2 × 2 поровну", "pick"], ["b", "одна большая + 3 справа"], ["c", "одна большая + 3 снизу"]], "def": "a"}, "feed": {"name": "Лента", "opts": [["b", "группами: вопросы · сейчас · закрыто", "pick"], ["a", "строки с кадром"]], "def": "b"}, "line": {"name": "Шкала", "opts": [["a", "дорожка на камеру", "pick"], ["b", "одна общая"]], "def": "a"}, "label": {"name": "Подписи на кадре", "opts": [["a", "номер табличкой"], ["d", "минуты капсулой + номер табличкой", "new"], ["b", "бирка с минутами"], ["c", "выноски-цифры"]], "def": "a"}, "caps": {"name": "Числа капсулой на кадре", "opts": [["on", "есть", "new"], ["off", "нет"]], "def": "on"}};</script>
+<script>
+(function(){
+var E=window.ELS,b=document.body,keys=Object.keys(E),subs=[];
+function parse(){var h={};location.hash.replace(/^#/,'').split('&').forEach(function(p){var kv=p.split('=');if(kv[0])h[kv[0]]=decodeURIComponent(kv[1]||'1')});return h}
+var h=parse();
+keys.forEach(function(k){var v=h[k];if(!v||!E[k].opts.some(function(o){return o[0]===v}))v=E[k].def||E[k].opts[0][0];b.dataset[k]=v});
+if(h.theme)document.documentElement.dataset.theme=h.theme;
+if(h.shot)b.classList.add('shot');
+if(h.sel)b.dataset.sel=h.sel;
+function hash(){var p=keys.map(function(k){return k+'='+b.dataset[k]});if(b.dataset.sel)p.push('sel='+b.dataset.sel);var t=document.documentElement.dataset.theme;if(t)p.push('theme='+t);history.replaceState(null,'','#'+p.join('&'))}
+var vp=document.createElement('div');vp.id='vp';
+function lab(o){return (o[0].length===1?o[0].toUpperCase()+' · ':'')+o[1]+(o[2]==='pick'?' ★':o[2]==='new'?' · новое':'')}
+var html='<div class="pn" hidden>';
+keys.forEach(function(k){html+='<h4>'+E[k].name+'</h4><div class="opts" data-k="'+k+'">';E[k].opts.forEach(function(o){html+='<button type="button" data-v="'+o[0]+'">'+lab(o)+'</button>'});html+='</div>'});
+html+='<p class="lg">★ — твой выбор 23.10, открывается первым; остальное — переключателем</p><div class="row"><button type="button" id="vpt">Тема</button><a href="index.html">Все концепты</a></div></div><button type="button" id="vpb" aria-expanded="false"></button>';
+vp.innerHTML=html;document.body.appendChild(vp);
+var pn=vp.querySelector('.pn'),bt=vp.querySelector('#vpb');
+function paint(){vp.querySelectorAll('.opts').forEach(function(g){var k=g.dataset.k;g.querySelectorAll('button').forEach(function(x){x.setAttribute('aria-pressed',String(x.dataset.v===b.dataset[k]))})});
+ document.querySelectorAll('[data-ctl]').forEach(function(c){var k=c.dataset.ctl;c.querySelectorAll('button').forEach(function(x){x.setAttribute('aria-pressed',String(x.dataset.v===b.dataset[k]))})});
+ bt.textContent='Варианты ('+keys.length+')'}
+function fire(why){subs.forEach(function(f){try{f(why)}catch(e){console.error(e)}});window.dispatchEvent(new CustomEvent('vpchange',{detail:why}))}
+function set(k,v){b.dataset[k]=v;paint();hash();fire(k)}
+function sel(id){if(id)b.dataset.sel=id;else delete b.dataset.sel;hash();fire('sel')}
+vp.addEventListener('click',function(e){var x=e.target.closest('.opts button');if(!x)return;set(x.parentNode.dataset.k,x.dataset.v)});
+document.addEventListener('click',function(e){
+ var c=e.target.closest('[data-ctl] button');if(c){set(c.closest('[data-ctl]').dataset.ctl,c.dataset.v);return}
+ if(e.target.closest('[data-clear]')){sel(null);return}
+ var g=e.target.closest('.pvh[data-vid]');if(g&&g.querySelector('.hit'))sel(g.dataset.vid)});
+document.addEventListener('keydown',function(e){if(e.key!=='Enter'&&e.key!==' ')return;var g=e.target.closest&&e.target.closest('.pvh[data-vid]');if(g&&g.querySelector('.hit')){e.preventDefault();sel(g.dataset.vid)}});
+bt.onclick=function(){pn.hidden=!pn.hidden;bt.setAttribute('aria-expanded',String(!pn.hidden))};
+vp.querySelector('#vpt').onclick=function(){var r=document.documentElement;r.dataset.theme=r.dataset.theme==='light'?'dark':'light';hash();fire('theme')};
+window.VP={set:set,sel:sel,get:function(k){return b.dataset[k]},onchange:function(f){subs.push(f)}};
+paint();
+})();
+</script>
+<script>
+(function(){var t=document.createElement('div');t.id='tt';t.hidden=true;document.body.appendChild(t);
+function show(g,x,y){t.textContent=g.getAttribute('data-tt');t.hidden=false;var r=t.getBoundingClientRect();t.style.left=Math.min(x+12,innerWidth-r.width-8)+'px';t.style.top=Math.max(8,y-r.height-12)+'px'}
+document.addEventListener('pointermove',function(e){var g=e.target.closest&&e.target.closest('.eb');if(g)show(g,e.clientX,e.clientY);else t.hidden=true});
+document.addEventListener('focusin',function(e){var g=e.target.closest&&e.target.closest('.eb');if(g){var r=g.getBoundingClientRect();show(g,r.left+r.width/2,r.top)}});
+document.addEventListener('focusout',function(){t.hidden=true});})();
+</script>
+
+</body></html>
