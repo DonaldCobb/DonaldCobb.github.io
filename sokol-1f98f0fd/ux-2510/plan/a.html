@@ -1,0 +1,19 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow">
+<title>План · спутник</title><link rel="stylesheet" href="plan.css"></head><body>
+<script type="module">
+import { shell, drawPlan, legend, mapOverlays } from "./plan.js";
+const html = `<section class="pn">
+  <div class="pn-h"><h2>План</h2><span class="sub">13:51</span><span class="sp"></span>
+    <span class="seg"><b class="on">Спутник</b><b>Схема</b></span>
+    <button class="ib" title="Слои"><svg><use href="#i-layers"/></svg></button>
+    <button class="ib" title="Во весь экран"><svg><use href="#i-expand"/></svg></button></div>
+  <div class="map" id="m">
+    <div class="ovl tl"><span class="glass">в большом окне — камера 1</span></div>
+    ${mapOverlays(false)}
+  </div>
+  ${legend()}
+  <p class="note">Снимок 12.09.2025 · Esri, Maxar · привязка камер примерная · конус — что видит камера, пунктир — где считаем</p>
+</section>`;
+shell({ plan: { html }, title: "План · спутник" });
+drawPlan(document.getElementById("m"), { under: "sat", view: [170, 470, 450, 440], active: 1, typeGlyph: true, sel: 8 });
+</script></body></html>

@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow">
+<title>План площадки · варианты</title>
+<link rel="stylesheet" href="plan.css">
+<style>
+  body { font-size: 15px; line-height: 1.5; }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 28px 20px 60px; }
+  h1 { font-size: 30px; line-height: 1.15; margin: 0 0 6px; letter-spacing: -.01em; }
+  h2 { font-size: 21px; margin: 44px 0 6px; }
+  h3 { font-size: 16px; margin: 0 0 4px; }
+  p { margin: 6px 0; }
+  .lead { color: var(--muted); max-width: 760px; }
+  a { color: inherit; text-underline-offset: 3px; }
+  .muted { color: var(--muted); } .faint { color: var(--faint); font-size: 13px; }
+  .tl { display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; }
+  .tbtn { border: 1px solid var(--line-2); background: var(--surface); border-radius: 999px; padding: 6px 12px; cursor: pointer; font-size: 13px; white-space: nowrap; }
+  .sum { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 22px 0 0; }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 16px; }
+  .card.hi { border: 2px solid var(--text); }
+  .k { font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: var(--faint); font-weight: 600; margin-bottom: 6px; }
+  ul { margin: 6px 0; padding-left: 20px; } li { margin: 3px 0; }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: start; }
+  figure { margin: 0; } figure img { width: 100%; display: block; border-radius: 10px; border: 1px solid var(--line); background: var(--surface-2); }
+  figcaption { font-size: 13px; color: var(--muted); margin-top: 6px; }
+  .gal { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 14px; }
+  .gal figure img { aspect-ratio: 16/10; object-fit: cover; object-position: top left; }
+  .gal b { color: var(--text); }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; margin-top: 10px; background: var(--surface); border-radius: 12px; overflow: hidden; }
+  th, td { text-align: left; padding: 9px 12px; border-top: 1px solid var(--line); vertical-align: top; }
+  th { font-size: 12.5px; color: var(--muted); font-weight: 600; border-top: 0; background: var(--surface-2); }
+  .tw { overflow-x: auto; }
+  .var { margin-top: 18px; padding: 18px; }
+  .var .shots { display: grid; grid-template-columns: minmax(0, 3.2fr) minmax(0, 1fr); gap: 14px; margin-top: 12px; align-items: start; }
+  .var .shots img { object-fit: cover; object-position: top; }
+  .var .ph img { max-height: 640px; }
+  .links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+  .links a { border: 1px solid var(--line-2); border-radius: 8px; padding: 5px 10px; font-size: 13px; text-decoration: none; background: var(--surface); }
+  .links a.pri { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
+  .pill { display: inline-block; font-size: 12px; font-weight: 600; padding: 2px 8px; border-radius: 999px; background: var(--surface-2); margin-left: 6px; vertical-align: middle; }
+  .pill.ok { background: color-mix(in srgb, var(--st-work) 35%, transparent); }
+  .pill.wait { background: color-mix(in srgb, var(--st-idle) 35%, transparent); }
+  .chk li { list-style: none; margin-left: -20px; padding-left: 26px; position: relative; }
+  .chk li::before { content: ""; position: absolute; left: 0; top: 4px; width: 16px; height: 16px; border-radius: 4px; border: 1.6px solid var(--control-line); }
+  @media (max-width: 760px) {
+    h1 { font-size: 24px; } .sum, .two, .gal { grid-template-columns: 1fr; } .var .shots { grid-template-columns: 1fr; } .var .ph img { max-height: none; }
+  }
+</style></head>
+<body><div class="wrap">
+
+<div class="tl"><div>
+<p class="faint">«Сокол» · экран «Камеры» · блок «План» · 25.10 · прототипы без логики</p>
+<h1>План площадки: из пустой схемы — в карту</h1>
+<p class="lead">Сейчас блок рисует одну камеру на тёмном поле. Профессиональные системы показывают всю площадку на подложке: снимок или схема, все камеры с тем, что они видят, техника со статусом и следом, слои включаются галочками. Ниже — как сейчас, как у них, три варианта и что успеваем к показу 26.10.</p>
+</div><button class="tbtn" id="th">◐ тема</button></div>
+
+<div class="sum">
+  <div class="card hi"><div class="k">Совет</div><h3>Вариант А — спутник, все три камеры</h3><p class="muted">Ближе всего к Genetec и Milestone. Переключатель «Спутник · Схема» и кнопка «Слои» сразу видны, их не надо искать.</p></div>
+  <div class="card"><div class="k">К показу 26.10, ≤ 1 ч</div><h3>Конусы трёх камер, значки статусов, следы, слои</h3><p class="muted">Позы камер уже есть, новых данных не нужно. Снимок-подложка — один файл, ставим только с согласия Юлая.</p></div>
+  <div class="card"><div class="k">После показа</div><h3>Привязка по 2 точкам, правка зон, схема</h3><p class="muted">Вариант В: правка в самом плане. Сводку по воротам и строку статусов берём из варианта Б.</p></div>
+</div>
+
+<h2>1. Как сейчас</h2>
+<div class="two">
+  <figure><img src="img/now-plan-block.jpg" alt="Блок План в Камерах сейчас" loading="lazy"><figcaption>Блок «План» на «Камерах» (снимок пульта 13:51)</figcaption></figure>
+  <div>
+    <p><b>Что рисует.</b> Одна камера — та, что в большом окне. Её конус, серый многоугольник размеченной земли (~50 м), машины кружками (кольцо — стоит, точка — едет), люди бирюзовыми точками, шкала 50 м. Координаты считаются из позы камеры, перевод из кадра в метры (<code>clip-plan.js</code>, <code>ground.js</code>).</p>
+    <p><b>Почему скудно.</b></p>
+    <ul>
+      <li>Нет площадки вокруг: ни корпусов, ни дорог, ни въезда. Пятно ~50 м висит в пустом поле, и место не узнать.</li>
+      <li>Видна одна камера из трёх. Позы всех трёх уже лежат в общих метрах кампуса, но на план не выведены.</li>
+      <li>Статус показан формой кружка. Язык рамок (цвет, значок, слово) сюда не перенесён, поэтому план и видео говорят по-разному.</li>
+      <li>Нет настроек: подложку и слои не выключить, масштаб не поменять.</li>
+    </ul>
+    <p class="faint">На вкладке «План»/3D подложка — нарисованный пример (корпус, кран, котлован на 800×520) с подписью «подложка — пример». С настоящей площадкой он не совпадает.</p>
+  </div>
+</div>
+<figure style="margin-top:14px"><img src="img/now-kamery.jpg" alt="Экран Камеры целиком" loading="lazy"><figcaption>Экран «Камеры» целиком: справа — план и события</figcaption></figure>
+
+<h2>2. Как делают профессионалы</h2>
+<p class="lead">Настоящие экраны. Кнопка-ссылка ведёт на источник картинки. Почти у всех одно и то же: подложка (снимок или план здания), камеры с конусом обзора, объекты с цветом статуса, слои и масштаб.</p>
+<div class="gal">
+  <figure><a href="https://overbr.com.br/wp-content/uploads/2016/06/Genetec-Security-Center-5.4-New-Plan-Manager-mapping-views.png"><img src="refs/gn-plan.jpg" alt="" loading="lazy"></a><figcaption><b>Genetec Plan Manager.</b> Спутник, камеры значками, видео всплывает прямо на карте, тревоги красным. Берём: видео по клику на камеру.</figcaption></figure>
+  <figure><a href="https://cctvbuyersguide.com/wp-content/uploads/2019/02/Dashboard-campus-access-control.jpg"><img src="refs/gn-16.jpg" alt="" loading="lazy"></a><figcaption><b>Genetec, кампус.</b> Снимок, зоны с цифрами-счётчиками. Берём: счётчик на воротах.</figcaption></figure>
+  <figure><a href="https://i.ytimg.com/vi/Uhhl3L9TldI/maxresdefault.jpg"><img src="refs/ms-sat.jpg" alt="" loading="lazy"></a><figcaption><b>Milestone Smart Map.</b> Спутник, у каждой камеры конус. Берём: конусы всех камер, активная ярче.</figcaption></figure>
+  <figure><a href="https://mswebappcdn.azureedge.net/episerverprod/743021d1cdfe43179c2223e0e8819e97/329901245e434f46bf9abb6909f8616d.JPG"><img src="refs/ms-cone.jpg" alt="" loading="lazy"></a><figcaption><b>Milestone.</b> Конус на схеме улиц. Подложку можно сменить: снимок, схема, свой план.</figcaption></figure>
+  <figure><a href="https://doc.milestonesys.com/latest/images/resources/images/sc/sc_mapconcept.png"><img src="refs/ms-concept.jpg" alt="" loading="lazy"></a><figcaption><b>Milestone, документация.</b> Слои: мир → площадка → здание → этаж. Берём: «Вся площадка / У камеры».</figcaption></figure>
+  <figure><a href="https://images.ctfassets.net/9mz5xx7mqy8x/39CqzQnUVB444sHiHVTRfR/b9e95483e1949d222147d01c8b606092/verkada-updated-floorplans.png"><img src="refs/vk-fp.jpg" alt="" loading="lazy"></a><figcaption><b>Verkada, план.</b> Зелёные конусы, видео в карточке над камерой. Берём: светлый план и спокойные конусы.</figcaption></figure>
+  <figure><a href="https://www.demolitionandrecycling.media/Images/1140xany/20211018-085010-TUKinAsset-Utilization.jpeg"><img src="refs/tu-2.jpg" alt="" loading="lazy"></a><figcaption><b>Trackunit.</b> Переключатель «Карта / Спутник» над картой, рядом загрузка техники. Берём: переключатель на виду.</figcaption></figure>
+  <figure><a href="https://www.propelleraero.com/wp-content/uploads/2024/05/Screenshot-2024-05-13-at-7.25.17-PM.png"><img src="refs/pr-1.jpg" alt="" loading="lazy"></a><figcaption><b>Propeller.</b> Подложка — свой снимок с дрона (ортофото), обновляется после каждого облёта. Лучшая подложка для стройки.</figcaption></figure>
+  <figure><a href="https://cdn.prod.website-files.com/5fc81643ff1b2d4f89f0ee53/5fd13a3bcf804259af468a76_FMS%20Screenshot.png"><img src="refs/wn-0.jpg" alt="" loading="lazy"></a><figcaption><b>Wenco, диспетчер карьера.</b> Схема дорог, техника цветом статуса, список рядом. Берём: схему-диспетчерскую (вариант Б).</figcaption></figure>
+  <figure><a href="https://www.canadianminingjournal.com/wp-content/uploads/2020/06/Wenco-fleet-management-system.png"><img src="refs/wn-7.jpg" alt="" loading="lazy"></a><figcaption><b>Wenco.</b> Крупная схема и маленький спутник в углу. Обе подложки вместе.</figcaption></figure>
+  <figure><a href="https://gdm-catalog-fmapi-prod.imgix.net/ProductScreenshot/b6434e8b-59db-4623-9ed5-a45408477091.png"><img src="refs/sm-12.jpg" alt="" loading="lazy"></a><figcaption><b>Samsara.</b> Машины на карте значками со статусом, список слева.</figcaption></figure>
+  <figure><a href="https://learningsc2.com/wp-content/uploads/2011/06/Minimap.jpg"><img src="refs/sc2-minimap.jpg" alt="" loading="lazy"></a><figcaption><b>Мини-карта в стратегии.</b> Трапеция показывает, что сейчас на экране. Берём: конус активной камеры ярче остальных.</figcaption></figure>
+</div>
+<p class="faint">Ещё из прежних подборок: Komatsu Smart Construction (refs/komatsu-r38.webp), Verkada Command (refs/vk-cmd.jpg), Genetec (refs/gn-8.jpg, gn-r05.webp), вид сверху со счётчиками на линиях (refs/nvidia-r02.webp), шторка «до / после» по спутнику (refs/gods-eye-shtorka.jpg). Экраны OpenSpace, Buildots и EarthCam с картой площадки не нашёл: у них план здания с точками съёмки, а не карта техники.</p>
+
+<h2>3. Чем подложить</h2>
+<div class="tw"><table>
+  <tr><th>Подложка</th><th>Что даёт</th><th>Условия (кратко)</th><th>Для нас</th></tr>
+  <tr><td><b>Esri World Imagery</b></td><td>Снимок кампуса от 12.09.2025, 0,31 м: видны корпуса, дороги, техника</td><td>Бесплатно 2 млн плиток в месяц, дальше $0,15 за 1000; подпись «Powered by Esri» и поставщики обязательны; офлайн — только слой «for Export» (<a href="https://location.arcgis.com/pricing/">тарифы</a>, <a href="https://developers.arcgis.com/documentation/esri-and-data-attribution/">подпись</a>)</td><td><span class="pill ok">в прототипе</span> один файл</td></tr>
+  <tr><td><b>Яндекс Карты API</b></td><td>Свежие снимки по России, схема на русском</td><td>Бесплатно только для открытых проектов; закрытая или платная система — коммерческая лицензия (на странице тарифов — от 208 800 ₽ в год) (<a href="https://yandex.ru/maps-api/tariffs">тарифы</a>). Спутник в бесплатном — не проверено</td><td>после показа, если клиент в РФ потребует</td></tr>
+  <tr><td><b>2ГИС, Mapbox</b></td><td>Схема и снимки</td><td>не проверено</td><td>—</td></tr>
+  <tr><td><b>Sentinel-2 (Copernicus)</b></td><td>Бесплатно, каждые 5 дней, 10 м</td><td>Открытая лицензия</td><td>Технику не видно, годится для шторки «до / после» по месяцам</td></tr>
+  <tr><td><b>Свой снимок с дрона</b></td><td>Лучшая точность, свежий снимок после каждого облёта (так у Propeller и Komatsu)</td><td>Свой, без чужих лицензий; нужен облёт</td><td>лучшая подложка для продукта</td></tr>
+  <tr><td><b>Схема</b></td><td>Обводим контуры по снимку или по генплану. Работает и для площадки без координат</td><td>Своя</td><td><span class="pill ok">в прототипе Б</span> обведено вручную</td></tr>
+</table></div>
+<p class="faint">Площадку без координат (чужие ролики, другие ракурсы) показываем схемой: зоны камер в метрах уже есть, а контуры обводятся по кадру. OpenStreetMap для обводки был недоступен (сервер Overpass отвечал 502), поэтому обвёл по снимку вручную.</p>
+
+<h2>4. Минимальная настройка</h2>
+<div class="two">
+  <ul class="chk">
+    <li><b>Подложка:</b> спутник · схема · обе · нет, ползунок яркости снимка</li>
+    <li><b>Слои:</b> камеры и что видят · зоны счёта · техника · люди · следы · опасные зоны · ворота и счёт · подписи · сетка 10 м</li>
+    <li><b>Вид:</b> север вверх или по камере, «Вся площадка / У камеры», + и −</li>
+  </ul>
+  <ul class="chk">
+    <li><b>Привязать к снимку по 2 точкам:</b> «эта точка на снимке = эта точка площадки», дальше масштаб и поворот считаются сами</li>
+    <li><b>Двигать зоны и ворота:</b> углы тянутся ручками</li>
+    <li><b>Поставить камеру:</b> место и поворот, ручка на краю конуса</li>
+    <li>Всё это показано в варианте В</li>
+  </ul>
+</div>
+
+<h2>5. Три варианта</h2>
+<p class="lead">Всё внутри экрана «Камеры», по снимку пульта. Цвета и значки статусов — как у рамок (работает · едет · стоит · ждёт ответа · не видно). Страницы живые: тему можно переключить кнопкой ◐.</p>
+
+<div class="card var">
+  <h3>А · Спутник + все камеры + техника со значками <span class="pill ok">совет</span></h3>
+  <p class="muted">Снимок площадки, конусы всех трёх камер (активная ярче), пунктир — где считаем. Машина — тёмная плашка: значок статуса как у рамки, номер, тип. Следы едущих, люди точками, опасная зона штриховкой. Переключатель «Спутник · Схема», кнопки «Слои» и «Во весь экран», север, масштаб, легенда со счётом. В тёмной теме снимок приглушён, чтобы не спорить с видео.</p>
+  <div class="shots"><figure><img src="shots/a-dark-1440.jpg" alt="Вариант А, тёмная, 1440" loading="lazy"><figcaption>тёмная · 1440</figcaption></figure><figure class="ph"><img src="shots/a-dark-390.jpg" alt="Вариант А, телефон" loading="lazy"><figcaption>телефон · 390</figcaption></figure></div>
+  <div class="links"><a class="pri" href="a.html">Открыть живую</a><a href="a.html?theme=light">светлая</a><a href="shots/a-light-1440.jpg">снимок светлой 1440</a><a href="shots/a-light-390.jpg">светлая 390</a></div>
+</div>
+
+<div class="card var">
+  <h3>Б · Схема-диспетчерская</h3>
+  <p class="muted">Без снимка: контуры площадки, дороги и корпуса обведены по снимку. Клетка 10 м, сверху строка статусов (как у диспетчера карьера), на въезде счётчик ↓ въехало · ↑ выехало, переключатель «Вся площадка / У камеры». Подходит для площадок без координат и для печати в отчёт.</p>
+  <div class="shots"><figure><img src="shots/b-light-1440.jpg" alt="Вариант Б, светлая, 1440" loading="lazy"><figcaption>светлая · 1440</figcaption></figure><figure class="ph"><img src="shots/b-dark-390.jpg" alt="Вариант Б, телефон" loading="lazy"><figcaption>телефон · 390 · тёмная</figcaption></figure></div>
+  <div class="links"><a class="pri" href="b.html?theme=light">Открыть живую</a><a href="b.html">тёмная</a><a href="shots/b-dark-1440.jpg">снимок тёмной 1440</a><a href="shots/b-light-390.jpg">светлая 390</a></div>
+</div>
+
+<div class="card var">
+  <h3>В · Гибрид со слоями и правкой <span class="pill wait">после показа</span></h3>
+  <p class="muted">Карта во всю ширину, видео сбоку. Подложка «Обе»: снимок и поверх контуры схемы. Открыта панель «Слои и настройка», на телефоне — шторка снизу. Включена правка: ручки углов склада, опасной зоны и ворот, поворот камеры, точки A и B для привязки к снимку, внизу «Отменить · Сохранить».</p>
+  <div class="shots"><figure><img src="shots/c-dark-1440.jpg" alt="Вариант В, тёмная, 1440" loading="lazy"><figcaption>тёмная · 1440</figcaption></figure><figure class="ph"><img src="shots/c-light-390.jpg" alt="Вариант В, телефон" loading="lazy"><figcaption>телефон · 390 · светлая</figcaption></figure></div>
+  <div class="links"><a class="pri" href="c.html">Открыть живую</a><a href="c.html?theme=light">светлая</a><a href="shots/c-light-1440.jpg">снимок светлой 1440</a><a href="shots/c-dark-390.jpg">тёмная 390</a></div>
+</div>
+
+<h2>6. Что делаем</h2>
+<div class="two">
+  <div class="card"><div class="k">К показу 26.10 · сборка ≤ 1 ч · без новых данных</div>
+    <ul>
+      <li>Конусы всех трёх камер в одних метрах. Активная ярче, у остальных только контур. Позы камер уже есть.</li>
+      <li>Метка машины — значок статуса и слово из рамок вместо кольца и точки.</li>
+      <li>Короткий след едущих машин (последние 30 с), ждущая ответа «дышит».</li>
+      <li>Сетка 10 м, стрелка севера, шкала. Легенда со счётом под картой.</li>
+      <li>Кнопки-слои: техника · люди · следы · зоны.</li>
+      <li><b>Только с согласия Юлая:</b> снимок-подложка из варианта А (один файл, привязка на глаз, подпись «Снимок 12.09.2025 · Esri, Maxar · привязка примерная»).</li>
+    </ul>
+  </div>
+  <div class="card"><div class="k">После показа</div>
+    <ul>
+      <li>Привязка к снимку по 2 точкам и хранение подложки на площадку.</li>
+      <li>Правка зон, ворот, опасных мест и камер прямо в плане (вариант В).</li>
+      <li>Схема по генплану или OpenStreetMap для площадок без снимка, режим «Вся площадка / У камеры» (вариант Б).</li>
+      <li>Счётчики на воротах, строка статусов сверху.</li>
+      <li>Шторка «до / после» по снимкам Sentinel-2 за месяцы.</li>
+      <li>Снимок с дрона как подложка (лучшее для стройки), режим «вид по камере».</li>
+      <li>Выбор поставщика снимков: Esri или Яндекс по условиям клиента.</li>
+    </ul>
+  </div>
+</div>
+
+<h2>Чего нет и что не проверено</h2>
+<ul class="muted">
+  <li>Привязка камер к снимку сделана на глаз: сдвиг и масштаб, без поворота. Конусы могут уйти на несколько метров. <b>Не проверено</b> по точкам на кадре.</li>
+  <li>Расстановка машин и людей — по снимку пульта 13:51, это пример, а не данные трекинга. Названия корпусов условные.</li>
+  <li>Условия Mapbox и 2ГИС не проверены. Спутник в бесплатном Яндексе не проверен.</li>
+  <li>Прототип без логики: кнопки не работают, кроме темы.</li>
+</ul>
+<p class="faint">Снимок: Esri World Imagery (Maxar, WorldView-3, 12.09.2025), Powered by Esri. Чужие экраны показаны как образцы, права — у их владельцев.</p>
+</div>
+<script>
+(function(){var r=document.documentElement,q=new URLSearchParams(location.search).get("theme");r.dataset.theme=q||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");document.getElementById("th").onclick=function(){r.dataset.theme=r.dataset.theme==="dark"?"light":"dark"};})();
+</script>
+</body></html>

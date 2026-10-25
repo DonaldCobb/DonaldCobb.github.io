@@ -1,0 +1,23 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow">
+<title>План · схема</title><link rel="stylesheet" href="plan.css"></head><body>
+<script type="module">
+import { shell, drawPlan, badge, mapOverlays } from "./plan.js";
+const html = `<section class="pn">
+  <div class="pn-h"><h2>План</h2><span class="sub">13:51</span><span class="sp"></span>
+    <span class="seg"><b class="on">Вся площадка</b><b>У камеры</b></span>
+    <button class="ib" title="Слои"><svg><use href="#i-layers"/></svg></button></div>
+  <div class="strip">
+    <div style="border-left-color:var(--st-move)"><b>2</b><span>${badge("move")}едут</span></div>
+    <div style="border-left-color:var(--st-idle)"><b>3</b><span>${badge("idle")}стоят</span></div>
+    <div style="border-left-color:var(--st-ask)"><b>1</b><span>${badge("ask")}вопрос</span></div>
+    <div style="border-left-color:var(--st-unseen)"><b>1</b><span>${badge("unseen")}не видно</span></div>
+    <div style="border-left-color:var(--st-person)"><b>9</b><span>люди</span></div>
+  </div>
+  <div class="map" id="m">
+    ${mapOverlays(true)}
+  </div>
+  <p class="note">Схема обведена по снимку площадки · клетка 10 м · следы — последние 30 с · корпуса подписаны условно</p>
+</section>`;
+shell({ plan: { html, hlVid: true }, title: "План · схема" });
+drawPlan(document.getElementById("m"), { under: "scheme", view: [160, 420, 560, 560], active: 7, L: { grid: true }, gateCount: true, sel: 8 });
+</script></body></html>

@@ -1,0 +1,39 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow">
+<title>План · настройка</title><link rel="stylesheet" href="plan.css"></head><body>
+<script type="module">
+import { shell, drawPlan, legend, mapOverlays } from "./plan.js";
+const row = (sw, t, n, on = true) => `<div class="r">${sw ? `<i class="sw" style="background:${sw}"></i>` : ""}<span>${t}</span><span class="sp"></span>${n ? `<small>${n}</small>` : ""}<i class="tg${on ? " on" : ""}"></i></div>`;
+const html = `<section class="pn">
+  <div class="pn-h"><h2>План</h2><span class="sub">правка площадки</span><span class="sp"></span>
+    <span class="seg"><b>Спутник</b><b>Схема</b><b class="on">Обе</b></span>
+    <button class="ib on" title="Слои и настройка"><svg><use href="#i-layers"/></svg></button>
+    <button class="ib on" title="Править"><svg><use href="#i-edit"/></svg></button></div>
+  <div class="map" id="m" style="height:var(--mh,650px)">
+    <div class="ovl" style="left:10px;bottom:40px"><span class="glass">Двигайте углы · A и B — привязка к снимку</span></div>
+    <div class="ovl bl"><span class="scale glass"><i></i>50 м</span></div>
+    <div class="lay sheet" style="right:12px;top:12px">
+      <h4>Подложка</h4>
+      <div class="r"><span class="seg"><b>Спутник</b><b>Схема</b><b class="on">Обе</b><b>Нет</b></span></div>
+      <div class="r"><span>Яркость снимка</span><span class="rng"><i style="width:55%"></i></span></div>
+      <h4>Слои</h4>
+      ${row("var(--text)", "Камеры и что видят", "3")}
+      ${row("", "Зоны счёта")}
+      ${row("var(--st-move)", "Техника", "7")}
+      ${row("var(--st-person)", "Люди", "9")}
+      ${row("", "Следы", "30 с")}
+      ${row("#E2452F", "Опасные зоны", "1")}
+      ${row("", "Ворота и счёт", "1")}
+      ${row("", "Подписи")}
+      ${row("", "Сетка", "10 м", false)}
+      <h4>Вид</h4>
+      <div class="r"><span class="seg"><b class="on">Север вверх</b><b>По камере</b></span></div>
+      <h4>Площадка</h4>
+      <div class="btns"><span class="btn"><svg><use href="#i-pin"/></svg>Привязать к снимку · 2 точки</span><span class="btn pri"><svg><use href="#i-edit"/></svg>Двигать зоны и ворота</span><span class="btn"><svg><use href="#i-cam"/></svg>Поставить камеру</span><span class="btn">+ Зона</span></div>
+    </div>
+  </div>
+  <div class="edbar"><b>Правка</b><span>склад · 4 угла · красная зона · ворота · камера 1 — поворот</span><span class="sp"></span><span class="btn">Отменить</span><span class="btn pri">Сохранить</span></div>
+  ${legend()}
+</section>`;
+shell({ plan: { html }, wide: true, title: "План · настройка" });
+drawPlan(document.getElementById("m"), { under: "hybrid", satOp: 0.6, view: [140, 400, 760, 600], viewN: [190, 560, 360, 420], active: 1, edit: true, gateCount: true });
+</script></body></html>
