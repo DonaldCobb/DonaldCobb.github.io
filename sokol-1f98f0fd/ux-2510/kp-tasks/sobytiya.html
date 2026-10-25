@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Сокол · Блок событий</title>
+<link rel="stylesheet" href="kp.css">
+<style>
+  body { background: var(--bg); }
+  .doc { max-width: 1240px; margin: 0 auto; padding: 24px 20px 48px; }
+  h1 { font-size: 30px; line-height: 1.15; margin: 8px 0 6px; }
+  h2 { font-size: 20px; margin: 40px 0 10px; }
+  h3 { font-size: 15px; margin: 0 0 8px; }
+  .lead { color: var(--muted); max-width: 780px; margin: 0 0 16px; }
+  .ten { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .ten .panel { padding: 14px 16px; } .ten b { display: block; font-size: 15px; margin-bottom: 4px; }
+  .ten p { margin: 0; font-size: 13px; color: var(--muted); } .ten .big { font-size: 30px; font-weight: 750; line-height: 1; margin-bottom: 6px; }
+  .now { display: grid; grid-template-columns: 1.15fr 1fr; gap: 14px; align-items: start; }
+  .now figure { margin: 0; } .now img { width: 100%; display: block; border-radius: 8px; border: 1px solid var(--line); }
+  .now figcaption { font-size: 12px; color: var(--muted); margin-top: 4px; }
+  .probs { margin: 0; padding: 14px 16px 14px 34px; font-size: 13px; } .probs li { margin: 0 0 8px; }
+  .gal { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 10px; }
+  .gal figure { margin: 0; } .gal a { text-decoration: none; }
+  .gal img { width: 100%; aspect-ratio: 3/4; object-fit: contain; border-radius: 6px; border: 1px solid var(--line); background: var(--surface-2); display: block; }
+  .gal figcaption { font-size: 11px; color: var(--muted); margin-top: 3px; }
+  .rules { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 12px; }
+  .rules .panel { padding: 12px 14px; font-size: 13px; } .rules b { display: block; margin-bottom: 3px; }
+  .rules p { margin: 0; color: var(--muted); }
+  .ctl { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin: 0 0 12px; font-size: 13px; color: var(--muted); }
+  .vars { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; align-items: start; }
+  .var { min-width: 0; }
+  .var > h3 { margin: 0 0 4px; } .var > p { margin: 0 0 10px; font-size: 13px; color: var(--muted); min-height: 54px; }
+  .rec-tag { display: inline-block; background: var(--task); color: var(--on-task); font-weight: 800; font-size: 11px; padding: 2px 8px; border-radius: 10px; margin-left: 6px; vertical-align: 2px; }
+
+  /* колонка ленты: та же ширина, что справа у вида «Камеры» на 1440 */
+  .col { height: 640px; display: flex; flex-direction: column; overflow: hidden; }
+  .col .panel__h { border-bottom: 1px solid var(--line); }
+  .col .panel__h em { font-style: normal; color: var(--muted); font-weight: 500; }
+  .scroll { overflow-y: auto; flex: 1; }
+  .chips { display: flex; gap: 6px; padding: 8px 12px; border-bottom: 1px solid var(--line); overflow-x: auto; scrollbar-width: none; }
+  .chips .chip { min-height: 26px; font-size: 12px; cursor: pointer; } .chips .chip em { font-style: normal; opacity: .7; margin-left: 4px; }
+
+  /* строка события в одну линию */
+  .ev { display: grid; grid-template-columns: 44px 18px minmax(0, 1fr) auto; align-items: center; gap: 8px; padding: 0 12px; min-height: 36px; border-bottom: 1px solid var(--line); font-size: 13px; cursor: pointer; }
+  .ev:hover { background: var(--surface-2); }
+  .ev time { font-variant-numeric: tabular-nums; color: var(--muted); font-size: 12px; }
+  .ev .w { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .ev .w .plate { margin-right: 6px; font-size: 11px; }
+  .ev .cm { color: var(--faint); font-size: 11px; white-space: nowrap; }
+  .ev.is-sel { background: var(--surface-2); box-shadow: inset 3px 0 0 var(--text); padding-bottom: 8px; }
+  .ev .more { grid-column: 3 / 5; display: none; gap: 8px; align-items: center; font-size: 12px; color: var(--muted); }
+  .ev.is-sel .more { display: flex; }
+  .ev .more img { width: 96px; height: 54px; object-fit: cover; border-radius: 4px; }
+  .ico { width: 16px; height: 16px; display: block; color: var(--text); }
+  .ico--warn { color: var(--warn); } .ico--mut { color: var(--muted); }
+
+  /* вопросы — одной группой */
+  .qrow { display: flex; align-items: center; gap: 8px; padding: 9px 12px; background: var(--warn-soft); border-bottom: 1px solid var(--warn-line); color: var(--warn-ink); font-size: 13px; font-weight: 650; cursor: pointer; }
+  .qrow .go { margin-left: auto; font-weight: 600; text-decoration: underline; }
+  .q { padding: 10px 12px; border-bottom: 1px solid var(--line); background: var(--warn-soft); }
+  .q h4 { display: flex; align-items: center; gap: 6px; margin: 0 0 6px; font-size: 13px; color: var(--warn-ink); }
+  .q .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  .q .pair figure { margin: 0; } .q .pair img { width: 100%; aspect-ratio: 16/9; object-fit: cover; border-radius: 4px; display: block; }
+  .q .pair figcaption { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .q .a { display: flex; gap: 6px; margin-top: 8px; } .q .a .btn { min-height: 28px; font-size: 12px; }
+  .q .n { font-size: 11px; color: var(--muted); margin-left: auto; align-self: center; }
+
+  /* Б — «Требует внимания» */
+  .att { padding: 8px 12px 4px; display: grid; gap: 6px; }
+  .att h5, .col h5 { margin: 6px 12px 4px; font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+  .card { display: grid; grid-template-columns: 72px minmax(0, 1fr); gap: 10px; align-items: center; padding: 8px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface-2); font-size: 13px; cursor: pointer; }
+  .card img { width: 72px; height: 44px; object-fit: cover; border-radius: 4px; display: block; }
+  .card b { display: flex; gap: 6px; align-items: center; } .card small { display: block; color: var(--muted); font-size: 12px; margin-top: 2px; }
+  .card--warn { border-color: var(--warn-line); background: var(--warn-soft); }
+  .card--warn b { color: var(--warn-ink); }
+  .min { padding: 4px 12px; font-size: 11px; color: var(--faint); border-bottom: 1px solid var(--line); background: var(--surface); position: sticky; top: 0; }
+  .ev--n { grid-template-columns: 18px minmax(0, 1fr) auto; }
+  .ev--n.is-sel .more { grid-column: 2 / 4; }
+
+  /* В — сводка по состояниям */
+  .sumrow { display: grid; grid-template-columns: repeat(4, 1fr); border-bottom: 1px solid var(--line); }
+  .sumrow button { all: unset; cursor: pointer; padding: 10px 10px 8px; border-right: 1px solid var(--line); }
+  .sumrow button:last-child { border-right: 0; }
+  .sumrow button b { display: block; font-size: 22px; font-weight: 750; line-height: 1.1; }
+  .sumrow button span { font-size: 11px; color: var(--muted); display: flex; align-items: center; gap: 5px; }
+  .sumrow button.is-on { background: var(--surface-2); box-shadow: inset 0 -2px 0 var(--text); }
+  .sumrow button.w b { color: var(--warn-ink); }
+  .ml { display: grid; grid-template-columns: 18px minmax(0, 1fr) auto; gap: 8px; align-items: center; padding: 0 12px; min-height: 36px; border-bottom: 1px solid var(--line); font-size: 13px; }
+  .ml .t { font-variant-numeric: tabular-nums; font-weight: 650; } .ml .t.w { color: var(--warn-ink); }
+  .ml small { color: var(--muted); font-size: 11px; margin-left: 4px; }
+  .foot-n { display: flex; gap: 6px; align-items: flex-start; padding: 8px 12px; font-size: 11px; color: var(--muted); border-top: 1px solid var(--line); }
+
+  .tw { border: 1px solid var(--line); border-radius: 10px; background: var(--surface); overflow-x: auto; }
+  table.t td { font-size: 13px; vertical-align: top; }
+  .sc { display: inline-block; font-size: 12px; font-weight: 650; padding: 1px 8px; border-radius: 10px; border: 1px solid currentColor; white-space: nowrap; }
+  .sc--ok { color: var(--ok); } .sc--part { color: var(--warn-ink); } .sc--no { color: var(--bad); }
+  .verdict { padding: 14px 16px; margin-top: 12px; font-size: 14px; border-left: 3px solid var(--task); }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; } .two .panel { padding: 14px 16px; }
+  .two ul { margin: 6px 0 0; padding-left: 18px; font-size: 13px; } .two li { margin: 5px 0; }
+  .foot { margin-top: 40px; font-size: 12px; color: var(--muted); }
+  @media (max-width: 1100px) { .vars { grid-template-columns: repeat(2, minmax(0, 1fr)); } .rules { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 760px) {
+    .ten, .now, .vars, .two, .rules { grid-template-columns: minmax(0, 1fr); }
+    .gal { grid-template-columns: 1fr 1fr; }
+    .col { height: 560px; } .var > p { min-height: 0; }
+    h1 { font-size: 24px; }
+    .tw { overflow: visible; }
+    .tw table.t, .tw table.t tbody, .tw table.t tr, .tw table.t td { display: block; }
+    .tw table.t thead { display: none; }
+    .tw table.t tr { padding: 10px 12px; border-bottom: 1px solid var(--line); }
+    .tw table.t td { border: 0; padding: 2px 0; }
+  }
+</style>
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="./"><svg viewBox="0 0 24 24"><path d="M3 8V4h4M17 4h4v4M21 16v4h-4M7 20H3v-4"/><rect x="8" y="9" width="8" height="6" rx="1"/></svg>Сокол</a>
+  <div class="site"><b>Блок «События» на экране «Камеры»</b><span>UX-разбор 25.10 · замечание Юлая</span></div>
+  <div class="top__end"><a class="btn btn--sm" href="./">← <span class="long">Пульт от задач КП</span></a><button class="btn theme" type="button" data-theme-btn aria-label="Сменить тему">◐</button></div>
+</header>
+<main class="doc">
+  <h1>Почему лента громоздкая и чего не хватает экрану «Камеры»</h1>
+  <p class="lead">«Блок событий выглядит громоздко… ещё чего-то не хватает… может, мне кажется». Не кажется: в одной колонке смешаны три разных списка, строка занимает 80–90 px, а наверху нет ответа «что мне делать сейчас». Ниже — разбор по снимкам и коду, как ленту делают профи, три варианта на тех же данных и честный ответ про «не хватает».</p>
+
+  <section class="ten" aria-label="Главное за 10 секунд">
+    <div class="panel"><div class="big">3 в 1</div><b>списка в колонке «События»</b><p>Вопросы «та же?», «Сейчас на площадке» (это машины, а не события) и «Закрыто». Заголовок «События 4» считает только часть.</p></div>
+    <div class="panel"><div class="big num">≈ 85 → 36 px</div><b>высота строки: сейчас и у профи</b><p>Миниатюра, 2 строки заголовка, 2 строки пояснения, время и «55 с в кадре». В колонку влезает 6–7 строк; на потоке машин 17 вопросов — жёлтая стена.</p></div>
+    <div class="panel"><div class="big">2</div><b>ответа, которых нет за один взгляд</b><p>«Что требует внимания сейчас» (кто стоит дольше всех, какая камера без кадра) и «сколько работает, едет, стоит». Остальное экран даёт.</p></div>
+  </section>
+
+  <h2>1 · Что громоздко сейчас</h2>
+  <div class="now">
+    <div>
+      <figure><a href="img/now-kampus.jpg"><img src="img/now-kampus.jpg" alt="Вид «Камеры», кампус, тёмная тема"></a><figcaption>Сегодня, ветка stage/ugly-tipy-2510 (снимок 25.10 15:59): «События 4» — два вопроса и «Сейчас на площадке · 7» ниже.</figcaption></figure>
+      <figure style="margin-top:10px"><a href="img/now-waco.jpg"><img src="img/now-waco.jpg" alt="Вид «Камеры», поток машин, 17 вопросов"></a><figcaption>Площадка с потоком машин: «Ждут ответа · 17», миниатюры пустые, лента — сплошь жёлтая.</figcaption></figure>
+    </div>
+    <div class="panel">
+      <ol class="probs">
+        <li><b>Три списка под одним заголовком.</b> «Ждут ответа» (вопросы), «Сейчас на площадке» (состояние машин, строка из machineLine) и «Закрыто» — в одной прокрутке feedPanel. Человек ищет «что случилось», а видит перечень машин.</li>
+        <li><b>Строка — карточка.</b> Миниатюра 72×40, значок, заголовок в 2 строки, пояснение в 2 строки, время. На 1440 в колонку влезает 6–7 строк, на телефоне — 4.</li>
+        <li><b>Одно и то же дважды.</b> «Бортовой 8 — это Самосвал 7?» и сразу под ним «Самосвал 7 ушёл 13:51:43 · Бортовой 8 появился 13:51:44».</li>
+        <li><b>Тип события не виден формой.</b> Въезд, стоянка, «не видно» и «ушёл из кадра» — одинаковые строки, отличаются кружком 10 px и словом. Слово «Записи нет» у стоящей машины читается как сбой камеры.</li>
+        <li><b>Два числа без подписи справа:</b> «13:51» и «55 с в кадре» — что из них когда.</li>
+        <li><b>Жёлтые плашки над камерами</b> «не видно: Самосвал 6, 7, Бортовой 8» повторяют ленту и спорят с ней за внимание: на экране три жёлтых места одновременно.</li>
+        <li><b>17 вопросов подряд</b> занимают всю колонку; обычные события уезжают вниз и не видны вовсе.</li>
+      </ol>
+    </div>
+  </div>
+
+  <h2>2 · Как ленту событий делают профи</h2>
+  <p class="lead">Цельные экраны: Avigilon Alta (видеожурнал), Geotab Video, EarthCam (стройка), QMonitoring (образец). Verkada, Milestone и Samsara — цельных экранов ленты не нашли (в App Store у них рекламные баннеры), поэтому правила ниже — по тем, что есть на снимках.</p>
+  <div class="gal">
+    <a href="analogs/avigilon-alta-events-list.jpg"><figure><img src="analogs/avigilon-alta-events-list.jpg" alt=""><figcaption>Alta — «текущие · на проверку · завершённые», строка: кадр, тип, время</figcaption></figure></a>
+    <a href="analogs/avigilon-alta-event-clip-timeline.jpg"><figure><img src="analogs/avigilon-alta-event-clip-timeline.jpg" alt=""><figcaption>Alta — событие открывается клипом с отметками на шкале</figcaption></figure></a>
+    <a href="analogs/geotab-video-events-feed.jpg"><figure><img src="analogs/geotab-video-events-feed.jpg" alt=""><figcaption>Geotab — тип, время, машина одной подписью под кадром</figcaption></figure></a>
+    <a href="analogs/earthcam-evr-timeline.jpg"><figure><img src="analogs/earthcam-evr-timeline.jpg" alt=""><figcaption>EarthCam — события отрезками прямо на шкале записи</figcaption></figure></a>
+    <a href="an/q04.jpg"><figure><img src="an/q04.jpg" alt="" style="aspect-ratio:3/4"><figcaption>QMonitoring — инциденты на шкале и списком</figcaption></figure></a>
+  </div>
+  <div class="rules">
+    <div class="panel"><b>Одна строка</b><p>время · значок типа · объект · камера. Пояснение и кадр — только у выбранной строки или в большом окне.</p></div>
+    <div class="panel"><b>Проверка отдельно</b><p>«На проверку · 17» — вкладкой или одной строкой со счётчиком, а не 17 строками в ленте.</p></div>
+    <div class="panel"><b>Тип — формой</b><p>Въезд, выезд, стоит, не видно, тревога — разные значки; цвет только у того, что требует действия.</p></div>
+    <div class="panel"><b>Клик — клип</b><p>Строка не раскрывается в карточку: событие открывается в большом окне с отметкой на шкале.</p></div>
+  </div>
+
+  <h2>3 · Три варианта на тех же данных</h2>
+  <p class="lead">Колонка той же ширины, что справа у вида «Камеры» на 1440. Данные — запись кампуса 22.10, 13:43–13:51; кадры строк — вырезки той же записи, привязка к именам — пример. Нажмите строку — раскроется; переключите на «поток машин», чтобы увидеть 17 вопросов.</p>
+  <div class="ctl">Данные: <button class="chip is-on" type="button" data-load="kampus">кампус · 2 вопроса</button><button class="chip" type="button" data-load="flow">поток машин · 17 вопросов</button></div>
+  <div class="vars">
+    <article class="var"><h3>А · Лента одной строкой</h3><p>Та же лента, только строки по 36 px, вопросы свёрнуты в одну жёлтую строку, фильтр типов чипами. «Сейчас на площадке» уходит из колонки (это вид «Пульт»).</p><div class="panel col" id="va"></div></article>
+    <article class="var"><h3>Б · Внимание сверху, лента ниже<span class="rec-tag">совет</span></h3><p>До трёх карточек «требует внимания»: кто стоит дольше всех, кого не видно, вопросы стопкой. Ниже — лента одной строкой по минутам.</p><div class="panel col" id="vb"></div></article>
+    <article class="var"><h3>В · Состояния вместо ленты</h3><p>Сверху четыре числа-фильтра: работают, едут, стоят, не видно. Ниже — машины по состоянию с таймером. События остаются отметками на шкале под видео.</p><div class="panel col" id="vc"></div></article>
+  </div>
+
+  <h2>4 · «Чего-то не хватает» — по задачам КП</h2>
+  <p class="lead">Что прораб должен понять с экрана «Камеры» за один взгляд, и даёт ли экран это сегодня.</p>
+  <div class="tw"><table class="t">
+    <thead><tr><th>Вопрос прораба</th><th>Задача КП</th><th>Сегодня</th><th>Что добавить</th></tr></thead>
+    <tbody>
+      <tr><td><b>Что требует моего внимания сейчас?</b></td><td>4 · долгий простой</td><td><span class="sc sc--no">нет</span> всё в одной ленте, приоритета нет</td><td>Блок «Требует внимания» на 1–3 карточки (Б)</td></tr>
+      <tr><td><b>Сколько работает, сколько стоит?</b></td><td>1 · кто что делает</td><td><span class="sc sc--part">частично</span> «7 на площадке · 68 % стоят» на кадре; работа на месте склеена с движением</td><td>Строка из четырёх чисел над камерами или сверху колонки (В)</td></tr>
+      <tr><td><b>Кто стоит дольше всех?</b></td><td>4, 7</td><td><span class="sc sc--no">нет</span> таймер «55 с в кадре» есть, сортировки и порога нет</td><td>Первая карточка «стоит 18 мин» в Б; сортировка по таймеру в В</td></tr>
+      <tr><td><b>Все ли камеры дают кадр?</b></td><td>9</td><td><span class="sc sc--part">частично</span> жёлтые плашки «не видно: …» — про машины, не про камеры</td><td>«Камеры 3 из 3» в строке-сводке; плашку «нет кадра с 13:50» — только при обрыве</td></tr>
+      <tr><td><b>Что произошло за последние минуты?</b></td><td>2</td><td><span class="sc sc--part">частично</span> есть, но смешано с вопросами и списком машин</td><td>Лента одной строкой с фильтром типов (А, Б)</td></tr>
+      <tr><td><b>Это та же машина?</b></td><td>3</td><td><span class="sc sc--ok">есть</span> вопрос с двумя кадрами и ответом одним касанием</td><td>При 5+ вопросах — одна строка «N вопросов · разобрать» и «принять уверенные»</td></tr>
+    </tbody>
+  </table></div>
+  <div class="panel verdict"><b>Ответ Юлаю:</b> не кажется. Экран «Камеры» хорошо отвечает «что видно на камерах», но не «что мне делать». Не хватает двух вещей: блока «Требует внимания» наверху колонки и строки «работают · едут · стоят · не видно · камеры 3 из 3». Остальное — убрать лишнее: лента в одну строку, вопросы стопкой, «Сейчас на площадке» — в «Пульт».</div>
+
+  <h2>5 · Рекомендация</h2>
+  <div class="two">
+    <div class="panel"><h3>К показу 26.10 — малая правка, без новой логики</h3><ul>
+      <li>Строка события в одну линию: пояснение и миниатюра — только у выбранной (kit.js eventLine, v2.css .v2-ev).</li>
+      <li>Вопросы — одной жёлтой строкой «N вопросов · разобрать», раскрываются по нажатию (feedPanel, группа «Ждут ответа»).</li>
+      <li>Из колонки убрать «Сейчас на площадке» (флаг <code>now</code> у c3) — список машин есть в виде «Пульт».</li>
+      <li>«Записи нет» у стоящей машины → «стоит» (stateWord).</li>
+      <li>Код не менял: внедрение — после выбора Юлая; приёмка — другим исполнителем по снимкам до/после.</li>
+    </ul></div>
+    <div class="panel"><h3>После показа</h3><ul>
+      <li>Вариант Б целиком: «Требует внимания» с порогом простоя (нужен сигнал «стоит &gt; N мин» — это задача 4 КП).</li>
+      <li>Строка-сводка из варианта В над камерами: четыре состояния + «камеры 3 из 3».</li>
+      <li>Значки типов событий: въезд, ушёл из кадра, стоит, не видно, вопрос.</li>
+      <li>Клик по событию — клип в большом окне с отметкой на шкале.</li>
+    </ul></div>
+  </div>
+
+  <p class="foot">Сокол · разбор блока событий, 25.10. Снимки «сегодня» — с ветки stage/ugly-tipy-2510; пульт я не запускал, разбор по коду (v2/pages-a.js feedPanel, v2/kit.js eventLine) и снимкам. Не проверено: варианты не пробовал прораб; числа «стоит 18 мин» и сводка в В — пример.</p>
+</main>
+<script>
+const th = new URLSearchParams(location.search).get("theme"); if (th) document.documentElement.dataset.theme = th;
+document.querySelector("[data-theme-btn]").onclick = () => { const r = document.documentElement; r.dataset.theme = (r.dataset.theme || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light")) === "dark" ? "light" : "dark"; };
+
+const I = {
+  in: '<path d="M2 8h9M8 4.5 11.5 8 8 11.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 2.5v11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>',
+  out: '<path d="M5 8h9M11 4.5 14.5 8 11 11.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 2.5v11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>',
+  idle: '<circle cx="8" cy="8" r="5.2" fill="none" stroke="currentColor" stroke-width="2"/>',
+  move: '<circle cx="8" cy="8" r="5" fill="currentColor"/>',
+  work: '<circle cx="8" cy="8" r="5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 3a5 5 0 0 0 0 10z" fill="currentColor"/>',
+  lost: '<circle cx="8" cy="8" r="5.2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-dasharray="2.4 2"/>',
+  ask: '<path d="M8 2.2 13.8 8 8 13.8 2.2 8z" fill="currentColor"/>',
+  cam: '<rect x="1.5" y="4" width="9.5" height="8" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="m11 7 3.5-2v6L11 9" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>'
+};
+const ico = (k, cls = "") => `<svg class="ico ${cls}" viewBox="0 0 16 16" aria-hidden="true">${I[k]}</svg>`;
+const WORD = { in: "появился", out: "ушёл из кадра", idle: "стоит", lost: "не видно", work: "работает на месте", move: "едет" };
+const ICLS = { idle: "ico--warn", lost: "ico--mut", out: "ico--mut" };
+
+const KAMPUS = {
+  ev: [
+    { t: "13:51:44", k: "in", p: "Бортовой 8", c: "Кам 7", img: "bort7", s: "въехал в кадр у выезда" },
+    { t: "13:51:43", k: "out", p: "Самосвал 7", c: "Кам 7", img: "kran", s: "был в кадре 39 с" },
+    { t: "13:51:29", k: "out", p: "Самосвал 6", c: "Кам 7", img: "bort7", s: "стоял 21 с, ушёл" },
+    { t: "13:51:04", k: "in", p: "Самосвал 7", c: "Кам 7", img: "kran", s: "въехал в кадр" },
+    { t: "13:51:02", k: "in", p: "Самосвал 6", c: "Кам 7", img: "bort7", s: "въехал в кадр" },
+    { t: "13:50:02", k: "lost", p: "Погрузчик 4", c: "Кам 6", img: "pogr", s: "последний кадр 13:50:02 — закрыт техникой" },
+    { t: "13:49:40", k: "idle", p: "Бортовой 5", c: "Кам 6", img: "bort5", s: "стоит у погрузки" },
+    { t: "13:44:16", k: "out", p: "Бетоновоз 3", c: "Кам 1", img: "beton", s: "был в кадре 30 с" },
+    { t: "13:43:46", k: "in", p: "Бетоновоз 3", c: "Кам 1", img: "beton", s: "въезд" },
+    { t: "13:43:40", k: "idle", p: "Фура 1", c: "Кам 1", img: "fura1", s: "стоит у корпуса" },
+    { t: "13:43:40", k: "idle", p: "Фура 2", c: "Кам 1", img: "fura2", s: "стоит у корпуса" }
+  ],
+  q: [
+    { a: "Бортовой 8", b: "Самосвал 7", ta: "13:51:44", tb: "13:51:43", ia: "bort7", ib: "kran", conf: 71 },
+    { a: "Бортовой 8", b: "Самосвал 6", ta: "13:51:44", tb: "13:51:29", ia: "bort7", ib: "bort7", conf: 44 }
+  ],
+  st: [
+    { k: "work", p: "Бортовой 6", c: "Кам 7", tm: "6 мин", n: "разгрузка у корпуса" },
+    { k: "work", p: "Манипулятор 9", c: "Кам 7", tm: "4 мин", n: "разгрузка" },
+    { k: "move", p: "Бортовой 8", c: "Кам 7", tm: "7 с", n: "к выезду" },
+    { k: "idle", p: "Фура 1", c: "Кам 1", tm: "18 мин", n: "стоит у корпуса", w: 1 },
+    { k: "idle", p: "Фура 2", c: "Кам 1", tm: "8 мин", n: "стоит у корпуса" },
+    { k: "idle", p: "Бортовой 5", c: "Кам 6", tm: "2 мин", n: "у погрузки" },
+    { k: "lost", p: "Погрузчик 4", c: "Кам 6", tm: "с 13:50", n: "закрыт техникой" }
+  ],
+  cams: "Камеры 3 из 3"
+};
+const FLOW = (() => {
+  const names = [["Фура 57", "Фура 48"], ["Фура 57", "Фура 47"], ["Фургон 52", "Фургон 41"], ["Фургон 52", "Фургон 36"], ["Фургон 52", "Фура 20"], ["Фургон 52", "Легковая 31"], ["Фургон 52", "Фургон 16"], ["Фура 49", "Машина 44"], ["Фура 49", "Фура 40"], ["Легковая 55", "Легковая 50"], ["Легковая 55", "Машина 43"], ["Фургон 46", "Фургон 39"], ["Фура 45", "Фура 37"], ["Машина 42", "Машина 33"], ["Фургон 38", "Фургон 30"], ["Фура 35", "Фура 27"], ["Легковая 34", "Легковая 26"]];
+  const q = names.map(([a, b], i) => ({ a, b, ta: `10:01:${String(53 - i * 3).padStart(2, "0")}`, tb: `10:01:${String(43 - i * 2).padStart(2, "0")}`, ia: i % 2 ? "fura2" : "fura1", ib: i % 2 ? "fura1" : "fura2", conf: 92 - i * 3 }));
+  const ev = Array.from({ length: 14 }, (_, i) => ({ t: `10:0${i < 7 ? 1 : 0}:${String(58 - (i % 7) * 8).padStart(2, "0")}`, k: ["in", "out", "in", "out", "lost", "in", "out"][i % 7], p: ["Фура 58", "Фура 48", "Легковая 56", "Машина 44", "Фургон 6", "Фургон 53", "Фура 47"][i % 7].replace(/\d+/, (n) => +n + (i > 6 ? 11 : 0)), c: "Кам 1", img: i % 2 ? "fura2" : "fura1", s: "поток по шоссе" }));
+  return { ev, q, st: [
+    { k: "move", p: "Фура 58", c: "Кам 1", tm: "5 с", n: "по шоссе" }, { k: "move", p: "Легковая 56", c: "Кам 1", tm: "9 с", n: "по шоссе" },
+    { k: "lost", p: "Фура 1", c: "Кам 1", tm: "с 10:00", n: "за опорой" }], cams: "Камеры 1 из 1" };
+})();
+
+let D = KAMPUS, filt = { va: "all" };
+const img = (n) => `img/${n}.jpg`;
+const evRow = (e, { noTime = false } = {}) => `<div class="ev${noTime ? " ev--n" : ""}" tabindex="0" role="button">${noTime ? "" : `<time>${e.t.slice(0, 5)}</time>`}${ico(e.k, ICLS[e.k] || "")}<span class="w"><span class="plate">${e.p}</span>${WORD[e.k]}</span><span class="cm">${noTime ? e.t.slice(0, 5) + " · " : ""}${e.c}</span><span class="more"><img src="${img(e.img)}" alt="">${e.s}<br>${e.t} · открыть клип</span></div>`;
+const qCard = (q, i, n) => `<div class="q"><h4>${ico("ask", "ico--warn")} ${q.a} — это ${q.b}?</h4><div class="pair"><figure><img src="${img(q.ib)}" alt=""><figcaption>${q.b} ушёл ${q.tb}</figcaption></figure><figure><img src="${img(q.ia)}" alt=""><figcaption>${q.a} появился ${q.ta}</figcaption></figure></div><div class="a"><button class="btn btn--main" type="button">Та же</button><button class="btn" type="button">Другая</button><span class="n">${i + 1} из ${n} · уверенность ${q.conf} %</span></div></div>`;
+const head = (t, n, more = "весь журнал") => `<div class="panel__h"><h3>${t} <em>${n}</em></h3><a class="more" href="#">${more}</a></div>`;
+
+function renderA() {
+  const kinds = [["all", "Все"], ["in", "Въезды"], ["idle", "Стоят"], ["lost", "Не видно"], ["out", "Ушли"]];
+  const cnt = (k) => (k === "all" ? D.ev.length : D.ev.filter((e) => e.k === k).length);
+  const list = D.ev.filter((e) => filt.va === "all" || e.k === filt.va);
+  const open = filt.qa;
+  va.innerHTML = head("События", D.ev.length) +
+    `<div class="chips">${kinds.map(([k, t]) => `<button class="chip${filt.va === k ? " is-on" : ""}" data-f="${k}" type="button">${t}<em>${cnt(k)}</em></button>`).join("")}</div>` +
+    `<div class="scroll"><div class="qrow" data-qa>${ico("ask", "ico--warn")} ${D.q.length} ${D.q.length > 4 ? "вопросов" : "вопроса"} «та же машина?»<span class="go">${open ? "свернуть" : "разобрать"}</span></div>` +
+    (open ? qCard(D.q[0], 0, D.q.length) : "") + list.map((e) => evRow(e)).join("") + `</div>`;
+}
+function renderB() {
+  const idle = D.st.filter((s) => s.k === "idle").sort((a, b) => parseInt(b.tm) - parseInt(a.tm))[0];
+  const lost = D.st.find((s) => s.k === "lost");
+  const groups = {}; D.ev.forEach((e) => { const m = e.t.slice(0, 5); (groups[m] = groups[m] || []).push(e); });
+  vb.innerHTML = head("Требует внимания", "", "весь журнал") +
+    `<div class="scroll"><div class="att">` +
+    (idle ? `<div class="card card--warn"><img src="${img("fura1")}" alt=""><span><b>${ico("idle", "ico--warn")} ${idle.p} стоит ${idle.tm}</b><small>${idle.c} · ${idle.n} · причина?</small></span></div>` : "") +
+    (lost ? `<div class="card"><img src="${img("pogr")}" alt=""><span><b>${ico("lost", "ico--mut")} ${lost.p} — не видно</b><small>${lost.c} · ${lost.tm} · ${lost.n}</small></span></div>` : "") +
+    `<div class="card card--warn" data-qb><span style="grid-column:1/3"><b>${ico("ask", "ico--warn")} ${D.q.length} ${D.q.length > 4 ? "вопросов" : "вопроса"} «та же машина?»</b><small>${filt.qb ? "" : "Нажмите — по одному, с двумя кадрами"}${D.q.length > 4 ? " · уверенных (≥ 80 %): " + D.q.filter((q) => q.conf >= 80).length + " — принять все" : ""}</small></span></div>` +
+    (filt.qb ? qCard(D.q[0], 0, D.q.length) : "") +
+    `</div><h5>Лента · ${D.ev.length}</h5>` +
+    Object.entries(groups).map(([m, es]) => `<div class="min">${m}</div>` + es.map((e) => evRow(e, { noTime: true })).join("")).join("") + `</div>`;
+}
+function renderC() {
+  const k4 = [["work", "работают"], ["move", "едут"], ["idle", "стоят"], ["lost", "не видно"]];
+  const by = (k) => D.st.filter((s) => s.k === k);
+  const on = filt.vc || null;
+  const rows = (on ? [on] : k4.map(([k]) => k)).map((k) => by(k).length ? `<h5>${k4.find((x) => x[0] === k)[1]} · ${by(k).length}</h5>` + by(k).map((s) => `<div class="ml">${ico(s.k, ICLS[s.k] || "")}<span><span class="plate">${s.p}</span><small>${s.n} · ${s.c}</small></span><span class="t${s.w ? " w" : ""}">${s.tm}</span></div>`).join("") : "").join("");
+  vc.innerHTML = head("На площадке", D.st.length, D.cams) +
+    `<div class="sumrow">${k4.map(([k, t]) => `<button type="button" data-c="${k}" class="${on === k ? "is-on" : ""}${k === "idle" && by(k).some((s) => s.w) ? " w" : ""}"><b>${by(k).length}</b><span>${ico(k, ICLS[k] || "")}${t}</span></button>`).join("")}</div>` +
+    `<div class="scroll">${rows}</div><div class="foot-n">${ico("ask", "ico--warn")} ${D.q.length} ${D.q.length > 4 ? "вопросов" : "вопроса"} — кнопка «Ответить» в шапке · въезды и выезды — отметками на шкале под видео</div>`;
+}
+const all = () => { renderA(); renderB(); renderC(); };
+document.addEventListener("click", (e) => {
+  const t = e.target.closest("[data-f],[data-qa],[data-qb],[data-c],.ev,[data-load]"); if (!t) return;
+  if (t.dataset.load) { D = t.dataset.load === "flow" ? FLOW : KAMPUS; filt = { va: "all" }; document.querySelectorAll("[data-load]").forEach((b) => b.classList.toggle("is-on", b === t)); all(); return; }
+  if (t.dataset.f) { filt.va = t.dataset.f; renderA(); return; }
+  if ("qa" in t.dataset) { filt.qa = !filt.qa; renderA(); return; }
+  if ("qb" in t.dataset) { filt.qb = !filt.qb; renderB(); return; }
+  if (t.dataset.c) { filt.vc = filt.vc === t.dataset.c ? null : t.dataset.c; renderC(); return; }
+  if (t.classList.contains("ev")) { const was = t.classList.contains("is-sel"); t.parentNode.querySelectorAll(".ev.is-sel").forEach((x) => x.classList.remove("is-sel")); if (!was) t.classList.add("is-sel"); }
+});
+const p = new URLSearchParams(location.search);
+if (p.get("data") === "flow") { D = FLOW; document.querySelectorAll("[data-load]").forEach((b) => b.classList.toggle("is-on", b.dataset.load === "flow")); }
+if (p.get("open")) { filt.qb = true; filt.qa = true; }
+all();
+if (p.get("open")) document.querySelectorAll(".scroll").forEach((s) => s.querySelector(".ev")?.classList.add("is-sel"));
+</script>
+</body>
+</html>
