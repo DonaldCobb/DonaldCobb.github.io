@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Сокол · навигация</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  color-scheme: light dark;
+  --bg: light-dark(#F3F4F6, #0F1114); --surface: light-dark(#FFFFFF, #171A1E); --surface-2: light-dark(#ECEEF1, #20242A);
+  --text: light-dark(#14171A, #ECEEF1); --muted: light-dark(#565C66, #A9B0BA); --line: light-dark(#D5D8DD, #2A2F35);
+  --warn: light-dark(#8F5200, #F0B451); --warn-soft: light-dark(#FBF1E1, #2B2213); --ok: light-dark(#2F6B45, #7FC79A);
+  --bad: light-dark(#A33A2A, #F08A78); --accent: light-dark(#14171A, #ECEEF1); --on-accent: light-dark(#FFFFFF, #0F1114);
+  font-family: "Golos Text", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { color-scheme: dark; } }
+:root[data-theme="dark"] { color-scheme: dark; }
+:root[data-theme="light"] { color-scheme: light; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text); font-size: 16px; line-height: 1.5; }
+.wrap { max-width: 1180px; margin: 0 auto; padding: 28px 24px 80px; }
+h1 { font-size: 30px; line-height: 1.2; margin: 0 0 6px; letter-spacing: -0.01em; }
+h2 { font-size: 22px; margin: 48px 0 12px; }
+h3 { font-size: 17px; margin: 0 0 6px; }
+p { margin: 0 0 10px; }
+.muted { color: var(--muted); }
+a { color: inherit; text-underline-offset: 3px; }
+code { font-size: 13px; background: var(--surface-2); padding: 1px 6px; border-radius: 5px; }
+.lead { font-size: 18px; color: var(--muted); max-width: 820px; }
+.quote { border-left: 3px solid var(--line); padding: 4px 0 4px 14px; color: var(--muted); font-style: italic; margin: 14px 0 0; }
+.toc { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0 0; padding: 0; list-style: none; }
+.toc a { display: inline-block; padding: 6px 12px; border: 1px solid var(--line); border-radius: 999px; text-decoration: none; font-size: 14px; background: var(--surface); }
+.kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 24px; }
+.kpi { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px; }
+.kpi b { display: block; font-size: 34px; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.kpi.is-bad b { color: var(--bad); }
+.kpi.is-ok b { color: var(--ok); }
+.kpi span { color: var(--muted); font-size: 14px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px; }
+.sut { display: grid; grid-template-columns: 170px 1fr; gap: 6px 16px; }
+.sut dt { color: var(--muted); }
+.sut dd { margin: 0; }
+.tbl { width: 100%; overflow-x: auto; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; font-size: 14px; min-width: 860px; }
+th, td { text-align: left; vertical-align: top; padding: 9px 12px; border-top: 1px solid var(--line); }
+th { color: var(--muted); font-weight: 500; border-top: 0; background: var(--surface-2); position: sticky; top: 0; }
+td.no { color: var(--bad); font-weight: 500; }
+.st { display: inline-block; padding: 0 7px; border-radius: 6px; font-size: 12px; border: 1px solid var(--line); white-space: nowrap; }
+.st--ok { color: var(--ok); } .st--smp { border-style: dashed; color: var(--muted); } .st--mix { color: var(--warn); }
+.map { overflow-x: auto; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); padding: 8px; }
+.map svg { display: block; min-width: 980px; width: 100%; height: auto; }
+.map text { font-family: "Golos Text", system-ui, sans-serif; fill: var(--text); font-size: 13px; }
+.map .m { fill: var(--muted); font-size: 12px; }
+.map .bx { fill: var(--surface-2); stroke: var(--line); }
+.map .bx-main { fill: var(--surface); stroke: var(--text); stroke-width: 1.5; }
+.map .bx-dead { fill: none; stroke: var(--bad); stroke-dasharray: 5 4; }
+.map .ar { stroke: var(--muted); stroke-width: 1.4; fill: none; marker-end: url(#ah); }
+.map .ar-bad { stroke: var(--bad); stroke-dasharray: 5 4; }
+.map .bad { fill: var(--bad); }
+.gal { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+.shotcard { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; display: flex; flex-direction: column; }
+.shotcard img { width: 100%; height: auto; display: block; border-bottom: 1px solid var(--line); background: #0F1114; }
+.shotcard div { padding: 12px 16px 14px; }
+.shotcard ul { margin: 6px 0 8px; padding-left: 18px; font-size: 14px; }
+.shotcard .src { font-size: 13px; color: var(--muted); }
+.tree { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+.tree section { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; }
+.tree h3 { display: flex; gap: 8px; align-items: baseline; }
+.tree h3 small { color: var(--muted); font-weight: 400; font-size: 13px; }
+.tree ul { margin: 6px 0 0; padding: 0; list-style: none; font-size: 14px; }
+.tree li { padding: 4px 0; border-top: 1px solid var(--line); display: flex; justify-content: space-between; gap: 8px; }
+.tree li:first-child { border-top: 0; }
+.tree li code { font-size: 11.5px; }
+.vars { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.var { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
+.var.is-rec { border-color: var(--text); border-width: 2px; }
+.var img { width: 100%; display: block; border-bottom: 1px solid var(--line); }
+.var .in { padding: 14px 18px 18px; }
+.var .tag { display: inline-block; font-size: 12px; padding: 2px 8px; border-radius: 6px; background: var(--accent); color: var(--on-accent); margin-bottom: 6px; }
+.btn { display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 0 14px; border-radius: 10px; background: var(--accent); color: var(--on-accent); text-decoration: none; font-weight: 600; font-size: 14px; margin: 4px 6px 0 0; }
+.btn--g { background: none; color: var(--text); border: 1px solid var(--line); }
+.strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 12px; }
+.strip figure { margin: 0; }
+.strip img { width: 100%; border-radius: 10px; border: 1px solid var(--line); display: block; }
+.strip figcaption { font-size: 12.5px; color: var(--muted); margin-top: 4px; }
+.pros { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 16px; font-size: 14px; margin-top: 8px; }
+.pros ul { margin: 2px 0 0; padding-left: 18px; }
+.rec { border-left: 4px solid var(--ok); }
+.fix { counter-reset: f; list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
+.fix li { counter-increment: f; display: grid; grid-template-columns: 30px 1fr; gap: 10px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; font-size: 15px; }
+.fix li::before { content: counter(f); display: grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: var(--surface-2); font-weight: 600; font-size: 13px; }
+.fix small { color: var(--muted); display: block; }
+.note { background: var(--warn-soft); border: 1px solid var(--line); border-radius: 12px; padding: 12px 16px; font-size: 14px; }
+.theme { position: fixed; right: 16px; top: 16px; min-height: 40px; padding: 0 12px; border-radius: 10px; border: 1px solid var(--line); background: var(--surface); color: var(--text); font: inherit; font-size: 14px; cursor: pointer; }
+@media (max-width: 700px) { .theme { position: absolute; } .wrap > p.muted:first-child { padding-right: 76px; } }
+@media (max-width: 760px) {
+  .wrap { padding: 20px 16px 60px; }
+  h1 { font-size: 24px; padding-right: 70px; }
+  .kpis, .gal, .vars, .pros { grid-template-columns: 1fr; }
+  .strip { grid-template-columns: 1fr 1fr; }
+  .sut { grid-template-columns: 1fr; }
+  .sut dt { margin-top: 8px; }
+}
+</style>
+</head>
+<body>
+<button class="theme" type="button" onclick="const r=document.documentElement;const d=r.dataset.theme?r.dataset.theme==='dark':matchMedia('(prefers-color-scheme: dark)').matches;r.dataset.theme=d?'light':'dark'">Тема</button>
+<div class="wrap">
+
+<p class="muted">«Сокол» · пульт · навигация · 25.10.2026</p>
+<h1>Как попасть в нужный раздел</h1>
+<p class="lead">Опись всех страниц пульта, как устроено меню у профессиональных продуктов, два варианта нового меню прототипами и малая правка к показу 26.10.</p>
+<p class="quote">«Видел всю панель управления, где не только камеры, но и другие разделы, и непонятно, как туда попасть, надо чтобы это всё работало логично».</p>
+<ul class="toc">
+  <li><a href="#now">1 · Что сейчас</a></li><li><a href="#map">2 · Карта переходов</a></li><li><a href="#pro">3 · У профи</a></li>
+  <li><a href="#tree">4 · Новая структура</a></li><li><a href="#vars">5 · Два варианта</a></li><li><a href="#rec">6 · Рекомендация</a></li><li><a href="#fix">7 · Правка к 26.10</a></li>
+</ul>
+
+<div class="kpis">
+  <div class="kpi is-bad"><b>0</b><span>ссылок на разделы с главного экрана: ссылка «Разделы» есть только в старом виде, а в новом её прячет стиль</span></div>
+  <div class="kpi is-bad"><b>4 · ∞</b><span>нажатия до «Табеля» на компьютере (через ★ → «Прежний вид» → «Разделы»); на телефоне дойти нельзя — ссылка скрыта</span></div>
+  <div class="kpi is-ok"><b>7 · 1</b><span>разделов в одном меню на всех страницах; до любого раздела одно нажатие, до вкладки — не больше двух</span></div>
+</div>
+
+<h2>Суть до дела</h2>
+<dl class="card sut">
+  <dt>Зачем</dt><dd>Руководитель и прораб должны с любого экрана за одно нажатие попасть в «Отчёты», «Технику» или «События» и понимать, где находятся. Сейчас главный экран и разделы живут каждый со своим меню, и одно о другом не знает.</dd>
+  <dt>Готовое в мире</dt><dd>Verkada Command (рейка + «All Sites» + поиск), Trackunit Manager (левое меню группами, поиск первым пунктом), Samsara (левое меню, список + карта), Genetec Security Desk (домашний экран — задачи группами), Milestone Smart Client (вкладки режимов). Кадры — ниже, 14 настоящих экранов и 2 продукта фактами.</dd>
+  <dt>Профи за 15 минут</dt><dd>Сделал бы одну оболочку на все страницы: рейка разделов по задачам слева, площадка и поиск в шапке, вкладки раздела под шапкой, на телефоне нижний таб-бар. Пульт стал бы одним из разделов («Камеры»), а не отдельным приложением.</dd>
+  <dt>Образец</dt><dd>Verkada Command: рейка + «Площадки» + поиск сверху. Samsara Fleet: вкладки раздела, список + карта. Рейка в наших разделах (<code>nav.js</code>) уже устроена так же — её и надо распространить на главный экран.</dd>
+  <dt>Ловушка</dt><dd>Делать меню «по технологиям» (3D, Кино, Табло) и по пачкам разработки (группы «Кабинет», «Связь», «Примеры» — как в коде), а не по задачам человека. И выпускать в главное меню 12 страниц-примеров наравне с живыми.</dd>
+</dl>
+
+<h2 id="now">1 · Что есть сейчас: опись</h2>
+<p class="muted">По коду ветки показа (<code>src/sokol/web.py</code>, <code>views.py</code>, <code>page_*.py</code>, <code>ui/*.html</code>, <code>ui/js/nav.js</code>, <code>ui/js/v2/shell.js</code>). В браузере на живом пульте не проверял: Mac спит, проверено по коду и по снимкам 25.10.</p>
+<div class="tbl"><table>
+<thead><tr><th>Адрес</th><th>Что это</th><th>Откуда сейчас есть ссылка</th><th>В меню?</th><th>Роль</th><th>Данные</th></tr></thead>
+<tbody>
+<tr><td><code>/</code> → вид «Камеры» (c3)</td><td>Главный экран: 3 камеры, лента событий, план, шкала</td><td>Логотип и кнопка «Пульт» на всех страницах разделов</td><td>вкладки видов в шапке пульта</td><td>все; клиент — без ответов</td><td><span class="st st--ok">записи</span></td></tr>
+<tr><td><code>/?v=c2 · c4 · c5 · c7 · c6 · c1</code></td><td>Виды пульта: Пульт (табло), План, 3D, Журнал, Сводка, Кино</td><td>вкладки в шапке пульта</td><td>да, только на главном</td><td>все</td><td><span class="st st--ok">записи</span></td></tr>
+<tr><td><code>/?mode=cams · /?mode=log</code></td><td>Прежний вид пульта и «Машины»; в нём вкладки «Насколько точно», «Как выбирали»</td><td>«весь журнал» в ленте событий; «Прежний вид» в панели ★</td><td class="no">нет</td><td>все</td><td><span class="st st--ok">записи</span></td></tr>
+<tr><td><code>report.html</code></td><td>Рапорт за смену</td><td>«Рапорт по записи» в виде «Пульт»; нижняя строка прежнего вида</td><td class="no">нет в рейке</td><td>все</td><td><span class="st st--ok">записи</span></td></tr>
+<tr><td><code>qm-page.html</code></td><td>«Разделы» — карточки всех разделов</td><td>только нижняя строка прежнего вида; в новом виде строка скрыта (<code>v2.css</code>), на телефоне ссылка скрыта (<code>app.css</code>)</td><td class="no">нет</td><td>все</td><td>—</td></tr>
+<tr><td><code>objects.html · profile.html</code></td><td>Мои объекты · Профиль</td><td>рейка разделов, группа «Кабинет»</td><td>рейка</td><td>все</td><td><span class="st st--mix">записи + пример</span></td></tr>
+<tr><td><code>site.html</code></td><td>Объект: люди</td><td>рейка, «Объект»</td><td>рейка</td><td>все</td><td><span class="st st--mix">записи + пример</span></td></tr>
+<tr><td><code>stats · daily · tabel</code></td><td>Статистика · Ежедневный отчёт · Табель</td><td>рейка, «Отчёты»</td><td>рейка</td><td>все</td><td><span class="st st--ok">записи</span>; табель — заявки примером</td></tr>
+<tr><td><code>incidents · safety</code></td><td>Инциденты · Опасные зоны</td><td>рейка, «Безопасность»</td><td>рейка</td><td>все</td><td><span class="st st--ok">записи</span>; зоны — с примером</td></tr>
+<tr><td><code>money · calc · pilot</code></td><td>Простой в ₽ · Калькулятор потерь · Кампус: день</td><td>рейка, «Деньги»</td><td>рейка</td><td>все</td><td><span class="st st--mix">записи + пример</span></td></tr>
+<tr><td><code>bot.html</code></td><td>Бот «Сокол» в Telegram</td><td>рейка, группа «Связь» — <b>последней, под 12 примерами</b>: группы нет в порядке <code>nav.js</code></td><td>рейка (в самом низу)</td><td>оператор, руководитель</td><td><span class="st st--ok">живое</span></td></tr>
+<tr><td>12 страниц <code>ex-* · ppe · volume · kpp</code></td><td>План и прогресс, Техника и документы, Как устроено, Госзаказ, ЖК, Магазин, Цех, Офис, Как начать, Каски, Объём, Номер на КПП</td><td>рейка, «Примеры», метка «пример»</td><td>рейка (12 пунктов из 25)</td><td>все</td><td><span class="st st--smp">пример</span></td></tr>
+<tr><td><code>next.html</code></td><td>Что дальше</td><td class="no">ни одной ссылки — сирота</td><td class="no">нет</td><td>все</td><td><span class="st st--smp">пример</span></td></tr>
+<tr><td><code>login.html</code></td><td>Вход</td><td>сама, без входа</td><td>—</td><td>—</td><td>—</td></tr>
+</tbody></table></div>
+<p class="muted" style="margin-top:10px">Ещё по коду: при переходе пульт ↔ разделы площадка теряется — <code>keepQuery()</code> в <code>theme.js</code> переносит только <code>fixtures, records, theme</code>, без <code>site</code>; «Пульт» из разделов всегда открывает кампус. В рейке нет пункта «Пульт» — вернуться можно только логотипом или кнопкой в шапке. На телефоне в нижнем меню разделов первые четыре пункта — «Мои объекты», «Профиль», «Люди», «Статистика»: профиль занимает место, камер нет. Два «журнала»: вкладка «Журнал» (новый вид) и «весь журнал» в ленте ведёт в прежний вид.</p>
+
+<h2 id="map">2 · Карта «как попасть сейчас»</h2>
+<div class="map">
+<svg viewBox="0 0 1180 560" role="img" aria-label="Карта переходов пульта сейчас">
+  <defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="currentColor" style="fill: var(--muted)"/></marker></defs>
+  <!-- главный экран -->
+  <rect class="bx-main" x="16" y="24" width="270" height="250" rx="12"/>
+  <text x="32" y="50" font-weight="600">Главный экран  /</text>
+  <text class="m" x="32" y="70">открывается первым · вид «Камеры»</text>
+  <text x="32" y="98">Вкладки видов в шапке:</text>
+  <text class="m" x="32" y="118">Пульт · Камеры · План · 3D</text>
+  <text class="m" x="32" y="136">Журнал · Сводка · Кино</text>
+  <text x="32" y="166">Площадка: список «Площадок 9»</text>
+  <text x="32" y="192">Кнопка ★ «Вид» → панель вариантов</text>
+  <text x="32" y="218">«Рапорт по записи» (вид «Пульт»)</text>
+  <text x="32" y="244">«весь журнал» (лента событий)</text>
+  <text class="bad" x="32" y="264" font-size="12">ссылки «Разделы» нет</text>
+  <!-- прежний вид -->
+  <rect class="bx" x="370" y="40" width="250" height="96" rx="12"/>
+  <text x="386" y="66" font-weight="600">Прежний вид</text>
+  <text class="m" x="386" y="86">/?mode=cams · /?mode=log</text>
+  <text class="m" x="386" y="104">нижняя строка: Насколько точно,</text>
+  <text class="m" x="386" y="122">Как выбирали, Рапорт, «Разделы»</text>
+  <!-- рапорт -->
+  <rect class="bx" x="370" y="196" width="250" height="56" rx="12"/>
+  <text x="386" y="221" font-weight="600">Рапорт за смену</text>
+  <text class="m" x="386" y="240">report.html · нет в рейке</text>
+  <!-- разделы -->
+  <rect class="bx" x="700" y="40" width="190" height="70" rx="12"/>
+  <text x="716" y="66" font-weight="600">«Разделы»</text>
+  <text class="m" x="716" y="86">qm-page.html · карточки</text>
+  <text class="m" x="716" y="102">на телефоне не дойти</text>
+  <!-- рейка -->
+  <rect class="bx" x="700" y="150" width="460" height="300" rx="12"/>
+  <text x="716" y="176" font-weight="600">Страницы с рейкой разделов (25 пунктов)</text>
+  <text x="716" y="204">Кабинет: Мои объекты · Профиль</text>
+  <text x="716" y="228">Объект: Объект: люди</text>
+  <text x="716" y="252">Отчёты: Статистика · Ежедневный · Табель</text>
+  <text x="716" y="276">Безопасность: Инциденты · Опасные зоны</text>
+  <text x="716" y="300">Деньги: Простой · Калькулятор · Кампус: день</text>
+  <text x="716" y="324">Примеры: 12 страниц-заглушек</text>
+  <text x="716" y="348">Связь: Бот — последним, под примерами</text>
+  <text class="bad" x="716" y="378" font-size="12">в рейке нет «Пульта» и «Рапорта»</text>
+  <text class="m" x="716" y="400">назад — логотип или кнопка «Пульт»</text>
+  <text class="m" x="716" y="418">(открывает кампус, выбранная площадка теряется)</text>
+  <!-- сироты -->
+  <rect class="bx-dead" x="370" y="330" width="250" height="56" rx="12"/>
+  <text x="386" y="355" font-weight="600">Что дальше</text>
+  <text class="m" x="386" y="374">next.html · ссылок нет</text>
+  <rect class="bx-dead" x="16" y="330" width="270" height="56" rx="12"/>
+  <text x="32" y="355" font-weight="600">Насколько точно · Как выбирали</text>
+  <text class="m" x="32" y="374">только в прежнем виде</text>
+  <!-- стрелки -->
+  <path class="ar" d="M286 188 C330 188 330 100 368 92"/>
+  <text class="m" x="300" y="150">★ → «Прежний вид»</text>
+  <path class="ar" d="M286 214 C330 214 340 222 368 222"/>
+  <path class="ar" d="M286 240 C330 240 330 120 368 116"/>
+  <path class="ar" d="M620 96 L698 78"/>
+  <text class="m" x="628" y="74">«Разделы»</text>
+  <path class="ar" d="M795 110 L795 148"/>
+  <path class="ar ar-bad" d="M286 60 C480 0 620 20 698 58"/>
+  <text class="bad" x="420" y="22" font-size="12">прямого пути нет</text>
+  <path class="ar" d="M700 420 C560 470 300 470 150 278"/>
+  <text class="m" x="430" y="480">«Пульт» / логотип → вид «Камеры», кампус</text>
+  <text class="m" x="16" y="530">До «Табеля» с главного экрана: ★ → «Прежний вид» → «Разделы» → «Табель» = 4 нажатия, без подсказки. На телефоне — нельзя.</text>
+</svg>
+</div>
+
+<h2 id="pro">3 · Как у профи</h2>
+<p class="muted">Настоящие экраны продуктов: кадры из видео-обзоров и справочных центров (ссылка — под кадром). Смотрим не облик, а как устроено меню.</p>
+<div class="gal">
+<article class="shotcard"><img src="img/pro/verkada__command-cameras-rail-sites.jpg" alt="Verkada Command — экран с меню" loading="lazy"><div><h3>Verkada Command</h3><ul><li>Экран «Cameras»: слева узкая иконочная рейка (сетка камер, архивы, люди, техника, настройки), в левом верхнем углу иконка-сетка 3x3 — переключатель продуктов.</li><li>В заголовке рядом с названием страницы: чип «All Sites» (переключатель площадок), круглая кнопка поиска, справа «Manage Sites»; ниже крошка «HQ - Verkada - 1 &gt; Exterior».</li><li>Внизу слева: колокольчик (оповещения), «?» (меню справки: Training, Camera Fleet, What&#x27;s New, Feedback, Bug Report, Contact Us) и аватар аккаунта; плавающая кнопка «Map».</li></ul><p class="src">Кому: оператор/прораб: сетка камер и живое; руководитель: Manage Sites, Admin · <a href="https://www.verkada.com/blog/introducing-a-intuitive-new-navigation-experience-in-command/" target="_blank" rel="noopener">источник</a></p></div></article>
+<article class="shotcard"><img src="img/pro/verkada__command-product-switcher.jpg" alt="Verkada Command — экран с меню" loading="lazy"><div><h3>Verkada Command</h3><ul><li>Меню продуктов открывается иконкой-сеткой слева вверху: сверху поле «Devices, sites, or people» (глобальный поиск), ниже плитки «Cameras · Access · Air Quality · Alarms · Intercom · Guest · Mailroom».</li><li>Нижний ряд: «Admin · Devices (бейдж 30) · Add Devices · Floorplans» и красная кнопка «Lockdown».</li><li>Блог: список продуктов зависит от роли и от купленных продуктов; на странице продукта слева меню именно этого продукта (для Cameras: Grids, Archives, People &amp; Vehicle Analytics, настройки камер).</li></ul><p class="src">Кому: руководитель: Admin, Devices, Floorplans; оператор: Cameras, Alarms · <a href="https://www.verkada.com/blog/introducing-a-intuitive-new-navigation-experience-in-command/" target="_blank" rel="noopener">источник</a></p></div></article>
+<article class="shotcard"><img src="img/pro/verkada__mobile-menu.jpg" alt="Verkada Command (мобильное приложение) — экран с меню" loading="lazy"><div><h3>Verkada Command (мобильное приложение)</h3><ul><li>Нижнего таб-бара нет: слева колонка иконок продуктов, справа подстраницы выбранного продукта; для Cameras это «Home · Archives · People».</li><li>Справка: «On the top left, tap to open an expanded menu, where you can see products on the left and subpages on the right»; быстрее: свайп вправо и тап по иконке продукта.</li><li>Внизу меню: Help, Scenarios (красный), Devices, Add Device; тап по названию организации открывает данные аккаунта и переключение организации.</li></ul><p class="src">Кому: оператор в поле; Org Settings (роли, группы) в приложении только у админа · <a href="https://help.verkada.com/command/organization-settings/navigate-the-command-mobile-app" target="_blank" rel="noopener">источник</a></p></div></article>
+<article class="shotcard"><img src="img/an/Verkada__camera-grid-site-tree.jpg" alt="Verkada Command — экран с меню" loading="lazy"><div><h3>Verkada Command</h3><ul><li>Рейка иконок слева + дерево площадок «All Sites → HQ → Exterior»</li><li>Поиск во всю ширину сверху, крошки «1. HQ - San Mateo › 1.1 Exterior» над сеткой камер</li></ul><p class="src">Кому: оператор: камеры по площадкам · <a href="https://www.youtube.com/watch?v=H4f0hVifcWs&amp;t=16s" target="_blank" rel="noopener">источник</a></p></div></article>
+<article class="shotcard"><img src="img/pro/samsara__fleet-dashboard-sidebar-mobile-tabs.jpg" alt="Samsara Fleet — экран с меню" loading="lazy"><div><h3>Samsara Fleet</h3><ul><li>Левое меню на картинке блога (может быть устаревшим): «Search, Overview, Compliance, Safety, Maintenance, Dispatch, Fuel &amp; Energy, Documents, Reports → Dashboard»; внизу шестерёнка, «?», Feedback и кнопка сворачивания; вверху «Fleet» с иконками чата и колокольчика.</li><li>Мобильное приложение на той же картинке: поиск «Search for asset or driver» и нижний таб-бар «Map · Safety · Messages · Alerts» (прочитано с мелкой картинки, в тексте справки не подтверждено).</li><li>Блог: вертикальная навигация слева; меню и список машин сворачиваются, чтобы расширить карту. Видимость разделов зависит от лицензий и роли (kb.samsara.com «Dashboard Menus» отдала 403, не проверено).</li></ul><p class="src">Кому: руководитель: Reports/Dashboard, Safety; диспетчер: Dispatch, Map · <a href="https://www.samsara.com/blog/meet-the-new-samsara-platform-experience" target="_blank" rel="noopener">источник</a></p></div></article>
+<article class="shotcard"><img src="img/an/Samsara__fleet-live-map-list.jpg" alt="Samsara (прежний интерфейс) — экран с меню" loading="lazy"><div><h3>Samsara (прежний интерфейс)</h3><ul><li>Сверху продукты «Environment · Fleet · Industrial», под ними вкладки раздела «Overview · Assets · Drivers · Dispatch · Routes · Reports…»</li><li>Организация — переключателем справа вверху; слева поиск по 142 машинам и список, справа карта</li></ul><p class="src">Кому: диспетчер: где машины · <a href="https://www.youtube.com/watch?v=i4T5WYpi7hM&amp;t=20s" target="_blank" rel="noopener">источник</a></p></div></article>
+<article class="shotcard"><img src="img/pro/trackunit__manager-sidebar.jpg" alt="Trackunit Manager — экран с меню" loading="lazy"><div><h3>Trackunit Manager</h3><ul><li>Левое тёмное меню из четырёх групп: Core «Search, Map, Assets, Sites, Customers»; Apps «Access Management, Emissions Reporting, My Network, Service Management, Applications»; Configure «Reports, Alerts, Groups»; внизу «Notifications, Attention List (бейдж 88), Support, Classic Manager, Administration».</li><li>Поиск первым пунктом меню, всегда под рукой; приложения закрепляются звёздочкой.</li><li>Внизу слева профиль с названием организации и выпадающим списком (настройки профиля), вверху кнопка сворачивания меню.</li></ul><p class="src">Кому: руководитель парка: Reports, Alerts, Attention List; диспетчер: Map, Assets, Sites · <a href="https://help.trackunit.com/en/articles/236809-understanding-the-navigation-bar-in-trackunit-manager" target="_blank" rel="noopener">источник</a></p></div></article>
+<article class="shotcard"><img src="img/pro/genetec__security-desk-homepage.jpg" alt="Genetec Security Center (Security Desk) — экран с меню" loading="lazy"><div><h3>Genetec Security Center (Security Desk)</h3><ul><li>Главная (вкладка Home): слева «Search · Tasks (Private tasks, Public tasks) · Tools · Options · About · Log off»; справа сетка задач по разделам «Operation / Investigation / Maintenance» (Monitoring, Maps, Alarm monitoring, Archives, Bookmarks, Motion search, Incidents, System status…).</li><li>Официальная справка 5.11: домашняя страница из шести зон: поиск по задачам (название, категория, описание), Private tasks, Public tasks, Tools, Options, Favorites and Recent items.</li><li>Каждая открытая задача становится отдельной вкладкой вверху; категории Administration, Operation, Investigation, Maintenance названы в обучающей презентации, а не в официальной справке.</li></ul><p class="src">Кому: оператор: Operation; расследование: Investigation; админ: Maintenance · <a href="https://techdocs.genetec.com/r/en-US/Security-Center-User-Guide-5.11/Homepage-overview" target="_blank" rel="noopener">источник</a></p></div></article>
+<article class="shotcard"><img src="img/pro/genetec__security-desk-monitoring.jpg" alt="Genetec Security Center (Security Desk) — экран с меню" loading="lazy"><div><h3>Genetec Security Center (Security Desk)</h3><ul><li>Задача «Monitoring» открыта вкладкой рядом с вкладкой «Security Desk» вверху; слева дерево зон «Area view» с поиском, по центру плитки камер 2x2, справа панели «Camera» и «Tile».</li><li>Внизу панель «Hide area view · Monitoring · Synchronize video · Change tile pattern · Clear all · Open the Vault · Hide controls».</li></ul><p class="src">Кому: оператор: живое видео · <a href="https://techdocs.genetec.com/r/en-US/Security-Center-User-Guide-5.11/Homepage-overview" target="_blank" rel="noopener">источник</a></p></div></article>
+<article class="shotcard"><img src="img/pro/milestone__smartclient-main-window.jpg" alt="Milestone XProtect Smart Client — экран с меню" loading="lazy"><div><h3>Milestone XProtect Smart Client</h3><ul><li>Верхние вкладки на схеме 2023 R1: «Views · Exports · Search · Alarm Manager · Incidents · System Monitor». В 2020 R3 по справке: Live, Playback, Search, Alarm Manager, System Monitor; Access Control, LPR, Transact появляются только с лицензией.</li><li>Зоны схемы: 1 вкладки, 2 левая панель «Views» и «Cameras», 3 часы и значки, 4 панель Export / Evidence lock / Setup, 5 таймлайн внизу с переключателем PLAYBACK · LIVE.</li><li>Справка: если вкладок не видно, нет прав доступа к ним (права администратор задаёт по ролям).</li></ul><p class="src">Кому: оператор диспетчерской: Views; руководитель/СБ: Alarm Manager, Incidents, System Monitor · <a href="https://doc.milestonesys.com/2020R3/en-US/standard_features/sf_sc/sf_common/sc_tabsexplained.htm" target="_blank" rel="noopener">источник</a></p></div></article>
+<article class="shotcard"><img src="img/pro/milestone__smartclient-views-tab.jpg" alt="Milestone XProtect Smart Client — экран с меню" loading="lazy"><div><h3>Milestone XProtect Smart Client</h3><ul><li>Вкладка Views: слева дерево Views → Private → Terminal A/B → виды (Gate A1, Parking Area A…), ниже сворачиваемый блок «Cameras»; в левой панели поле «Search views and cameras…».</li><li>Над видом выпадающий список текущего вида, справа Export / Setup / полный экран; вверху те же вкладки «Views · Exports · Search · Alarm Manager · Incidents · System Monitor».</li></ul><p class="src">Кому: оператор: живое и вид по зоне · <a href="https://doc.milestonesys.com/sc/pdf/2023r1/en-US/MilestoneXProtectSmartClient_UserManual_en-US.pdf" target="_blank" rel="noopener">источник</a></p></div></article>
+<article class="shotcard"><img src="img/pro/milestone__smartclient-search-tab.jpg" alt="Milestone XProtect Smart Client — экран с меню" loading="lazy"><div><h3>Milestone XProtect Smart Client</h3><ul><li>Вкладка Search: слева «Search filters» (время, выбор камер, кнопка поиска), в центре «71 results» с таймлайном и плитками, справа превью выбранного результата.</li><li>Поиск по видео и метаданным (движение, закладки, люди, транспорт) вынесен в отдельную вкладку, а не в строку шапки.</li></ul><p class="src">Кому: расследование после инцидента: служба безопасности, руководитель · <a href="https://doc.milestonesys.com/sc/pdf/2023r1/en-US/MilestoneXProtectSmartClient_UserManual_en-US.pdf" target="_blank" rel="noopener">источник</a></p></div></article>
+<article class="shotcard"><img src="img/pro/earthcam__cc87-0.jpg" alt="EarthCam Control Center — экран с меню" loading="lazy"><div><h3>EarthCam Control Center</h3><ul><li>Верхняя синяя полоса: логотип и крошка «Company Name / Project Name / Camera Name», справа выпадающие «Admin» и «Support».</li><li>Внизу иконочная Main Navigation Bar; по мануалу: Camera Dashboard, Image Archives, Camera Control, Auto-Generated Panorama, Data Dashboard, Photography Documentation, Map/Aerial/Satellite View, Full Screen Mode.</li><li>Главный экран камеры: панорама плюс плитки «Archives · Events · Video · Hall of Fame · Time-Lapse Movie · Current Data» на одной странице.</li></ul><p class="src">Кому: руководитель/маркетинг: Hall of Fame, Progress Reports; прораб: Camera Control, Archives · <a href="https://cc8.earthcam.net/documents/EarthCam_ControlCenter8.7_UserManual.pdf" target="_blank" rel="noopener">источник</a></p></div></article>
+<article class="shotcard"><img src="img/pro/earthcam__cc87-42.jpg" alt="EarthCam Control Center — экран с меню" loading="lazy"><div><h3>EarthCam Control Center</h3><ul><li>«All Access Dashboard | Security Monitor»: вкладки «All Projects · Completed Projects &amp; Videos · Pending Projects», список проектов с кнопками «View All» и «View Map», поле «Project» для поиска.</li><li>Переключатель объектов это сам экран-обзор: сетка камер по всем объектам, дальше вход в проект.</li><li>Шапка с крошкой и «Admin / Support» сохраняется.</li></ul><p class="src">Кому: руководитель компании с несколькими объектами · <a href="https://cc8.earthcam.net/documents/EarthCam_ControlCenter8.7_UserManual.pdf" target="_blank" rel="noopener">источник</a></p></div></article>
+<article class="shotcard"><img src="img/pro/earthcam__cc87-51.jpg" alt="EarthCam Control Center — экран с меню" loading="lazy"><div><h3>EarthCam Control Center</h3><ul><li>Админ-раздел «Company Information»: слева вертикальное меню (по мелкому тексту: All Access Dashboard, Camera Management, Public Outreach, User Management, User Activity, Order a Time-Lapse, Camera Upgrades, Camera Reactivation, Procore Integration, End of Project Digital File).</li><li>Названия прочитаны с мелкой картинки: часть может быть неточной.</li></ul><p class="src">Кому: администратор компании · <a href="https://cc8.earthcam.net/documents/EarthCam_ControlCenter8.7_UserManual.pdf" target="_blank" rel="noopener">источник</a></p></div></article>
+<article class="shotcard"><img src="img/pro/samsara__driver-app-home.jpg" alt="Samsara Driver App — экран с меню" loading="lazy"><div><h3>Samsara Driver App</h3><ul><li>Домашний экран водителя без таб-бара: имя, машина, шестерёнка, ряд круглых кнопок «SOS · Status · Assign · Team · Sign Out».</li><li>Ниже карточки «Coach» (оценка 96, полосы Speed/Focus/HoS/Eco) и «HoS» (часы смены); по справке Routes открываются с домашнего экрана.</li><li>Главная для человека в поле: один экран с крупными кнопками действий.</li></ul><p class="src">Кому: водитель/полевой сотрудник · <a href="https://www.samsara.com/pdf/docs/new-experience-samsara-driver-app-guide-us-en.pdf" target="_blank" rel="noopener">источник</a></p></div></article>
+<article class="shotcard"><img src="img/an/qmonitoring-video__stats-dashboard.jpg" alt="QMonitoring (прямой конкурент) — экран с меню" loading="lazy"><div><h3>QMonitoring (прямой конкурент)</h3><ul><li>Рейка разделов слева, статистика: фильтр → плитки → график</li><li>Такая же рейка уже стоит в наших 12 разделах</li></ul><p class="src">Кому: руководитель: статистика · <a href="https://xn--b1agapfwapgcl.xn--p1ai/" target="_blank" rel="noopener">источник</a></p></div></article>
+<article class="shotcard"><div><h3>Procore · без картинки</h3><p class="src">справка закрыта для ботов (403) — факты из поиска, не проверено</p><ul><li>Верхняя панель показывает компанию и проект; «Change Project» открывает список доступных проектов, внизу кнопка «Switch Company» (если компаний несколько).</li><li>Меню «Project Tools» (раньше «Toolbox») группирует инструменты по дисциплинам, видны только доступные; Favorites до 10 инструментов на пользователя и проект.</li><li>Project Home: «Project Overview, My Open Items, My Dashboards»; отчёты через инструмент Reports (Project 360 Reporting). В Android меню сверху «Project &amp; Company Selector». Ctrl+K не найдено.</li></ul><p class="src">Кому: руководитель проекта: Reports, дашборды Home; прораб: инструменты проекта и мобильное приложение · <a href="https://support.procore.com/getting-started-with-procore/login-and-account-management/tutorials/navigate-procores-tools" target="_blank" rel="noopener">источник</a></p></div></article>
+<article class="shotcard"><div><h3>Cat VisionLink · без картинки</h3><p class="src">справка закрыта для ботов (403) — факты из поиска, не проверено</p><ul><li>По FAQ дилера, страницы справки по ролям: «Needs Review, Assets, Map, Tasks, Planned Maintenance, Health, Utilization, Asset Operation, Manage, Asset Details»; посадочная страница названа «Dashboard» (справка Getting Started); в левом меню есть «Legal».</li><li>«Needs Review» это список техники, требующей внимания, оттуда назначаются задачи; пользователь без активной площадки попадает на «Assets». Точный порядок и подписи меню — не проверено.</li></ul><p class="src">Кому: руководитель парка: Dashboard, Needs Review, Utilization; оператор: Assets, Map · <a href="https://www.ohiocat.com/faqs/visionlink-faq/" target="_blank" rel="noopener">источник</a></p></div></article>
+</div>
+<div class="card" style="margin-top:16px">
+<h3>Общее у всех</h3>
+<ul>
+<li><b>Рейка слева + переключатель площадок</b> — Verkada («All Sites»), Trackunit («Sites»), Samsara, EarthCam («All Access Dashboard»), Procore («Change Project»). Верхние вкладки — у настольных диспетчерских (Milestone, Genetec), и там это режимы работы, а не разделы.</li>
+<li><b>Поиск на всё — в меню или шапке:</b> Verkada «Devices, sites, or people», Trackunit — первый пункт меню, Genetec — поиск по задачам. Горячая клавиша Ctrl K в этих источниках не найдена; у нас она — дубль кнопки поиска, как в веб-продуктах.</li>
+<li><b>Разделы по задачам и правам:</b> Genetec — «Operation · Investigation · Maintenance», Trackunit — «Core · Apps · Configure · Admin»; Milestone и Verkada прячут то, на что нет прав. Руководителю — отчёты и оповещения, оператору и прорабу — камеры и живое.</li>
+<li><b>Крошки «Компания / Объект / Камера»</b> — EarthCam и Verkada: человек всегда видит, где он.</li>
+<li><b>Телефон проще компьютера:</b> Verkada — меню «продукты слева, подстраницы справа», Samsara для водителя — один экран крупных кнопок; нижний таб-бар Samsara «Map · Safety · Messages · Alerts» — по мелкой картинке, не проверено. Мы берём таб-бар: прорабу одной рукой так быстрее.</li>
+</ul>
+</div>
+
+<h2 id="tree">4 · Новая структура: 7 разделов по задачам</h2>
+<p class="muted">Каждая нынешняя страница получает одно место. Внутри раздела — вкладки. Площадка — переключатель в шапке, не пункт меню. Примеры — одной полкой в «Задачах ТЗ» с меткой «пример».</p>
+<div class="tree">
+<section><h3>Обзор <small>руководитель · домой</small></h3><ul><li>Смена <code>?v=c2</code></li><li>Сводка дня <code>?v=c6</code></li><li>Все площадки <code>objects.html</code></li></ul></section>
+<section><h3>Камеры <small>прораб · домой</small></h3><ul><li>Стена <code>?v=c3</code></li><li>Одна камера <code>?v=c1</code></li><li>План <code>?v=c4</code></li><li>3D <code>?v=c5</code></li></ul></section>
+<section><h3>Техника</h3><ul><li>Журнал машин <code>?v=c7 + ?mode=log</code></li><li>Простой в ₽ <code>money.html</code></li></ul></section>
+<section><h3>События <small>с числом вопросов</small></h3><ul><li>Вопросы «подтверди»</li><li>Инциденты <code>incidents.html</code></li><li>Опасные зоны <code>safety.html</code></li><li>Люди <code>site.html</code></li></ul></section>
+<section><h3>Отчёты</h3><ul><li>Рапорт смены <code>report.html</code></li><li>Ежедневный <code>daily.html</code></li><li>Табель <code>tabel.html</code></li><li>Статистика <code>stats.html</code></li><li>Калькулятор потерь <code>calc.html</code></li><li>День кампуса <code>pilot.html</code></li></ul></section>
+<section><h3>Задачи ТЗ <small>режим показа</small></h3><ul><li>По пунктам ТЗ → «Показать на панели» <span class="st st--smp">новое</span></li><li>Сверх ТЗ: 12 примеров <span class="st st--smp">пример</span></li><li>Что дальше <code>next.html</code></li></ul></section>
+<section><h3>Настройки</h3><ul><li>Профиль и роли <code>profile.html</code></li><li>Бот в Telegram <code>bot.html</code></li><li>Насколько точно · Как выбирали</li><li>Площадки и камеры</li></ul></section>
+</div>
+<div class="tbl" style="margin-top:14px"><table style="min-width:720px">
+<thead><tr><th>Куда</th><th>Сейчас, с главного экрана</th><th>Вариант А, компьютер</th><th>Телефон (таб-бар)</th></tr></thead>
+<tbody>
+<tr><td>Табель</td><td class="no">4, не очевидно</td><td>2: «Отчёты» → «Табель» (или 1: наведение на рейку, Ctrl K «таб»)</td><td>2: «Отчёты» у руководителя; у прораба «Ещё» → «Табель»</td></tr>
+<tr><td>Инциденты</td><td class="no">4</td><td>2: «События» → «Инциденты»</td><td>2: «События» → «Инциденты»</td></tr>
+<tr><td>Бот в Telegram</td><td class="no">4, внизу под примерами</td><td>2: «Настройки» → «Бот»</td><td>2: «Ещё» → «Бот»</td></tr>
+<tr><td>Другая площадка</td><td>1 (список)</td><td>1: площадка в шапке, на любой странице</td><td>1</td></tr>
+<tr><td>Вопрос «подтверди»</td><td>1 (кнопка «Ответить»)</td><td>1: та же кнопка на любой странице</td><td>1</td></tr>
+<tr><td>Назад на камеры</td><td>1 (логотип, кампус)</td><td>1: «Камеры», площадка сохраняется</td><td>1</td></tr>
+</tbody></table></div>
+
+<h2 id="vars">5 · Два варианта прототипами</h2>
+<p class="muted">Оболочка поверх нашего главного экрана: внутри — снимки пульта 25.10 (кампус, Оберн, Уэйко) и прототипов разделов 23.10. Нажимается всё: разделы, вкладки, площадка, поиск <code>Ctrl K</code>, кнопка «Ответить», роль «Прораб / Руководитель», тема. Логики пульта нет.</p>
+<div class="vars">
+  <div class="var is-rec">
+    <img src="shots/a-1440-dark.jpg" alt="Вариант А — рейка слева, тёмная тема, 1440">
+    <div class="in">
+      <span class="tag">рекомендую</span>
+      <h3>А · Рейка слева (как Verkada, Trackunit, наши разделы)</h3>
+      <p>Слева 7 разделов иконкой и словом; наведение раскрывает вкладки. В шапке — площадка, поиск, «Ответить». Под шапкой — крошки и вкладки раздела.</p>
+      <a class="btn" href="a.html">Открыть вариант А</a><a class="btn btn--g" href="a.html?sec=tz&role=boss">Режим «Задачи ТЗ»</a>
+      <div class="pros"><div><b>Плюсы</b><ul><li>то же, что уже есть в 12 разделах (<code>nav.js</code>) — меньше переделки</li><li>разделы видны всегда, место под 8-й пункт есть</li><li>видео теряет 84 px ширины — терпимо</li></ul></div><div><b>Минусы</b><ul><li>на проекторе рейка отнимает край экрана</li><li>иконки без подписей не годятся — подписи обязательны</li></ul></div></div>
+    </div>
+  </div>
+  <div class="var">
+    <img src="shots/b-1440-dark.jpg" alt="Вариант Б — разделы вкладками в шапке, тёмная тема, 1440">
+    <div class="in">
+      <h3>Б · Разделы вкладками в шапке + «Все разделы» (как Samsara, Milestone, Genetec)</h3>
+      <p>Рейки нет: разделы — вкладками в шапке рядом с площадкой; «Все разделы» открывает карту всего пульта одним листом.</p>
+      <a class="btn" href="b.html">Открыть вариант Б</a><a class="btn btn--g" href="b.html?sheet=1">Лист «Все разделы»</a>
+      <div class="pros"><div><b>Плюсы</b><ul><li>вся ширина — видео</li><li>похоже на нынешние вкладки видов — привычно</li></ul></div><div><b>Минусы</b><ul><li>в шапке тесно: на 1440 поиск и роль сжимаются в значки</li><li>два ряда вкладок подряд — легко спутать раздел и вкладку</li></ul></div></div>
+    </div>
+  </div>
+</div>
+<div class="strip">
+  <figure><img src="shots/a-1440-dark-fly.jpg" alt="Рейка: наведение раскрывает вкладки раздела"><figcaption>А · наведение на раздел — его вкладки</figcaption></figure>
+  <figure><img src="shots/a-1440-dark-sites.jpg" alt="Переключатель: площадок 9"><figcaption>Площадок 9 — список в шапке и «все карточками»</figcaption></figure>
+  <figure><img src="shots/a-1440-dark-pal.jpg" alt="Поиск Ctrl K"><figcaption>Ctrl K — разделы, площадки, машины, пункты ТЗ</figcaption></figure>
+  <figure><img src="shots/a-1440-light-tz.jpg" alt="Задачи ТЗ: пункт → показать на панели"><figcaption>«Задачи ТЗ»: пункт → «Показать на панели»</figcaption></figure>
+  <figure><img src="shots/b-1440-light.jpg" alt="Вариант Б, светлая тема, отчёты, табель"><figcaption>Б · светлая тема · Отчёты › Табель</figcaption></figure>
+  <figure><img src="shots/b-1440-dark-sheet.jpg" alt="Вариант Б: лист Все разделы"><figcaption>Б · «Все разделы» одним листом</figcaption></figure>
+  <figure><img src="shots/m-390-dark.jpg" alt="Телефон: таб-бар прораба"><figcaption>Телефон · прораб: Камеры · Техника · События · Обзор · Ещё</figcaption></figure>
+  <figure><img src="shots/m-390-light-boss.jpg" alt="Телефон: руководитель, отчёты"><figcaption>Телефон · руководитель: Обзор · Отчёты · События · Камеры · Ещё</figcaption></figure>
+</div>
+<p class="muted" style="margin-top:10px">Телефон в обоих вариантах один: нижний таб-бар из 4 разделов роли + «Ещё» (лист со всеми разделами), площадка и поиск сверху. Снимки разделов на телефоне — только тёмные: светлых телефонных снимков прототипов 23.10 нет.</p>
+
+<h2 id="rec">6 · Рекомендация</h2>
+<div class="card rec">
+<p><b>Вариант А — рейка слева, общая для всех страниц.</b> Наши 12 разделов уже стоят на такой рейке; не хватает, чтобы главный экран стал одним из разделов. Разделы — по задачам (Обзор · Камеры · Техника · События · Отчёты · Задачи ТЗ · Настройки), а не по пачкам кода; нынешние 7 видов пульта уходят во вкладки «Камер» и «Обзора»; 12 примеров — одной полкой в «Задачах ТЗ» с меткой «пример»; площадка — в шапке на всех страницах и не теряется при переходе.</p>
+<p><b>Для показа:</b> раздел «Задачи ТЗ» — восемь пунктов ТЗ, у каждого «Показать на панели». Руководитель видит, что каждый пункт закрыт, и попадает на нужный экран одним нажатием — это и есть сценарий показа.</p>
+<p class="muted">Главный риск: перестройка оболочки целиком за вечер до показа — это переделка шапки главного экрана, а его только что приняли. Поэтому к 26.10 — малая правка ниже, оболочка А — после показа по выбору.</p>
+</div>
+
+<h2 id="fix">7 · Малая правка к показу 26.10</h2>
+<p class="muted">Цель: с главного экрана — одно нажатие до списка всех разделов, из любого раздела — одно нажатие обратно, площадка не теряется, порядок меню разумный. Код не трогал, это задание сборщику.</p>
+<ol class="fix">
+  <li><div><b>Кнопка «Разделы» в шапке главного экрана</b> — после вкладок видов; открывает лист с той же рейкой, что на страницах разделов (<code>loadNav → groupNav → renderRail</code>).<small><code>ui/js/v2/shell.js</code> (~20 строк), <code>ui/index.html</code> (слот листа, 1–2 строки), <code>ui/v2.css</code> (~15 строк). Самый дешёвый запасной ход — простая ссылка на <code>qm-page.html</code>, 1 строка.</small></div></li>
+  <li><div><b>Пункт «Пульт» первым в рейке разделов</b> — чтобы вернуться было в меню, а не только логотипом.<small><code>src/sokol/page_site.py</code>, <code>NAV</code>: 1 строка (<code>href "./"</code>, группа «Объект», order 1).</small></div></li>
+  <li><div><b>Порядок групп:</b> Объект · Отчёты · Безопасность · Деньги · Связь · Кабинет · Примеры. «Бот» перестаёт быть под примерами; на телефоне в нижнем меню — Пульт, Люди, Статистика, Отчёт вместо «Профиля».<small><code>ui/js/nav.js</code>, <code>GROUPS</code>: 1 строка; тест <code>tests/ui/nav-035.test.mjs</code> проверить.</small></div></li>
+  <li><div><b>Площадка не теряется при переходах</b> — переносить <code>site</code> вместе с <code>fixtures, records, theme</code>.<small><code>ui/js/theme.js</code>, <code>keepQuery()</code>: 1 строка.</small></div></li>
+  <li><div><b>«весь журнал» ведёт во вкладку «Журнал»</b> нового вида, а не в прежний вид.<small><code>ui/js/v2/pages-a.js</code>, строка 18: <code>./?mode=log</code> → <code>?v=c7</code>.</small></div></li>
+  <li><div><b>Группа «Примеры» свёрнута</b> по умолчанию (раскрывается нажатием), метка «пример» остаётся.<small><code>ui/js/nav.js</code>, <code>renderRail</code>: ~5 строк.</small></div></li>
+</ol>
+<p style="margin-top:12px"><b>Объём:</b> 6 правок, около 50 строк в 7 файлах; тесты меню — <code>tests/ui/nav-035.test.mjs</code>, <code>tests/test_qm_seam.py</code> (на «Цехе»). Срок по замерам (<code>bin/estimate</code>): сборка обычно 14 мин, редко дольше 29; приёмка около 4 мин; тесты на «Цехе» около 7 мин — итого примерно 30–40 мин работы бота. Время Юлая — одно нажатие «да» и взгляд на снимок.</p>
+<p class="note">Не проверено: внешний вид рейки и листа на живом пульте — Mac спит, пульт на сервере не запускал. Всё в описи — по коду ветки показа (коммит b814f8a). Снимки разделов в прототипах — макеты 23.10, у живых страниц облик проще.</p>
+
+</div>
+</body>
+</html>
