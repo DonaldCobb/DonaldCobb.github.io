@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Сокол · Пульт от задач КП</title>
+<link rel="stylesheet" href="kp.css">
+<style>
+  body { background: var(--bg); }
+  .doc { max-width: 1180px; margin: 0 auto; padding: 24px 20px 48px; }
+  h1 { font-size: 30px; line-height: 1.15; margin: 8px 0 6px; letter-spacing: -.01em; }
+  h2 { font-size: 20px; margin: 40px 0 10px; }
+  h3 { font-size: 15px; margin: 18px 0 8px; }
+  .lead { color: var(--muted); max-width: 760px; margin: 0 0 18px; }
+  .ten { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .ten .panel { padding: 14px 16px; }
+  .ten b { display: block; font-size: 15px; margin-bottom: 4px; }
+  .ten p { margin: 0; font-size: 13px; color: var(--muted); }
+  .ten .big { font-size: 34px; font-weight: 750; line-height: 1; margin-bottom: 6px; }
+  .sut { display: grid; grid-template-columns: 160px 1fr; gap: 6px 14px; font-size: 13px; padding: 14px 16px; }
+  .sut dt { color: var(--muted); } .sut dd { margin: 0; }
+  details { margin-top: 10px; }
+  summary { cursor: pointer; font-weight: 600; }
+  .method ol { margin: 6px 0 0; padding-left: 20px; } .method li { margin: 4px 0; }
+  .src { font-size: 12px; color: var(--muted); margin-top: 8px; }
+  .tw { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); }
+  table.t td, table.t th { vertical-align: top; }
+  table.t td { font-size: 13px; }
+  .t .n { width: 28px; }
+  .t .story { color: var(--muted); font-size: 12px; min-width: 260px; }
+  .t .story em { font-style: normal; color: var(--text); }
+  .score { white-space: nowrap; }
+  .sc { display: inline-block; font-style: normal; font-size: 12px; font-weight: 650; padding: 1px 8px; border-radius: 10px; border: 1px solid currentColor; }
+  .sc--ok { color: var(--ok); } .sc--part { color: var(--warn-ink); } .sc--no { color: var(--bad); }
+  .sum { display: flex; gap: 10px; flex-wrap: wrap; margin: 10px 0; }
+  .sum span { padding: 6px 10px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface); font-size: 13px; }
+  .vars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .var { display: flex; flex-direction: column; overflow: hidden; }
+  .var .shots { display: grid; grid-template-columns: 1fr 74px; gap: 6px; padding: 8px; background: var(--surface-2); }
+  .var .shots img { width: 100%; display: block; border-radius: 6px; border: 1px solid var(--line); }
+  .var .b { padding: 12px 14px; font-size: 13px; flex: 1; }
+  .var .b h3 { margin: 0 0 4px; }
+  .var .b p { margin: 4px 0; color: var(--muted); }
+  .var .b ul { margin: 6px 0; padding-left: 18px; }
+  .var .go { display: flex; gap: 6px; padding: 0 14px 14px; flex-wrap: wrap; }
+  .rec { border: 2px solid var(--task); }
+  .rec-tag { display: inline-block; background: var(--task); color: var(--on-task); font-weight: 800; font-size: 11px; padding: 2px 8px; border-radius: 10px; margin-bottom: 6px; }
+  .an { display: grid; grid-template-columns: 1fr; gap: 16px; }
+  .an-row { display: grid; grid-template-columns: 220px 1fr; gap: 14px; padding: 14px; }
+  .an-row h3 { margin: 0 0 6px; }
+  .an-row p { margin: 4px 0; font-size: 13px; color: var(--muted); }
+  .an-row p b { color: var(--text); }
+  .gal { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 10px; }
+  .gal figure { margin: 0; }
+  .gal img { width: 100%; aspect-ratio: 4/3; object-fit: contain; border-radius: 6px; border: 1px solid var(--line); display: block; background: var(--surface-2); }
+  .gal figcaption { font-size: 11px; color: var(--muted); margin-top: 3px; }
+  .gal a { text-decoration: none; }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .two .panel { padding: 14px 16px; }
+  .two ul { margin: 6px 0 0; padding-left: 18px; font-size: 13px; } .two li { margin: 5px 0; }
+  .gaps li { margin: 6px 0; }
+  .navfind { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; align-items: start; }
+  .navfind img { width: 100%; border-radius: 8px; border: 1px solid var(--line); display: block; }
+  .foot { margin-top: 40px; font-size: 12px; color: var(--muted); }
+  @media (max-width: 860px) {
+    .ten, .vars, .two, .navfind { grid-template-columns: 1fr; }
+    .an-row { grid-template-columns: 1fr; }
+    .gal { grid-template-columns: 1fr 1fr; }
+    .sut { grid-template-columns: 1fr; } .sut dt { margin-top: 6px; }
+    h1 { font-size: 24px; }
+    .tw { overflow: visible; }
+    .tw table.t, .tw table.t tbody, .tw table.t tr, .tw table.t td { display: block; width: auto; }
+    .tw table.t thead { display: none; }
+    .tw table.t tr { padding: 10px 12px; border-bottom: 1px solid var(--line); }
+    .tw table.t td { border: 0; padding: 2px 0; }
+    .tw table.t td.n { float: left; width: 30px; }
+    .t .story { min-width: 0; }
+  }
+</style>
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="./"><svg viewBox="0 0 24 24"><path d="M3 8V4h4M17 4h4v4M21 16v4h-4M7 20H3v-4"/><rect x="8" y="9" width="8" height="6" rx="1"/></svg>Сокол</a>
+  <div class="site"><b>Пульт от задач КП</b><span>UX-разбор 25.10 · к показу 26.10</span></div>
+  <div class="top__end"><button class="btn theme" type="button" data-theme-btn aria-label="Сменить тему">◐</button></div>
+</header>
+<main class="doc">
+  <h1>Как пульт решает задачи из КП — и где не решает</h1>
+  <p class="lead">Взяли прямые задачи заказчика из КП, нашего пилота и листа условий, записали каждую как «Когда… хочу… чтобы…» с критерием «решено», прошли путь по сегодняшнему пульту и сравнили с профессиональными панелями. Ниже — три варианта раскладки с путём решения задач по номерам.</p>
+
+  <section class="ten" aria-label="Главное за 10 секунд">
+    <div class="panel"><div class="big num">1 из 9</div><b>задач КП решена на главном пульте полностью</b><p>Это «спорное — одним касанием». Ещё 7 решены частично: функция есть, но спрятана или склеена. Одна не решена: долгий простой с клипом и причиной.</p></div>
+    <div class="panel"><div class="big">0</div><b>переходов из пульта в разделы</b><p>В виде ★ «Камеры» меню разделов скрыто стилем (v2.css, строка 5). Отчёты, деньги и безопасность открываются только по адресу или из заранее открытых вкладок.</p></div>
+    <div class="panel"><div class="big">≤ 1 ч</div><b>к показу: вкладка «Задачи КП» и вход в разделы</b><p>После показа — раскладка Б (рабочее место прораба) и В (смена руководителя). Состояние «работает на месте» показывать отдельно: в КП их три, у пульта два.</p></div>
+  </section>
+
+  <h2>Суть до дела</h2>
+  <dl class="panel sut">
+    <dt>Зачем</dt><dd>Владимир и Саша смотрят не «красиво ли», а «закрывает ли мою задачу». КП прежнего подрядчика — их список задач. Пульт, где каждая задача находится за 1–3 нажатия, продаёт сам.</dd>
+    <dt>Готовое в мире</dt><dd>Телематика техники (Trackunit, Tenna, CAT VisionLink, Wialon) решает простой и моточасы таблицей с полосой смены. Видеосистемы (Avigilon Alta, Verkada, Milestone, QMonitoring) решают «что случилось» лентой событий с клипом. Шлагбаумы (Автомаршал, Terminal Industries) — журнал проездов с кадром номера.</dd>
+    <dt>Профи за 15 минут</dt><dd>Выписал бы задачи из КП, к каждой — job story и путь в 3–5 шагов, прошёл бы их по живому пульту и посчитал нажатия. Сделал бы «сценарий показа» из тех же задач — и одну страницу-навигатор «задача → экран».</dd>
+    <dt>Образец</dt><dd>QMonitoring (q01–q07, признан Юлаем): вкладки камер, кадр, лента инцидентов на шкале, плитки цифр, рейка разделов слева.</dd>
+    <dt>Ловушка</dt><dd>Делать ещё виды «для красоты» (у пульта их уже 7), а не путь к задаче. И обещать в интерфейсе то, чего нет: клипа на простой и редактора зон пока нет.</dd>
+  </dl>
+
+  <h2>1 · Метод: job stories + путь задачи</h2>
+  <div class="panel method" style="padding:14px 16px">
+    <ol>
+      <li><b>Job story</b> вместо user story: «Когда [ситуация], хочу [действие], чтобы [результат]». Роль не главное — главное, в какой момент человек открывает пульт. Это сразу говорит, что должно быть на экране.</li>
+      <li><b>Критерий «решено»</b> к каждой: что человек видит и за сколько нажатий или секунд. Без критерия задача не проверяется.</li>
+      <li><b>Путь задачи (task flow)</b> — 3–5 шагов по экранам. Проходим по живому пульту, считаем нажатия, отмечаем, где путь рвётся.</li>
+      <li><b>Сценарий показа</b> — те же задачи, только по порядку боли заказчика. На панели — номер задачи у элемента, который её решает.</li>
+    </ol>
+    <p class="src">Персоны и бэклог не нужны: роли и задачи уже заданы КП. Источники (ссылки проверены 25.10, ответ 200): <a href="https://www.intercom.com/blog/using-job-stories-design-features-ui-ux/">Intercom — Designing features using job stories</a> · <a href="https://www.nngroup.com/articles/task-analysis/">NN/g — Task analysis</a> · <a href="https://www.nngroup.com/articles/user-journeys-vs-user-flows/">NN/g — User journeys vs. user flows</a> · <a href="https://www.nngroup.com/articles/task-scenarios-usability-testing/">NN/g — Task scenarios for usability testing</a>.</p>
+  </div>
+
+  <h2>2 · Задачи заказчика</h2>
+  <p class="lead">Источник: КП прежнего подрядчика (наружу не называть) — К; наше предложение пилота — П; лист условий — Л; слова Владимира и Саши из брифа — Б. Номера — те же на всех прототипах.</p>
+  <div class="tw"><table class="t">
+    <thead><tr><th class="n">№</th><th>Задача</th><th>Откуда</th><th>Кто</th><th>Job story</th><th>Решено, если</th></tr></thead>
+    <tbody>
+      <tr><td><span class="ktl">1</span></td><td><b>Кто на площадке и что делает</b></td><td>К: 6 типов, «работает / простаивает / перемещается»; П: план</td><td>прораб</td><td class="story">Когда <em>открываю пульт</em>, хочу <em>одним взглядом видеть, какие машины работают, стоят или едут</em>, чтобы сразу дёрнуть ту, что стоит.</td><td>0 нажатий, ≤ 5 с: числа по трём состояниям и список</td></tr>
+      <tr><td><span class="ktl">2</span></td><td><b>Журнал въезда-выезда с номером и кадром</b></td><td>К: номер борта; П: журнал, «неизвестная №…»; Б: «чтобы никто не воровал»</td><td>диспетчер, прораб</td><td class="story">Когда <em>подрядчик говорит «было 6 рейсов»</em>, хочу <em>найти машину по номеру и открыть её въезды с кадрами</em>, чтобы сверить с накладными.</td><td>≤ 2 нажатия, ≤ 10 с: поиск → строка с кадрами</td></tr>
+      <tr><td><span class="ktl">3</span></td><td><b>Спорное — одним касанием</b></td><td>П: «та же машина?», номер подтверждает оператор; Б: «система теряет машину»</td><td>прораб, оператор</td><td class="story">Когда <em>система не уверена</em>, хочу <em>ответить одним касанием там, где вижу вопрос</em>, чтобы спорное не ушло в отчёт.</td><td>счётчик вопросов на любом экране; 1 нажатие на ответ</td></tr>
+      <tr><td><span class="ktl">4</span></td><td><b>Долгий простой: клип 30 с и причина</b></td><td>К: клип на каждый длительный простой; П: причина одним касанием</td><td>прораб</td><td class="story">Когда <em>машина стоит дольше 15 минут</em>, хочу <em>сигнал с клипом и отметить причину одним касанием</em>, чтобы руководитель видел не только минуты, но и почему.</td><td>2 нажатия: карточка → причина; клип играет на месте</td></tr>
+      <tr><td><span class="ktl">5</span></td><td><b>Время машины за смену</b></td><td>К: отчёт моточасов и простоя; П: «на площадке, в работе, на стоянке»</td><td>руководитель, прораб</td><td class="story">Когда <em>разбираю смену</em>, хочу <em>по каждой машине полосу дня и часы работы и простоя</em>, чтобы понять, кто реально работал.</td><td>1 нажатие от главного: таблица с полосой смены</td></tr>
+      <tr><td><span class="ktl">6</span></td><td><b>Рапорт смены и недели для 1С</b></td><td>К: CSV/PDF смена и неделя; П: рапорт с кадрами, подписывает ответственный</td><td>руководитель, офис</td><td class="story">Когда <em>закрываю смену или неделю</em>, хочу <em>скачать рапорт с кадрами (PDF) и CSV для 1С</em>, чтобы сверить с подрядчиками и подписать.</td><td>≤ 3 нажатия до файла</td></tr>
+      <tr><td><span class="ktl">7</span></td><td><b>Сколько теряем на простое, в рублях</b></td><td>К: эффект −8–15 % моточасов простоя; Б: «простой в рублях»</td><td>руководитель</td><td class="story">Когда <em>смотрю объект раз в день</em>, хочу <em>простой в часах и ≈ ₽ с главными причинами</em>, чтобы решить, с каким подрядчиком говорить.</td><td>0 нажатий на главном руководителя</td></tr>
+      <tr><td><span class="ktl">8</span></td><td><b>План площадки и зоны</b></td><td>К: зоны на карте рисует прораб; П: где машина сейчас и последний раз</td><td>прораб</td><td class="story">Когда <em>ищу машину или проверяю, работает ли она в своей зоне</em>, хочу <em>план сверху с машинами и зонами</em>, чтобы не листать камеры.</td><td>1 нажатие; зона рисуется на плане</td></tr>
+      <tr><td><span class="ktl">9</span></td><td><b>Камера отвалилась — видно сразу</b></td><td>П: «в сети / нет кадра с 14:05»; К: буфер при обрыве связи</td><td>диспетчер, руководитель</td><td class="story">Когда <em>камера перестала давать кадр</em>, хочу <em>сразу видеть, какая и с какого времени</em>, чтобы цифры смены не врали молча.</td><td>0 нажатий: плашка на главном и на камере</td></tr>
+      <tr><td class="faint">10</td><td>На телефоне: сигнал и ответ</td><td>К: приложение прорабу, push; П: сводка в Telegram</td><td>прораб</td><td class="story">Когда <em>я не у компьютера</em>, хочу <em>сигнал с кадром и ответить там же</em>, чтобы не возвращаться в вагончик.</td><td>сигнал → карточка → 1 касание</td></tr>
+      <tr><td class="faint">11</td><td>Сверка «k из n» и приёмка</td><td>Л: протокол, «k из n» со ссылками на клипы</td><td>ответственный заказчика</td><td class="story">Когда <em>принимаю пилот</em>, хочу <em>каждую цифру как «k из n» и любой клип</em>, чтобы подписать акт без веры на слово.</td><td>1 нажатие от главного</td></tr>
+      <tr><td class="faint">12</td><td>Опасная зона, люди без лиц</td><td>П: сверх основного</td><td>прораб, охрана труда</td><td class="story">Когда <em>человек зашёл в зону работающей техники</em>, хочу <em>тревогу с кадрами</em>, чтобы решить, что делать.</td><td>тревога на главном, карточка с кадрами</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2>3 · Аудит сегодняшнего пульта</h2>
+  <p class="lead">Ветка stage/ugly-tipy-2510 (b814f8a), код src/sokol/ui/ и снимки 22–25.10. Пульт открывается видом ★ «Камеры». У него 7 видов (Пульт · Камеры · План · 3D · Журнал · Сводка · Кино) и отдельный мир разделов с рейкой слева (Кабинет · Объект · Отчёты · Безопасность · Деньги · Примеры).</p>
+  <div class="sum"><span><i class="sc sc--ok">решена</i> 1</span><span><i class="sc sc--part">частично</i> 7</span><span><i class="sc sc--no">нет</i> 1</span><span class="faint">10–12 — вне главного пульта</span></div>
+  <div class="tw"><table class="t">
+    <thead><tr><th class="n">№</th><th>Где сейчас</th><th>Шагов</th><th>Оценка</th><th>Что мешает / чего нет</th></tr></thead>
+    <tbody>
+      <tr><td><span class="ktl">1</span></td><td>★ «Камеры»: счётчики шапки «7 на площадке · 4 не видно · 2 вопроса», подписи на кадре, «Сейчас на площадке» справа</td><td>0</td><td class="score"><span class="sc sc--part">частично</span></td><td>«Работает на месте» показывается как «в движении» (fmt.js: <code>work: "в движении"</code>; v2/model.js: <code>work: "move"</code>) — в КП это отдельное состояние. Список «Сейчас на площадке» ниже сгиба на 1440. Подпись «Записи нет» над именем читается как сбой (снимок 390).</td></tr>
+      <tr><td><span class="ktl">2</span></td><td>Вид «Журнал» (въезды слева, большой кадр); прежний вид «Машины» с кадрами въезда и выезда</td><td>2–3</td><td class="score"><span class="sc sc--part">частично</span></td><td>Поиска по номеру в новом виде нет (поле есть только в прежнем, и оно скрыто). На камерах кампуса номер не читается — честно: нужна камера въезда.</td></tr>
+      <tr><td><span class="ktl">3</span></td><td>Жёлтая «Ответить · N вопросов» в шапке любого вида → карточка «Та же?» с двумя кадрами</td><td>1–2</td><td class="score"><span class="sc sc--ok">решена</span></td><td>Сильнее аналогов: у них такого нет. Но 23.10 за день набралось 113 вопросов (снимок 8078) — нужна группировка и «принять все уверенные».</td></tr>
+      <tr><td><span class="ktl">4</span></td><td>Нет на главном. Причина простоя — только в раскрытой строке прежнего вида «Машины» (?mode=log)</td><td>—</td><td class="score"><span class="sc sc--no">нет</span></td><td>Нет сигнала «стоит дольше N мин», нет клипа 30 с на простой. Пункт КП не закрыт.</td></tr>
+      <tr><td><span class="ktl">5</span></td><td>Вид «Сводка» (табель «машина × час»), разделы «Табель» и «Статистика»</td><td>1 / 3+</td><td class="score"><span class="sc sc--part">частично</span></td><td>Моточасы не разведены на «работа · движение · стоянка». Из ★ вида в разделы ссылки нет.</td></tr>
+      <tr><td><span class="ktl">6</span></td><td>«Рапорт за смену» (печать), «Ежедневный отчёт · XLSX», «Табель · CSV / XLSX»</td><td>3+ / по адресу</td><td class="score"><span class="sc sc--part">частично</span></td><td>Из ★ «Камеры» не попасть: ссылка «Рапорт по записи» есть только в виде «Пульт», меню «Разделы» скрыто. PDF — печатью браузера.</td></tr>
+      <tr><td><span class="ktl">7</span></td><td>Раздел «Деньги → Простой» и «Калькулятор»</td><td>по адресу</td><td class="score"><span class="sc sc--part">частично</span></td><td>Есть и считает, но на главном цифры нет, а перехода в раздел из пульта нет.</td></tr>
+      <tr><td><span class="ktl">8</span></td><td>Виды «План» и «3D»: машины по зонам камер, «схема, не GPS»</td><td>1</td><td class="score"><span class="sc sc--part">частично</span></td><td>Зоны задаются вручную в настройках, редактора для прораба нет.</td></tr>
+      <tr><td><span class="ktl">9</span></td><td>Плашка «не видно: …» на камере; «Мои объекты»: «Камера 1: нет связи — питание или сеть»</td><td>0 / по адресу</td><td class="score"><span class="sc sc--part">частично</span></td><td>Плашка на камере — про машину, не про камеру. Общего «камеры 2 из 3 · нет кадра с 13:50» на главном нет.</td></tr>
+      <tr><td class="faint">10</td><td>Пульт сжимается до 390 (7 вкладок прокруткой, длинная лента); бот «Сокол» в Telegram (этап 037)</td><td>—</td><td class="score"><span class="sc sc--part">частично</span></td><td>Готов ли бот к показу — не проверено; телефонный вид — та же лента, без «Требует внимания» наверху.</td></tr>
+      <tr><td class="faint">11</td><td>Вкладка «Насколько точно» — в прежнем виде, в новом скрыта; «Номер на КПП» — пример</td><td>по адресу</td><td class="score"><span class="sc sc--part">частично</span></td><td>Страницы «k из n по задачам» нет — для приёмки пилота нужна.</td></tr>
+      <tr><td class="faint">12</td><td>Разделы «Опасные зоны», «Инциденты»</td><td>по адресу</td><td class="score"><span class="sc sc--part">частично</span></td><td>Тревоги на главном пульте нет; одна тревога, глазами не проверена (сценарий показа, шаг 5).</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="navfind" style="margin-top:16px">
+    <div class="panel" style="padding:14px 16px">
+      <h3 style="margin-top:0">«Не понятно, как попасть в разделы» — причина одна</h3>
+      <p class="muted" style="font-size:13px">В пульте два мира. Виды пульта — вкладками в шапке. Разделы — рейкой слева на отдельных страницах, и оттуда есть ссылка «Пульт» обратно. А туда пути нет: правило <code>body[data-mode="v2"] … .bar { display: none }</code> прячет панель, где жила ссылка «Разделы». Сценарий показа обходит это заранее открытыми вкладками. Если Саша сам начнёт кликать, он раздел не найдёт.</p>
+      <p class="muted" style="font-size:13px"><b>Как у профессиональных панелей:</b> разделы словами всегда на виду — рейка слева (Milestone, Trackunit, QMonitoring q01/q04), на телефоне — нижняя панель из 4–5 пунктов. Виды одной площадки — переключатель внутри раздела «Площадка», а не 7 соседних вкладок.</p>
+    </div>
+    <img src="shots/th-b-1440-dark.jpg" alt="Прототип Б: рейка разделов слева">
+  </div>
+
+  <h3>Задачи без экрана — закрыть или честно убрать из показа</h3>
+  <div class="panel" style="padding:12px 16px"><ul class="gaps" style="margin:0;padding-left:18px;font-size:13px">
+    <li><b>4 · Клип 30 с на долгий простой и сигнал.</b> Не собрано. К показу: не показывать как готовое. Сказать: «причину простоя прораб отмечает одним касанием», и открыть прежний вид «Машины» (?mode=log), раскрыть строку. Клип — в пилоте. Собрать после показа: карточка «стоит дольше 15 мин» с клипом из записи, вырезка ±15 с.</li>
+    <li><b>8 · Редактор зон для прораба.</b> Нет. К показу: «зоны рисуем по вашему чертежу при установке». После: обводка на плане и на кадре.</li>
+    <li><b>9 · «Камеры 2 из 3 в сети» на главном.</b> Есть только в «Мои объекты». К показу — переход туда (шаг 6 сценария). После — плитка в шапке пульта.</li>
+    <li><b>10 · Телефон прораба.</b> Бот — проверить на репетиции. Не готов — снимок телефонного вида, без обещания срока (как в сценарии).</li>
+    <li><b>11 · «k из n» по задачам.</b> Отдельной страницы нет. К показу: «Номер на КПП» с 2 720 из 2 842 — только «на готовых фото». После: страница «Насколько точно» с каждой задачей КП и ссылками на клипы — это и есть протокол приёмки.</li>
+  </ul></div>
+
+  <h2>4 · Как те же задачи решают профессиональные панели</h2>
+  <p class="lead">Цельные экраны живых продуктов: телематика техники (CAT, Trackunit, HCSS, Geotab), видеосистемы (Avigilon Alta, EarthCam, QMonitoring), шлагбаумы и дворы (Terminal, Автомаршал). Отобраны с оценкой 4–5 из 5 против образца QMonitoring. Нажмите на кадр — откроется крупно.</p>
+  <div class="an" data-an>
+    <div class="panel an-row"><div><h3><span class="ktl">1</span> Кто на площадке</h3><p><b>Приём:</b> цифры площадки над кадрами; машины подписаны рамкой прямо на кадре; график «сколько техники по часам».</p><p><b>У нас:</b> есть; добавить третье состояние и «стоит &gt; 15 мин» отдельной цифрой (Б, В).</p></div>
+      <div class="gal"><a href="an/truelook-site-stats.jpg"><figure><img src="an/truelook-site-stats.jpg" alt="TrueLook — статистика площадки"><figcaption>TrueLook — статистика площадки</figcaption></figure></a><a href="analogs/earthcam-ai-equipment-detections.jpg"><figure><img src="analogs/earthcam-ai-equipment-detections.jpg" alt="EarthCam — техника на кадре и по часам"><figcaption>EarthCam — техника на кадре и по часам</figcaption></figure></a><a href="an/q01.jpg"><figure><img src="an/q01.jpg" alt="QMonitoring — камера и плитки цифр"><figcaption>QMonitoring — камера и плитки цифр</figcaption></figure></a></div></div>
+    <div class="panel an-row"><div><h3><span class="ktl">2</span> Журнал проездов с номером</h3><p><b>Приём:</b> крупная карточка проезда (кадр + номер + время + действие) рядом с журналом; поиск по номеру — в шапке.</p><p><b>У нас:</b> журнал есть, поиска нет; номер — только с камерой въезда.</p></div>
+      <div class="gal"><a href="an/terminal-gate.jpg"><figure><img src="an/terminal-gate.jpg" alt="Terminal Industries — въезд и выезд"><figcaption>Terminal Industries — въезд и выезд</figcaption></figure></a><a href="an/ya-avtomarshal-main.jpg"><figure><img src="an/ya-avtomarshal-main.jpg" alt="Автомаршал — журнал и карточка проезда"><figcaption>Автомаршал — журнал и карточка проезда</figcaption></figure></a><a href="an/parkpow-anpr.jpg"><figure><img src="an/parkpow-anpr.jpg" alt="ParkPow — проезды с уверенностью"><figcaption>ParkPow — проезды с уверенностью</figcaption></figure></a></div></div>
+    <div class="panel an-row"><div><h3><span class="ktl">3</span><span class="ktl">4</span> Событие, клип и разбор</h3><p><b>Приём:</b> лента событий «текущие · на проверку · завершённые» с кадром; карточка события: клип с рамками, шкала с отметками, поле «проверено» и статус одним касанием; правило «уведомить, если стоит дольше N».</p><p><b>У нас:</b> вопрос «та же?» есть; ленты простоев с клипом и полем «причина» нет — это прямой образец для задачи 4.</p></div>
+      <div class="gal"><a href="analogs/avigilon-alta-events-list.jpg"><figure><img src="analogs/avigilon-alta-events-list.jpg" alt="Avigilon Alta — тревоги на проверку"><figcaption>Avigilon Alta — тревоги на проверку</figcaption></figure></a><a href="analogs/avigilon-alta-event-clip-timeline.jpg"><figure><img src="analogs/avigilon-alta-event-clip-timeline.jpg" alt="Avigilon Alta — клип, шкала, проверка"><figcaption>Avigilon Alta — клип, шкала, проверка</figcaption></figure></a><a href="analogs/geotab-video-events-feed.jpg"><figure><img src="analogs/geotab-video-events-feed.jpg" alt="Geotab Video — лента событий с кадром"><figcaption>Geotab Video — лента событий с кадром</figcaption></figure></a><a href="analogs/earthcam-evr-timeline.jpg"><figure><img src="analogs/earthcam-evr-timeline.jpg" alt="EarthCam — запись с отрезками событий"><figcaption>EarthCam — запись с отрезками событий</figcaption></figure></a><a href="an/q04.jpg"><figure><img src="an/q04.jpg" alt="QMonitoring — инциденты на шкале"><figcaption>QMonitoring — инциденты на шкале</figcaption></figure></a><a href="an/wialon-notifications.jpg"><figure><img src="an/wialon-notifications.jpg" alt="Wialon — правила уведомлений"><figcaption>Wialon — правила уведомлений</figcaption></figure></a></div></div>
+    <div class="panel an-row"><div><h3><span class="ktl">5</span><span class="ktl">7</span> Моточасы и простой по машине</h3><p><b>Приём:</b> строка на машину: полоса «работа / простой», часы и проценты; сверху — итог парка за день и неделю; «неиспользуемые машины» отдельной цифрой.</p><p><b>У нас:</b> табель «машина × час» есть, но без деления на работу и простой; на главном нет. Таблица машин в Б и В — по этому образцу.</p></div>
+      <div class="gal"><a href="analogs/cat-visionlink-utilization-runtime.jpg"><figure><img src="analogs/cat-visionlink-utilization-runtime.jpg" alt="CAT VisionLink — работа и простой по машинам"><figcaption>CAT VisionLink — работа и простой по машинам</figcaption></figure></a><a href="analogs/trackunit-go-utilization.jpg"><figure><img src="analogs/trackunit-go-utilization.jpg" alt="Trackunit Go — день машины по 15 минут"><figcaption>Trackunit Go — день машины по 15 минут</figcaption></figure></a><a href="analogs/trackunit-manager-utilization-app.jpg"><figure><img src="analogs/trackunit-manager-utilization-app.jpg" alt="Trackunit — загрузка парка"><figcaption>Trackunit — загрузка парка</figcaption></figure></a><a href="analogs/hcss-fleet-geofence-run-idle.jpg"><figure><img src="analogs/hcss-fleet-geofence-run-idle.jpg" alt="HCSS Fleet — зона объекта и часы машин"><figcaption>HCSS Fleet — зона объекта и часы машин</figcaption></figure></a></div></div>
+    <div class="panel an-row"><div><h3><span class="ktl">6</span> Отчёты</h3><p><b>Приём:</b> каталог отчётов плитками и «запланированные» — отчёт приходит сам по расписанию.</p><p><b>У нас:</b> отчёты есть, но разбросаны по разделам, из пульта не открыть; рассылки по расписанию нет (кроме сводки в Telegram).</p></div>
+      <div class="gal"><a href="analogs/trackunit-manager-reports-catalog.jpg"><figure><img src="analogs/trackunit-manager-reports-catalog.jpg" alt="Trackunit — каталог отчётов"><figcaption>Trackunit — каталог отчётов</figcaption></figure></a><a href="analogs/mygeotab-fuel-idle-reports.jpg"><figure><img src="analogs/mygeotab-fuel-idle-reports.jpg" alt="MyGeotab — простой по дням недели"><figcaption>MyGeotab — простой по дням недели</figcaption></figure></a></div></div>
+    <div class="panel an-row"><div><h3><span class="ktl">8</span><span class="ktl">9</span> План, зоны и карточка машины</h3><p><b>Приём:</b> план с зоной объекта и подписанными машинами, рядом список; карточка машины: статус, где она, события, загрузка; состояние каждой камеры отдельно.</p><p><b>У нас:</b> план по зонам камер есть; зону рисовать нельзя; список камер с «нет кадра с …» — только в «Мои объекты».</p></div>
+      <div class="gal"><a href="analogs/hcss-fleet-map-equipment.jpg"><figure><img src="analogs/hcss-fleet-map-equipment.jpg" alt="HCSS Fleet — план с техникой"><figcaption>HCSS Fleet — план с техникой</figcaption></figure></a><a href="an/terminal-onsite-map.jpg"><figure><img src="an/terminal-onsite-map.jpg" alt="Terminal Industries — план двора"><figcaption>Terminal Industries — план двора</figcaption></figure></a><a href="analogs/trackunit-go-asset-card.jpg"><figure><img src="analogs/trackunit-go-asset-card.jpg" alt="Trackunit Go — карточка машины"><figcaption>Trackunit Go — карточка машины</figcaption></figure></a><a href="an/q06.jpg"><figure><img src="an/q06.jpg" alt="QMonitoring — состояние камер"><figcaption>QMonitoring — состояние камер</figcaption></figure></a></div></div>
+  </div>
+  <p class="src">Экраны: App Store (iPad), справка Trackunit, страницы продуктов. Не нашли цельных экранов Tenna, Milestone XProtect, Genetec и таблицы «машины × часы» у Wialon и Samsara.</p>
+
+  <h2>5 · Три варианта раскладки</h2>
+  <p class="lead">Все три — HTML на кадрах камер кампуса 22.10, обе темы, 1440 и 390. Номера на элементах — задачи из таблицы выше. Цифры — пример.</p>
+  <div class="vars">
+    <article class="panel var rec">
+      <div class="shots"><img src="shots/th-a-1440-dark-t4.jpg" alt="Вариант А на компьютере"><img src="shots/th-a-390.jpg" alt="Вариант А на телефоне"></div>
+      <div class="b"><span class="rec-tag">к показу 26.10</span><h3>А · «Задачи КП» поверх сегодняшнего пульта</h3>
+        <p>Вкладка со списком задач КП. У каждой — «Показать на панели»: пульт подсвечивает элементы по шагам (4.1 → 4.2 → 4.3) и честно пишет, чего нет.</p>
+        <ul><li>Отвечает Владимиру ровно на его вопрос: «как решена моя задача».</li><li>Сегодняшний пульт не трогаем, добавляем один слой.</li><li>Минус: раскладка остаётся «камеры в центре», руководителю неудобно.</li></ul></div>
+      <div class="go"><a class="btn btn--main btn--sm" href="a-zadachi.html#t1">Открыть</a><a class="btn btn--sm" href="a-zadachi.html#t4">Задача 4</a><a class="btn btn--sm" href="a-zadachi.html?theme=light#t6">Светлая</a></div>
+    </article>
+    <article class="panel var rec">
+      <div class="shots"><img src="shots/th-b-1440-dark.jpg" alt="Вариант Б на компьютере"><img src="shots/th-b-390.jpg" alt="Вариант Б на телефоне"></div>
+      <div class="b"><span class="rec-tag">главный пульт после показа</span><h3>Б · Рабочее место прораба и диспетчера</h3>
+        <p>Разделы словами слева, площадка числами по состояниям, стена камер, справа «Требует внимания» (долгий простой с клипом и причиной, «Та же?», камера без кадра), внизу машины смены с полосой.</p>
+        <ul><li>Все 9 задач на одном экране, 0–2 нажатия.</li><li>Решает навигацию: раздел всегда виден и назван.</li><li>Минус: нужен клип простоя и сигнал «&gt; 15 мин» — новая сборка.</li></ul></div>
+      <div class="go"><a class="btn btn--main btn--sm" href="b-rabochee-mesto.html">Открыть</a><a class="btn btn--sm" href="b-rabochee-mesto.html?theme=light">Светлая</a></div>
+    </article>
+    <article class="panel var">
+      <div class="shots"><img src="shots/th-c-1440-light.jpg" alt="Вариант В на компьютере"><img src="shots/th-c-390.jpg" alt="Вариант В на телефоне"></div>
+      <div class="b"><h3>В · Смена руководителя</h3>
+        <p>Главное — рубли простоя и причины, загрузка по машинам полосой, рапорт смены с подписью, клипы самых долгих простоев. Видео — доказательство, не центр.</p>
+        <ul><li>Закрывает 5, 6, 7 — то, за что платит руководитель.</li><li>Хорошо на телефоне.</li><li>Минус: прорабу не годится — второй экран, не замена Б.</li></ul></div>
+      <div class="go"><a class="btn btn--main btn--sm" href="c-rukovoditel.html">Открыть</a><a class="btn btn--sm" href="c-rukovoditel.html?theme=dark">Тёмная</a></div>
+    </article>
+  </div>
+
+  <h2>6 · Рекомендация</h2>
+  <div class="two">
+    <div class="panel"><h3 style="margin-top:0">К показу 26.10 — малая правка, ≤ 1 ч сборки</h3><ul>
+      <li><b>Вход в разделы из пульта</b> (~15 мин): в шапку вида v2 — пункт «Разделы» со ссылкой на меню разделов. Сейчас его прячет v2.css строка 5. Снимает вопрос «как попасть».</li>
+      <li><b>Страница «Задачи КП»</b> (~40 мин, упрощённый А): список 9 задач с job story и кнопкой «Показать», которая ведёт на готовый вид или раздел (?v=c3, ?v=c6, ?v=c4, report.html, money.html, tabel.html, objects.html, ?mode=log). Без подсветки элементов. На показе с неё удобно вести рассказ.</li>
+      <li><b>Слово «работает»</b> (~10 мин, если приёмщик успеет): <code>work</code> → «работает на месте» вместо «в движении» в fmt.js и v2/model.js (форма — полукруг). Это три состояния, как в КП.</li>
+      <li>Код не менял: внедрение — после выбора Юлая.</li>
+    </ul></div>
+    <div class="panel"><h3 style="margin-top:0">После показа — по порядку</h3><ul>
+      <li>Б как главный пульт: рейка разделов, «Требует внимания», поиск по номеру в шапке, таблица машин с полосой смены.</li>
+      <li>Сигнал «стоит &gt; 15 мин» с клипом 30 с и причиной одним касанием — главная дыра по КП.</li>
+      <li>В — «Сводка» руководителя вместо вида «Сводка»; на телефоне — она первой.</li>
+      <li>«Камеры 2 из 3 в сети» в шапке; «k из n» по задачам — страница приёмки.</li>
+      <li>7 видов пульта свести к 3 внутри «Площадки»: Камеры · План · 3D. «Кино», «Табло», «Журнал» уходят в разделы или остаются переключателем «вид».</li>
+      <li>Подсветка «Показать на панели» из А — в постоянную справку «Как решить задачу».</li>
+    </ul></div>
+  </div>
+
+  <p class="foot">Сокол · UX-разбор от задач КП, 25.10. Кадры — открытые камеры стройки кампуса в Перми, запись 22.10. Экраны аналогов — со страниц продуктов, только для разбора. Не проверено: прототипы не пробовал живой прораб; путь в шагах посчитан по коду и снимкам, а не на запущенном пульте (Mac спит).</p>
+</main>
+<script>
+const th = new URLSearchParams(location.search).get("theme"); if (th) document.documentElement.dataset.theme = th;
+document.querySelector("[data-theme-btn]").onclick = () => { const r = document.documentElement; r.dataset.theme = (r.dataset.theme || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light")) === "dark" ? "light" : "dark"; };
+</script>
+</body>
+</html>

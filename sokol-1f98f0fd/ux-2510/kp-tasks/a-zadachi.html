@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Сокол · Задачи КП на пульте</title>
+<link rel="stylesheet" href="kp.css">
+<style>
+  .tabs { display: flex; gap: 2px; padding: 4px; background: var(--surface-2); border-radius: 10px; overflow-x: auto; scrollbar-width: none; }
+  .tabs a { padding: 7px 12px; border-radius: 7px; text-decoration: none; color: var(--muted); font-weight: 600; white-space: nowrap; font-size: 13px; }
+  .tabs a[aria-current] { background: var(--surface); color: var(--text); box-shadow: 0 1px 2px rgba(0,0,0,.12); }
+  .tabs a.kp { color: var(--warn-ink); }
+  .tabs a.kp[aria-current] { background: var(--task); color: var(--on-task); }
+  .row2 { display: flex; align-items: center; gap: 16px; padding: 10px 20px; border-bottom: 1px solid var(--line); background: var(--surface); }
+  .cnt { margin-left: auto; display: flex; gap: 14px; align-items: baseline; font-size: 13px; color: var(--muted); }
+  .cnt b { font-size: 20px; color: var(--text); margin-right: 3px; }
+  .cnt .w b, .cnt .w { color: var(--warn-ink); }
+  .secs { position: relative; }
+  .secs summary { list-style: none; cursor: pointer; }
+  .secs summary::-webkit-details-marker { display: none; }
+
+  .wrap { display: grid; grid-template-columns: 400px 1fr; min-height: calc(100vh - 120px); }
+  /* список задач */
+  .tasks { border-right: 1px solid var(--line); background: var(--surface); padding: 16px; overflow: auto; max-height: calc(100vh - 118px); position: sticky; top: 118px; }
+  .tasks h1 { margin: 0 0 4px; font-size: 18px; }
+  .tasks > p { margin: 0 0 12px; color: var(--muted); font-size: 12px; }
+  .roles { display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap; }
+  .task { display: block; width: 100%; text-align: left; font: inherit; color: inherit; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; margin-bottom: 8px; cursor: pointer; }
+  .task.is-on { border-color: var(--task); box-shadow: inset 4px 0 0 var(--task); background: var(--surface-2); }
+  .task__h { display: flex; gap: 8px; align-items: flex-start; }
+  .task__h b { font-size: 14px; line-height: 1.3; }
+  .task__n { flex: none; width: 24px; height: 24px; border-radius: 12px; display: grid; place-items: center; background: var(--surface-3); font: 800 12px var(--font); }
+  .task.is-on .task__n { background: var(--task); color: var(--on-task); }
+  .task__s { margin: 6px 0 6px 32px; font-size: 12px; color: var(--muted); }
+  .task__s em { font-style: normal; color: var(--text); }
+  .task__f { margin-left: 32px; display: flex; gap: 6px; align-items: center; flex-wrap: wrap; font-size: 11px; color: var(--muted); }
+  .task__go { margin-left: auto; font-weight: 700; font-size: 12px; color: var(--text); }
+  .task.is-on .task__go { color: var(--warn-ink); }
+  .group { margin: 14px 0 6px; font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+
+  /* поле: сегодняшний пульт */
+  .stage { padding: 16px 20px 24px; min-width: 0; }
+  .flow { display: flex; align-items: center; gap: 12px; padding: 10px 14px; border: 1px solid var(--task); background: var(--warn-soft); border-radius: 10px; margin-bottom: 14px; flex-wrap: wrap; }
+  .flow__t { font-weight: 700; }
+  .flow ol { display: flex; gap: 6px; margin: 0; padding: 0; list-style: none; flex-wrap: wrap; align-items: center; }
+  .flow li { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; background: var(--surface); border: 1px solid var(--line); padding: 4px 8px; border-radius: 6px; }
+  .flow li + li::before { content: "→"; margin-right: 6px; color: var(--muted); }
+  .flow li.other { border-style: dashed; color: var(--muted); }
+  .flow__c { margin-left: auto; font-size: 12px; font-weight: 700; }
+  .gap { display: none; padding: 10px 14px; border-radius: 10px; border: 1px dashed var(--bad); background: var(--bad-soft); margin-bottom: 14px; font-size: 13px; }
+  .gap.on { display: block; }
+
+  .pult { display: grid; grid-template-columns: 1fr 340px; gap: 14px; }
+  .cams { display: grid; grid-template-columns: 2fr 1fr; grid-template-rows: auto auto; gap: 10px; }
+  .cams .big { grid-row: span 2; }
+  .cams .cam { height: 100%; }
+  .bar { position: absolute; left: 0; right: 0; top: 0; background: #F0B44C; color: #111; font-size: 11px; font-weight: 700; padding: 3px 8px; }
+  .caps { position: absolute; left: 10px; top: 10px; display: flex; background: rgba(14,16,19,.72); color: #fff; border-radius: 8px; overflow: hidden; }
+  .caps div { padding: 6px 12px; border-right: 1px solid rgba(255,255,255,.15); font-size: 11px; }
+  .caps b { display: block; font-size: 18px; }
+  .tl { margin-top: 12px; }
+  .tl__row { display: grid; grid-template-columns: 56px 1fr; align-items: center; height: 22px; font-size: 12px; color: var(--muted); }
+  .tl__track { position: relative; height: 8px; background: var(--surface-2); border-radius: 4px; }
+  .tl__track i { position: absolute; top: -3px; width: 3px; height: 14px; background: var(--text); border-radius: 1px; }
+  .tl__track i.q { width: 10px; height: 10px; top: -1px; transform: rotate(45deg); background: var(--warn); }
+  .side { display: flex; flex-direction: column; gap: 12px; }
+  .plan svg { width: 100%; height: 150px; display: block; }
+  .ev { display: grid; grid-template-columns: 64px 1fr auto; gap: 10px; align-items: center; padding: 8px 0; border-top: 1px solid var(--line); font-size: 12px; }
+  .ev b { font-size: 13px; display: block; }
+  .ev time { color: var(--muted); }
+  .ev.q b { color: var(--warn-ink); }
+  .sub { font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--warn-ink); padding: 4px 0; }
+  .sub.n { color: var(--muted); }
+  .below { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 14px; }
+
+  /* подсветка выбранной задачи */
+  [data-t] { transition: box-shadow .2s, opacity .2s; border-radius: 10px; }
+  body.has-task .pult [data-t]:not(.hit) { opacity: .45; }
+  .hit { position: relative; box-shadow: 0 0 0 3px var(--task), 0 0 0 9px color-mix(in srgb, var(--task) 25%, transparent); opacity: 1 !important; animation: pulse 1.6s ease-in-out 2; z-index: 3; }
+  .hit::after { content: attr(data-badge); position: absolute; top: -12px; right: -6px; z-index: 7; background: var(--task); color: var(--on-task); font: 800 12px/1 var(--font); padding: 6px 8px; border-radius: 12px; box-shadow: 0 0 0 3px var(--bg); white-space: nowrap; }
+  @keyframes pulse { 50% { box-shadow: 0 0 0 3px var(--task), 0 0 0 14px color-mix(in srgb, var(--task) 10%, transparent); } }
+  @media (prefers-reduced-motion: reduce) { .hit { animation: none; } }
+
+  @media (max-width: 720px) {
+    .row2 { flex-direction: column; align-items: stretch; padding: 8px 16px; gap: 8px; }
+    .cnt { margin-left: 0; gap: 10px; flex-wrap: wrap; }
+    .wrap { grid-template-columns: 1fr; }
+    .tasks { position: static; max-height: none; border-right: 0; border-bottom: 1px solid var(--line); padding: 12px 16px; }
+    .tasks .list { display: flex; gap: 8px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 6px; }
+    .tasks .group { display: none; }
+    .task { flex: 0 0 82%; scroll-snap-align: start; margin: 0; }
+    .stage { padding: 12px 16px 20px; }
+    .pult, .cams, .below { grid-template-columns: 1fr; }
+    .cams .big { grid-row: auto; }
+    .flow__c { margin-left: 0; }
+  }
+</style>
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="index.html"><svg viewBox="0 0 24 24"><path d="M3 8V4h4M17 4h4v4M21 16v4h-4M7 20H3v-4"/><rect x="8" y="9" width="8" height="6" rx="1"/></svg>Сокол</a>
+  <div class="site"><b>Кампус в Перми · открытые камеры</b><span>запись 22.10 · 3 ролика · пример данных</span></div>
+  <div class="top__end">
+    <a class="btn btn--warn" href="#t3" data-t="3:1"><span aria-hidden="true">◆</span> <span class="long">Ответить ·</span> 2 вопроса</a>
+    <div class="clock"><b class="num">13:51</b>Пермь, UTC+5</div>
+    <button class="btn theme" type="button" data-theme-btn aria-label="Сменить тему">◐</button>
+  </div>
+</header>
+<div class="row2">
+  <nav class="tabs" aria-label="Виды пульта">
+    <a href="#">Пульт</a><a href="#" data-t="1:0">Камеры</a><a href="#" data-t="8:1">План</a><a href="#">3D</a><a href="#" data-t="2:1">Журнал</a><a href="#" data-t="5:1">Сводка</a><a href="#" data-t="6:1 7:1 11:1">Разделы ▾</a><a href="#" class="kp" aria-current="page">Задачи КП</a>
+  </nav>
+  <div class="cnt num" data-t="1:1"><span><b>7</b>на площадке</span><span class="w"><b>4</b>не видно</span><span class="w"><b>2</b>вопроса</span></div>
+</div>
+
+<div class="wrap">
+  <aside class="tasks" aria-label="Задачи из КП">
+    <h1>Задачи из КП</h1>
+    <p>Пункт КП → где он решается на панели. Нажмите — пульт справа покажет путь по шагам.</p>
+    <div class="roles"><span class="chip is-on">Все · 9</span><span class="chip">Прораб</span><span class="chip">Руководитель</span><span class="chip">Диспетчер</span></div>
+    <div class="list" data-list></div>
+  </aside>
+
+  <section class="stage" aria-label="Пульт">
+    <div class="flow" data-flow></div>
+    <div class="gap" data-gap></div>
+
+    <div class="pult">
+      <div>
+        <div class="cams">
+          <div class="cam big" data-t="1:0 9:0">
+            <img src="img/c1.jpg" alt="Камера 1, въезд: фуры и бетоновоз у корпуса">
+            <div class="caps"><div><b>7</b>на площадке</div><div><b>1</b>въезд</div><div><b>68 %</b>стоят</div></div>
+            <div class="box" style="left:20.7%;top:74.3%;width:22.3%;height:16.7%"><span><i class="r"></i>Фура 1</span></div>
+            <div class="box" style="left:35.9%;top:75%;width:11.7%;height:12.2%"><span><i class="d"></i>Бетоновоз 3</span></div>
+            <div class="box" style="left:63.4%;top:81.3%;width:28.8%;height:16.7%"><span><i class="r"></i>Фура 2</span></div>
+            <span class="cam__name">Камера 1 · въезд</span><span class="cam__time">13:43:47</span>
+          </div>
+          <div class="cam" data-t="9:1">
+            <img src="img/c6.jpg" alt="Камера 6, погрузка">
+            <div class="bar">не видно: Погрузчик 4</div>
+            <div class="box box--r" style="left:69.9%;top:56.9%;width:6.3%;height:6.9%"><span><i class="d"></i>Погрузчик 4</span></div>
+            <span class="cam__name">Камера 6 · погрузка</span><span class="cam__time">13:49:44</span>
+          </div>
+          <div class="cam">
+            <img src="img/c7.jpg" alt="Камера 7, выезд">
+            <div class="bar">не видно: Бортовой 7, 8</div>
+            <div class="box" style="left:55.9%;top:83.7%;width:13.3%;height:8.6%"><span><i class="r"></i>Бортовой 6</span></div>
+            <span class="cam__name">Камера 7 · выезд</span><span class="cam__time">13:51:09</span>
+          </div>
+        </div>
+        <div class="panel tl" data-t="5:0">
+          <div class="panel__h"><h3>Запись 13:43–13:51</h3><span class="more">◆ вопросы</span></div>
+          <div class="panel__b">
+            <div class="tl__row"><span>Кам 1</span><div class="tl__track"><i style="left:6%"></i><i style="left:14%"></i></div></div>
+            <div class="tl__row"><span>Кам 6</span><div class="tl__track"><i style="left:72%"></i></div></div>
+            <div class="tl__row"><span>Кам 7</span><div class="tl__track"><i style="left:90%"></i><i class="q" style="left:97%"></i></div></div>
+          </div>
+        </div>
+        <div class="below">
+          <div class="panel" data-t="4:0">
+            <div class="panel__h"><h3>Простой и причина</h3><span class="more">есть только в прежнем виде «Машины»</span></div>
+            <div class="panel__b muted" style="font-size:12px">В виде ★ «Камеры» сигнала о долгом простое и клипа нет. Причина отмечается в раскрытой строке прежнего вида (?mode=log): «нет фронта · ждём бетон · поломка…».</div>
+          </div>
+          <div class="panel" data-t="6:0 7:0">
+            <div class="panel__h"><h3>Отчёты и деньги</h3><span class="more">отдельные разделы</span></div>
+            <div class="panel__b muted" style="font-size:12px">«Рапорт за смену», «Табель», «Ежедневный отчёт · XLSX», «Простой в ₽» есть, но из этого вида ссылки на них нет — меню разделов скрыто.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="side">
+        <section class="panel plan" data-t="8:2">
+          <div class="panel__h"><h3>План · камера 1</h3><span class="more">схема, не GPS</span></div>
+          <div class="panel__b">
+            <svg viewBox="0 0 300 150" aria-label="Схема: камера 1 и зона обзора">
+              <polygon points="150,20 260,110 120,120 100,60" fill="var(--surface-2)" stroke="var(--muted)" stroke-dasharray="4 3"/>
+              <path d="M70 120 l14 -14 l6 18 z" fill="var(--text)"/>
+              <text x="58" y="142" font-size="11" fill="var(--muted)">камера 1</text>
+              <circle cx="160" cy="62" r="9" fill="var(--surface)" stroke="var(--text)" stroke-width="2"/><text x="156" y="66" font-size="10" fill="var(--text)">3</text>
+              <circle cx="170" cy="88" r="9" fill="var(--surface)" stroke="var(--text)" stroke-width="2"/><text x="166" y="92" font-size="10" fill="var(--text)">1</text>
+              <circle cx="205" cy="102" r="9" fill="var(--surface)" stroke="var(--text)" stroke-width="2"/><text x="201" y="106" font-size="10" fill="var(--text)">2</text>
+            </svg>
+          </div>
+        </section>
+        <section class="panel">
+          <div class="panel__h"><h3>События <span class="faint">4</span></h3><span class="more" data-t="2:2">весь журнал</span></div>
+          <div class="panel__b">
+            <div class="sub">Ждут ответа · 2</div>
+            <div class="ev q" data-t="3:2"><img class="thumb" src="img/bort7.jpg" alt=""><span><b>Бортовой 8 — это Самосвал 7?</b>ушёл 13:51:43 · появился 13:51:44</span><time>13:51</time></div>
+            <div class="ev q"><img class="thumb" src="img/bort5.jpg" alt=""><span><b>Бортовой 8 — это Самосвал 6?</b>ушёл 13:51:29</span><time>13:51</time></div>
+            <div class="sub n">Сейчас на площадке · 7</div>
+            <div class="ev" data-t="1:2"><img class="thumb" src="img/fura1.jpg" alt=""><span><b><span class="st st--idle"><i></i></span> Фура 1</b>в кадре 13:43:40–13:44:35 · Камера 1</span><time class="num">55 с</time></div>
+            <div class="ev"><img class="thumb" src="img/pogr.jpg" alt=""><span><b><span class="st st--unseen"><i></i></span> Погрузчик 4</b>не видно с 13:50:02 · Камера 6</span><time class="num">24 с</time></div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </section>
+</div>
+<p class="proto-note"><b>Прототип А · «Задачи КП» поверх сегодняшнего пульта.</b> Раскладка — как у вида ★ «Камеры» (ветка stage/ugly-tipy-2510), кадры — запись камер кампуса 22.10, цифры — пример. Новое только: вкладка «Задачи КП», пункт «Разделы ▾» и подсветка пути. Без логики, кроме переключения задач.</p>
+
+<script>
+const T = [
+  {n:1, g:"Прораб", t:"Кто на площадке и что делает", s:["приезжаю на площадку или открываю пульт","одним взглядом видеть, какие машины работают, стоят или едут","сразу дёрнуть ту, что стоит"], c:"0 нажатий · 5 с", st:"part", f:[["Счётчики шапки","1:1"],["Камеры с подписями","1:0"],["«Сейчас на площадке»","1:2"]], gap:"Мешает: «работает на месте» показывается как «в движении» — в КП это отдельное состояние «работает»; список «Сейчас на площадке» ниже сгиба."},
+  {n:2, g:"Диспетчер", t:"Журнал въезда-выезда с номером и кадром", s:["подрядчик говорит «было 6 рейсов»","найти машину по номеру и открыть её въезды и выезды с кадрами","сверить с накладными"], c:"≤ 2 нажатия · 10 с", st:"part", f:[["Вкладка «Журнал»","2:1"],["«весь журнал»","2:2"],["кадр въезда и выезда","other"]], gap:"Мешает: поиска по номеру в новом виде нет (был только в прежнем, скрыт); номера на камерах кампуса не читаются — честно, нужна камера въезда."},
+  {n:3, g:"Прораб", t:"Спорное — подтвердить одним касанием", s:["система не уверена, та ли это машина","ответить одним касанием там, где вижу вопрос","спорное не попало в отчёт"], c:"1 нажатие", st:"ok", f:[["«Ответить · 2 вопроса»","3:1"],["карточка «Та же?» — два кадра","3:2"]], gap:""},
+  {n:4, g:"Прораб", t:"Долгий простой: клип 30 с и причина", s:["машина стоит дольше 15 минут","получить сигнал с клипом и отметить причину одним касанием","руководитель видел не только минуты, но и почему"], c:"2 нажатия · клип на месте", st:"no", f:[["сигнал «стоит 18 мин»","4:0"],["клип 30 с","other"],["причина одним касанием","other"]], gap:"Нет на главном пульте: сигнала о долгом простое и клипа нет; причина — только в прежнем виде «Машины». Пункт КП «клип на каждый длительный простой» не закрыт."},
+  {n:5, g:"Руководитель", t:"Время машины за смену: работа · движение · стоянка", s:["разбираю смену","видеть по каждой машине полосу дня и часы работы и простоя","понять, кто реально работал"], c:"1 нажатие", st:"part", f:[["Вкладка «Сводка»","5:1"],["шкала смены","5:0"],["табель «машина × час»","other"]], gap:"Есть в «Сводке» и в разделе «Табель», но моточасы по трём состояниям КП не разведены (работа = движение)."},
+  {n:6, g:"Руководитель", t:"Рапорт смены для 1С", s:["закрываю смену или неделю","скачать рапорт с кадрами в PDF и CSV для 1С","сверить с подрядчиками и подписать"], c:"≤ 3 нажатия до файла", st:"part", f:[["«Разделы ▾»","6:1"],["Отчёты → Рапорт за смену","other"],["Печать · XLSX · CSV","other"]], gap:"Мешает: из вида ★ «Камеры» в отчёты не попасть — меню разделов скрыто (v2.css прячет панель с «Разделы»); сейчас путь — вкладка «Пульт» → «Рапорт по записи» или адрес вручную."},
+  {n:7, g:"Руководитель", t:"Сколько теряем на простое, в рублях", s:["смотрю объект раз в день","видеть простой в часах и ≈ ₽ с главными причинами","решить, с каким подрядчиком говорить"], c:"0 нажатий на главном руководителя", st:"part", f:[["«Разделы ▾»","7:1"],["Деньги → Простой","other"]], gap:"Раздел «Простой в ₽» и «Калькулятор» есть, но спрятаны: на главном цифры нет, перехода тоже."},
+  {n:8, g:"Прораб", t:"План площадки и зоны", s:["ищу машину или проверяю, работает ли она в нужной зоне","план сверху с машинами и зонами","не листать камеры"], c:"1 нажатие", st:"part", f:[["Вкладка «План» или «3D»","8:1"],["мини-план справа","8:2"]], gap:"Зоны рисует не прораб — контур задан вручную в настройках; редактора зон нет."},
+  {n:9, g:"Диспетчер", t:"Камера отвалилась — видно сразу", s:["камера перестала давать кадр","сразу увидеть, какая и с какого времени","цифры смены не врали молча"], c:"0 нажатий", st:"part", f:[["плашка на камере","9:1"],["«Мои объекты»: нет связи","other"]], gap:"На камере — «не видно: машина» (про машину, не про камеру); общего «камеры 2 из 3 в сети · нет кадра с 14:05» на главном нет."}
+];
+const ST = {ok:["есть","tag--ok"], part:["частично","tag--warn"], no:["нет","tag--bad"]};
+const list = document.querySelector("[data-list]");
+let g0 = "";
+for (const x of T) {
+  if (x.g !== g0) { /* группы по роли не нужны: роль — меткой */ }
+  const b = document.createElement("button");
+  b.className = "task"; b.type = "button"; b.dataset.n = x.n;
+  b.innerHTML = `<span class="task__h"><span class="task__n">${x.n}</span><b>${x.t}</b></span>
+    <span class="task__s">Когда <em>${x.s[0]}</em>, хочу <em>${x.s[1]}</em>, чтобы ${x.s[2]}.</span>
+    <span class="task__f"><span class="tag">${x.g}</span><span class="tag ${ST[x.st][1]}">${ST[x.st][0]}</span><span>${x.c}</span><span class="task__go">Показать на панели →</span></span>`;
+  b.onclick = () => pick(x.n, true);
+  list.append(b);
+}
+function pick(n, push) {
+  const x = T.find(t => t.n === +n) || T[0];
+  document.body.classList.add("has-task");
+  for (const b of list.children) b.classList.toggle("is-on", +b.dataset.n === x.n);
+  for (const e of document.querySelectorAll(".hit")) { e.classList.remove("hit"); e.removeAttribute("data-badge"); }
+  const steps = x.f.map(([txt, id], i) => {
+    if (id !== "other") for (const e of document.querySelectorAll("[data-t]")) {
+      if (e.dataset.t.split(" ").includes(id)) { e.classList.add("hit"); e.dataset.badge = `${x.n}.${i + 1}`; }
+    }
+    return `<li class="${id === "other" ? "other" : ""}"><span class="ktl">${x.n}.${i + 1}</span>${txt}${id === "other" ? " · другой экран" : ""}</li>`;
+  }).join("");
+  document.querySelector("[data-flow]").innerHTML = `<span class="flow__t">Задача ${x.n} · ${x.t}</span><ol>${steps}</ol><span class="flow__c">${x.c}</span>`;
+  const gap = document.querySelector("[data-gap]");
+  gap.classList.toggle("on", !!x.gap); gap.textContent = x.gap;
+  if (push) history.replaceState(null, "", "#t" + x.n);
+  const first = document.querySelector(".hit"); if (push && first) first.scrollIntoView({ block: "center", behavior: "smooth" });
+}
+for (const a of document.querySelectorAll('a[href^="#t"]')) a.onclick = (e) => { e.preventDefault(); pick(a.getAttribute("href").slice(2), true); };
+pick((location.hash.match(/^#t(\d+)/) || [0, 1])[1], false);
+const th = new URLSearchParams(location.search).get("theme"); if (th) document.documentElement.dataset.theme = th;
+document.querySelector("[data-theme-btn]").onclick = () => { const r = document.documentElement; r.dataset.theme = (r.dataset.theme || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light")) === "dark" ? "light" : "dark"; };
+</script>
+</body>
+</html>

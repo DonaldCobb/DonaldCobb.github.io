@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Сокол · Смена руководителя</title>
+<link rel="stylesheet" href="kp.css">
+<style>
+  .seg { display: inline-flex; padding: 3px; background: var(--surface-2); border-radius: 8px; gap: 2px; }
+  .seg span { padding: 6px 12px; border-radius: 6px; font-size: 13px; font-weight: 600; color: var(--muted); }
+  .seg span.on { background: var(--surface); color: var(--text); box-shadow: 0 1px 2px rgba(0,0,0,.12); }
+  .nav2 { display: flex; gap: 4px; }
+  .nav2 a { padding: 7px 12px; border-radius: 7px; text-decoration: none; font-weight: 600; font-size: 13px; color: var(--muted); }
+  .nav2 a[aria-current] { color: var(--text); background: var(--surface-2); }
+  .page { max-width: 1320px; margin: 0 auto; padding: 20px 24px 28px; display: grid; grid-template-columns: 1fr 380px; gap: 16px; }
+  .col { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+  .hero { display: grid; grid-template-columns: 1.1fr 1fr; gap: 20px; padding: 18px 20px; }
+  .hero h2 { margin: 0; font-size: 13px; font-weight: 600; color: var(--muted); display: flex; gap: 8px; }
+  .hero .big { font-size: 56px; font-weight: 750; line-height: 1; letter-spacing: -.02em; margin: 8px 0 6px; }
+  .hero .big small { font-size: 28px; color: var(--muted); font-weight: 600; }
+  .why h3 { margin: 0 0 8px; font-size: 13px; color: var(--muted); font-weight: 600; }
+  .why li { display: grid; grid-template-columns: 1fr 90px 64px; gap: 10px; align-items: center; font-size: 13px; padding: 5px 0; }
+  .why ul { list-style: none; margin: 0; padding: 0; }
+  .why .bar { height: 8px; border-radius: 4px; background: var(--surface-2); overflow: hidden; }
+  .why .bar i { display: block; height: 100%; background: var(--bar-idle); }
+  .why .na i { background: var(--bar-unseen); }
+  .kpis { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+  .kpi { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; }
+  .kpi span { font-size: 12px; color: var(--muted); }
+  .kpi b { display: block; font-size: 24px; margin-top: 4px; }
+  .kpi small { font-size: 11px; color: var(--muted); }
+  .kpi.w { border-color: var(--warn-line); background: var(--warn-soft); } .kpi.w b, .kpi.w small { color: var(--warn-ink); }
+  .util .rowm { display: grid; grid-template-columns: 200px 1fr 70px 70px; gap: 12px; align-items: center; padding: 8px 0; border-top: 1px solid var(--line); font-size: 13px; }
+  .util .rowm .day { height: 16px; }
+  .util .hdr { display: grid; grid-template-columns: 200px 1fr 70px 70px; gap: 12px; font-size: 11px; color: var(--muted); padding-bottom: 6px; }
+  .r { text-align: right; }
+  .rep .state { display: flex; gap: 8px; align-items: center; font-size: 13px; margin-bottom: 10px; }
+  .rep .btns { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
+  .rep .btns .btn { justify-content: center; }
+  .rep .week { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-top: 12px; font-size: 11px; color: var(--muted); text-align: center; }
+  .rep .week i { display: block; height: 26px; border-radius: 4px; margin-bottom: 3px; background: var(--surface-2); }
+  .rep .week i.ok { background: var(--text); } .rep .week i.dr { background: var(--warn-soft); border: 1px dashed var(--warn-line); }
+  .top3 .it { display: grid; grid-template-columns: 112px 1fr; gap: 10px; padding: 8px 0; border-top: 1px solid var(--line); font-size: 12px; }
+  .top3 .it img { width: 112px; height: 63px; object-fit: cover; border-radius: 6px; display: block; }
+  .top3 .it b { display: block; font-size: 13px; }
+  .top3 .vid { position: relative; } .top3 .vid span { position: absolute; left: 4px; bottom: 4px; background: var(--scrim); color: #fff; font-size: 10px; padding: 2px 5px; border-radius: 3px; }
+  .camsok li { display: flex; gap: 8px; align-items: center; padding: 6px 0; border-top: 1px solid var(--line); font-size: 13px; }
+  .camsok ul { list-style: none; margin: 0; padding: 0; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--ok); }
+  .dot.bad { background: var(--warn); }
+  .tabbar { display: none; }
+  @media (max-width: 720px) {
+    .nav2 { display: none; } .seg span { padding: 5px 8px; }
+    .page { grid-template-columns: 1fr; padding: 12px 16px 90px; }
+    .hero { grid-template-columns: 1fr; padding: 14px; gap: 12px; }
+    .hero .big { font-size: 44px; }
+    .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .kpis .kpi:last-child { grid-column: span 2; }
+    .util .rowm, .util .hdr { grid-template-columns: 110px 1fr 52px; }
+    .util .rowm > :nth-child(3), .util .hdr > :nth-child(3) { display: none; }
+    .tabbar { display: grid; grid-template-columns: repeat(4, 1fr); position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; background: var(--surface); border-top: 1px solid var(--line); padding: 8px 4px calc(8px + env(safe-area-inset-bottom)); }
+    .tabbar a { text-align: center; font-size: 11px; font-weight: 600; color: var(--muted); text-decoration: none; }
+    .tabbar a[aria-current] { color: var(--text); }
+    .tabbar b { display: block; font-size: 18px; line-height: 1.2; }
+    .proto-note { padding-bottom: 84px; }
+  }
+</style>
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="index.html"><svg viewBox="0 0 24 24"><path d="M3 8V4h4M17 4h4v4M21 16v4h-4M7 20H3v-4"/><rect x="8" y="9" width="8" height="6" rx="1"/></svg>Сокол</a>
+  <div class="site"><b>Кампус в Перми · корпус 1</b><span>смена 08:00–20:00 · сейчас 13:52</span></div>
+  <nav class="nav2" aria-label="Разделы"><a href="#" aria-current="page">Сводка</a><a href="#">Машины</a><a href="#">Подрядчики</a><a href="#">Отчёты</a><a href="b-rabochee-mesto.html">Площадка ↗</a></nav>
+  <div class="top__end">
+    <div class="seg"><span class="on">Смена</span><span>Неделя</span><span>Месяц</span></div>
+    <button class="btn theme" type="button" data-theme-btn aria-label="Сменить тему">◐</button>
+  </div>
+</header>
+
+<div class="page">
+  <div class="col">
+    <section class="panel hero kt kt--l" data-k="7">
+      <div>
+        <h2>Простой техники за смену <span class="tag">оценка, не к оплате</span></h2>
+        <div class="big num">≈ 17 500 <small>₽</small></div>
+        <div class="muted">2 ч 40 мин без работы у 4 машин · ставка 6 500 ₽/ч — ваша, из настроек</div>
+      </div>
+      <div class="why">
+        <h3>Почему стояли — отметки прораба</h3>
+        <ul>
+          <li><span>Нет фронта работ</span><span class="bar"><i style="width:68%"></i></span><span class="r num">1 ч 05</span></li>
+          <li><span>Ждём материал</span><span class="bar"><i style="width:58%"></i></span><span class="r num">0 ч 55</span></li>
+          <li><span>Поломка</span><span class="bar"><i style="width:0%"></i></span><span class="r num">0</span></li>
+          <li class="na"><span class="warn">Причина не отмечена</span><span class="bar"><i style="width:42%"></i></span><span class="r num warn">0 ч 40</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="kpis num" aria-label="Смена в цифрах">
+      <div class="kpi kt kt--l" data-k="5"><span>Работа техники</span><b>9 ч 00</b><small>машино-часов · 7 машин</small></div>
+      <div class="kpi"><span>Загрузка</span><b>62 %</b><small>работа от времени на площадке</small></div>
+      <div class="kpi kt" data-k="2"><span>Проездов</span><b>14</b><small>8 въездов · 6 выездов</small></div>
+      <div class="kpi w kt" data-k="3"><span>Без ответа</span><b>2 вопроса</b><small>в рапорт не идут, пока не ответят</small></div>
+      <div class="kpi w kt" data-k="9"><span>Камеры</span><b>2 из 3</b><small>Кам 6 — нет кадра с 13:50</small></div>
+    </section>
+
+    <section class="panel util kt kt--l" data-k="5">
+      <div class="panel__h"><h2>Загрузка по машинам</h2><span class="more daylegend"><span><i style="background:var(--bar-work)"></i>работает</span><span><i style="background:var(--bar-move)"></i>едет</span><span><i style="background:var(--bar-idle)"></i>стоит</span><span><i style="background:var(--bar-unseen)"></i>не видно</span></span></div>
+      <div class="panel__b num">
+        <div class="hdr"><span>Машина · чей</span><span>Смена 08–20, сейчас 13:52</span><span class="r">Работа</span><span class="r">Простой</span></div>
+        <div class="rowm"><span class="mach"><img class="thumb" src="img/pogr.jpg" alt=""><span><b>Погрузчик 4</b><small>своя</small></span></span><div class="day"><span class="w" style="width:14%"></span><span class="i" style="width:5%"></span><span class="w" style="width:18%"></span><span class="m" style="width:4%"></span><span class="i" style="width:8%"></span></div><span class="r">3 ч 50</span><span class="r warn">1 ч 05</span></div>
+        <div class="rowm"><span class="mach"><img class="thumb" src="img/fura1.jpg" alt=""><span><b>Фура 1</b><small>подрядчик</small></span></span><div class="day"><span class="n" style="width:38%"></span><span class="m" style="width:2%"></span><span class="i" style="width:9%"></span></div><span class="r">0 ч 10</span><span class="r warn">0 ч 55</span></div>
+        <div class="rowm"><span class="mach"><img class="thumb" src="img/kran.jpg" alt=""><span><b>Манипулятор 9</b><small>аренда</small></span></span><div class="day"><span class="n" style="width:9%"></span><span class="m" style="width:3%"></span><span class="w" style="width:22%"></span><span class="i" style="width:3%"></span><span class="w" style="width:12%"></span></div><span class="r">4 ч 05</span><span class="r">0 ч 20</span></div>
+        <div class="rowm"><span class="mach"><img class="thumb" src="img/bort7.jpg" alt=""><span><b>Бортовой 6</b><small>чей — не указан</small></span></span><div class="day"><span class="n" style="width:30%"></span><span class="m" style="width:4%"></span><span class="i" style="width:6%"></span><span class="u" style="width:9%"></span></div><span class="r">0 ч 30</span><span class="r">0 ч 20</span></div>
+        <div class="rowm"><span class="mach"><img class="thumb" src="img/beton.jpg" alt=""><span><b>Бетоновоз 3</b><small>подрядчик</small></span></span><div class="day"><span class="n" style="width:44%"></span><span class="m" style="width:2%"></span><span class="w" style="width:3%"></span></div><span class="r">0 ч 25</span><span class="r">0</span></div>
+      </div>
+    </section>
+  </div>
+
+  <aside class="col">
+    <section class="panel rep kt" data-k="6">
+      <div class="panel__h"><h2>Рапорт смены 22.10</h2><span class="more">для сверки</span></div>
+      <div class="panel__b">
+        <div class="state"><span class="tag tag--warn">черновик</span>подписывает ваш ответственный · 2 вопроса не закрыты</div>
+        <div class="btns"><span class="btn btn--main btn--sm">PDF с кадрами</span><span class="btn btn--sm">CSV для 1С</span><span class="btn btn--sm">XLSX</span></div>
+        <div class="week"><span><i class="ok"></i>пн</span><span><i class="ok"></i>вт</span><span><i class="ok"></i>ср</span><span><i class="dr"></i>чт</span><span><i></i>пт</span><span><i></i>сб</span><span><i></i>вс</span></div>
+        <p class="muted" style="font-size:12px;margin:8px 0 0">Неделя: 3 подписаны, 1 черновик · <a href="#">недельный отчёт</a></p>
+      </div>
+    </section>
+    <section class="panel top3 kt" data-k="4">
+      <div class="panel__h"><h2>Самые долгие простои</h2><span class="more">клип 30 с у каждого</span></div>
+      <div class="panel__b">
+        <div class="it"><span class="vid"><img src="img/pogr.jpg" alt=""><span>▶ 0:30</span></span><span><b>Погрузчик 4 · 18 мин</b>13:34–13:52 · Кам 6<br><span class="tag tag--warn">причина не отмечена</span></span></div>
+        <div class="it"><span class="vid"><img src="img/fura1.jpg" alt=""><span>▶ 0:30</span></span><span><b>Фура 1 · 12 мин</b>13:40–13:52 · Кам 1<br><span class="tag">ждём материал</span></span></div>
+        <div class="it"><span class="vid"><img src="img/fura2.jpg" alt=""><span>▶ 0:30</span></span><span><b>Фура 2 · 6 мин</b>13:46–13:52 · Кам 1<br><span class="tag">нет фронта</span></span></div>
+      </div>
+    </section>
+    <section class="panel camsok">
+      <div class="panel__h"><h2>Камеры</h2><span class="more">буфер на объекте — кадры не теряются</span></div>
+      <div class="panel__b"><ul>
+        <li><i class="dot"></i>Камера 1 · въезд<span class="faint" style="margin-left:auto">в сети</span></li>
+        <li><i class="dot bad"></i>Камера 6 · погрузка<span class="warn" style="margin-left:auto">нет кадра с 13:50</span></li>
+        <li><i class="dot"></i>Камера 7 · выезд<span class="faint" style="margin-left:auto">в сети</span></li>
+      </ul></div>
+    </section>
+  </aside>
+</div>
+<nav class="tabbar" aria-label="Разделы"><a href="#" aria-current="page"><b>◔</b>Сводка</a><a href="#"><b>☰</b>Машины</a><a href="#"><b>◫</b>Подрядчики</a><a href="#"><b>⎙</b>Отчёты</a></nav>
+<p class="proto-note"><b>Прототип В · смена руководителя.</b> Главное — деньги и загрузка, видео — доказательство (клип у каждого простоя), а не центр экрана. Раскладка — как отчёты загрузки техники Trackunit, Tenna, CAT VisionLink: цифра потерь, причины, полоса смены по машине, рапорт. Метки <span class="ktl">2</span>…<span class="ktl">9</span> — номера задач КП. Кадры — камеры кампуса 22.10; часы, рубли и причины — пример. <a href="#" data-marks>Скрыть метки</a></p>
+<script>
+const th = new URLSearchParams(location.search).get("theme"); if (th) document.documentElement.dataset.theme = th;
+document.querySelector("[data-theme-btn]").onclick = () => { const r = document.documentElement; r.dataset.theme = (r.dataset.theme || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light")) === "dark" ? "light" : "dark"; };
+document.querySelector("[data-marks]").onclick = (e) => { e.preventDefault(); document.body.classList.toggle("no-marks"); };
+</script>
+</body>
+</html>

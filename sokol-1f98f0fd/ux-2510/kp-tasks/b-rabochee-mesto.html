@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Сокол · Рабочее место прораба</title>
+<link rel="stylesheet" href="kp.css">
+<style>
+  .app { display: grid; grid-template-columns: 208px 1fr; min-height: calc(100vh - 57px); }
+  /* рейка разделов — словами, как у Milestone / Trackunit: раздел всегда виден и назван */
+  .rail { background: var(--surface); border-right: 1px solid var(--line); padding: 14px 10px; display: flex; flex-direction: column; gap: 2px; position: sticky; top: 57px; height: calc(100vh - 57px); }
+  .rail a { display: flex; align-items: center; gap: 10px; padding: 9px 10px; border-radius: 8px; text-decoration: none; color: var(--muted); font-weight: 600; font-size: 13px; }
+  .rail a svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; flex: none; }
+  .rail a[aria-current] { background: var(--surface-2); color: var(--text); box-shadow: inset 3px 0 0 var(--text); }
+  .rail a em { margin-left: auto; font-style: normal; font-size: 11px; background: var(--warn-soft); color: var(--warn-ink); border: 1px solid var(--warn-line); border-radius: 9px; padding: 0 6px; }
+  .rail h4 { margin: 14px 10px 4px; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: var(--faint); }
+  .rail .kp { margin-top: auto; border: 1px dashed var(--task); color: var(--warn-ink); }
+  .search { flex: 1; max-width: 360px; display: flex; align-items: center; gap: 8px; border: 1px solid var(--line); border-radius: 8px; padding: 0 10px; height: 36px; background: var(--surface-2); color: var(--muted); font-size: 13px; }
+  .search kbd { margin-left: auto; font: 600 11px var(--font); border: 1px solid var(--line); border-radius: 4px; padding: 0 5px; }
+  .shift { font-size: 12px; color: var(--muted); }
+  .shift b { color: var(--ok); }
+
+  .main { padding: 16px 20px 24px; min-width: 0; display: flex; flex-direction: column; gap: 14px; }
+  .kpis { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
+  .kpi { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; }
+  .kpi .st { font-size: 12px; color: var(--muted); }
+  .kpi b { display: block; font-size: 26px; line-height: 1.1; margin-top: 4px; }
+  .kpi small { font-size: 11px; color: var(--muted); }
+  .kpi.is-warn { border-color: var(--warn-line); background: var(--warn-soft); }
+  .kpi.is-warn b, .kpi.is-warn small { color: var(--warn-ink); }
+
+  .mid { display: grid; grid-template-columns: 1fr 360px; gap: 14px; }
+  .wall { display: grid; grid-template-columns: 2fr 1fr; gap: 10px; } .stack { display: flex; flex-direction: column; gap: 10px; }
+  .wall { align-items: start; }
+  .stale img { filter: grayscale(1) brightness(.5); }
+  .attn { display: flex; flex-direction: column; gap: 10px; }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 12px; }
+  .card.w { border-color: var(--warn-line); box-shadow: inset 4px 0 0 var(--warn); }
+  .card h3 { margin: 0 0 2px; font-size: 14px; display: flex; gap: 8px; align-items: center; }
+  .card h3 time { margin-left: auto; font-size: 12px; font-weight: 500; color: var(--muted); }
+  .card p { margin: 0 0 8px; font-size: 12px; color: var(--muted); }
+  .clip { position: relative; border-radius: 6px; overflow: hidden; aspect-ratio: 16/7; margin-bottom: 8px; background: #000; }
+  .clip img { width: 100%; height: 100%; object-fit: cover; }
+  .clip .play { position: absolute; inset: auto auto 8px 8px; background: var(--scrim); color: #fff; font-size: 12px; font-weight: 600; padding: 4px 8px; border-radius: 4px; }
+  .clip .scrub { position: absolute; left: 0; right: 0; bottom: 0; height: 4px; background: rgba(255,255,255,.25); }
+  .clip .scrub i { display: block; width: 35%; height: 100%; background: #F0B44C; }
+  .chips { display: flex; gap: 6px; flex-wrap: wrap; }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 8px; }
+  .two figure { margin: 0; } .two img { width: 100%; aspect-ratio: 16/9; object-fit: cover; border-radius: 4px; display: block; }
+  .two figcaption { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .acts { display: flex; gap: 6px; }
+  .acts .btn { flex: 1; justify-content: center; }
+  .trips .ev { display: grid; grid-template-columns: 44px 18px 1fr auto; gap: 8px; align-items: center; padding: 6px 0; border-top: 1px solid var(--line); font-size: 12px; }
+  .trips .ev .thumb { width: 44px; height: 26px; }
+  .trips .dir { font-weight: 800; }
+
+  .tbar { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; padding: 12px 14px 8px; }
+  .tbar h2 { margin: 0 12px 0 0; font-size: 14px; }
+  .tbar .sp { margin-left: auto; display: flex; gap: 6px; }
+  .hours { position: relative; display: flex; justify-content: space-between; font-size: 10px; color: var(--faint); min-width: 120px; }
+  .tw { overflow-x: auto; }
+
+  .under { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+  .plan { width: 100%; height: auto; display: block; }
+  .trk { display: grid; grid-template-columns: 44px 1fr; align-items: center; height: 26px; font-size: 12px; color: var(--muted); }
+  .trk > div { position: relative; height: 10px; background: var(--surface-2); border-radius: 5px; }
+  .trk i { position: absolute; top: -2px; width: 3px; height: 14px; background: var(--text); }
+  .trk b { position: absolute; top: 0; height: 10px; background: var(--bar-idle); border-radius: 2px; }
+  .trk u { position: absolute; top: 0; height: 10px; background: var(--bar-unseen); }
+  .trk em { position: absolute; top: 0; width: 10px; height: 10px; transform: rotate(45deg); background: var(--warn); }
+  .hours { margin-left: 44px; margin-top: 4px; }
+  .tabbar { display: none; }
+  @media (max-width: 720px) {
+    .app { grid-template-columns: 1fr; }
+    .rail { display: none; }
+    .search { display: none; }
+    .shift { display: none; }
+    .main { padding: 12px 16px 88px; }
+    .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; } .kpi .st { white-space: normal; }
+    .kpi { padding: 8px; } .kpi b { font-size: 20px; } .kpi small { display: none; }
+    .mid { grid-template-columns: 1fr; }
+    .attn { order: -1; }
+    .wall { grid-template-columns: 1fr; } .stack { flex-direction: row; } .stack .cam { flex: 1; min-width: 0; }
+    .cam__bad small { display: none; } .under { grid-template-columns: 1fr; } .t .thumb { width: 44px; height: 26px; } .t td, .t th { padding: 6px 5px; }
+    .tbar .sp { margin-left: 0; }
+    .t .hide-s { display: none; }
+    .tabbar { display: grid; grid-template-columns: repeat(5, 1fr); position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; background: var(--surface); border-top: 1px solid var(--line); padding: 6px 4px calc(6px + env(safe-area-inset-bottom)); }
+    .tabbar a { display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 11px; font-weight: 600; color: var(--muted); text-decoration: none; position: relative; }
+    .tabbar a svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.8; }
+    .tabbar a[aria-current] { color: var(--text); }
+    .tabbar em { position: absolute; top: -2px; left: 55%; font-style: normal; font-size: 10px; background: var(--warn); color: #111; border-radius: 8px; padding: 0 5px; }
+    .proto-note { padding-bottom: 80px; }
+  }
+</style>
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="index.html"><svg viewBox="0 0 24 24"><path d="M3 8V4h4M17 4h4v4M21 16v4h-4M7 20H3v-4"/><rect x="8" y="9" width="8" height="6" rx="1"/></svg>Сокол</a>
+  <div class="site"><b>Кампус в Перми · корпус 1</b><span class="shift">Смена 08:00–20:00 · <b>идёт</b></span></div>
+  <label class="search kt" data-k="2"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>Номер, машина или подрядчик<kbd>/</kbd></label>
+  <div class="top__end">
+    <a class="btn btn--warn kt kt--l" data-k="3" href="#q"><span aria-hidden="true">◆</span> <span class="long">Вопросы ·</span> 2</a>
+    <div class="clock"><b class="num">13:52</b>Пермь, UTC+5</div>
+    <button class="btn theme" type="button" data-theme-btn aria-label="Сменить тему">◐</button>
+  </div>
+</header>
+
+<div class="app">
+  <nav class="rail" aria-label="Разделы">
+    <a href="#" aria-current="page"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M8 21h8"/></svg>Площадка</a>
+    <a href="#"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg>Журнал проездов</a>
+    <a href="#"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg>Простой и причины<em>1</em></a>
+    <a href="#"><svg viewBox="0 0 24 24"><path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5"/></svg>Отчёты</a>
+    <a href="#"><svg viewBox="0 0 24 24"><path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6z"/></svg>Безопасность</a>
+    <h4>Настройка</h4>
+    <a href="#"><svg viewBox="0 0 24 24"><path d="M3 7h13v10H3zM16 10l5-3v10l-5-3"/></svg>Камеры<em>2/3</em></a>
+    <a href="#"><svg viewBox="0 0 24 24"><path d="M3 5h18v14H3z"/><path d="m7 15 3-4 3 3 4-5"/></svg>План и зоны</a>
+    <a href="#"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3 3-5 6-5s6 2 6 5M17 11h4M19 9v4"/></svg>Техника и подрядчики</a>
+    <a class="kp" href="a-zadachi.html"><svg viewBox="0 0 24 24"><path d="M9 6h11M9 12h11M9 18h11M4 6l1 1 2-2M4 12l1 1 2-2M4 18l1 1 2-2"/></svg>Задачи КП</a>
+  </nav>
+
+  <main class="main">
+    <section class="kpis num kt kt--l" data-k="1" aria-label="Площадка сейчас">
+      <div class="kpi"><span class="st st--work"><i></i>Работают на месте</span><b>2</b><small>кран, погрузка</small></div>
+      <div class="kpi"><span class="st st--move"><i></i>Едут</span><b>1</b><small>Бетоновоз 3</small></div>
+      <div class="kpi is-warn"><span class="st st--idle"><i></i>Стоят</span><b>3</b><small>1 дольше 15 мин</small></div>
+      <div class="kpi"><span class="st st--unseen"><i></i>Не видно</span><b>1</b><small>ушёл из кадра 13:50</small></div>
+      <div class="kpi is-warn kt" data-k="9"><span class="st">Камеры в сети</span><b>2 из 3</b><small>Кам 6 — нет кадра с 13:50</small></div>
+      <div class="kpi kt" data-k="7"><span class="st">Простой за смену</span><b>2 ч 40 мин</b><small>≈ 17 500 ₽ · оценка, не к оплате</small></div>
+    </section>
+
+    <section class="mid">
+      <div class="leftcol">
+      <div class="wall">
+        <div class="cam">
+          <img src="img/c1.jpg" alt="Камера 1, въезд">
+          <div class="box box--idle" style="left:20.7%;top:74.3%;width:22.3%;height:16.7%"><span><i class="r"></i>Фура 1 · стоит 12 мин</span></div>
+          <div class="box" style="left:35.9%;top:75%;width:11.7%;height:12.2%"><span><i class="d"></i>Бетоновоз 3</span></div>
+          <div class="box box--r" style="left:63.4%;top:81.3%;width:28.8%;height:16.7%"><span><i class="r"></i>Фура 2 · 6 мин</span></div>
+          <span class="cam__name">Камера 1 · въезд</span><span class="cam__time">13:52</span>
+        </div>
+        <div class="stack">
+        <div class="cam stale">
+          <img src="img/c6.jpg" alt="Камера 6, последний кадр">
+          <div class="cam__bad">Нет кадра с 13:50<br><small style="color:#fff;font-weight:400">последний кадр · питание или сеть</small></div>
+          <span class="cam__name">Камера 6 · погрузка</span>
+        </div>
+        <div class="cam">
+          <img src="img/c7.jpg" alt="Камера 7, выезд">
+          <div class="box" style="left:55.9%;top:83.7%;width:13.3%;height:8.6%"><span><i class="r"></i>Бортовой 6</span></div>
+          <div class="box box--r" style="left:87.1%;top:81.7%;width:10.5%;height:9.3%"><span><i class="h"></i>Манипулятор 9</span></div>
+          <span class="cam__name">Камера 7 · выезд</span><span class="cam__time">13:51</span>
+        </div>
+        </div>
+        </div>
+        <div class="under">
+          <section class="panel kt" data-k="8">
+            <div class="panel__h"><h3>План площадки</h3><span class="more">схема, не GPS · <a href="#">зоны</a></span></div>
+            <div class="panel__b"><svg class="plan" viewBox="0 0 320 150" aria-label="План: зоны и машины">
+              <rect x="6" y="6" width="308" height="138" rx="8" fill="var(--surface-2)"/>
+              <rect x="110" y="20" width="120" height="58" rx="4" fill="var(--surface-3)" stroke="var(--line)"/><text x="148" y="54" font-size="11" fill="var(--muted)">корпус 1</text>
+              <path d="M20 120 H300" stroke="var(--line)" stroke-width="14" stroke-linecap="round"/><text x="24" y="140" font-size="10" fill="var(--faint)">проезд</text>
+              <rect x="244" y="22" width="60" height="70" rx="4" fill="none" stroke="var(--warn)" stroke-dasharray="4 3"/><text x="250" y="36" font-size="10" fill="var(--warn-ink)">погрузка</text>
+              <rect x="16" y="22" width="80" height="60" rx="4" fill="none" stroke="var(--muted)" stroke-dasharray="4 3"/><text x="22" y="36" font-size="10" fill="var(--muted)">склад</text>
+              <circle cx="40" cy="120" r="7" fill="var(--text)"/><text x="50" y="112" font-size="10" fill="var(--text)">Бетоновоз 3</text>
+              <circle cx="120" cy="120" r="6" fill="none" stroke="var(--warn)" stroke-width="3"/><text x="104" y="104" font-size="10" fill="var(--text)">Фура 1</text>
+              <circle cx="190" cy="120" r="6" fill="none" stroke="var(--warn)" stroke-width="3"/><text x="180" y="104" font-size="10" fill="var(--text)">Фура 2</text>
+              <circle cx="270" cy="60" r="7" fill="none" stroke="var(--warn)" stroke-width="3"/><text x="252" y="80" font-size="10" fill="var(--text)">Погр. 4</text>
+              <circle cx="288" cy="120" r="7" fill="var(--text)" stroke="var(--text)"/><text x="232" y="140" font-size="10" fill="var(--text)">Манипулятор 9</text>
+              <path d="M64 70 l8 -8 l3 10 z" fill="var(--text)"/><text x="58" y="96" font-size="9" fill="var(--faint)">кам 1</text>
+            </svg></div>
+          </section>
+          <section class="panel">
+            <div class="panel__h"><h3>Смена по камерам</h3><span class="more">◆ вопрос · ▮ стоит &gt; 15 мин</span></div>
+            <div class="panel__b">
+              <div class="trk"><span>Кам 1</span><div><i style="left:12%"></i><i style="left:30%"></i><i style="left:44%"></i><b style="left:40%;width:8%"></b></div></div>
+              <div class="trk"><span>Кам 6</span><div><i style="left:20%"></i><b style="left:42%;width:6%"></b><u style="left:48%;right:0"></u></div></div>
+              <div class="trk"><span>Кам 7</span><div><i style="left:8%"></i><i style="left:33%"></i><em style="left:48%"></em></div></div>
+              <div class="hours"><span>08</span><span>10</span><span>12</span><span>14</span><span>16</span><span>18</span><span>20</span></div>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <aside class="attn" aria-label="Требует внимания">
+        <div class="card w kt" data-k="4">
+          <h3><span class="st st--idle"><i></i></span>Погрузчик 4 стоит 18 мин <time>с 13:34</time></h3>
+          <p>Камера 6 · дольше порога 15 мин · клип записан</p>
+          <div class="clip"><img src="img/pogr.jpg" alt="Клип: погрузчик стоит"><span class="play">▶ клип 0:30</span><span class="scrub"><i></i></span></div>
+          <div class="chips" role="group" aria-label="Почему стоит"><span class="chip">Нет фронта</span><span class="chip">Ждём материал</span><span class="chip">Поломка</span><span class="chip">Погода</span><span class="chip">По вине заказчика</span></div>
+        </div>
+        <div class="card w kt" id="q" data-k="3">
+          <h3>◆ Бортовой 8 — это Бортовой 7? <time>13:51</time></h3>
+          <p>ушёл из кадра 13:51:43 · появился 13:51:44 на Камере 7</p>
+          <div class="two"><figure><img src="img/bort5.jpg" alt=""><figcaption>Бортовой 7 · 13:51:43</figcaption></figure><figure><img src="img/bort7.jpg" alt=""><figcaption>Бортовой 8 · 13:51:44</figcaption></figure></div>
+          <div class="acts"><span class="btn btn--main btn--sm">Та же</span><span class="btn btn--sm">Другая</span><span class="btn btn--sm">Не знаю</span></div>
+        </div>
+        <div class="card trips kt" data-k="2">
+          <h3>Последние проезды <time><a href="#">весь журнал →</a></time></h3>
+          <div class="ev"><img class="thumb" src="img/beton.jpg" alt=""><span class="dir">↓</span><span><span class="plate plate--q">номер?</span> Бетоновоз 3</span><time class="num muted">13:47</time></div>
+          <div class="ev"><img class="thumb" src="img/fura2.jpg" alt=""><span class="dir">↓</span><span><span class="plate">Е 482 КМ<small>59</small></span> Фура 2</span><time class="num muted">13:46</time></div>
+          <div class="ev"><img class="thumb" src="img/kran.jpg" alt=""><span class="dir">↑</span><span><span class="plate">У 352 КО<small>159</small></span> Манипулятор 9</span><time class="num muted">13:41</time></div>
+        </div>
+      </aside>
+    </section>
+
+    <section class="panel kt kt--l" data-k="5" aria-label="Машины смены">
+      <div class="tbar">
+        <h2>Машины смены <span class="faint">7</span></h2>
+        <span class="chip is-on">Все</span><span class="chip">Самосвалы</span><span class="chip">Погрузчики</span><span class="chip">Краны</span><span class="chip">Миксеры</span><span class="chip">Экскаваторы · 0</span>
+        <div class="sp kt kt--l" data-k="6"><span class="btn btn--sm btn--main">Рапорт смены · PDF</span><span class="btn btn--sm">CSV для 1С</span></div>
+      </div>
+      <div class="tw"><table class="t num">
+        <thead><tr><th>Машина</th><th class="hide-s">Номер · чей</th><th>Сейчас</th><th class="hide-s" style="width:34%">Смена 08–20 <span class="daylegend" style="display:inline-flex;margin-left:8px"><span><i style="background:var(--bar-work)"></i>работа</span><span><i style="background:var(--bar-move)"></i>едет</span><span><i style="background:var(--bar-idle)"></i>стоит</span></span></th><th class="r hide-s">Работа</th><th class="r">Простой</th></tr></thead>
+        <tbody>
+          <tr><td><div class="mach"><img class="thumb" src="img/pogr.jpg" alt=""><span><b>Погрузчик 4</b><small>погрузчик · Кам 6</small></span></div></td><td class="hide-s"><span class="plate plate--q">не прочитан</span> <small class="muted">своя</small></td><td><span class="st st--idle"><i></i>стоит 18 мин</span></td><td class="hide-s"><div class="day"><span class="w" style="width:14%"></span><span class="i" style="width:5%"></span><span class="w" style="width:18%"></span><span class="m" style="width:4%"></span><span class="i" style="width:8%"></span></div></td><td class="r hide-s">3 ч 50</td><td class="r warn">1 ч 05</td></tr>
+          <tr><td><div class="mach"><img class="thumb" src="img/kran.jpg" alt=""><span><b>Манипулятор 9</b><small>кран · Кам 7</small></span></div></td><td class="hide-s"><span class="plate">У 352 КО<small>159</small></span> <small class="muted">аренда</small></td><td><span class="st st--work"><i></i>работает на месте</span></td><td class="hide-s"><div class="day"><span class="n" style="width:9%"></span><span class="m" style="width:3%"></span><span class="w" style="width:22%"></span><span class="i" style="width:3%"></span><span class="w" style="width:12%"></span></div></td><td class="r hide-s">4 ч 05</td><td class="r">0 ч 20</td></tr>
+          <tr><td><div class="mach"><img class="thumb" src="img/fura1.jpg" alt=""><span><b>Фура 1</b><small>грузовик · Кам 1</small></span></div></td><td class="hide-s"><span class="plate plate--q">не прочитан</span> <small class="muted">подрядчик</small></td><td><span class="st st--idle"><i></i>стоит 12 мин</span></td><td class="hide-s"><div class="day"><span class="n" style="width:38%"></span><span class="m" style="width:2%"></span><span class="i" style="width:9%"></span></div></td><td class="r hide-s">0 ч 10</td><td class="r warn">0 ч 55</td></tr>
+          <tr><td><div class="mach"><img class="thumb" src="img/beton.jpg" alt=""><span><b>Бетоновоз 3</b><small>миксер · Кам 1</small></span></div></td><td class="hide-s"><span class="plate plate--q">номер?</span> <small class="muted">подрядчик</small></td><td><span class="st st--move"><i></i>едет</span></td><td class="hide-s"><div class="day"><span class="n" style="width:44%"></span><span class="m" style="width:2%"></span><span class="w" style="width:3%"></span></div></td><td class="r hide-s">0 ч 25</td><td class="r">0</td></tr>
+          <tr><td><div class="mach"><img class="thumb" src="img/bort7.jpg" alt=""><span><b>Бортовой 6</b><small>грузовик · Кам 7</small></span></div></td><td class="hide-s"><span class="plate plate--q">не прочитан</span> <small class="muted">чей — ?</small></td><td><span class="st st--unseen"><i></i>не видно с 13:50</span></td><td class="hide-s"><div class="day"><span class="n" style="width:30%"></span><span class="m" style="width:4%"></span><span class="i" style="width:6%"></span><span class="u" style="width:9%"></span></div></td><td class="r hide-s">0 ч 30</td><td class="r">0 ч 20</td></tr>
+        </tbody>
+      </table></div>
+    </section>
+  </main>
+</div>
+
+<nav class="tabbar" aria-label="Разделы">
+  <a href="#" aria-current="page"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M8 21h8"/></svg>Площадка</a>
+  <a href="#"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg>Журнал</a>
+  <a href="#"><svg viewBox="0 0 24 24"><path d="M12 3 2 20h20z"/><path d="M12 10v4M12 17v.5"/></svg>Внимание<em>3</em></a>
+  <a href="#"><svg viewBox="0 0 24 24"><path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5"/></svg>Отчёты</a>
+  <a href="#"><svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg>Ещё</a>
+</nav>
+<p class="proto-note"><b>Прототип Б · рабочее место прораба и диспетчера.</b> Раскладка профессиональных пультов: разделы словами слева (как Milestone, Trackunit), состояние площадки числами сверху, «Требует внимания» справа (как очередь событий Avigilon Alta, Verkada), таблица машин с полосой смены снизу (как загрузка техники Trackunit, Tenna). Метки <span class="ktl">1</span>…<span class="ktl">9</span> — номера задач КП. Кадры — запись камер кампуса 22.10; номера, часы и рубли — пример (на этих камерах номер не читается). <a href="#" data-marks>Скрыть метки</a></p>
+<script>
+const th = new URLSearchParams(location.search).get("theme"); if (th) document.documentElement.dataset.theme = th;
+document.querySelector("[data-theme-btn]").onclick = () => { const r = document.documentElement; r.dataset.theme = (r.dataset.theme || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light")) === "dark" ? "light" : "dark"; };
+document.querySelector("[data-marks]").onclick = (e) => { e.preventDefault(); document.body.classList.toggle("no-marks"); };
+</script>
+</body>
+</html>
