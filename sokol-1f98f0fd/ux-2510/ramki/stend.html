@@ -1,0 +1,481 @@
+<!doctype html>
+<html lang="ru" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Рамки · стенд</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap">
+<style>
+:root{
+  --bg:#0E1013; --surface:#16191E; --surface-2:#1D2127; --line:#2A2F37; --text:#ECEEF1; --muted:#9AA3AE; --accent:#ECEEF1;
+  --font:"Golos Text",system-ui,sans-serif; --mono:"JetBrains Mono",ui-monospace,monospace;
+  color-scheme:dark;
+}
+:root[data-theme="light"]{
+  --bg:#F4F5F7; --surface:#FFFFFF; --surface-2:#EEF0F3; --line:#DCE0E5; --text:#14171C; --muted:#5E6773; --accent:#14171C;
+  color-scheme:light;
+}
+*{box-sizing:border-box;margin:0}
+body{background:var(--bg);color:var(--text);font:14px/1.4 var(--font);-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit}
+.wrap{max-width:1440px;margin:0 auto;padding:16px 24px 32px}
+header.top{display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px;margin-bottom:14px}
+header.top h1{font-size:18px;font-weight:600;margin-right:auto;display:flex;align-items:center;gap:10px}
+header.top h1 small{font-weight:400;color:var(--muted);font-size:13px}
+.seg{display:inline-flex;background:var(--surface);border:1px solid var(--line);border-radius:9px;padding:2px}
+.seg button{border:0;background:none;padding:5px 10px;border-radius:7px;cursor:pointer;color:var(--muted);font-weight:500;font-size:13px;white-space:nowrap}
+.seg button[aria-pressed="true"]{background:var(--surface-2);color:var(--text);box-shadow:0 0 0 1px var(--line)}
+.seg-l{font-size:12px;color:var(--muted);margin-right:4px}
+.seg .sh{display:none}
+@media (max-width:600px){.seg .sh{display:inline}}
+.ctl{display:flex;align-items:center}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:16px;align-items:start}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px}
+.cam{padding:10px}
+.cam-h{display:flex;align-items:center;gap:8px;padding:2px 4px 10px;font-weight:600}
+.cam-h .live{font:600 11px var(--font);letter-spacing:.06em;color:#0B0C0E;background:#ECEEF1;border-radius:4px;padding:1px 6px}
+.cam-h .sp{margin-left:auto;font-weight:400;color:var(--muted);font-size:13px}
+.note{font-size:12px;color:var(--muted);padding:8px 4px 0}
+
+/* ===== окно видео ===== */
+.stage{position:relative;container-type:inline-size;container-name:stage;border-radius:8px;overflow:hidden;background:#0B0C0E;aspect-ratio:16/9}
+.stage video,.stage .poster{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;display:block}
+.ov{position:absolute;inset:0}
+.trails{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
+.obj{position:absolute;--c:#fff}
+.obj[data-state="work"]{--c:var(--st-work)}
+.obj[data-state="move"]{--c:var(--st-move)}
+.obj[data-state="idle"]{--c:var(--st-idle)}
+.obj[data-state="ask"]{--c:var(--st-ask)}
+.obj[data-state="unseen"]{--c:var(--st-unseen)}
+.obj[data-state="person"]{--c:var(--st-person)}
+.obj[data-state="car"]{--c:var(--st-car)}
+.obj.hide{visibility:hidden}
+.lbl{z-index:20}
+.box,.gnd{z-index:1}
+.box{position:absolute;inset:0;display:block;pointer-events:auto;cursor:pointer}
+.box .c{display:none}
+.gnd{display:none}
+.lbl{position:absolute;display:flex;align-items:center;gap:5px;white-space:nowrap;pointer-events:auto;cursor:pointer;
+  font:500 12.5px/1 var(--font);color:#fff;padding:4px 7px;border-radius:5px;background:rgba(11,12,14,.78);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.lbl.top{bottom:calc(100% + 4px)} .lbl.bottom{top:calc(100% + 4px)}
+.lbl.left{left:0} .lbl.right{right:0}
+.lbl .ic{width:13px;height:13px;flex:none;color:var(--c)}
+.lbl b{font-weight:600}
+.lbl .st{color:var(--c)}
+.lbl .tm{font-variant-numeric:tabular-nums;color:#fff;opacity:.92}
+.lbl .q{color:#fff}
+.lbl .num{display:none;font-weight:700}
+.obj[data-state="person"] .lbl,.obj[data-state="car"] .lbl{display:none}
+.trail{fill:none;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+
+/* легенда — общая разметка */
+.lg{list-style:none;padding:0;display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12.5px}
+.lg li{display:flex;align-items:center;gap:6px;color:var(--muted)}
+.lg .sw{position:relative;width:18px;height:13px;flex:none;border-radius:2px}
+.lg .ic{width:14px;height:14px;color:var(--ink)}
+.lg .w{color:var(--text)}
+.lg .n{font-variant-numeric:tabular-nums;color:var(--muted)}
+.lg li[data-k] {--ink:var(--k-ink)}
+.lg-slot-below{padding:10px 4px 0}
+.lg-slot-above{padding:0 0 10px}
+
+/* ===== A · Сдержанный (Milestone / Verkada / Genetec) ===== */
+.v-a .box{border:1.5px solid var(--c);border-radius:3px;box-shadow:0 0 0 1px rgba(11,12,14,.6),inset 0 0 0 1px rgba(11,12,14,.45);transition:border-color .3s,opacity .3s}
+.v-a .obj[data-state="unseen"] .box{border-style:dashed;opacity:.85}
+.v-a .obj[data-state="ask"] .box{outline:1.5px solid var(--c);outline-offset:2px;animation:breathA 2.4s ease-in-out infinite}
+.v-a .obj[data-state="person"] .box{border-width:1px;border-radius:2px}
+.v-a .obj[data-state="car"] .box{border:1px solid rgba(195,201,209,.55);box-shadow:none}
+.v-a .lbl .st{color:#C9CED6}
+.v-a .lbl{border-left:3px solid var(--c)}
+.v-a .obj.sel .box{box-shadow:0 0 0 1px rgba(11,12,14,.6),0 0 0 3px #0B0C0E,0 0 0 5px var(--st-select)}
+.v-a .obj.sel .lbl{box-shadow:0 0 0 1.5px var(--st-select)}
+.v-a .ov.has-sel .obj:not(.sel):not([data-state="person"]) .box{opacity:.7}
+.v-a .obj.in > *{animation:fadeA .18s ease-out}
+.v-a .obj.chg .box{animation:none}
+.v-a .trail{stroke:var(--st-move);stroke-width:1.5;opacity:.55}
+@keyframes breathA{0%,100%{outline-color:var(--c);outline-offset:2px}50%{outline-color:transparent;outline-offset:5px}}
+@keyframes fadeA{from{opacity:0}to{opacity:1}}
+.v-a .lg .sw{border:1.5px solid var(--k);box-shadow:0 0 0 1px #0B0C0E}
+.v-a .lg li[data-k="unseen"] .sw{border-style:dashed}
+.v-a .lg li[data-k="ask"] .sw{outline:1.5px solid var(--k);outline-offset:1px}
+
+/* ===== B · Тактический (автопилот / Hawk-Eye / Mobileye) ===== */
+.v-b.tone video,.v-b.tone .poster{filter:saturate(.45) contrast(1.06) brightness(.82)}
+.v-b .box .c{display:block;position:absolute;width:var(--cl);height:var(--cl);border:0 solid var(--c);filter:drop-shadow(0 0 1px #0B0C0E) drop-shadow(0 0 1px #0B0C0E);transition:border-color .3s}
+.v-b .box{--cl:clamp(6px,22%,18px);transition:transform .25s}
+.v-b .box::after{content:"";position:absolute;inset:0;border:1px solid var(--c);opacity:.22}
+.v-b .c.tl{left:0;top:0;border-left-width:2px;border-top-width:2px}
+.v-b .c.tr{right:0;top:0;border-right-width:2px;border-top-width:2px}
+.v-b .c.bl{left:0;bottom:0;border-left-width:2px;border-bottom-width:2px}
+.v-b .c.br{right:0;bottom:0;border-right-width:2px;border-bottom-width:2px}
+.v-b .gnd{display:block;position:absolute;left:-6%;right:-6%;bottom:-7%;height:22%;border-radius:50%;border:2px solid var(--c);
+  background:radial-gradient(closest-side,color-mix(in srgb,var(--c) 34%,transparent),transparent);box-shadow:0 0 0 1px rgba(11,12,14,.5)}
+.v-b .obj[data-state="work"] .gnd{border-style:dashed;animation:spinB 3s linear infinite}
+.v-b .obj[data-state="unseen"] .c{border-style:dashed;opacity:.8}
+.v-b .obj[data-state="unseen"] .gnd{background:none;border-style:dotted;opacity:.7}
+.v-b .obj[data-state="ask"] .box::after{opacity:1;border:1.5px dashed var(--c);animation:antsB 1.2s linear infinite}
+.v-b .obj[data-state="person"] .gnd{left:-30%;right:-30%;height:14%;bottom:-5%}
+.v-b .obj[data-state="person"] .c{--cl:5px;border-width:0}
+.v-b .obj[data-state="person"] .box::after{opacity:.9;border-width:1.25px}
+.v-b .obj[data-state="car"] .c,.v-b .obj[data-state="car"] .gnd{display:none}
+.v-b .obj[data-state="car"] .box::after{opacity:.35}
+.v-b .lbl{font:600 11px/1.15 var(--mono);letter-spacing:.04em;text-transform:uppercase;background:rgba(11,12,14,.72);border-radius:2px;padding:4px 6px 4px 7px;flex-direction:column;align-items:flex-start;gap:2px;border-left:2px solid var(--c)}
+.v-b .lbl.top{bottom:calc(100% + 14px)} .v-b .lbl.bottom{top:calc(100% + 14px)}
+.v-b .lbl::before{content:"";position:absolute;left:-2px;width:1px;height:12px;background:var(--c)}
+.v-b .lbl.top::before{top:100%} .v-b .lbl.bottom::before{bottom:100%}
+.v-b .lbl.right::before{left:auto;right:0}
+.v-b .lbl .row1{display:flex;gap:5px;align-items:center}
+.v-b .lbl .ic{width:11px;height:11px}
+.v-b .lbl .st{font-size:10.5px}
+.v-b .obj.sel .box{transform:scale(1.04)}
+.v-b .obj.sel .c{border-color:var(--st-select)}
+.v-b .obj.sel .gnd{box-shadow:0 0 0 1px rgba(11,12,14,.5),0 0 14px var(--c)}
+.v-b .ov.has-sel .obj:not(.sel) :is(.box,.gnd){opacity:.6}
+.v-b .obj.in .box{animation:lockB .28s cubic-bezier(.2,.9,.3,1.2)}
+.v-b .obj.chg .gnd{animation:pingB .6s ease-out}
+.v-b .trail{stroke:var(--st-move);stroke-width:2.5;stroke-dasharray:1 6;opacity:.95}
+.v-b .trail.glow{stroke-dasharray:none;stroke-width:6;opacity:.18}
+@keyframes spinB{to{transform:rotate(360deg)}}
+@keyframes antsB{to{border-color:transparent}}
+@keyframes lockB{from{transform:scale(1.45);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes pingB{0%{box-shadow:0 0 0 0 var(--c)}100%{box-shadow:0 0 0 18px transparent}}
+.lg-hud{position:absolute;right:10px;top:10px;z-index:5;background:rgba(11,12,14,.72);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border-radius:4px;padding:6px 8px;border:1px solid rgba(255,255,255,.08)}
+.lg-hud .lg{flex-direction:column;gap:4px;font:600 10.5px/1.2 var(--mono);text-transform:uppercase;letter-spacing:.04em}
+.lg-hud .lg li{color:#C9CED6}
+.lg-hud .lg .w{color:#fff}
+.lg-hud .lg .ic{color:var(--k)}
+.lg-hud .lg .n{color:#9AA3AE;margin-left:auto;padding-left:10px}
+.lg-hud .sw{display:none}
+.lg-hud summary{font:600 10.5px var(--mono);letter-spacing:.06em;color:#9AA3AE;cursor:pointer;list-style:none;text-transform:uppercase}
+.lg-hud summary::-webkit-details-marker{display:none}
+.lg-hud details[open] summary{margin-bottom:6px}
+
+/* ===== C · Продуктовый (Samsara / Apple Дом / Verkada) ===== */
+.v-c .box{border:2px solid var(--c);border-radius:8px;background:color-mix(in srgb,var(--c) 13%,transparent);
+  box-shadow:0 0 0 1px rgba(11,12,14,.55),0 0 14px color-mix(in srgb,var(--c) 55%,transparent);transition:border-color .35s,background-color .35s,box-shadow .35s}
+.v-c .obj[data-state="unseen"] .box{border-style:dashed;background:none;box-shadow:0 0 0 1px rgba(11,12,14,.55)}
+.v-c .obj[data-state="person"] .box{border-width:1.5px;border-radius:4px;box-shadow:0 0 0 1px rgba(11,12,14,.5)}
+.v-c .obj[data-state="car"] .box{border:1px solid rgba(195,201,209,.5);background:none;box-shadow:none;border-radius:5px}
+.v-c .lbl{background:var(--c);color:#0B0C0E;border-radius:999px;padding:4px 9px 4px 6px;font-weight:600;box-shadow:0 0 0 1px rgba(11,12,14,.5),0 4px 12px rgba(0,0,0,.35)}
+.v-c .lbl .ic{color:#0B0C0E}
+.v-c .lbl .st{color:#0B0C0E;font-weight:500;opacity:.8}
+.v-c .lbl .tm{color:#0B0C0E}
+.v-c .lbl .q{color:#0B0C0E}
+.v-c .obj[data-state="unseen"] .lbl{background:rgba(11,12,14,.8);color:#fff;box-shadow:inset 0 0 0 1.5px var(--c)}
+.v-c .obj[data-state="unseen"] .lbl .ic,.v-c .obj[data-state="unseen"] .lbl .st{color:var(--c);opacity:1}
+.v-c .obj[data-state="unseen"] .lbl .tm{color:#fff}
+.v-c .ring{width:14px;height:14px;border-radius:50%;flex:none;background:conic-gradient(#0B0C0E var(--p),rgba(11,12,14,.22) 0)}
+.v-c .badge{position:absolute;right:-9px;top:-9px;width:18px;height:18px;border-radius:50%;background:var(--c);color:#0B0C0E;display:grid;place-items:center;font:700 12px var(--font);box-shadow:0 0 0 2px #0B0C0E}
+.v-c .obj[data-state="ask"] .badge{animation:bobC 1.6s ease-in-out infinite}
+.v-c .obj[data-state="ask"] .box::after{content:"";position:absolute;inset:-2px;border-radius:8px;border:2px solid var(--c);animation:rippleC 2s ease-out infinite}
+.v-c .bars{display:inline-flex;gap:1.5px;align-items:flex-end;height:11px}
+.v-c .bars i{width:2.5px;background:#0B0C0E;border-radius:1px;animation:eqC 1s ease-in-out infinite}
+.v-c .bars i:nth-child(2){animation-delay:-.33s}.v-c .bars i:nth-child(3){animation-delay:-.66s}
+.v-c .obj.sel .box{box-shadow:0 0 0 2px #0B0C0E,0 0 0 4px var(--st-select),0 0 22px color-mix(in srgb,var(--c) 60%,transparent)}
+.v-c .ov.has-sel .obj:not(.sel) .box{opacity:.6}
+.v-c .obj.in > *{animation:popC .34s cubic-bezier(.3,1.5,.5,1)}
+.v-c .obj.chg .box{animation:flashC .7s ease-out}
+.v-c .trail{stroke:var(--st-move);stroke-width:3;opacity:.9;stroke-dasharray:.1 7;stroke-linecap:round}
+.v-c .lg .sw{border:2px solid var(--k);border-radius:4px;background:color-mix(in srgb,var(--k) 18%,transparent)}
+@keyframes bobC{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+@keyframes rippleC{0%{opacity:.9;inset:-2px}100%{opacity:0;inset:-12px}}
+@keyframes eqC{0%,100%{height:3px}50%{height:11px}}
+@keyframes popC{0%{opacity:0;transform:scale(.9)}100%{opacity:1;transform:scale(1)}}
+@keyframes flashC{0%{box-shadow:0 0 0 0 var(--c)}100%{box-shadow:0 0 0 16px transparent}}
+.lg-chips{display:flex;flex-wrap:wrap;gap:6px}
+.lg-chips .lg{gap:6px}
+.lg-chips .lg li{border:1px solid var(--line);background:var(--surface-2);border-radius:999px;padding:4px 10px 4px 7px;cursor:pointer;user-select:none}
+.lg-chips .lg li.off{opacity:.45;text-decoration:line-through}
+.lg-chips .lg .w{font-weight:500}
+.lg-chips .lg .n{font-weight:600;color:var(--text)}
+
+/* приглушить «лишнее»: в легенде C можно выключить слой */
+.ov .obj.filtered{display:none}
+
+/* ===== правая колонка: тот же язык в списке ===== */
+.side{padding:14px}
+.side h2{font-size:14px;font-weight:600;margin-bottom:10px;display:flex;align-items:baseline;gap:6px}
+.side h2 span{color:var(--muted);font-weight:400}
+.rows{list-style:none;padding:0;display:flex;flex-direction:column}
+.rows li{display:grid;grid-template-columns:18px 1fr auto;gap:2px 8px;align-items:center;padding:8px 6px;border-top:1px solid var(--line);cursor:pointer;border-radius:6px}
+.rows li:first-child{border-top:0}
+.rows li.sel{background:var(--surface-2);box-shadow:inset 3px 0 0 var(--text)}
+.rows .ic{width:15px;height:15px;color:var(--ink)}
+.rows .nm{font-weight:600}
+.rows .stw{grid-column:2;font-size:12.5px;color:var(--ink)}
+.rows .t{grid-row:1/3;grid-column:3;font-variant-numeric:tabular-nums;font-weight:600}
+.lang{margin-top:14px;padding-top:12px;border-top:1px solid var(--line);font-size:12.5px;color:var(--muted)}
+.lang b{color:var(--text);font-weight:600}
+.demo{margin-top:12px;display:flex;flex-wrap:wrap;gap:8px}
+.btn{border:1px solid var(--line);background:var(--surface-2);border-radius:8px;padding:7px 11px;cursor:pointer;font-weight:500;font-size:13px}
+
+/* приглушение анимаций: системная настройка ИЛИ выключатель стенда */
+@media (prefers-reduced-motion: reduce){ .stage *,.stage *::after,.stage *::before{animation:none!important;transition:none!important} }
+.stage.still *,.stage.still *::after,.stage.still *::before{animation:none!important;transition:none!important}
+
+/* ===== узкое окно (телефон 390): подпись — значок + номер, легенда — значками ===== */
+@container stage (max-width: 600px){
+  .lbl{padding:3px 5px;gap:3px;font-size:11px}
+  .lbl b,.lbl .st,.lbl .q{display:none}
+  .lbl .num{display:inline}
+  .v-b .lbl{flex-direction:row}
+  .v-b .lbl .st{display:none}
+  .lg-hud{right:6px;top:6px;padding:4px 6px}
+  .lg-hud .lg .w{display:none}
+  .lg-hud .lg .n{padding-left:4px}
+  .v-c .badge{width:14px;height:14px;font-size:10px;right:-7px;top:-7px}
+}
+@media (max-width: 900px){
+  .wrap{padding:12px 16px 24px}
+  .grid{grid-template-columns:1fr}
+  header.top h1{width:100%}
+  .seg button{padding:5px 8px}
+}
+@media (max-width: 600px){
+  header.top h1 small{display:none}
+  .ctl{max-width:100%}
+  .seg{max-width:100%;overflow-x:auto;scrollbar-width:none}
+  .seg button{font-size:12.5px;padding:5px 7px}
+  .seg[data-ctl="v"] button .full{display:none}
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-work" viewBox="0 0 16 16"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" d="M8 1.8v2.1M8 12.1v2.1M1.8 8h2.1M12.1 8h2.1M3.6 3.6l1.5 1.5M10.9 10.9l1.5 1.5M3.6 12.4l1.5-1.5M10.9 5.1l1.5-1.5"/><circle cx="8" cy="8" r="2.6" fill="currentColor"/></symbol>
+    <symbol id="i-move" viewBox="0 0 16 16"><path fill="currentColor" d="M2 6.6h7.2V3.4L14.6 8l-5.4 4.6V9.4H2z"/></symbol>
+    <symbol id="i-idle" viewBox="0 0 16 16"><rect x="3.3" y="2.8" width="3.3" height="10.4" rx="1" fill="currentColor"/><rect x="9.4" y="2.8" width="3.3" height="10.4" rx="1" fill="currentColor"/></symbol>
+    <symbol id="i-ask" viewBox="0 0 16 16"><path fill="currentColor" d="M8 .9 15.1 8 8 15.1.9 8z"/><path fill="#0B0C0E" d="M7.2 10.3h1.6v1.6H7.2zM8 3.9c1.5 0 2.5.9 2.5 2.1 0 1-.6 1.5-1.2 1.9-.4.3-.5.5-.5.9v.3H7.3v-.4c0-.9.4-1.3 1-1.7.4-.3.6-.5.6-.9s-.4-.8-.9-.8c-.6 0-1 .4-1 1H5.5c0-1.4 1-2.4 2.5-2.4z"/></symbol>
+    <symbol id="i-unseen" viewBox="0 0 16 16"><path fill="none" stroke="currentColor" stroke-width="1.7" d="M1.5 8s2.4-4.3 6.5-4.3S14.5 8 14.5 8 12.1 12.3 8 12.3 1.5 8 1.5 8z"/><circle cx="8" cy="8" r="1.9" fill="currentColor"/><path stroke="currentColor" stroke-width="1.8" stroke-linecap="round" d="M2.6 13.6 13.4 2.4"/></symbol>
+    <symbol id="i-person" viewBox="0 0 16 16"><circle cx="8" cy="3.6" r="2.3" fill="currentColor"/><path fill="currentColor" d="M4.2 14.6V9.2c0-2 1.6-3.3 3.8-3.3s3.8 1.3 3.8 3.3v5.4z"/></symbol>
+    <symbol id="i-car" viewBox="0 0 16 16"><path fill="currentColor" d="M3.2 7.1 4.4 4c.2-.6.8-1 1.4-1h4.4c.6 0 1.2.4 1.4 1l1.2 3.1c.9.2 1.6 1 1.6 1.9v2.8h-1.4v1.3h-2v-1.3H5v1.3H3v-1.3H1.6V9c0-.9.7-1.7 1.6-1.9zm1.5-.1h6.6l-.9-2.4H5.6zM4 10.6a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm8 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/></symbol>
+  </defs>
+</svg>
+<div class="wrap">
+  <header class="top">
+    <h1>Рамки машин · стенд <small>один плотный кадр, переключай вариант</small></h1>
+    <div class="ctl"><span class="seg-l">Вариант</span><div class="seg" data-ctl="v"><button data-val="a">A<span class="full"> · Сдержанный</span><span class="sh"> · Сдерж.</span></button><button data-val="b">B<span class="full"> · Тактический</span><span class="sh"> · Такти.</span></button><button data-val="c">C<span class="full"> · Продуктовый</span><span class="sh"> · Проду.</span></button></div></div>
+    <div class="ctl"><span class="seg-l">Кадр</span><div class="seg" data-ctl="f"><button data-val="auburn">Площадка 2</button><button data-val="kampus">Кампус</button></div></div>
+    <div class="ctl"><div class="seg" data-ctl="t"><button data-val="dark">Тёмная</button><button data-val="light">Светлая</button></div></div>
+    <div class="ctl"><span class="seg-l">Анимации</span><div class="seg" data-ctl="m"><button data-val="on">вкл</button><button data-val="off">выкл</button></div></div>
+  </header>
+  <div class="grid">
+    <section class="card cam">
+      <div class="cam-h"><span class="live">ЗАПИСЬ</span><span id="camname"></span><span class="sp" id="camsub"></span></div>
+      <div class="lg-slot-above" id="slotAbove"></div>
+      <div class="stage" id="stage">
+        <img class="poster" id="poster" alt="">
+        <video id="vid" muted loop playsinline autoplay preload="auto"></video>
+        <div class="ov" id="ov"><svg class="trails" id="trails" viewBox="0 0 100 100" preserveAspectRatio="none"></svg></div>
+        <div class="lg-hud" id="slotHud" hidden></div>
+      </div>
+      <div class="lg-slot-below" id="slotBelow"></div>
+      <p class="note" id="note"></p>
+    </section>
+    <aside class="card side">
+      <h2>На кадре <span id="cnt"></span></h2>
+      <ul class="rows" id="rows"></ul>
+      <div class="demo">
+        <button class="btn" id="chg">Сменить статус: <span id="chgName"></span></button>
+        <button class="btn" id="unsel">Снять выбор</button>
+      </div>
+      <div class="lang" id="lang"></div>
+    </aside>
+  </div>
+</div>
+<script type="module">
+import { STATES, LAYERS, ALL, byKey, applyTokens } from "./palette.js";
+applyTokens();
+
+// Рамки: из наших следов. Площадка 2 (Оберн, США) — trace prog22 t = 111,4–118,4 с; кампус — tracks/cam-1 t = 0,5–11,5 с.
+// Статусы «ждёт ответа», «не видно» и таймеры расставлены для показа приёмов, это не вывод распознавания.
+const TRACKS = {"kampus":{"mix3":[[0.2,0.0,66.06,5.09,74.75],[0.4,0.0,65.95,5.45,74.79],[0.7,0.0,66.0,5.71,74.93],[1.0,0.0,66.06,6.17,75.07],[1.2,0.02,66.27,6.39,75.19],[1.5,0.01,66.28,6.6,75.53],[1.8,0.0,66.17,6.79,75.73],[2.0,0.05,66.3,7.02,75.71],[2.3,0.08,66.48,7.39,75.86],[2.6,0.1,66.58,7.76,76.27],[2.8,0.14,66.56,8.08,76.34],[3.1,0.71,66.82,8.63,76.48],[3.3,0.99,67.0,9.04,76.55],[3.6,1.24,67.09,9.42,76.74],[3.9,1.58,67.24,9.86,76.82],[4.1,1.93,67.39,10.28,77.0],[4.4,2.39,67.58,10.73,77.2],[4.7,2.87,67.69,11.14,77.38],[4.9,3.34,67.86,11.53,77.53],[5.2,3.76,68.03,11.96,77.7],[5.5,4.22,68.19,12.42,77.86],[5.7,4.6,68.33,12.86,78.0],[6.0,5.06,68.48,13.33,78.2],[6.3,5.56,68.62,13.82,78.39],[6.5,6.03,68.76,14.33,78.55],[6.8,6.53,68.91,14.83,78.74],[7.1,7.02,69.04,15.36,78.88],[7.3,7.51,69.16,15.86,79.04],[7.6,8.02,69.31,16.41,79.2],[7.9,8.53,69.46,16.95,79.36],[8.1,9.06,69.6,17.47,79.52],[8.4,9.6,69.74,18.02,79.66],[8.7,10.13,69.88,18.56,79.82],[8.9,10.66,70.0,19.13,79.96],[9.2,11.18,70.13,19.67,80.08],[9.5,11.72,70.24,20.24,80.21],[9.7,12.26,70.31,20.78,80.27],[10.0,12.78,70.34,21.37,80.31],[10.3,13.0,70.19,21.82,80.29],[10.5,13.26,70.15,22.18,80.27],[10.8,13.45,70.11,22.44,80.26],[11.1,13.67,70.09,22.66,80.25]]},"auburn":{"van4":[[0.37,41.41,60.0,45.74,62.97],[0.53,40.69,60.04,44.91,62.94],[0.87,38.99,60.02,43.39,63.06],[1.03,37.66,59.96,42.1,62.94],[1.53,35.43,59.92,39.66,62.82],[1.7,34.76,59.83,38.99,62.69],[1.87,33.62,59.71,38.23,62.85],[2.87,29.23,59.79,33.43,63.04],[3.03,28.29,59.51,32.77,62.84],[4.7,21.92,59.43,26.99,62.54],[5.03,19.58,59.52,23.79,62.82],[5.7,17.31,59.92,20.8,62.37],[5.87,16.51,59.54,20.6,62.53],[6.03,15.98,59.31,20.14,62.46],[6.37,15.18,59.21,18.75,62.39],[6.7,12.65,59.11,17.49,62.96]]}};
+
+const FRAMES = {
+  auburn: {
+    name: "Площадка 2 · камера 1", sub: "фрагмент кадра ×1,7 · запись 21.10 · 7 с", crop: [29.01, 40, 60, 60], clip: "img/auburn-clip.mp4", poster: "img/auburn-poster.jpg", target: "ld3",
+    objs: [
+      { id: "exc2", name: "Экскаватор 2", n: 2, state: "work", box: [59.6, 67.3, 66.5, 74.7], lp: "top left", since: 724 },
+      { id: "dt1", name: "Самосвал 1", n: 1, state: "idle", box: [68.9, 67.6, 82.3, 81.2], lp: "bottom right", since: 372, sel: true },
+      { id: "tel5", name: "Погрузчик 5", n: 5, state: "ask", q: "это Погрузчик 2?", box: [83.9, 67.2, 88.5, 74.2], lp: "top right" },
+      { id: "ld3", name: "Погрузчик 3", n: 3, state: "idle", box: [45.7, 67.8, 49.2, 72.3], lp: "bottom left", since: 128 },
+      { id: "van4", name: "Фургон 4", n: 4, state: "move", track: "van4", lp: "top left" },
+      { id: "gh6", name: "Самосвал 6", n: 6, state: "unseen", box: [50.5, 62.6, 56.6, 67.0], lp: "top left", last: "15:38:02" },
+      { id: "p1", state: "person", box: [38.0, 67.2, 38.9, 71.1] },
+      { id: "p2", state: "person", box: [48.2, 66.3, 49.0, 69.8] },
+      { id: "p3", state: "person", box: [81.1, 82.0, 82.4, 86.2] },
+      { id: "c1", state: "car", box: [11.3, 92.4, 22.6, 100] },
+      { id: "c2", state: "car", box: [23.8, 59.8, 26.6, 61.9] },
+    ],
+  },
+  kampus: {
+    name: "Кампус · камера 1 · въезд", sub: "запись 22.10 · 11 с", clip: "img/kampus-clip.mp4", poster: "img/kampus-poster.jpg", target: "f1",
+    objs: [
+      { id: "mix3", name: "Бетоновоз 3", n: 3, state: "move", track: "mix3", lp: "top left" },
+      { id: "f1", name: "Фура 1", n: 1, state: "idle", box: [20.6, 73.6, 43.2, 91.9], lp: "top left", since: 252, sel: true },
+      { id: "f2", name: "Фура 2", n: 2, state: "ask", q: "это Фура 7?", box: [63.4, 80.7, 92.2, 99.4], lp: "top right" },
+      { id: "gh6", name: "Самосвал 6", n: 6, state: "unseen", box: [47.5, 69.5, 54.5, 76.0], lp: "top left", last: "13:41:58" },
+      { id: "p1", state: "person", box: [57.4, 56.8, 58.5, 59.6] },
+      { id: "p2", state: "person", box: [59.3, 57.3, 60.3, 59.8] },
+      { id: "c1", state: "car", box: [11.8, 83.4, 18.4, 88.8] },
+      { id: "c2", state: "car", box: [21.4, 86.2, 27.7, 93.4] },
+    ],
+  },
+};
+
+const q = new URLSearchParams(location.search);
+const S = { v: q.get("v") || "a", f: q.get("f") || "auburn", t: q.get("t") || "dark", m: q.get("m") || "on", tone: q.get("tone") !== "off", off: new Set(), sel: null, legendOpen: q.get("lg") ? q.get("lg") !== "closed" : innerWidth > 700 };
+const $ = (s) => document.getElementById(s);
+const stage = $("stage"), ov = $("ov"), trails = $("trails"), vid = $("vid");
+const ic = (k) => `<svg class="ic"><use href="#i-${byKey[k].icon}"/></svg>`;
+const mmss = (s) => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, "0")}`;
+let objs = [];
+
+const crop = (b) => { const c = FRAMES[S.f].crop; if (!b || !c) return b; return [(b[0] - c[0]) / c[2] * 100, (b[1] - c[1]) / c[3] * 100, (b[2] - c[0]) / c[2] * 100, (b[3] - c[1]) / c[3] * 100]; };
+function boxAt(o, t) { return crop(rawBoxAt(o, t)); }
+function rawBoxAt(o, t) {
+  if (!o.track) return o.box;
+  const k = TRACKS[S.f][o.track];
+  if (t < k[0][0] - 0.15 || t > k.at(-1)[0] + 0.4) return null;
+  if (t <= k[0][0]) return k[0].slice(1);
+  if (t >= k.at(-1)[0]) return k.at(-1).slice(1);
+  let i = 1; while (k[i][0] < t) i++;
+  const a = k[i - 1], b = k[i], u = (t - a[0]) / (b[0] - a[0]);
+  return [1, 2, 3, 4].map((j) => a[j] + (b[j] - a[j]) * u);
+}
+
+function timeText(o, t) {
+  if (o.state === "idle" || o.state === "work") return mmss((o.since ?? 0) + t);
+  if (o.state === "unseen") return o.last;
+  return "";
+}
+
+function labelHTML(o) {
+  const st = byKey[o.state];
+  if (S.v === "b") {
+    const second = o.state === "ask" ? o.q : st.word;
+    return `<span class="row1">${ic(o.state)}<span class="num">${o.n}</span><b>${o.name}</b><span class="tm"></span></span><span class="st">${second}</span>`;
+  }
+  let lead = ic(o.state);
+  if (S.v === "c" && o.state === "work") lead = `<span class="bars"><i></i><i></i><i></i></span>`;
+  if (S.v === "c" && o.state === "idle") lead = `<span class="ring"></span>`;
+  const tail = o.state === "ask" ? `<span class="q">${o.q}</span>` : `<span class="st">${st.word}</span><span class="tm"></span>`;
+  return `${lead}<span class="num">${o.n}</span><b>${o.name}</b>${tail}`;
+}
+
+function build() {
+  const F = FRAMES[S.f];
+  objs = F.objs.map((o) => ({ ...o }));
+  if (S.sel === null) S.sel = objs.find((o) => o.sel)?.id ?? null;
+  [...ov.querySelectorAll(".obj")].forEach((n) => n.remove());
+  for (const o of objs) {
+    const n = document.createElement("div");
+    n.className = "obj"; n.dataset.state = o.state; n.dataset.id = o.id;
+    n.innerHTML = `<i class="gnd"></i><i class="box"><i class="c tl"></i><i class="c tr"></i><i class="c bl"></i><i class="c br"></i>${S.v === "c" && o.state === "ask" ? '<span class="badge">?</span>' : ""}</i>` +
+      (o.name ? `<div class="lbl ${o.lp}">${labelHTML(o)}</div>` : "");
+    n.title = o.name ? `${o.name} — ${byKey[o.state].long}` : byKey[o.state].long;
+    n.addEventListener("click", () => select(o.id));
+    o.node = n; o.seen = false; ov.append(n);
+  }
+  trails.innerHTML = objs.filter((o) => o.track).map((o) => `<polyline class="trail glow" data-id="${o.id}g"/><polyline class="trail" data-id="${o.id}"/>`).join("");
+  $("camname").textContent = F.name; $("camsub").textContent = F.sub;
+  vid.src = F.clip; $("poster").src = F.poster; vid.poster = F.poster;
+  vid.play().catch(() => {});
+  $("chgName").textContent = objs.find((o) => o.id === F.target).name;
+  legend(); rows(); paint(0, true); applySel();
+}
+
+function counts() {
+  const c = Object.fromEntries(ALL.map((s) => [s.key, 0]));
+  for (const o of objs) c[o.state]++;
+  return c;
+}
+
+// Легенда — из того же списка STATES/LAYERS, что и рамка; у C — она же фильтр.
+function legend() {
+  const c = counts();
+  const items = ALL.map((s) => `<li data-k="${s.key}" style="--k:${s.video};--k-ink:var(--st-${s.key}-ink)" class="${S.off.has(s.key) ? "off" : ""}"><i class="sw"></i>${ic(s.key)}<span class="w">${s.word}</span><span class="n">${c[s.key]}</span></li>`).join("");
+  const ul = `<ul class="lg" aria-label="Условные знаки на видео">${items}</ul>`;
+  $("slotAbove").innerHTML = ""; $("slotBelow").innerHTML = ""; $("slotHud").innerHTML = ""; $("slotHud").hidden = true;
+  if (S.v === "a") $("slotBelow").innerHTML = ul;
+  if (S.v === "b") { $("slotHud").hidden = false; $("slotHud").innerHTML = `<details ${S.legendOpen ? "open" : ""}><summary>Легенда</summary>${ul}</details>`; $("slotHud").querySelector("details").addEventListener("toggle", (e) => { S.legendOpen = e.target.open; }); }
+  if (S.v === "c") {
+    $("slotAbove").innerHTML = `<div class="lg-chips">${ul}</div>`;
+    $("slotAbove").querySelectorAll("li").forEach((li) => li.addEventListener("click", () => { const k = li.dataset.k; S.off.has(k) ? S.off.delete(k) : S.off.add(k); legend(); objs.forEach((o) => o.node.classList.toggle("filtered", S.off.has(o.state))); }));
+  }
+}
+
+function rows() {
+  const list = objs.filter((o) => o.name);
+  $("cnt").textContent = `${list.length} машин · ${objs.filter((o) => o.state === "person").length} чел.`;
+  $("rows").innerHTML = list.map((o) => `<li data-id="${o.id}" style="--ink:var(--st-${o.state}-ink)" class="${S.sel === o.id ? "sel" : ""}">${ic(o.state)}<span class="nm">${o.name}</span><span class="stw">${o.state === "ask" ? "ждёт ответа: " + o.q : byKey[o.state].word}</span><span class="t" data-t="${o.id}"></span></li>`).join("");
+  $("rows").querySelectorAll("li").forEach((li) => li.addEventListener("click", () => select(li.dataset.id)));
+  const st = STATES.map((s) => `<b style="color:var(--st-${s.key}-ink)">${s.word}</b> — ${s.line}`).join(" · ");
+  $("lang").innerHTML = `Язык: цвет + значок + слово (три признака, не только цвет). ${st}. Люди — бирюзовые, легковые — серые без подписи. Выбор — белое кольцо, статус не перекрашивает.`;
+}
+
+function select(id) { S.sel = S.sel === id ? null : id; applySel(); rows(); }
+function applySel() {
+  ov.classList.toggle("has-sel", !!S.sel);
+  objs.forEach((o) => o.node.classList.toggle("sel", o.id === S.sel));
+}
+
+function paint(t, force = false) {
+  for (const o of objs) {
+    const b = boxAt(o, t);
+    const n = o.node;
+    if (!b) { n.classList.add("hide"); o.seen = false; continue; }
+    if (!o.seen) { n.classList.remove("hide"); n.classList.remove("in"); void n.offsetWidth; n.classList.add("in"); o.seen = true; }
+    if (o.track || force) Object.assign(n.style, { left: b[0] + "%", top: b[1] + "%", width: b[2] - b[0] + "%", height: b[3] - b[1] + "%" });
+    const tm = timeText(o, t);
+    const el = n.querySelector(".tm"); if (el) el.textContent = tm;
+    const r = n.querySelector(".ring"); if (r) r.style.setProperty("--p", `${Math.min(100, ((o.since + t) / 900) * 100)}%`);
+    const row = $("rows").querySelector(`[data-t="${o.id}"]`); if (row) row.textContent = tm;
+    if (o.track) {
+      const k = TRACKS[S.f][o.track].filter((p) => p[0] <= t && p[0] >= t - 3).map((p) => crop(p.slice(1)));
+      k.push(b);
+      const pts = k.map((p) => `${((p[0] + p[2]) / 2).toFixed(2)},${p[3].toFixed(2)}`).join(" ");
+      trails.querySelectorAll(`[data-id^="${o.id}"]`).forEach((pl) => pl.setAttribute("points", pts));
+    }
+  }
+}
+(function loop() { paint(vid.currentTime || 0); requestAnimationFrame(loop); })();
+
+$("chg").addEventListener("click", () => {
+  const o = objs.find((x) => x.id === FRAMES[S.f].target);
+  const order = ["idle", "work", "move", "ask", "unseen"];
+  o.state = order[(order.indexOf(o.state) + 1) % order.length];
+  if (o.state === "ask") o.q = "это Погрузчик 1?";
+  if (o.state === "unseen") o.last = "15:40:11";
+  o.since = o.since ?? 0;
+  const n = o.node; n.dataset.state = o.state; n.querySelector(".lbl").innerHTML = labelHTML(o);
+  n.querySelector(".box").innerHTML = `<i class="c tl"></i><i class="c tr"></i><i class="c bl"></i><i class="c br"></i>${S.v === "c" && o.state === "ask" ? '<span class="badge">?</span>' : ""}`;
+  n.classList.remove("chg"); void n.offsetWidth; n.classList.add("chg");
+  legend(); rows();
+});
+$("unsel").addEventListener("click", () => { S.sel = null; applySel(); rows(); });
+
+function sync() {
+  document.documentElement.dataset.theme = S.t;
+  stage.className = `stage v-${S.v}${S.tone ? " tone" : ""}${S.m === "off" ? " still" : ""}`;
+  document.body.className = `v-${S.v}`;
+  document.querySelectorAll("[data-ctl]").forEach((g) => g.querySelectorAll("button").forEach((b) => b.setAttribute("aria-pressed", String(S[g.dataset.ctl] === b.dataset.val))));
+  if (S.m === "off") vid.pause(); else vid.play().catch(() => {});
+  $("note").textContent = "Рамки — из наших следов (движущаяся машина ведётся по следу кадр за кадром). Статусы «ждёт ответа», «не видно» и таймеры расставлены для показа приёмов. Кнопка «Анимации: выкл» = системная настройка «уменьшить движение».";
+  const u = new URL(location); for (const k of ["v", "f", "t", "m"]) u.searchParams.set(k, S[k]); history.replaceState(null, "", u);
+}
+document.querySelectorAll("[data-ctl]").forEach((g) => g.addEventListener("click", (e) => {
+  const b = e.target.closest("button"); if (!b) return;
+  const k = g.dataset.ctl, was = S[k]; S[k] = b.dataset.val;
+  if (k === "f" && was !== S.f) { S.sel = null; S.off.clear(); }
+  sync(); if (k === "v" || k === "f") build();
+}));
+sync(); build();
+if (q.get("at")) { const at = +q.get("at"); vid.addEventListener("loadeddata", () => { vid.currentTime = at; if (q.get("pause")) vid.pause(); }, { once: true }); }
+</script>
+</body>
+</html>

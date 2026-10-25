@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Рамки машин Сокола</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap">
+<style>
+/* Раскладка: одна колонка-отчёт 1120 px; сверху итог за 10 секунд, дальше «как сейчас → у профи → язык → варианты → что делать». */
+:root{
+  --bg:#F3F4F6; --surface:#FFFFFF; --sunk:#E9EBEF; --line:#D9DDE3; --fg:#14171C; --muted:#5B6470; --accent:#14171C;
+  --work:#2F7A12; --move:#1F5FD1; --idle:#9A5B00; --ask:#8A3FC0; --unseen:#5F6874; --person:#16797B;
+  --v-work:#8FE36B; --v-move:#6EA8FF; --v-idle:#FFB547; --v-ask:#D68CFF; --v-unseen:#B4BCC8; --v-person:#4FC2C4; --v-car:#C3C9D1;
+  --font:"Golos Text",system-ui,-apple-system,"Segoe UI",sans-serif; --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0E1013; --surface:#16191E; --sunk:#1D2127; --line:#2A2F37; --fg:#ECEEF1; --muted:#9AA3AE; --accent:#ECEEF1;
+  --work:#8FE36B; --move:#6EA8FF; --idle:#FFB547; --ask:#D68CFF; --unseen:#B4BCC8; --person:#4FC2C4; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0E1013; --surface:#16191E; --sunk:#1D2127; --line:#2A2F37; --fg:#ECEEF1; --muted:#9AA3AE; --accent:#ECEEF1;
+  --work:#8FE36B; --move:#6EA8FF; --idle:#FFB547; --ask:#D68CFF; --unseen:#B4BCC8; --person:#4FC2C4; color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.55 var(--font);-webkit-font-smoothing:antialiased}
+.wrap{max-width:1120px;margin:0 auto;padding-block:28px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:44px}
+h1{font-size:30px;line-height:1.15;margin:0;text-wrap:balance;font-weight:700;letter-spacing:-.01em}
+h2{font-size:21px;margin:0 0 4px;text-wrap:balance;font-weight:650}
+h3{font-size:15.5px;margin:0;font-weight:600}
+p{margin:0;max-width:72ch}
+a{color:inherit;text-underline-offset:3px}
+.eyebrow{font:600 11.5px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.lead{color:var(--muted);max-width:72ch}
+section{display:flex;flex-direction:column;gap:16px;min-width:0}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px}
+/* итог за 10 секунд */
+.hero{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:22px;align-items:start}
+.hero .top{display:flex;flex-direction:column;gap:12px}
+.sum{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.sum li{display:grid;grid-template-columns:22px 1fr;gap:10px;align-items:start}
+.sum li b{font-weight:600}
+.sum .k{font:600 12px var(--mono);color:var(--muted);padding-top:2px}
+.cta{display:flex;flex-wrap:wrap;gap:10px;margin-top:4px}
+.btn{display:inline-flex;align-items:center;gap:8px;border-radius:9px;padding:9px 14px;font-weight:600;text-decoration:none;border:1px solid var(--line);background:var(--surface)}
+.btn.pri{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.btn:focus-visible{outline:2px solid var(--move);outline-offset:2px}
+.hero img{width:100%;border-radius:10px;border:1px solid var(--line);display:block}
+.hero figcaption{font-size:12.5px;color:var(--muted);margin-top:6px}
+/* таблицы */
+.tw{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:13.5px;min-width:760px}
+th,td{text-align:left;vertical-align:top;padding:10px 12px;border-top:1px solid var(--line)}
+th{font:600 11.5px var(--mono);letter-spacing:.05em;text-transform:uppercase;color:var(--muted);border-top:0;background:var(--sunk)}
+td code,p code,li code{font:500 12.5px var(--mono);background:var(--sunk);padding:1px 5px;border-radius:4px}
+.bad{color:var(--idle);font-weight:600}
+.st{display:inline-flex;align-items:center;gap:7px;font-weight:600;white-space:nowrap}
+.sw{width:22px;height:14px;border-radius:2px;box-shadow:0 0 0 1px #0B0C0E;flex:none}
+/* картинки */
+.shots{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.shots.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+figure{margin:0;display:flex;flex-direction:column;gap:6px;min-width:0}
+figure img{width:100%;height:auto;border-radius:8px;border:1px solid var(--line);display:block;background:var(--sunk)}
+figcaption{font-size:12.5px;color:var(--muted)}
+figcaption b{color:var(--fg);font-weight:600}
+.score{font:600 11px var(--mono);color:var(--muted)}
+.refs{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px}
+.refs figure img{aspect-ratio:16/10;object-fit:cover}
+.facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.fact{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:13.5px;display:flex;flex-direction:column;gap:4px}
+.fact .src{font-size:12px;color:var(--muted)}
+/* варианты */
+.vars{display:flex;flex-direction:column;gap:28px}
+.var{display:grid;grid-template-columns:minmax(0,2.2fr) minmax(0,.9fr);gap:16px;align-items:start}
+.var .side{display:flex;flex-direction:column;gap:10px}
+.var .phone img{border-radius:14px}
+.var .lab{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.var .lab .eyebrow{color:var(--fg)}
+.pc{list-style:none;margin:0;padding:0;font-size:13.5px;display:flex;flex-direction:column;gap:4px}
+.pc li::before{content:"+ ";color:var(--work);font-weight:700}
+.pc li.m::before{content:"– ";color:var(--idle)}
+.rec{border:2px solid var(--fg);border-radius:14px;padding:20px;display:flex;flex-direction:column;gap:14px;background:var(--surface)}
+.cols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+ol.steps{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px;font-size:14px}
+ol.steps li::marker{font:600 13px var(--mono);color:var(--muted)}
+.tag{font:600 11px var(--mono);padding:2px 6px;border-radius:4px;background:var(--sunk);color:var(--muted);white-space:nowrap}
+.foot{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padding-top:14px}
+@media (max-width: 860px){
+  .hero,.var,.cols,.facts{grid-template-columns:1fr}
+  .shots{grid-template-columns:1fr}
+  .shots.two{grid-template-columns:1fr}
+  h1{font-size:25px}
+  .var .phone{max-width:300px}
+}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<main class="wrap">
+
+<header class="hero">
+  <div class="top">
+    <span class="eyebrow">Сокол · пульт · 25.10.2026</span>
+    <h1>Рамки машин: язык состояний, легенда и анимация</h1>
+    <ul class="sum">
+      <li><span class="k">1</span><span><b>Сейчас статус читается одним признаком.</b> «Едет» — белые уголки, «стоит» — светло-серые: на светлом кадре почти не отличить. «Работает на месте» вообще нет: в данных он есть, а рамка рисует его как «едет». «Ждёт ответа» на рамке не показан. Выбранную машину на кадре не видно.</span></li>
+      <li><span class="k">2</span><span><b>У профи статус = цвет + форма линии + значок + слово.</b> Выбор — отдельный слой. Легенда собрана из тех же данных, что и рамка. Анимация передаёт смысл: появление, ожидание ответа, след движения.</span></li>
+      <li><span class="k">3</span><span><b>Совет: вариант A как основа + две вещи из B и C.</b> Из C берём легенду-фильтр со счётчиками, из B — след и кольцо на земле у выбранной машины. К показу 26.10 хватит малой правки: 5 цветов по статусам, «работает» отдельно, «ждёт ответа» прямо на рамке, легенда под видео.</span></li>
+    </ul>
+    <div class="cta">
+      <a class="btn pri" href="stend.html?v=a&amp;f=auburn">Открыть стенд: 3 варианта на одном кадре →</a>
+      <a class="btn" href="#rec">Что внедрить к 26.10</a>
+    </div>
+  </div>
+  <figure>
+    <img src="shots/c-dark.jpg" alt="Стенд: вариант C на фрагменте кадра площадки 2, все статусы и легенда-фильтр" width="1440" height="860">
+    <figcaption>Стенд, вариант C. Кадр с нашей записи. Рамка фургона идёт по нашему следу кадр за кадром.</figcaption>
+  </figure>
+</header>
+
+<section id="now">
+  <span class="eyebrow">1 · Как сейчас</span>
+  <h2>Состояния рамки в пульте сейчас</h2>
+  <p class="lead">Источник — код ветки <code>stage/ugly-tipy-2510</code> (<code>ui/js/camview.js</code>, <code>camview-model.js</code>, <code>camview-labels.js</code>, <code>camview-track.js</code>, <code>tokens.css</code>) и снимки пульта 25.10. Код не менял.</p>
+  <div class="shots">
+    <figure><img src="shots/now-kampus.jpg" alt="Текущий пульт: кампус, рамки уголками, подписи-таблички" loading="lazy"><figcaption><b>Кампус, вид v2.</b> Подпись по умолчанию — «○ Фура 1»: без статуса и минут простоя. Точка или кольцо 4 px — единственная подсказка.</figcaption></figure>
+    <figure><img src="shots/now-lyudi.jpg" alt="Текущий пульт: 3D-коробки белая и янтарная, люди бирюзовые" loading="lazy"><figcaption><b>Крупно.</b> Белая и янтарная 3D-коробки, человек бирюзовый. Янтарь означает и «не видно», и «сомнительно».</figcaption></figure>
+    <figure><img src="shots/now-nevidno.jpg" alt="Текущий пульт: полосы «не видно» над окнами камер" loading="lazy"><figcaption><b>«Не видно».</b> Янтарная полоса над окном и пунктир на последнем месте. Полоса удачная — её оставляем.</figcaption></figure>
+  </div>
+  <div class="tw"><table>
+    <thead><tr><th>Состояние</th><th>Цвет</th><th>Линия / форма</th><th>Подпись</th><th>Анимация</th><th>Что не так</th></tr></thead>
+    <tbody>
+      <tr><td>Едет (move)</td><td>белый <code>--on-scrim #FFF</code></td><td>уголки 2,75 px + тонкая рамка 1 px 50 %; знак ●</td><td>вид a: «● Фура 1» · вид b: «Фура 1 · едет»</td><td>появление 0,25 с, угасание 1,5 с</td><td class="bad">белый не значит «едет»: так в видеоаналитике рисуют просто найденный объект</td></tr>
+      <tr><td>Работает на месте (work)</td><td>как «едет»</td><td>как «едет»</td><td>«едет»</td><td>—</td><td class="bad">в данных есть (<code>states.py</code>, отчёты считают отдельно), а рамка сливает его с «едет» (<code>camview-model.js:46</code>). По КП нужны «работает / простаивает / перемещается»</td></tr>
+      <tr><td>Стоит (idle)</td><td>светло-серый <code>#C3C9D1</code></td><td>уголки 1,75 px; знак ○</td><td>вид b: «стоит 55 с»; вид a (по умолчанию) — без времени</td><td>—</td><td class="bad">от «едет» отличается толщиной и знаком 4 px; на светлом кадре серый и белый сливаются. Простой — главная цифра КП, а он самый незаметный</td></tr>
+      <tr><td>Стоит, «замороженная»</td><td>как «стоит»</td><td>рамка заперта по месту и размеру (<code>camview-still.js</code>)</td><td>как «стоит»</td><td>—</td><td>снаружи не видно, и это правильно: замок — техника, а не статус</td></tr>
+      <tr><td>Не видно (unseen)</td><td>янтарь <code>#F0B451</code></td><td>пунктир 6/4 полной рамкой</td><td>«Самосвал 6 · последний кадр 13:50:02», в пунктирной плашке; полоса над окном</td><td>—</td><td class="bad">янтарь занят «сомнением»; нейтральное «нет данных» выглядит как тревога</td></tr>
+      <tr><td>Ждёт подтверждения</td><td>янтарь — только в ленте и на шкале</td><td>на рамке нет (<code>b.amber</code> никто не ставит)</td><td>в ленте «Бортовой 8 — это Самосвал 7?»</td><td>—</td><td class="bad">вопрос не привязан к машине на видео: где она, не видно</td></tr>
+      <tr><td>Люди</td><td>бирюзовый <code>#4FC2C4</code> (оставили)</td><td>уголки 1,75 px</td><td>«человек», если рамка ≥ 34 px</td><td>—</td><td>в порядке; оставляем отдельным слоем</td></tr>
+      <tr><td>Легковые</td><td>как техника</td><td>как техника</td><td>«Легковая N»</td><td>—</td><td class="bad">отдельного слоя нет. Легковые шумят наравне с техникой</td></tr>
+      <tr><td>Выбранная машина</td><td>—</td><td>на кадре не отмечена</td><td>—</td><td>—</td><td class="bad">клик в списке перематывает запись, но на видео не показывает, о какой машине речь</td></tr>
+    </tbody>
+  </table></div>
+  <p class="lead"><b>Легенда сейчас:</b> в старом виде — строка под видео «● в движении · ○ стоит · ┅ не видно». В виде v2 — только на плане: «● едет ○ стоит ● человек». Над видео v2 легенды нет, «не видно» в ней нет. Слова расходятся: «в движении» и «едет».</p>
+</section>
+
+<section id="pro">
+  <span class="eyebrow">2 · Что у профи</span>
+  <h2>Как это решают в видеоаналитике, автопилотах, спорте и разметке</h2>
+  <p class="lead">Ниже настоящие кадры интерфейсов из документации и с сайтов продуктов, у каждого — источник. Права у авторов: берём приёмы, картинки в продукт не идут. Круг 3 (NVIDIA, Supervision, Mobileye, Waymo, кино) уже собран — <a href="../../refs3/pick.html">галерея refs3</a>; здесь только новое и самое нужное оттуда.</p>
+  <div class="refs">
+    <figure><a href="refs/p03-frigate-debug-road.jpg"><img src="refs/p03-frigate-debug-road.jpg" alt="Frigate · Debug" loading="lazy"></a><figcaption><b>Frigate · Debug.</b> Цвет рамки — класс объекта, не статус. Подпись над рамкой: «car 90% 4819». Слева переключатели слоёв: рамки, зоны, движение. <b>Берём: выключатели слоёв рядом с видео.</b> <a href="https://m5stack.oss-cn-shenzhen.aliyuncs.com/resource/linux/ax8850_card/images/frigate4.png">источник</a> · m5stack · 2025</figcaption></figure>
+    <figure><a href="refs/p19-frigate-github-boxcolors.jpg"><img src="refs/p19-frigate-github-boxcolors.jpg" alt="Frigate · стоящий и потерянный" loading="lazy"></a><figcaption><b>Frigate · стоящий и потерянный.</b> Стоящий объект — тонкая серая линия, потерянный — тонкая тёмно-синяя, объект слежения — толстая. Это три статуса, и выражены они толщиной линии. <b>Берём: линия = уверенность. Не берём: стоящий серым. Для охраны стоящий неважен, для нас простой — главная цифра.</b> <a href="https://github.com/blakeblackshear/frigate/discussions/7595">источник</a> · GitHub · 2023-08-28</figcaption></figure>
+    <figure><a href="refs/p10-avigilon-appearance.jpg"><img src="refs/p10-avigilon-appearance.jpg" alt="Avigilon ACC · поиск по облику" loading="lazy"></a><figcaption><b>Avigilon ACC · поиск по облику.</b> Выбранный — белая внешняя рамка вокруг цветной рамки класса. Слева тот же объект выделен синим в результатах, внизу метки на шкале. <b>Берём: выбор — отдельное белое кольцо поверх статуса, общий выбор у списка и кадра.</b> <a href="https://i.ytimg.com/vi/PchyTvdLxwc/maxresdefault.jpg">источник</a> · превью YouTube · кадр 2016-05-30</figcaption></figure>
+    <figure><a href="refs/p12-avigilon-live-parking.jpg"><img src="refs/p12-avigilon-live-parking.jpg" alt="Avigilon ACC · парковка" loading="lazy"></a><figcaption><b>Avigilon ACC · парковка.</b> 30 стоящих машин без рамок, обведены только две, которые едут. Кадр остаётся чистым. <b>Берём: легковые и фон приглушать, кадр не превращать в ёлку.</b> <a href="https://i.ytimg.com/vi/tt_4j4goiiw/maxresdefault.jpg">источник</a> · превью YouTube · кадр 2019-03-04</figcaption></figure>
+    <figure><a href="refs/p09-macroscop-xtracking.jpg"><img src="refs/p09-macroscop-xtracking.jpg" alt="Macroscop · межкамерный трекинг" loading="lazy"></a><figcaption><b>Macroscop · межкамерный трекинг.</b> Под рамкой плашка со значком и действием «Отследить». Подпись — кнопка, а не просто текст. <b>Берём: подпись у «ждёт ответа» — сразу с действием.</b> <a href="https://doc.macroscop.com/_images/x-tracing-6.png">источник</a> · doc.macroscop.com · 2026-02-09</figcaption></figure>
+    <figure><a href="refs/p16-genetec-zones-live.jpg"><img src="refs/p16-genetec-zones-live.jpg" alt="Genetec Security Center · сетка" loading="lazy"></a><figcaption><b>Genetec Security Center · сетка.</b> Тип правила различают цветом и пунктиром: красная и зелёная зоны, жёлтая пунктирная рамка предмета. <b>Берём: пунктир — отдельный смысл, а не украшение.</b> <a href="https://transform.octanecdn.com/crop/2400x1350/https://octanecdn.com/is3techcom/is3techcom_540948652.jpeg">источник</a> · обзор is3tech · дата не видна</figcaption></figure>
+    <figure><a href="refs/p06-cvat-occluded.jpg"><img src="refs/p06-cvat-occluded.jpg" alt="CVAT · трек" loading="lazy"></a><figcaption><b>CVAT · трек.</b> Пунктирная граница — объект закрыт (Occluded). Этим знаком пользуется вся разметка видео. <b>Берём: пунктир = «не видно» (у нас уже так — оставить).</b> <a href="https://github.com/opencv/cvat/blob/develop/site/content/en/images/image049_detrac.jpg">источник</a> · репозиторий CVAT</figcaption></figure>
+    <figure><a href="refs/p14-hikvision-ivms.jpg"><img src="refs/p14-hikvision-ivms.jpg" alt="Hikvision iVMS-4200 · тревоги" loading="lazy"></a><figcaption><b>Hikvision iVMS-4200 · тревоги.</b> Зелёная рамка человека, синие контуры зоны и линия пересечения. Слева тип тревоги текстом. <b>Берём: зоны — контуром без заливки, другим цветом, чем статусы.</b> <a href="https://i.ytimg.com/vi/ce8Kt2nmxrw/maxresdefault.jpg">источник</a> · превью YouTube · кадр 2019-10-09</figcaption></figure>
+    <figure><a href="refs/p21-supervision-trace.jpg"><img src="refs/p21-supervision-trace.jpg" alt="Roboflow Supervision · TraceAnnotator" loading="lazy"></a><figcaption><b>Roboflow Supervision · TraceAnnotator.</b> За каждым объектом тянется след пути, к хвосту он гаснет. Видео под ним обесцвечено. <b>Берём: след 3 с — только у «едет» и у выбранной.</b> <a href="https://media.roboflow.com/supervision-annotator-examples/trace-annotator-example-purple.png">источник</a> · supervision.roboflow.com</figcaption></figure>
+    <figure><a href="../../refs3/pick.html"><img src="../../refs3/img/r04.webp" alt="Supervision · уголки на ч/б" loading="lazy"></a><figcaption><b>Supervision · уголки на ч/б</b> (круг 3): тонкие уголки на обесцвеченном видео — основа варианта B.</figcaption></figure>
+    <figure><a href="../../refs3/pick.html"><img src="../../refs3/img/r07.webp" alt="Mobileye · кольцо на земле" loading="lazy"></a><figcaption><b>Mobileye · кольцо на земле</b> (круг 3): кольцо под объектом показывает, где он стоит.</figcaption></figure>
+    <figure><a href="../../refs3/pick.html"><img src="../../refs3/img/r09.webp" alt="Verkada · тонкая линия" loading="lazy"></a><figcaption><b>Verkada · тонкая линия</b> (круг 3): спокойная полная рамка — основа варианта A.</figcaption></figure>
+  </div>
+  <p class="lead">Ещё 14 кадров (Frigate, CVAT, Avigilon, Hikvision, Verkada, Supervision) с источниками лежат в рабочей папке (<code>ux-2510/ramki/refs/list.md</code>). Все 23 выложены рядом: <code>refs/p01…p23</code>. <b>Чего не нашли:</b> постоянной легенды цветов внутри интерфейса нет ни у Frigate, ни у Macroscop, ни у Avigilon — значения цветов описаны только в документации. Анимация рамок нигде не описана. Настоящих экранов Hawk-Eye, Tesla, Waymo, EarthCam, Dozer.ai, Buildots и Komatsu с рамками по статусам в открытом доступе нет. Значит, легенда на кадре и смысловая анимация у нас будут своими. Это преимущество, но проверить их можно только на людях.</p>
+  <h3>Факты из документации</h3>
+  <div class="facts">
+    <div class="fact"><b>Frigate — три статуса, и все они выражены толщиной и цветом линии.</b><span>«Тонкая серая линия — объект стоит». «Тонкая тёмно-синяя — объект сейчас не обнаружен». «Толстая — объект автослежения». Цвета классов случайные: «don't have any explicit meaning». Легенды в интерфейсе нет.</span><span class="src"><a href="https://docs.frigate.video/frigate/glossary/">docs.frigate.video · Glossary</a> · <a href="https://github.com/blakeblackshear/frigate/discussions/12369">обсуждение #12369</a></span></div>
+    <div class="fact"><b>CVAT — пунктир значит «закрыт».</b><span>«A shape can be Occluded… Such shapes have dashed boundaries». Ушедший из кадра объект помечается «Outside» и не рисуется. У выбранного своя прозрачность заливки (Selected fill opacity).</span><span class="src"><a href="https://github.com/opencv/cvat/blob/develop/site/content/en/docs/annotation/annotation-editor/objects-sidebar.md">CVAT · objects sidebar</a></span></div>
+    <div class="fact"><b>Avigilon — цвет по классу.</b><span>Человек — красная рамка, машина — синяя, найденное совпадение — белая. На наших кадрах p10–p12 так и есть. Дословно руководство (PDF) не прочитано — <i>не проверено</i>.</span><span class="src"><a href="https://d8eqw8u9b6kgn.cloudfront.net/file_library/pdf/acc6/avigilon-acc6.14-player-en.pdf">ACC 6.14 Player Guide</a></span></div>
+    <div class="fact"><b>Macroscop — рамки включаются кнопкой.</b><span>Пункт «Показывать рамки объектов» и горячая клавиша «Показать/скрыть рамки движущихся объектов». Легенды цветов нет.</span><span class="src"><a href="https://doc.macroscop.com/win-client/cameras-grid-cell.htm">doc.macroscop.com · просмотр</a></span></div>
+    <div class="fact"><b>Carbon (IBM) — статус не только цветом.</b><span>«Для соответствия WCAG должны присутствовать как минимум три элемента» из четырёх: значок, форма, цвет, текст. Контраст статус-цвета к фону — не меньше 3:1. Жёлтому и оранжевому на светлом нужна обводка.</span><span class="src"><a href="https://carbondesignsystem.com/patterns/status-indicator-pattern/">carbondesignsystem.com · Status indicators</a></span></div>
+    <div class="fact"><b>Frigate — «стоящий» объект — отдельное состояние трекера.</b><span>Объект считается стоящим, если держится «в очень похожем положении» заданное число кадров. По умолчанию порог — 10 × частота кадров, около 10 с. Пока он стоит, проверка идёт реже. Тронулся — снова «активный». Это наш «замок» стоящей машины.</span><span class="src"><a href="https://docs.frigate.video/configuration/stationary_objects/">docs.frigate.video · Stationary objects</a></span></div>
+    <div class="fact"><b>Samsara — движение передаёт форма, а не только цвет.</b><span>На карте парка движущаяся машина — зелёный треугольник, который показывает направление. Стоящая или выключенная — чёрный круг. Время в статусе выводится отдельным полем «Idling Duration».</span><span class="src"><a href="https://kb.samsara.com/hc/en-us/articles/41266933936269-Monitor-Your-Fleet-on-the-Fleet-Overview-Map">kb.samsara.com · Fleet Overview Map</a></span></div>
+  </div>
+</section>
+
+<section id="lang">
+  <span class="eyebrow">3 · Выводы</span>
+  <h2>Язык состояний: что несёт цвет, что линия, что подпись</h2>
+  <p class="lead">Одно правило на всё: <b>цвет — что делает машина</b>, <b>линия — насколько мы в этом уверены</b>, <b>значок и слово — то же самое без цвета</b>, <b>белое кольцо — что выбрал человек</b>. Палитра одна для рамки, списка, журнала и отчёта. Легенда собирается из того же файла (<code>palette.js</code> на стенде, в пульте — <code>tokens.css</code>), поэтому разойтись они не могут. От логотипа палитра не зависит.</p>
+  <div class="tw"><table>
+    <thead><tr><th>Статус</th><th>Цвет на кадре · на светлой странице</th><th>Линия</th><th>Значок</th><th>Подпись</th><th>Анимация</th><th>Слово в КП</th></tr></thead>
+    <tbody>
+      <tr><td><span class="st"><i class="sw" style="background:var(--v-work)"></i>работает</span></td><td><code>#8FE36B</code> · <code>#2F7A12</code></td><td>сплошная</td><td>шестерня</td><td>«Экскаватор 2 · работает 12:04»</td><td>нет (в C — «эквалайзер» в бирке)</td><td>работает</td></tr>
+      <tr><td><span class="st"><i class="sw" style="background:var(--v-move)"></i>едет</span></td><td><code>#6EA8FF</code> · <code>#1F5FD1</code></td><td>сплошная + след 3 с</td><td>стрелка</td><td>«Фургон 4 · едет»</td><td>след растёт за машиной</td><td>перемещается</td></tr>
+      <tr><td><span class="st"><i class="sw" style="background:var(--v-idle)"></i>стоит</span></td><td><code>#FFB547</code> · <code>#9A5B00</code></td><td>сплошная</td><td>пауза</td><td>«Самосвал 1 · стоит 6:12», таймер идёт</td><td>только цифры таймера</td><td>простаивает</td></tr>
+      <tr><td><span class="st"><i class="sw" style="background:var(--v-ask)"></i>ждёт ответа</span></td><td><code>#D68CFF</code> · <code>#8A3FC0</code></td><td>двойная</td><td>ромб с «?»</td><td>«Погрузчик 5 · это Погрузчик 2?»</td><td>«дышит» 2,4 с — единственное постоянное движение</td><td>—</td></tr>
+      <tr><td><span class="st"><i class="sw" style="background:var(--v-unseen)"></i>не видно</span></td><td><code>#B4BCC8</code> · <code>#5F6874</code></td><td>пунктир</td><td>перечёркнутый глаз</td><td>«Самосвал 6 · не видно 13:41:58»</td><td>нет</td><td>—</td></tr>
+      <tr><td><span class="st"><i class="sw" style="background:var(--v-person)"></i>человек</span></td><td><code>#4FC2C4</code> (как сейчас)</td><td>тонкая 1–1,25 px</td><td>фигурка</td><td>без подписи (или «человек», если рамка ≥ 34 px)</td><td>нет</td><td>—</td></tr>
+      <tr><td><span class="st"><i class="sw" style="background:var(--v-car)"></i>легковая</span></td><td><code>#C3C9D1</code> 55 %</td><td>1 px, приглушённая</td><td>машинка</td><td>нет — это фон</td><td>нет</td><td>—</td></tr>
+      <tr><td><span class="st"><i class="sw" style="background:#fff"></i>выбрана</span></td><td>белое кольцо, отдельный слой</td><td>кольцо 2 px с зазором 3 px</td><td>—</td><td>подпись в белой рамке</td><td>остальные рамки — 60 %</td><td>—</td></tr>
+    </tbody>
+  </table></div>
+  <div class="cols">
+    <div class="card">
+      <h3>Легенда</h3>
+      <ul class="pc" style="margin-top:8px">
+        <li>Постоянная, у края видео, в одну строку: значок · слово · <b>сколько сейчас на кадре</b>. Счётчик делает её полезной, а не справочной.</li>
+        <li>Она же фильтр (вариант C): нажал «легковая» — слой скрылся. У Frigate есть выключатели слоёв, но легенды нет. Мы объединяем выключатель и легенду, поэтому учиться не нужно.</li>
+        <li>Подробное описание — по наведению на рамку, а не отдельным окном.</li>
+        <li>Слова — те же, что в списке и журнале: «едет», а не «в движении».</li>
+        <li class="m">HUD-легенда внутри видео (вариант B) закрывает кадр. На телефоне — только свёрнутой.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Анимации</h3>
+      <ul class="pc" style="margin-top:8px">
+        <li><b>Появление</b> 0,18–0,3 с, прозрачность или «захват» уголками. Уже есть 0,25 с — оставить.</li>
+        <li><b>Смена статуса</b> — плавный переход цвета 0,3 с плюс один «пинг» кольцом. Без повторов.</li>
+        <li><b>Ждёт ответа</b> — медленное «дыхание» второй линии 2,4 с. Это единственная бесконечная анимация: зовёт человека.</li>
+        <li><b>След движения</b> 3 с с затуханием — только у «едет» (как TraceAnnotator в Supervision).</li>
+        <li><b>Простой</b> — двигаются только цифры таймера. Мигающий простой утомляет за смену.</li>
+        <li class="m">Нельзя: рамка не прыгает, не меняет размер и не мигает чаще 3 раз в секунду (WCAG 2.3.1). Нельзя анимировать сразу всё.</li>
+        <li class="m">При системной настройке «уменьшить движение» (<code>prefers-reduced-motion</code>) и по выключателю всё стоит. «Дыхание» заменяет статичная двойная линия.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="card">
+    <h3>Числа (сверено скриптом на наших цветах)</h3>
+    <ul class="pc" style="margin-top:8px">
+      <li><b>Контраст.</b> Любой светлый статус-цвет на песке стройки (<code>#C9A57E</code>) даёт 1,0–1,5:1, на небе — 1,2–1,8:1. Поэтому у рамки <b>всегда тёмная обводка</b> 1 px <code>#0B0C0E</code> 60 % снаружи и изнутри. Тогда контраст цвета к обводке — 8–12:1.</li>
+      <li><b>Подпись.</b> 12–13 px на подложке <code>#0B0C0E</code> 78 % с размытием 6 px. Отступ от рамки — 4 px (в B — 14 px с выноской). Белый текст на подложке — 17:1.</li>
+      <li><b>Цвета различаются оттенком, а не яркостью.</b> «Едет» и «человек» — 1,13:1 между собой. Поэтому третий признак обязателен: значок и слово.</li>
+      <li><b>Линия.</b> Статус — 1,5–2 px, человек — 1–1,25 px, легковая — 1 px. Уголок = от 6 до 18 px, но не больше 22 % стороны рамки.</li>
+      <li><b>На светлой странице</b> легенда и список берут тёмные варианты цветов: 4,8–5,9:1 к белому. На тёмной — цвета кадра.</li>
+      <li><b>Окно уже 600 px</b> (телефон, превью): подпись сворачивается до «значок + номер + таймер», полное имя — по нажатию.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="vars">
+  <span class="eyebrow">4 · Три варианта</span>
+  <h2>Один язык — три подачи</h2>
+  <p class="lead">Все три на одном плотном кадре и на одной палитре. Различаются форма рамки, подпись, легенда и количество движения. На <a href="stend.html">стенде</a> переключаются вариант, кадр, тема и анимации. Можно нажать на машину в кадре или в списке и сменить статус кнопкой.</p>
+  <div class="vars">
+    <div class="var">
+      <figure><img src="shots/a-dark.jpg" alt="Вариант A, тёмная тема, площадка 2" loading="lazy" width="1440" height="860"><figcaption>A · тёмная · площадка 2 (фрагмент ×1,7) — <a href="stend.html?v=a&amp;f=auburn">открыть</a></figcaption><img src="shots/a-light-k.jpg" alt="Вариант A, светлая тема, кампус" loading="lazy" width="1440" height="860"><figcaption>A · светлая · кампус — <a href="stend.html?v=a&amp;f=kampus&amp;t=light">открыть</a></figcaption></figure>
+      <div class="side">
+        <div class="lab"><span class="eyebrow">A · Сдержанный</span><span class="tag">как Milestone, Genetec, Verkada</span></div>
+        <p>Полная тонкая рамка цвета статуса. Подпись — тёмная плашка с цветной полосой слева. Легенда — строка со счётчиками под видео. Движения почти нет.</p>
+        <ul class="pc"><li>Спокойно на 8-часовой смене, ближе всего к нынешнему пульту</li><li>Читается на любом кадре</li><li class="m">Без «вау»: на показе выглядит как обычная видеоаналитика</li></ul>
+        <figure class="phone"><img src="shots/a-390.jpg" alt="Вариант A на телефоне 390" loading="lazy"><figcaption>390 px: значок + номер + таймер</figcaption></figure>
+      </div>
+    </div>
+    <div class="var">
+      <figure><img src="shots/b-dark.jpg" alt="Вариант B, тёмная тема, площадка 2" loading="lazy" width="1440" height="860"><figcaption>B · тёмная · площадка 2 — <a href="stend.html?v=b&amp;f=auburn">открыть</a></figcaption><img src="shots/b-light-k.jpg" alt="Вариант B, светлая тема, кампус" loading="lazy" width="1440" height="860"><figcaption>B · светлая · кампус — <a href="stend.html?v=b&amp;f=kampus&amp;t=light">открыть</a></figcaption></figure>
+      <div class="side">
+        <div class="lab"><span class="eyebrow">B · Тактический</span><span class="tag">как автопилот, Hawk-Eye, Mobileye</span></div>
+        <p>Уголки и кольцо на земле под машиной. Видео приглушено в цвете, чтобы рамки светились. Подпись моноширинным шрифтом на выноске. У работающей машины кольцо вращается, у вопроса бегут «муравьи», появление — «захват». Легенда — панель в углу видео.</p>
+        <ul class="pc"><li>Самый «киношный», сильнее всего на показе</li><li>Кольцо на земле показывает, где машина стоит, даже когда рамки перекрываются</li><li class="m">Много движения на весь день; приглушённое видео не всем по вкусу; панель закрывает угол кадра</li></ul>
+        <figure class="phone"><img src="shots/b-390.jpg" alt="Вариант B на телефоне 390" loading="lazy"><figcaption>390 px: легенда свёрнута</figcaption></figure>
+      </div>
+    </div>
+    <div class="var">
+      <figure><img src="shots/c-dark.jpg" alt="Вариант C, тёмная тема, площадка 2" loading="lazy" width="1440" height="860"><figcaption>C · тёмная · площадка 2 — <a href="stend.html?v=c&amp;f=auburn">открыть</a></figcaption><img src="shots/c-light-k.jpg" alt="Вариант C, светлая тема, кампус" loading="lazy" width="1440" height="860"><figcaption>C · светлая · кампус — <a href="stend.html?v=c&amp;f=kampus&amp;t=light">открыть</a></figcaption></figure>
+      <div class="side">
+        <div class="lab"><span class="eyebrow">C · Продуктовый</span><span class="tag">как Samsara, Apple Дом</span></div>
+        <p>Скруглённая рамка с лёгкой заливкой и свечением. Подпись — цветная бирка: у простоя кольцо-таймер до нормы 15 мин, у работы «эквалайзер», у вопроса значок «?» в углу. Легенда — чипы со счётчиками над видео, они же фильтр.</p>
+        <ul class="pc"><li>Понятнее всего без обучения: легенда сама фильтрует</li><li>Простой виден издалека — по КП это главное</li><li class="m">Заливка закрывает мелкую технику; яркие бирки на плотном кадре спорят друг с другом</li></ul>
+        <figure class="phone"><img src="shots/c-390.jpg" alt="Вариант C на телефоне 390" loading="lazy"><figcaption>390 px: бирки — значок + номер</figcaption></figure>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="rec">
+  <span class="eyebrow">5 · Рекомендация</span>
+  <div class="rec">
+    <h2>Основа — A, легенда — из C, выбранная машина — из B</h2>
+    <p>Тонкие рамки A не мешают смотреть смену. Чипы со счётчиками из C делают легенду рабочей. Кольцо на земле и след из B получает только выбранная машина: это и есть «красиво» на показе, а кадр не превращается в ёлку. «Ждёт ответа» — единственное, что движется само.</p>
+    <div class="cols">
+      <div>
+        <h3>К показу 26.10 — малой правкой (≈ 1–1,5 ч сборщика + приёмка глазами по ролику)</h3>
+        <ol class="steps">
+          <li><code>tokens.css</code>: пять токенов <code>--st-work/move/idle/ask/unseen</code> вместо пары «белый / серый». Люди остаются <code>--scrim-person</code>.</li>
+          <li><code>camview-model.js:46</code> <code>stateAt</code>: «work» → слово «работает», свой знак. Данные уже есть.</li>
+          <li><code>camview.js:164</code>: цвет рамки — по статусу. Линия: «не видно» — пунктир (уже есть), «ждёт ответа» — вторая линия с зазором 3 px.</li>
+          <li>Связать вопросы с рамкой: <code>view.asks</code> = визиты с открытым вопросом (по образцу <code>view.ghosts</code> в <code>v2/kit.js:94</code>).</li>
+          <li>Подпись по умолчанию — имя + статус + таймер (вид b, или a + слово). Сейчас вид a скрывает минуты простоя.</li>
+          <li>Легенда под видео одной строкой из тех же токенов: 5 статусов + человек, со счётчиком.</li>
+          <li>«Дыхание» вопроса на холсте и выключение по <code>prefers-reduced-motion</code>.</li>
+        </ol>
+        <p class="lead" style="margin-top:8px">Приёмка — по уроку «видео с разметкой»: запись 10–30 с рядом с образцом, на кампусе и минимум на 4 других ракурсах. Решение о правке кода — за Юлаем. Mac сейчас спит, выкладка встанет в общую цепочку.</p>
+      </div>
+      <div>
+        <h3>После показа</h3>
+        <ol class="steps">
+          <li>Выбор машины в списке → белое кольцо на кадре, остальные приглушены.</li>
+          <li>След 3 с у «едет» (данные — в <code>tracks/*.json</code>, как TraceAnnotator в Supervision).</li>
+          <li>Кольцо на земле у выбранной (как в Mobileye, Hawk-Eye).</li>
+          <li>Легенда-фильтр: чипы со счётчиками, скрыть легковые или людей одним нажатием.</li>
+          <li>Узкое окно &lt; 600 px: подпись «значок + номер + таймер».</li>
+          <li>Простой длиннее нормы (15 мин?) — бирка таймера заливается; норму задаёт заказчик.</li>
+          <li>Отдельный слой легковых: приглушённые, без подписи.</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<p class="foot">Рамки на стенде взяты из наших следов: площадка 2 — прогон 22.10, 111,4–118,4 с; кампус — камера 1, 0,5–11,5 с. Движущаяся машина ведётся по следу. Статусы «ждёт ответа», «не видно» и таймеры расставлены, чтобы показать приёмы, — это не вывод распознавания. Контраст посчитан по формуле WCAG на наших цветах. Код пульта не менялся.</p>
+</main>
+</body>
+</html>
