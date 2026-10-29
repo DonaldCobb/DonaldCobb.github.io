@@ -1,0 +1,950 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Кофе — сегменты</title>
+<style>
+@font-face {
+  font-family: 'Onest';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(fonts/Onest-cyrillic-4c7562.woff2) format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Onest';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(fonts/Onest-latin-ext-27cee5.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Onest';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(fonts/Onest-latin-cebbb5.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Onest';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(fonts/Onest-cyrillic-4c7562.woff2) format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Onest';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(fonts/Onest-latin-ext-27cee5.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Onest';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(fonts/Onest-latin-cebbb5.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Onest';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(fonts/Onest-cyrillic-4c7562.woff2) format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Onest';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(fonts/Onest-latin-ext-27cee5.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Onest';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(fonts/Onest-latin-cebbb5.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Unbounded';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(fonts/Unbounded-cyrillic-c86556.woff2) format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Unbounded';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(fonts/Unbounded-latin-ext-80da0c.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Unbounded';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(fonts/Unbounded-latin-06f2e4.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Unbounded';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(fonts/Unbounded-cyrillic-c86556.woff2) format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Unbounded';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(fonts/Unbounded-latin-ext-80da0c.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Unbounded';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(fonts/Unbounded-latin-06f2e4.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Unbounded';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url(fonts/Unbounded-cyrillic-c86556.woff2) format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Unbounded';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url(fonts/Unbounded-latin-ext-80da0c.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Unbounded';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url(fonts/Unbounded-latin-06f2e4.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+:root{
+  --bg:#F6F4EF; --surface:#FFFFFF; --ink:#1A1714; --muted:#5F5A53; --line:#DDD8CF; --soft:#EEEAE2;
+  --g:#A4521F; --g-soft:#F6E6DA; --z:#136A6A; --z-soft:#DCEEEC; --b:#6A5A94; --b-soft:#E9E5F3;
+  --ok:#2E7D4F; --warn:#8A5700; --bad:#B42318; --focus:#2B59C3;
+  --zin:#E3F0E7; --zsel:#F4EFE3; --zout:#F2ECEA;
+  --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s5:24px; --s6:40px;
+  --r1:8px; --r2:12px; --r3:18px;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#131211; --surface:#1D1B19; --ink:#EEEAE4; --muted:#A9A39A; --line:#36322D; --soft:#2A2724;
+    --g:#E8A06A; --g-soft:#3A2A1E; --z:#5CC6BD; --z-soft:#16302E; --b:#B3A5E0; --b-soft:#2A2638;
+    --ok:#62C690; --warn:#E3B04B; --bad:#F07167; --focus:#8FB0FF;
+    --zin:#1B2B21; --zsel:#2A261C; --zout:#2B2120;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#131211; --surface:#1D1B19; --ink:#EEEAE4; --muted:#A9A39A; --line:#36322D; --soft:#2A2724;
+  --g:#E8A06A; --g-soft:#3A2A1E; --z:#5CC6BD; --z-soft:#16302E; --b:#B3A5E0; --b-soft:#2A2638;
+  --ok:#62C690; --warn:#E3B04B; --bad:#F07167; --focus:#8FB0FF;
+  --zin:#1B2B21; --zsel:#2A261C; --zout:#2B2120;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 "Onest",system-ui,sans-serif;font-variant-numeric:tabular-nums}
+a{color:inherit;text-underline-offset:2px}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.wrap{max-width:1200px;margin:0 auto;padding:0 var(--s4)}
+h1,h2,h3{margin:0;line-height:1.15}
+p{margin:0}
+.sr{position:absolute;left:-9999px}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;scroll-behavior:auto!important}}
+.t{font-style:normal;font-size:12px;font-weight:600;color:var(--muted);white-space:nowrap}
+.mono{font-variant-numeric:tabular-nums}
+
+/* метки источника: слова, не цвет */
+.tg{display:inline-block;font-style:normal;font-size:11.5px;font-weight:600;line-height:18px;padding:0 6px;border-radius:var(--r1);border:1px solid;white-space:nowrap;vertical-align:1px;letter-spacing:0}
+.tg.s{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.tg.p{background:transparent;color:var(--muted);border-color:var(--muted)}
+.tg.o{background:var(--soft);color:var(--ink);border-color:var(--muted);border-style:dashed}
+.tg.n{background:transparent;color:var(--warn);border-color:var(--warn);border-style:dashed}
+
+/* шапка */
+.top{padding:var(--s5) 0 var(--s1)}
+.top-row{display:flex;justify-content:space-between;align-items:flex-start;gap:var(--s4)}
+.kicker{font:600 13px/1 "Onest",sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:var(--s3)}
+.top h1{font:700 clamp(26px,4.6vw,44px)/1.1 "Unbounded",sans-serif;letter-spacing:-.01em}
+.top h1 .g{color:var(--g)} .top h1 .z{color:var(--z)}
+.top .meta{margin-top:var(--s3);color:var(--muted);font-size:15px;max-width:80ch}
+.theme-btn{flex:none;min-height:44px;min-width:44px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:0 var(--s4);font:500 15px "Onest",sans-serif;cursor:pointer}
+nav.toc{display:flex;flex-wrap:nowrap;gap:var(--s2);margin:var(--s4) calc(-1*var(--s4)) 0;padding:0 var(--s4) var(--s2);overflow-x:auto;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;scrollbar-width:thin}
+nav.toc a{flex:none;scroll-snap-align:start;display:inline-flex;align-items:center;min-height:44px;padding:0 var(--s4);border:1px solid var(--line);border-radius:999px;background:var(--surface);font-size:15px;text-decoration:none;white-space:nowrap}
+
+/* секции */
+.sec{padding:var(--s6) 0 var(--s1)}
+.sec>h2{font:700 clamp(21px,3vw,28px)/1.2 "Unbounded",sans-serif;margin-bottom:var(--s2);display:flex;gap:var(--s3);align-items:baseline}
+.sec>h2 .n{font:600 14px "Onest",sans-serif;color:var(--muted)}
+.lead{color:var(--muted);max-width:76ch;margin-bottom:var(--s4)}
+
+/* главное */
+.rec{margin-top:var(--s4);background:var(--ink);color:var(--bg);border-radius:var(--r3);padding:var(--s5);display:grid;gap:var(--s2)}
+.rec .lbl{font:600 12px "Onest",sans-serif;letter-spacing:.06em;text-transform:uppercase;opacity:.75}
+.rec .big{font-size:21px;font-weight:700;line-height:1.3}
+.rec p{opacity:.92;font-size:15px}
+.stab{margin-top:var(--s4);background:var(--surface);border:1px solid var(--line);border-radius:var(--r2);padding:var(--s4) var(--s5)}
+.stab h3{font:700 17px/1.25 "Unbounded",sans-serif;margin-bottom:var(--s2)}
+.stab>p{font-size:15px;color:var(--muted);max-width:80ch}
+.srows{list-style:none;margin:var(--s4) 0 var(--s3);padding:0;display:grid;gap:var(--s2)}
+.srows li{display:grid;grid-template-columns:minmax(0,260px) minmax(0,1fr) 44px;gap:var(--s3);align-items:center;font-size:14.5px}
+.srows .bar{margin:0;height:12px}
+.srows b{font-size:18px;text-align:right}
+.srows li.hl .bar i{background:var(--ink)}
+.srows li.hl{font-weight:600}
+.stab .calc{font-size:14.5px;border-top:1px dashed var(--line);padding-top:var(--s3);display:grid;gap:var(--s2)}
+.dirs{display:grid;grid-template-columns:1fr 1fr;gap:var(--s4);margin-top:var(--s4)}
+.dir{background:var(--surface);border:1px solid var(--line);border-radius:var(--r3);padding:var(--s5);border-top:6px solid var(--c)}
+.dir.g{--c:var(--g);--cs:var(--g-soft)} .dir.z{--c:var(--z);--cs:var(--z-soft)}
+.dir h2{font:700 20px/1.2 "Unbounded",sans-serif;color:var(--c);display:flex;justify-content:space-between;gap:var(--s3);align-items:baseline}
+.dir h2 small{font:500 13px "Onest",sans-serif;color:var(--muted)}
+.ladder{list-style:none;margin:var(--s4) 0 0;padding:0;display:grid;gap:var(--s2)}
+.ladder li{display:grid;grid-template-columns:100px minmax(0,1fr) 44px;gap:var(--s3);align-items:center;padding:var(--s3);border-radius:var(--r2);background:var(--soft)}
+.ladder li.top1{background:var(--cs);outline:2px solid var(--c);outline-offset:-2px}
+.ladder .role{font-size:12px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:var(--muted)}
+.ladder .top1 .role{color:var(--c)}
+.ladder b{font-size:17px;line-height:1.25}
+.ladder .sc{font:700 18px "Onest",sans-serif;text-align:right}
+.scnote{font-size:12.5px;color:var(--muted);margin-top:var(--s2)}
+.why{margin:var(--s4) 0 0;padding:0;list-style:none;display:grid;gap:var(--s2);font-size:15px}
+.why li{padding-left:var(--s4);position:relative}
+.why li::before{content:"";position:absolute;left:2px;top:9px;width:7px;height:7px;border-radius:50%;background:var(--c)}
+.check{margin-top:var(--s3);font-size:14.5px;border-top:1px dashed var(--line);padding-top:var(--s3)}
+.check b{color:var(--c)}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--s3);margin-top:var(--s4)}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:var(--r2);padding:var(--s4)}
+.kpi .v{font:700 26px/1.1 "Unbounded",sans-serif}
+.kpi .v.g{color:var(--g)} .kpi .v.z{color:var(--z)}
+.kpi .l{font-size:13.5px;color:var(--muted);margin-top:var(--s2);line-height:1.35}
+.srcleg{margin-top:var(--s3);font-size:13.5px;color:var(--muted);display:flex;flex-wrap:wrap;gap:var(--s2) var(--s4);align-items:center}
+.srcleg span.i{display:inline-flex;gap:var(--s2);align-items:center}
+
+/* метод */
+.steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:var(--s3);counter-reset:st}
+.steps li{background:var(--surface);border:1px solid var(--line);border-radius:var(--r2);padding:var(--s4);counter-increment:st;display:flex;flex-direction:column;gap:var(--s2)}
+.steps li::before{content:counter(st);font:700 22px "Unbounded",sans-serif;color:var(--g)}
+.steps b{font-size:16px;line-height:1.25}
+.steps span{font-size:14px;color:var(--muted);line-height:1.4}
+.steps .src{margin-top:auto;font-size:12.5px;color:var(--ink);border-top:1px solid var(--line);padding-top:var(--s2)}
+.traps{margin-top:var(--s3);display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--s3)}
+.trap{border:1px dashed var(--line);border-radius:var(--r2);padding:var(--s3) var(--s4);font-size:14.5px}
+.trap b{display:block;color:var(--ink);font-size:13px;letter-spacing:.03em;text-transform:uppercase;margin-bottom:var(--s1)}
+.overlap{margin-top:var(--s3);background:var(--soft);border-radius:var(--r2);padding:var(--s3) var(--s4);font-size:14.5px;max-width:none}
+
+/* карта рынка */
+.share{background:var(--surface);border:1px solid var(--line);border-radius:var(--r2);padding:var(--s4);margin-bottom:var(--s4)}
+.share h3,.funnel h3{font-size:16px;margin-bottom:var(--s3)}
+.stack{display:flex;height:28px;border-radius:var(--r1);overflow:hidden;gap:2px}
+.stack i{display:block;height:100%;background:var(--soft)}
+.stack i.g{background:var(--g)} .stack i.z{background:var(--z)}
+.stk-leg{display:flex;flex-wrap:wrap;gap:var(--s2) var(--s4);margin-top:var(--s3);font-size:14px}
+.stk-leg span::before{content:"";display:inline-block;width:10px;height:10px;border-radius:3px;background:var(--soft);margin-right:var(--s2);vertical-align:-1px;border:1px solid var(--line)}
+.stk-leg .g::before{background:var(--g);border-color:var(--g)} .stk-leg .z::before{background:var(--z);border-color:var(--z)}
+.growth{display:grid;grid-template-columns:110px minmax(0,1fr) 64px;gap:var(--s2) var(--s3);align-items:center;margin-top:var(--s4);font-size:14px}
+.growth .gb{height:12px;border-radius:999px;background:var(--soft);overflow:hidden}
+.growth .gb i{display:block;height:100%}
+.funnels{display:grid;grid-template-columns:1fr 1fr;gap:var(--s4)}
+.funnel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r2);padding:var(--s4);border-top:5px solid var(--c)}
+.funnel.g{--c:var(--g)} .funnel.z{--c:var(--z)}
+.fl{margin:0 0 var(--s3)}
+.fl .fb{height:32px;border-radius:var(--r1);background:color-mix(in srgb,var(--c) calc(var(--o,1) * 30%),var(--surface));border:1.5px solid var(--c);margin:0 auto;display:flex;align-items:center;justify-content:center;color:var(--ink);font:700 14px "Onest",sans-serif;white-space:nowrap;min-width:96px}
+.fl .ft{font-size:14px;margin-top:var(--s1);text-align:center}
+.fl .ft b{display:block;font-size:14.5px}
+.fl .ft span{color:var(--muted)}
+.note{font-size:13px;color:var(--muted);margin-top:var(--s3)}
+
+/* таблица сегментов */
+.weights{list-style:none;padding:var(--s4);margin:0 0 var(--s3);background:var(--surface);border:1px solid var(--line);border-radius:var(--r2);display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:var(--s3) var(--s4)}
+.weights li{display:grid;gap:var(--s1);font-size:13.5px;align-content:start}
+.weights li b{font-size:14px}
+.weights .w{height:8px;border-radius:999px;background:var(--soft);overflow:hidden}
+.weights .w i{display:block;height:100%;background:var(--ink)}
+.weights li.S .w i{background:var(--muted)}
+.weights em{font-style:normal;font-weight:600;font-size:13px;color:var(--muted);margin-left:var(--s1)}
+.weights .wk{display:inline-block;font-size:11.5px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;border-radius:var(--r1);padding:0 6px;line-height:18px;width:max-content}
+.weights li.A .wk{background:var(--ink);color:var(--bg)}
+.weights li.S .wk{background:transparent;color:var(--ink);border:1px solid var(--ink)}
+.weights .wd{color:var(--muted);font-size:12.5px;line-height:1.35}
+.wleg{font-size:13.5px;color:var(--muted);margin:0 0 var(--s4)}
+.wleg b{color:var(--ink)}
+.tbl-hint{font-size:13px;color:var(--muted);margin:0 0 var(--s2)}
+.tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r2);background:var(--surface)}
+table.seg{border-collapse:separate;border-spacing:0;width:100%;table-layout:fixed;min-width:1980px;font-size:13px;line-height:1.4}
+table.seg thead th{background:var(--surface);text-align:left;font-size:12px;font-weight:700;color:var(--muted);padding:var(--s3) var(--s2);border-bottom:2px solid var(--line);vertical-align:bottom}
+table.seg thead th.nh{color:var(--ink);border-bottom-color:var(--ink)}
+table.seg tbody tr{background:var(--surface)}
+table.seg td,table.seg tbody th{padding:var(--s3) var(--s2);border-bottom:1px solid var(--line);vertical-align:top;text-align:left;font-weight:400}
+table.seg tbody th{background:inherit;position:sticky;left:0;z-index:1;box-shadow:1px 0 0 var(--line)}
+table.seg thead th:first-child{position:sticky;left:0;z-index:2;box-shadow:1px 0 0 var(--line)}
+table.seg tbody th b{font-size:14.5px}
+table.seg .who{display:block;color:var(--muted);font-size:12.5px;margin-top:var(--s1)}
+table.seg .weak{display:block;color:var(--muted);font-size:12.5px;margin-top:var(--s1)}
+table.seg td.nf{background:color-mix(in srgb,var(--soft) 45%,var(--surface))}
+tr.grp th{background:var(--soft)!important;font:700 13px "Onest",sans-serif;letter-spacing:.03em;text-transform:uppercase;padding:var(--s2) var(--s3)!important;position:static!important;box-shadow:none!important}
+tr.grp.g th{color:var(--g)} tr.grp.z th{color:var(--z)} tr.grp.b th{color:var(--b)}
+table.seg tbody tr.win{background:color-mix(in srgb,var(--surface) 88%,var(--ok))}
+.code{display:inline-flex;align-items:center;justify-content:center;min-width:30px;height:22px;padding:0 6px;border-radius:var(--r1);font:700 12px "Onest",sans-serif;color:#fff;background:var(--c)}
+.code.g{--c:var(--g)} .code.z{--c:var(--z)} .code.b{--c:var(--b)}
+:root[data-theme="dark"] .code{color:#141210}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .code{color:#141210}}
+.tot b{font:700 20px "Onest",sans-serif;display:block}
+.tot small{font-size:11.5px;color:var(--muted);display:block}
+.bar{display:block;height:8px;border-radius:999px;background:var(--soft);overflow:hidden;margin:var(--s1) 0 var(--s2)}
+.bar i{display:block;height:100%;background:var(--muted)}
+.bar.g i{background:var(--g)} .bar.z i{background:var(--z)} .bar.b i{background:var(--b)}
+.vd{display:inline-block;font-size:12px;font-weight:700;padding:1px var(--s2);border-radius:var(--r1);border:1px solid var(--line);color:var(--muted);white-space:normal}
+.vd.win{background:var(--ok);border-color:var(--ok);color:#fff}
+.vd.second{border-color:var(--ok);color:var(--ok)}
+.vd.spare{border-color:var(--warn);color:var(--warn)}
+.vd.layer{border-color:var(--b);color:var(--b)}
+:root[data-theme="dark"] .vd.win{color:#101510}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .vd.win{color:#101510}}
+.mini{display:inline-flex;align-items:flex-end;gap:2px;height:40px;padding:2px 0}
+.mini i{display:block;width:7px;border-radius:2px 2px 0 0;background:var(--ink)}
+.mini i:nth-child(4),.mini i:nth-child(5),.mini i:nth-child(6){background:var(--muted)}
+.cards{display:none}
+
+/* матрица */
+.mxgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:var(--s5);align-items:start}
+.mxbox{background:var(--surface);border:1px solid var(--line);border-radius:var(--r2);padding:var(--s3)}
+svg.mx{display:block;width:100%;height:auto;font-family:"Onest",sans-serif}
+svg.mx .z-in{fill:var(--zin)} svg.mx .z-sel{fill:var(--zsel)} svg.mx .z-out{fill:var(--zout)}
+svg.mx .frame{fill:none;stroke:var(--line)}
+svg.mx .zl{font-size:12px;fill:var(--muted);font-weight:600}
+svg.mx .tk{font-size:11px;fill:var(--muted);font-family:"Onest",sans-serif}
+svg.mx .ax{font-size:12.5px;fill:var(--ink);font-weight:600}
+svg.mx .pt circle{stroke:var(--surface);stroke-width:2}
+svg.mx .pt.g circle{fill:var(--g)} svg.mx .pt.z circle{fill:var(--z)} svg.mx .pt.b circle{fill:var(--b)}
+svg.mx .pt text{font:700 14px "Onest",sans-serif;fill:var(--ink);paint-order:stroke;stroke:var(--surface);stroke-width:3px}
+.mxleg{list-style:none;margin:0;padding:0;display:grid;gap:var(--s2);font-size:14px}
+.mxleg em{font:500 12.5px "Onest",sans-serif;color:var(--muted);font-style:normal;margin-left:var(--s1)}
+.mxread{margin-top:var(--s3);font-size:14.5px;display:grid;gap:var(--s2)}
+.mxread p{background:var(--surface);border:1px solid var(--line);border-radius:var(--r2);padding:var(--s3)}
+
+/* план проверки */
+.firststep{background:var(--surface);border:2px solid var(--ok);border-radius:var(--r2);padding:var(--s4) var(--s5);margin-bottom:var(--s4)}
+.firststep h3{font:700 17px/1.25 "Unbounded",sans-serif;margin-bottom:var(--s3)}
+.flow{list-style:none;margin:0 0 var(--s3);padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--s3);counter-reset:fl}
+.flow li{background:var(--soft);border-radius:var(--r2);padding:var(--s3) var(--s4);font-size:14.5px;counter-increment:fl;position:relative}
+.flow li::before{content:counter(fl);display:block;font:700 18px "Unbounded",sans-serif;color:var(--ok);margin-bottom:var(--s1)}
+.flow li b{display:block;font-size:15.5px;margin-bottom:var(--s1)}
+.firststep>p{font-size:14.5px;margin-top:var(--s2)}
+.plan{display:grid;gap:var(--s3)}
+.hyp{background:var(--surface);border:1px solid var(--line);border-radius:var(--r2);padding:var(--s4);display:grid;grid-template-columns:60px minmax(0,1.4fr) minmax(0,1fr) minmax(0,1fr) minmax(0,.7fr) minmax(0,1.1fr);gap:var(--s3);align-items:start;font-size:14.5px;border-left:6px solid var(--c,var(--ink))}
+.hyp.g{--c:var(--g)} .hyp.z{--c:var(--z)} .hyp.b{--c:var(--b)}
+.hyp .hn{font:700 18px "Onest",sans-serif;color:var(--c)}
+.hyp .k{display:block;font-size:11.5px;font-weight:700;color:var(--muted);letter-spacing:.03em;text-transform:uppercase;margin-bottom:var(--s1)}
+.hyp.first{box-shadow:0 0 0 2px var(--ok) inset}
+.plan-head{font-size:13px;color:var(--muted);margin:0 0 var(--s2)}
+.grind{margin-top:var(--s5);display:grid;grid-template-columns:1fr 1fr;gap:var(--s4)}
+.gcase{background:var(--surface);border:1px solid var(--line);border-radius:var(--r2);padding:var(--s4)}
+.gcase h3{font-size:17px;margin-bottom:var(--s2)}
+.gcase.yes h3{color:var(--ok)} .gcase.no h3{color:var(--warn)}
+.gcase ul{margin:0;padding-left:20px;font-size:15px;display:grid;gap:var(--s2)}
+
+/* данные */
+.data{width:100%;border-collapse:collapse;font-size:14px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r2);overflow:hidden}
+.data th,.data td{padding:var(--s3);border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+.data thead th{font-size:12px;color:var(--muted);letter-spacing:.02em}
+.data td:nth-child(2){font-weight:700}
+.st-ok,.st-mid,.st-no{color:var(--ink)}
+.need{margin-top:var(--s4);display:grid;gap:var(--s3);counter-reset:nd;list-style:none;padding:0}
+.need li{background:var(--surface);border:1px solid var(--line);border-left:6px solid var(--muted);border-radius:var(--r2);padding:var(--s3) var(--s4);font-size:15px;counter-increment:nd}
+.need li::before{content:"Исследование " counter(nd);display:block;font:700 12px "Onest",sans-serif;color:var(--muted);letter-spacing:.03em;text-transform:uppercase;margin-bottom:var(--s1)}
+.need li span{display:block;color:var(--muted);font-size:13.5px;margin-top:var(--s1)}
+
+/* проверка рынка */
+.chg{margin-top:var(--s5)}
+.chg h3{font:700 17px/1.25 "Unbounded",sans-serif;margin-bottom:var(--s2)}
+.gaps{display:grid;grid-template-columns:1fr 1fr;gap:var(--s4)}
+.gaps li{font-size:14.5px}
+
+/* вопросы */
+.qs{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:1fr 1fr;gap:var(--s3);counter-reset:q}
+.qs li{background:var(--surface);border:1px solid var(--line);border-radius:var(--r2);padding:var(--s3) var(--s4) var(--s3) 52px;position:relative;font-size:15px;counter-increment:q}
+.qs li::before{content:counter(q);position:absolute;left:var(--s4);top:var(--s3);font:700 18px "Unbounded",sans-serif;color:var(--g)}
+.qs li span{display:block;color:var(--muted);font-size:13.5px;margin-top:var(--s1)}
+
+/* источники */
+.srcs{font-size:13.5px;color:var(--muted);columns:2;column-gap:var(--s5);padding-left:var(--s5)}
+.srcs li{margin-bottom:var(--s2);break-inside:avoid}
+footer{padding:var(--s6) 0 48px;font-size:13px;color:var(--muted)}
+
+/* карточки (телефон) */
+.cgrp{font:700 13px "Onest",sans-serif;letter-spacing:.03em;text-transform:uppercase;margin:var(--s3) 0 var(--s1)}
+.cgrp.g{color:var(--g)} .cgrp.z{color:var(--z)} .cgrp.b{color:var(--b)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r2)}
+.card.win{box-shadow:inset 5px 0 0 var(--ok)}
+.card summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:auto minmax(0,1fr) 78px;gap:var(--s1) var(--s3);align-items:center;padding:var(--s3) var(--s4);min-height:56px}
+.card summary::-webkit-details-marker{display:none}
+.card .cn{display:flex;flex-direction:column;gap:var(--s1);align-items:flex-start}
+.card .cn b{font-size:15.5px;line-height:1.25}
+.card .cs b{font:700 18px "Onest",sans-serif;display:block}
+.card .cs small{font-size:11px;color:var(--muted);display:block;line-height:1.2}
+.card .cs .bar{margin:var(--s1) 0 0}
+.card .more{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;min-height:44px;margin:0 calc(-1*var(--s1));padding:0 var(--s3);border-top:1px solid var(--line);font-size:15px;font-weight:600;color:var(--ink)}
+.card .more .m2{display:none}
+.card[open] .more .m1{display:none}
+.card[open] .more .m2{display:inline}
+.card .more .ar{font-size:18px;line-height:1}
+.card dl{margin:0;padding:var(--s3) var(--s4) var(--s2);display:grid;gap:var(--s3);font-size:14.5px}
+.card dt{font-size:12px;font-weight:700;color:var(--muted)}
+.card dd{margin:var(--s1) 0 0}
+.card dl .nf{background:color-mix(in srgb,var(--soft) 55%,var(--surface));border-radius:var(--r1);padding:var(--s2) var(--s3)}
+.crit{list-style:none;margin:0;padding:var(--s2) var(--s4) var(--s4);display:grid;gap:var(--s2);font-size:13.5px}
+.crit li{display:grid;grid-template-columns:132px minmax(0,1fr) 16px;gap:var(--s2);align-items:center}
+.crit em{font-style:normal;color:var(--muted);font-size:12px}
+.crit .cb{height:8px;border-radius:999px;background:var(--soft);overflow:hidden}
+.crit .cb i{display:block;height:100%;background:var(--ink)}
+.crit li:nth-child(4) .cb i,.crit li:nth-child(5) .cb i,.crit li:nth-child(6) .cb i{background:var(--muted)}
+.crit-h{font-size:12px;font-weight:700;color:var(--muted);padding:var(--s2) var(--s4) 0}
+
+.stack i.n1{background:#B9B2A6} .stack i.n2{background:#D6D0C5} .stack i.n3{background:#8E877C}
+.stk-leg .n1::before{background:#B9B2A6} .stk-leg .n2::before{background:#D6D0C5} .stk-leg .n3::before{background:#8E877C}
+.desk{display:inline}
+
+/* телефон */
+@media (max-width: 900px){
+  .dirs,.funnels,.mxgrid,.grind,.qs,.flow,.gaps{grid-template-columns:minmax(0,1fr)}
+  .t{white-space:normal}
+  .kpis{grid-template-columns:1fr 1fr}
+  .steps{grid-template-columns:1fr 1fr}
+  .traps{grid-template-columns:1fr}
+  .weights{grid-template-columns:1fr 1fr}
+  .tbl-wrap,.tbl-hint,.desk{display:none}
+  .cards{display:grid;gap:var(--s2)}
+  .hyp{grid-template-columns:1fr 1fr;gap:var(--s2) var(--s4)}
+  .hyp>:nth-child(1),.hyp>:nth-child(2),.hyp>:nth-child(3),.hyp>:nth-child(6){grid-column:1/-1}
+  .hyp .hn{font-size:16px}
+  .srcs{columns:1}
+  .srows li{grid-template-columns:minmax(0,1fr) 44px;gap:var(--s1) var(--s3)}
+  .srows li .bar{grid-column:1/-1;grid-row:2}
+  .srows b{grid-row:1;grid-column:2}
+  .data thead{display:none}
+  .data,.data tbody,.data tr,.data td{display:block;width:100%}
+  .data tr{border-bottom:1px solid var(--line);padding:var(--s2) 0}
+  .data td{border:0;padding:var(--s1) var(--s3)}
+  .data td:first-child{font-weight:700}
+  .data td[data-k]::before{content:attr(data-k) " — ";color:var(--muted);font-weight:400;font-size:12.5px}
+  .rec{padding:var(--s4)}
+  .rec .big{font-size:19px}
+  .dir{padding:var(--s4)}
+}
+@media (max-width: 480px){
+  .ladder li{grid-template-columns:84px minmax(0,1fr) 36px;padding:var(--s2) var(--s3)}
+  .ladder b{font-size:15.5px}
+  .kpis{grid-template-columns:minmax(0,1fr)}
+  .kpi .v{font-size:21px}
+  .steps{grid-template-columns:1fr}
+  .steps li{display:grid;grid-template-columns:34px minmax(0,1fr);gap:var(--s1) var(--s3);padding:var(--s3) var(--s4)}
+  .steps li::before{grid-row:1/4;font-size:20px}
+  .steps .src{margin-top:var(--s1)}
+  .weights{grid-template-columns:1fr}
+  .crit li{grid-template-columns:116px minmax(0,1fr) 16px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top">
+  <div class="top-row">
+    <div>
+      <div class="kicker">«Кофе» · стратегия · сегменты</div>
+      <h1>Сегменты: <span class="g">молотый</span> и <span class="z">зерно</span></h1>
+      <p class="meta">29.10.2026 · материал для обсуждения, не финальное решение. Баллы и веса — наша оценка; всё, что ещё не проверено делом, помечено «гипотеза».</p>
+    </div>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="Сменить тему">◐ Тема</button>
+  </div>
+  <nav class="toc" aria-label="Разделы">
+    <a href="#main">Главное</a><a href="#method">Метод</a><a href="#market">Рынок</a><a href="#segs">Сегменты</a><a href="#matrix">Матрица</a><a href="#plan">Проверка</a><a href="#data">Данные</a><a href="#ask">Вопросы поставщику</a>
+  </nav>
+</header>
+<section id="main" aria-labelledby="mainH">
+  <h2 id="mainH" class="sr">Главное за 10 секунд</h2>
+  <div class="rec" role="note">
+    <span class="lbl">Предварительный вывод</span>
+    <p class="big">Предварительные кандидаты — М1, Ц1 и Ц3. Победитель пока не установлен.</p>
+    <p>Данных хватает, чтобы выбрать кандидатов на проверку, но не чтобы объявить плацдарм. Отрыв М1 от Ц1 — 73 против 71 балла: кто первый, решат ответ обжарщика «можем ли молоть» и вопрос «чем варите?» в первых заказах. Если молоть можно сразу, проверяем М1 и Ц1 из одной обжарки; если нельзя — Ц1 и Ц3. Подходят ли турка и кофемашина под одно предложение — не доказано: вкус, упаковка и сообщение у них могут различаться. Главный риск — вкус лота: без слепой пробы любой сегмент остаётся гипотезой.</p>
+  </div>
+  <div class="stab" id="stable">
+    <h3>Насколько устойчив выбор</h3>
+    <p>Лидерство М1 держится на двух самых спорных баллах: «наш продукт» (вес 20) и «конкуренция» (вес 15). В первой версии стояли 5 и 4, итог 83. Если бы там были 3 и 2, итог был бы 69 — на уровне М2. Проверка рынка 29.10 показала, что свежий помол «для турки» уже продают другие, и баллы упали (см. «Что изменила проверка рынка»). Пересчёт — по весам таблицы ниже.</p>
+    <ul class="srows" aria-label="Итог М1 при разных оценках, из 100, наша оценка">
+      <li><span>М1 в первой версии: продукт 5, конкуренция 4</span><span class="bar g" role="img" aria-label="83 из 100"><i style="width:83%"></i></span><b>83</b></li>
+      <li><span>М1 в первой версии, если продукт 3, конкуренция 2</span><span class="bar g" role="img" aria-label="69 из 100"><i style="width:69%"></i></span><b>69</b></li>
+      <li><span>М1 сейчас: продукт 4, конкуренция 3, размер 4</span><span class="bar g" role="img" aria-label="73 из 100"><i style="width:73%"></i></span><b>73</b></li>
+      <li class="hl"><span>М1 сейчас, если ещё продукт 3 и конкуренция 2</span><span class="bar g" role="img" aria-label="66 из 100"><i style="width:66%"></i></span><b>66</b></li>
+      <li><span>Ц1 · Дом, кофемашина</span><span class="bar z" role="img" aria-label="71 из 100"><i style="width:71%"></i></span><b>71</b></li>
+      <li><span>М2 · Дом, гейзер</span><span class="bar g" role="img" aria-label="66 из 100"><i style="width:66%"></i></span><b>66</b></li>
+      <li><span>Ц3 · Мелет сам, турка</span><span class="bar z" role="img" aria-label="66 из 100"><i style="width:66%"></i></span><b>66</b></li>
+    </ul>
+    <div class="calc">
+      <p><b>Расчёт, первая версия:</b> 83 − (5−3)·20/5 − (4−2)·15/5 = 83 − 8 − 6 = <b>69</b>. <b>Сейчас:</b> 60 + 20 + 60 + 80 + 45 + 60 + 40 = 365, делим на 5 = <b>73</b>. Если продукт 3 и конкуренция 2: 73 − 4 − 3 = <b>66</b>.</p>
+      <p><b>Вывод:</b> М1 отрывается от Ц1 на 2 балла, а при более жёсткой оценке — на уровне М2 и Ц3 и ниже Ц1. Это не доказывает, что М1 неверен: его лидерство не подтверждено, поэтому «Кандидат 1» — не победитель.</p>
+    </div>
+  </div>
+  <div class="dirs">
+<article class="dir g" aria-label="Направление молотый">
+<h2>Молотый <small>если обжарщик мелет</small></h2>
+<ol class="ladder"><li class="top1"><span class="role">Кандидат 1</span><b>М1 · Дом, турка</b><span class="sc">73</span></li><li><span class="role">Второй</span><b>М2 · Дом, гейзер</b><span class="sc">66</span></li><li><span class="role">Запасной</span><b>М3 · Капельная, френч-пресс</b><span class="sc">58</span></li></ol><p class="scnote">Баллы — из 100, наша оценка</p>
+<ul class="why">
+<li>Турка — один из главных способов варить кофе дома: 14–54&nbsp;% в трёх опросах <i class="tg p">пересказ</i>; молотый пьют 51&nbsp;% анкеты (47 ответов, почти все из круга знакомых).</li>
+<li>Свежий помол «для турки» уже продают Tasty (85 сортов от 2&nbsp;509&nbsp;₽/кг), Majaro, ZAVOD <i class="tg s">источник</i>; масс-марки — без даты. Свободно только узкое: бренд вокруг турки, эфиопская история, дата помола на пачке <i class="tg o">наша оценка</i>.</li>
+<li>Наши 2&nbsp;250&nbsp;₽/кг — цена этой полки (1&nbsp;600–2&nbsp;800), а не премиум.</li>
+</ul>
+<p class="check"><b>Проверим:</b> слепая проба против Жокея и Lavazza, после неё — оплата 500&nbsp;г по полной цене; порог — ≥&nbsp;30&nbsp;% оплат.</p>
+</article>
+<article class="dir z" aria-label="Направление зерно">
+<h2>Зерно <small>продаём уже сейчас</small></h2>
+<ol class="ladder"><li class="top1"><span class="role">Кандидат 1</span><b>Ц1 · Дом, кофемашина</b><span class="sc">71</span></li><li><span class="role">Второй</span><b>Ц3 · Мелет сам, турка</b><span class="sc">66</span></li><li><span class="role">Запасной</span><b>Ц5 · Офис 10–50 чел.</b><span class="sc">58</span></li></ol><p class="scnote">Баллы — из 100, наша оценка</p>
+<ul class="why">
+<li>Зерно растёт быстрее всех: +35,9&nbsp;% в деньгах, +11,5&nbsp;% в кг за год; кофемашин продают 2,5–2,6&nbsp;млн в год.</li>
+<li>Тут самая плотная конкуренция (Tasty, Lavazza): рынок сильный, наша сила — средняя.</li>
+<li>Ц1 впереди Ц3 ненамного: окончательно решат вопрос «чем варите?» в каждом заказе и ответ обжарщика, можно ли молоть.</li>
+</ul>
+<p class="check"><b>Проверим:</b> доля пачек 1&nbsp;кг ≥&nbsp;30&nbsp;% заказов, повтор ≥&nbsp;30&nbsp;% за 45 дней; параллельно — проба в 3–5 офисах.</p>
+</article>
+  </div>
+
+  <div class="kpis">
+    <div class="kpi"><div class="v g">≈&nbsp;31&nbsp;млрд ₽</div><div class="l">молотый в рознице РФ за год, +21,4&nbsp;% в деньгах <span class="t">расчёт по <i class="tg p">пересказ</i> Nielsen</span></div></div>
+    <div class="kpi"><div class="v z">≈&nbsp;49&nbsp;млрд ₽</div><div class="l">зерно в рознице РФ, +35,9&nbsp;% в деньгах <span class="t">расчёт по <i class="tg p">пересказ</i> Nielsen</span></div></div>
+    <div class="kpi"><div class="v">2&nbsp;051&nbsp;₽/кг</div><div class="l">средняя цена зерна и молотого (август 2026); наши 2&nbsp;250 — на 10&nbsp;% выше <span class="t"><i class="tg p">пересказ</i> АКРА</span></div></div>
+    <div class="kpi"><div class="v">3–8&nbsp;т</div><div class="l">гипотеза: цель первого года в молотом, ≈&nbsp;7–18&nbsp;млн ₽ <span class="t"><i class="tg o">расчёт + допущение</i></span></div></div>
+  </div>
+<p class="srcleg"><span>Метки у цифр:</span><span class="i"><i class="tg s">источник</i> документ, сайт, закон</span><span class="i"><i class="tg p">пересказ</i> СМИ, блог, магазин</span><span class="i"><i class="tg o">наша оценка</i> расчёт и суждение, не проверено делом</span></p>
+</section>
+
+<!-- 2. Метод -->
+<section class="sec" id="method" aria-labelledby="methodH">
+  <h2 id="methodH"><span class="n">01</span>Как выбираем — метод одним экраном</h2>
+  <p class="lead">Выбор сегмента — не вкус и не круг знакомых, а шесть шагов, которые проходит любой бренд. Веса критериев записаны до оценки, чтобы не подгонять ответ.</p>
+  <ol class="steps">
+    <li><b>Карта рынка</b><span>Сколько денег и кг на каждом уровне: весь рынок → наш ярус → реальная доля за год.</span><span class="src">TAM → SAM → SOM · Blank &amp; Dorf, «The Startup Owner's Manual»</span></li>
+    <li><b>Сегменты по поводу и способу</b><span>Не пол и возраст, а «зачем и чем варит»: турка, кофемашина, офис, подарок.</span><span class="src">Jobs to be Done · Christensen, «Competing Against Luck»</span></li>
+    <li><b>Оценка</b><span>Привлекательность рынка × наша сила, семь критериев с весами.</span><span class="src">Матрица GE / McKinsey · Kotler &amp; Keller, «Marketing Management»</span></li>
+    <li><b>Кандидат на плацдарм</b><span>Один-два сегмента, где можем быстро стать заметными и где покупатели советуют друг другу; плацдарм объявляем только после проверки, дальше — соседние, как кегли.</span><span class="src">Beachhead · Moore, «Crossing the Chasm»; Aulet, «Disciplined Entrepreneurship», шаги 1–4</span></li>
+    <li><b>Позиция</b><span>Для кого, против чего, почему верить — одно свободное слово.</span><span class="src">Ries &amp; Trout, «Positioning»; Dunford, «Obviously Awesome»</span></li>
+    <li><b>Проверка</b><span>Гипотеза, мера, порог и срок записаны до старта; итог — по деньгам на покупателя за 90 дней, а не по баллам.</span><span class="src">Blank, Customer Development; Aulet, шаг 4</span></li>
+  </ol>
+  <div class="traps">
+    <div class="trap"><b>Ловушка 1</b>Канал — не сегмент. Знакомые партнёров — способ дотянуться до первых покупателей. Сегмент — люди по всей России с одним поводом и способом.</div>
+    <div class="trap"><b>Ловушка 2</b>Пересказ — не факт. Анкета из 47 ответов почти целиком из круга знакомых: это сигнал, а не карта рынка.</div>
+    <div class="trap"><b>Противовес</b>Бренды растут охватом, а не узкой нишей (Sharp, «How Brands Grow»). Сегмент фокусирует продукт и первое сообщение, а не отсекает остальных.</div>
+  </div>
+  <p class="overlap"><b>Сегменты пересекаются:</b> основания у них разные — способ заваривания (М1–М3, Ц1, Ц3, Ц7), исходная привычка (М4), увлечённость (Ц2, Ц4), организация-покупатель (Ц5, Ц6), повод-подарок (П1, П2), поэтому одна семья может попасть в несколько сегментов, и размеры не складываем.</p>
+</section>
+
+<!-- 3. Рынок -->
+<section class="sec" id="market" aria-labelledby="marketH">
+  <h2 id="marketH"><span class="n">02</span>Карта рынка РФ</h2>
+  <p class="lead">Молотый и зерно вместе — около четверти денег розницы. Зерно растёт и в деньгах, и в килограммах; молотый в килограммах почти не растёт (+0,8&nbsp;% за год), рост денег (+21,4&nbsp;%) — в основном цена.</p>
+  <div class="share">
+    <h3>Розница кофе в РФ по деньгам, июнь 2024 – май 2025 <span class="t"><i class="tg p">пересказ</i> Nielsen через «Коммерсантъ», 18.07.2025</span></h3>
+    <div class="stack" role="img" aria-label="Растворимый 58,2&nbsp;%, зерно 16&nbsp;%, микс 11,7&nbsp;%, молотый 10,2&nbsp;%, капсулы 3,3&nbsp;%, дрип 0,6&nbsp;%">
+      <i class="n1" style="width:58.2%"></i><i class="z" style="width:16%"></i><i class="n2" style="width:11.7%"></i><i class="g" style="width:10.2%"></i><i class="n3" style="width:3.3%"></i><i class="n3" style="width:.6%"></i>
+    </div>
+    <div class="stk-leg"><span class="n1">растворимый 58,2&nbsp;%</span><span class="z">зерно 16&nbsp;%</span><span class="n2">микс 11,7&nbsp;%</span><span class="g">молотый 10,2&nbsp;%</span><span class="n3">капсулы 3,3&nbsp;%</span><span class="n3">дрип 0,6&nbsp;%</span></div>
+    <div class="growth" role="img" aria-label="Рост за год: зерно +35,9&nbsp;% в деньгах и +11,5&nbsp;% в кг; молотый +21,4&nbsp;% в деньгах и +0,8&nbsp;% в кг">
+      <span>Зерно, ₽</span><span class="gb"><i style="width:89%;background:var(--z)"></i></span><b class="mono">+35,9&nbsp;%</b>
+      <span>Зерно, кг</span><span class="gb"><i style="width:29%;background:var(--z);opacity:.6"></i></span><b class="mono">+11,5&nbsp;%</b>
+      <span>Молотый, ₽</span><span class="gb"><i style="width:53%;background:var(--g)"></i></span><b class="mono">+21,4&nbsp;%</b>
+      <span>Молотый, кг</span><span class="gb"><i style="width:2%;background:var(--g);opacity:.6"></i></span><b class="mono">+0,8&nbsp;%</b>
+    </div>
+    <p class="note">Рост в кг молотого — <i class="tg p">пересказ</i> ICMR, 01.10.2025. В «О'кей» за 2025 год: продажи кофемашин ×2, спрос на турки −30&nbsp;%, френч-прессы −54&nbsp;%; пик продаж кофе — декабрь, спад — июль <span class="t"><i class="tg p">пересказ</i> ТАСС, 18.09.2025</span></p>
+  </div>
+  <div class="funnels">
+    <div class="funnel g">
+      <h3>Молотый — воронка: ярус — не сегмент</h3>
+      <div class="fl"><div class="fb" style="width:95%">≈&nbsp;31&nbsp;млрд ₽</div><div class="ft"><b>Весь молотый, розница РФ</b><span>≈&nbsp;15–19&nbsp;тыс. т · расчёт: доля Nielsen ×&nbsp;308&nbsp;млрд ₽ (<i class="tg p">пересказ</i> MegaResearch)</span></div></div>
+      <div class="fl"><div class="fb" style="width:88%;--o:.85">12–19&nbsp;млрд ₽</div><div class="ft"><b>Ярус 1&nbsp;600–2&nbsp;800&nbsp;₽/кг, дом</b><span>≈&nbsp;6–9&nbsp;тыс. т · допущение: на ярус 40–60&nbsp;% денег; доли ярусов в открытых данных нет</span></div></div>
+      <div class="fl"><div class="fb" style="width:45%;--o:.7">0,2–0,3&nbsp;млрд ₽</div><div class="ft"><b>Тот же ярус в Пермском крае</b><span>расчёт: 2,48&nbsp;млн жителей ≈&nbsp;1,7&nbsp;% РФ (<i class="tg p">пересказ</i> Росстат, 01.01.2025); допущение — потребление как в среднем по стране</span></div></div>
+      <div class="fl"><div class="fb" style="width:14%;--o:.6">7–18&nbsp;млн ₽</div><div class="ft"><b>Наша доля за первый год</b><span>гипотеза: ≈&nbsp;3–8&nbsp;т, 1–3&nbsp;тыс. домохозяйств к концу года · допущение по каналу «клуб + рекомендации»</span></div></div>
+    </div>
+    <div class="funnel z">
+      <h3>Зерно — воронка: ярус — не сегмент</h3>
+      <div class="fl"><div class="fb" style="width:100%">≈&nbsp;49&nbsp;млрд ₽</div><div class="ft"><b>Всё зерно, розница РФ</b><span>≈&nbsp;24&nbsp;тыс. т · расчёт: доля Nielsen ×&nbsp;308&nbsp;млрд ₽ и средняя 2&nbsp;051&nbsp;₽/кг (<i class="tg p">пересказ</i> АКРА)</span></div></div>
+      <div class="fl"><div class="fb" style="width:90%;--o:.85">15–25&nbsp;млрд ₽</div><div class="ft"><b>Ярус 1&nbsp;600–2&nbsp;800&nbsp;₽/кг</b><span>≈&nbsp;7–11&nbsp;тыс. т · допущение: на ярус 30–50&nbsp;% денег</span></div></div>
+      <div class="fl"><div class="fb" style="width:48%;--o:.7">0,25–0,4&nbsp;млрд ₽</div><div class="ft"><b>Тот же ярус в Пермском крае</b><span>расчёт на 1,7&nbsp;% населения, допущение как слева</span></div></div>
+      <div class="fl"><div class="fb" style="width:18%;--o:.6">5–30&nbsp;млн ₽</div><div class="ft"><b>Наша доля за первый год</b><span>гипотеза: ≈&nbsp;2–14&nbsp;т: 1–3&nbsp;тыс. домохозяйств ×&nbsp;0,4–0,8&nbsp;кг в месяц × полгода активности · допущение. Выше 20&nbsp;млн ₽ в год — порог НДС</span></div></div>
+    </div>
+  </div>
+  <p class="note">Ширина полос — логарифмическая шкала, иначе нижние уровни не видны; ярусы — размер ценового яруса целиком, а не одного сегмента. Ряды из разных исследований перемножены (доля Nielsen на рынок MegaResearch): охват и период у них могут не совпадать, а средняя цена двух форм даёт тоннаж только приблизительно. Рынок целиком (308&nbsp;млрд ₽, <i class="tg p">пересказ</i> MegaResearch) и другие ряды (BusinesStat) между собой не сходятся — методики разные, поэтому ярусы даны вилкой.</p>
+</section>
+
+<!-- 4. Сегменты -->
+<section class="sec" id="segs" aria-labelledby="segsH">
+  <h2 id="segsH"><span class="n">03</span>Тринадцать сегментов по обоим направлениям</h2>
+  <p class="lead">Каждый сегмент — это повод и способ заварить, а не возраст. Баллы от 1 до 5 по семи критериям; итог — сумма «вес × балл» из 100. Баллы — наша оценка по данным ниже; после пилота сравниваем по деньгам на покупателя за 90 дней. Коды: М — молотый, Ц — цельное зерно, П — подарок. Внутри направления сегменты стоят по вердикту: Кандидат 1 → Второй → Запасной → Позже → Не сейчас.</p>
+  <ul class="weights" aria-label="Критерии и веса"><li class="A"><span class="wk">рынок</span><b>Размер <em>×15</em></b><span class="w"><i style="width:75%"></i></span><span class="wd">5 — от 10&nbsp;млрд ₽ в нашем ярусе, считая сам сегмент, а не весь ярус</span></li><li class="A"><span class="wk">рынок</span><b>Рост <em>×10</em></b><span class="w"><i style="width:50%"></i></span><span class="wd">5 — от +10&nbsp;% в кг в год</span></li><li class="A"><span class="wk">рынок</span><b>Платят 2&nbsp;250 <em>×15</em></b><span class="w"><i style="width:75%"></i></span><span class="wd">5 — уже платят 1&nbsp;800–2&nbsp;800&nbsp;₽/кг</span></li><li class="S"><span class="wk">мы</span><b>Наш продукт <em>×20</em></b><span class="w"><i style="width:100%"></i></span><span class="wd">5 — наше отличие (Эфиопия, свежая обжарка, дата на пачке) — главный довод выбора в сегменте; пока не проверено</span></li><li class="S"><span class="wk">мы</span><b>Конкуренция <em>×15</em></b><span class="w"><i style="width:75%"></i></span><span class="wd">5 — у лидеров нет нашего отличия; Tasty, Majaro и ZAVOD уже продают свежий помол «для турки»</span></li><li class="S"><span class="wk">мы</span><b>Доступ <em>×15</em></b><span class="w"><i style="width:75%"></i></span><span class="wd">5 — дотянемся без большой рекламы: рекомендации, клуб</span></li><li class="A"><span class="wk">рынок</span><b>Повтор <em>×10</em></b><span class="w"><i style="width:50%"></i></span><span class="wd">5 — от 0,5&nbsp;кг в месяц, ежедневный ритуал</span></li></ul>
+  <p class="wleg">Метка у критерия: <b>рынок</b> — привлекательность рынка (сумма весов 50), <b>мы</b> — наша сила (сумма весов 50). <span class="desk">Столбики в таблице — те же семь критериев по порядку: первые три и последний — рынок, четвёртый–шестой (серые) — мы.</span></p>
+  <p class="tbl-hint">Таблица шире экрана: первый столбец закреплён, остальное прокручивается вправо. Четыре правых столбца — на чём стоит оценка и что её изменит.</p>
+  <div class="tbl-wrap" tabindex="0" role="region" aria-label="Таблица сегментов, прокручивается вправо">
+<table class="seg"><colgroup><col style="width:180px"><col style="width:104px"><col style="width:92px"><col style="width:92px"><col style="width:84px"><col style="width:200px"><col style="width:150px"><col style="width:150px"><col style="width:130px"><col style="width:180px"><col style="width:190px"><col style="width:190px"><col style="width:190px"><col style="width:170px"></colgroup>
+<thead><tr><th scope="col">Сегмент · кто и повод</th><th scope="col">Итог из 100, наша оценка</th><th scope="col">7 критериев</th><th scope="col">Способ</th><th scope="col">Форма</th><th scope="col">Размер</th><th scope="col">Платят 2&nbsp;250&nbsp;₽/кг?</th><th scope="col">Как дотянуться</th><th scope="col">Конкуренты</th><th scope="col">Наша сила</th><th scope="col" class="nh">Подтверждённое основание</th><th scope="col" class="nh">Ключевое допущение</th><th scope="col" class="nh">Что изменит выбор</th><th scope="col" class="nh">Цена следующей проверки</th></tr></thead>
+<tbody>
+<tr class="grp g"><th colspan="14" scope="colgroup">Молотый — если обжарщик мелет</th></tr>
+<tr class="win dg">
+<th scope="row"><span class="code g">М1</span> <b>Дом · турка</b><span class="who">Семья варит кофе утром дома, часто с молоком и сахаром; сейчас берёт вакуумную пачку с полки (Жокей, Jardin, Lavazza).</span></th>
+<td class="tot"><b>73</b><small>из 100</small><span class="bar g" role="img" aria-label="73 из 100"><i style="width:73%"></i></span><span class="vd win">Кандидат 1</span></td><td><span class="mini" aria-label="баллы по критериям: Размер 4, Рост 2, Платят 2&nbsp;250 4, Наш продукт 4, Конкуренция 3, Доступ 4, Повтор 4"><i style="height:80%" title="Размер: 4 из 5"></i><i style="height:40%" title="Рост: 2 из 5"></i><i style="height:80%" title="Платят 2&nbsp;250: 4 из 5"></i><i style="height:80%" title="Наш продукт: 4 из 5"></i><i style="height:60%" title="Конкуренция: 3 из 5"></i><i style="height:80%" title="Доступ: 4 из 5"></i><i style="height:80%" title="Повтор: 4 из 5"></i></span></td>
+<td>Турка</td><td>Молотый, мелкий помол</td><td>Размер всего яруса молотого 1&nbsp;600–2&nbsp;800&nbsp;₽/кг ≈&nbsp;12–19&nbsp;млрд ₽, 6–9&nbsp;тыс. т — это не размер турки <i class="tg o">расчёт + допущение</i>. На турку приходится ≈&nbsp;4–10&nbsp;млрд ₽ (12–19 ×&nbsp;31–54&nbsp;%) <i class="tg o">расчёт</i>: доля турки — 28–31&nbsp;% у Авито (10&nbsp;тыс. человек) и 54&nbsp;% в опросе «МАЙ» 2024, 11→14&nbsp;% у ЮMoney (2025→2026) <i class="tg p">пересказ</i></td><td>Да, на верхней границе: с полки платят 1&nbsp;600–2&nbsp;800&nbsp;₽/кг; медиана анкеты —&nbsp;2&nbsp;000&nbsp;₽/кг. До двери наши 2&nbsp;250 ≈&nbsp;2&nbsp;515–2&nbsp;740&nbsp;₽ <i class="tg o">расчёт</i>. Эфиопия у Tasty — 2&nbsp;719&nbsp;₽/кг, наши на 17&nbsp;% дешевле <i class="tg o">расчёт</i> по <i class="tg s">источник, сайт 29.10</i></td><td>Старт — рекомендации и клуб. Через 3–6 мес. — маркетплейс, но свежий помол только своей отгрузкой (FBS/rFBS): склад площадки требует остатка срока ≥&nbsp;70–90&nbsp;% <i class="tg p">пересказ</i>; комиссия и логистика съедают 25–40&nbsp;% цены <i class="tg o">наша оценка</i></td><td>Tasty Coffee (85 сортов «для турки» от 2&nbsp;509&nbsp;₽/кг, есть на Ozon), Majaro, ZAVOD, Manufactory; масс-марки Жокей, Jardin, Lavazza Rossa, Coffee Like — без даты обжарки <i class="tg p">пересказ</i></td>
+<td>Свежий помол под турку у обжарщиков уже есть — как один из помолов к десяткам сортов, поэтому это не свободное место <i class="tg s">источник, сайты 29.10</i>. Свободно узкое: бренд вокруг турки, эфиопская история, дата помола на пачке — такого обещания не нашли, фото пачек не смотрели <i class="tg o">наша оценка</i><span class="weak">Слабое: Вкус: эфиопский часто кислит, а массовый покупатель хвалит «не кислый» <i class="tg p">пересказ</i>. В «О'кей» спрос на турки за год −30&nbsp;% (одна сеть) <i class="tg p">пересказ</i>, а по ЮMoney турка выросла с 11 до 14&nbsp;% — падение не подтверждено <i class="tg p">пересказ</i></span></td>
+<td class="nf">Цены полки 1&nbsp;600–2&nbsp;800&nbsp;₽/кг и разделы «для турки» у Tasty, Majaro, ZAVOD (сайты, 29.10) <i class="tg s">источник</i>; доля турки 11–54&nbsp;% в опросах <i class="tg p">пересказ</i></td><td class="nf">Бренд с эфиопской историей и датой помола на пачке — довод покупки, хотя свежий помол под турку уже продают другие <i class="tg o">гипотеза</i>; вкус эфиопского лота принимают</td><td class="nf">Обжарщик не может молоть; слепая проба ниже 30&nbsp;% оплат; повтор ниже 30&nbsp;%; у Tasty или Majaro есть та же история с датой на пачке — смотрим М2 и Ц1</td><td class="nf">Образец лота ≈&nbsp;300&nbsp;г до оплаты партии; слепая проба ≥&nbsp;20 человек, 14 дней; в рублях — нет данных</td></tr>
+<tr class="second dg">
+<th scope="row"><span class="code g">М2</span> <b>Дом · гейзер (мока)</b><span class="who">Те же семьи, но варят в гейзерной кофеварке на плите; крепкий кофе, часто с молоком.</span></th>
+<td class="tot"><b>66</b><small>из 100</small><span class="bar g" role="img" aria-label="66 из 100"><i style="width:66%"></i></span><span class="vd second">Второй</span></td><td><span class="mini" aria-label="баллы по критериям: Размер 2, Рост 3, Платят 2&nbsp;250 4, Наш продукт 4, Конкуренция 3, Доступ 3, Повтор 4"><i style="height:40%" title="Размер: 2 из 5"></i><i style="height:60%" title="Рост: 3 из 5"></i><i style="height:80%" title="Платят 2&nbsp;250: 4 из 5"></i><i style="height:80%" title="Наш продукт: 4 из 5"></i><i style="height:60%" title="Конкуренция: 3 из 5"></i><i style="height:60%" title="Доступ: 3 из 5"></i><i style="height:80%" title="Повтор: 4 из 5"></i></span></td>
+<td>Гейзер</td><td>Молотый, средний помол</td><td>Малый: гейзер —&nbsp;3–7&nbsp;% ответов в опросах <i class="t"><i class="tg p">пересказ</i></i>; в деньгах не посчитан</td><td>Да: та же полка, 1&nbsp;600–2&nbsp;800&nbsp;₽/кг</td><td>Тот же покупатель и канал, что у М1: вопрос «чем варите?» в заказе</td><td>ZAVOD («для турки или гейзерки»), Majaro (отдельный помол под гейзер), Coffee Like, Lavazza, Kimbo, Жокей</td>
+<td>Помол под гейзер с датой; натуральная Эфиопия в гейзере даёт плотный ягодный вкус <i class="tg o">наша оценка</i><span class="weak">Слабое: Маленький сам по себе; живёт как продолжение М1; конкуренты уже делают помол под гейзер</span></td>
+<td class="nf">Гейзер — 3–7&nbsp;% ответов в опросах <i class="tg p">пересказ</i>; та же полка 1&nbsp;600–2&nbsp;800&nbsp;₽/кг</td><td class="nf">Живёт как продолжение М1: тот же покупатель и канал; плотный ягодный вкус в гейзере <i class="tg o">наша оценка</i></td><td class="nf">М1 не проходит проверку на повтор — тогда смотрим гейзер; размер в деньгах не посчитан</td><td class="nf">Вопрос «чем варите?» в каждом заказе; отдельная цена — нет данных</td></tr>
+<tr class="spare dg">
+<th scope="row"><span class="code g">М3</span> <b>Дом · капельная, френч-пресс</b><span class="who">Заваривают крупный помол без кофемашины; спокойная чашка дома или на даче.</span></th>
+<td class="tot"><b>58</b><small>из 100</small><span class="bar g" role="img" aria-label="58 из 100"><i style="width:58%"></i></span><span class="vd spare">Запасной</span></td><td><span class="mini" aria-label="баллы по критериям: Размер 2, Рост 3, Платят 2&nbsp;250 3, Наш продукт 4, Конкуренция 2, Доступ 3, Повтор 3"><i style="height:40%" title="Размер: 2 из 5"></i><i style="height:60%" title="Рост: 3 из 5"></i><i style="height:60%" title="Платят 2&nbsp;250: 3 из 5"></i><i style="height:80%" title="Наш продукт: 4 из 5"></i><i style="height:40%" title="Конкуренция: 2 из 5"></i><i style="height:60%" title="Доступ: 3 из 5"></i><i style="height:60%" title="Повтор: 3 из 5"></i></span></td>
+<td>Капельная, френч-пресс, «в чашке»</td><td>Молотый, крупный помол</td><td>Френч-пресс 6&nbsp;%, «в чашке» 25&nbsp;% (опрос «МАЙ» 2024) <i class="t"><i class="tg p">пересказ</i></i>; в «О'кей» спрос на френч-прессы −54&nbsp;% <i class="t"><i class="tg p">пересказ</i></i></td><td>Частично: многие берут дешевле 1&nbsp;600&nbsp;₽/кг <i class="tg o">наша оценка</i></td><td>Тот же канал; карточка «для френч-пресса»</td><td>Обжарщики с помолом под способ: Tasty, «Сварщица Екатерина», Torrefacto</td>
+<td>Натуральная Эфиопия хорошо раскрывается в фильтре <i class="tg o">наша оценка</i><span class="weak">Слабое: Обжарщики уже здесь; способ теряет покупателей. По баллам М4 на 2 выше, но ему нужны дрип-пакеты — М3 закрываем тем же помолом</span></td>
+<td class="nf">Френч-пресс 6&nbsp;%, «в чашке» 25&nbsp;% (опрос «МАЙ» 2024); в «О'кей» френч-прессы −54&nbsp;% <i class="tg p">пересказ</i></td><td class="nf">Покупатель платит от 1&nbsp;600&nbsp;₽/кг (многие берут дешевле — <i class="tg o">наша оценка</i>); Эфиопия раскрывается в фильтре <i class="tg o">наша оценка</i></td><td class="nf">Появятся дрип-пакеты: М4 (60) станет выше М3 (58); обжарщики с помолом под способ закрывают спрос</td><td class="nf">нет данных</td></tr>
+<tr class="later dg">
+<th scope="row"><span class="code g">М4</span> <b>Переход с растворимого</b><span class="who">Пьёт растворимый, хочет «настоящий» кофе без техники и хлопот.</span></th>
+<td class="tot"><b>60</b><small>из 100</small><span class="bar g" role="img" aria-label="60 из 100"><i style="width:60%"></i></span><span class="vd later">Позже, с дрипами</span></td><td><span class="mini" aria-label="баллы по критериям: Размер 5, Рост 3, Платят 2&nbsp;250 1, Наш продукт 3, Конкуренция 3, Доступ 3, Повтор 3"><i style="height:100%" title="Размер: 5 из 5"></i><i style="height:60%" title="Рост: 3 из 5"></i><i style="height:20%" title="Платят 2&nbsp;250: 1 из 5"></i><i style="height:60%" title="Наш продукт: 3 из 5"></i><i style="height:60%" title="Конкуренция: 3 из 5"></i><i style="height:60%" title="Доступ: 3 из 5"></i><i style="height:60%" title="Повтор: 3 из 5"></i></span></td>
+<td>«В чашке», дрип-пакет</td><td>Молотый; лучше — дрип-пакеты (у нас нет)</td><td>Растворимый —&nbsp;58,2&nbsp;% денег розницы, −4,9&nbsp;% в штуках за год <i class="t"><i class="tg p">пересказ</i> Nielsen</i>; дрип ×2,2</td><td>Нет: пачка растворимого в среднем 456&nbsp;₽, ищут удобство, а не свежесть</td><td>Магазин и маркетплейс; рекомендации слабее</td><td>Дрип-пакеты обжарщиков и масс-марок</td>
+<td>История «с родины кофе»; но без дрип-пакетов нечего предложить<span class="weak">Слабое: Цена и формат не наши</span></td>
+<td class="nf">Растворимый — 58,2&nbsp;% денег розницы, −4,9&nbsp;% в штуках за год (Nielsen) <i class="tg p">пересказ</i>; пачка растворимого в среднем 456&nbsp;₽</td><td class="nf">Покупателю с растворимого нужен дрип-пакет; ищет удобство, а не свежесть <i class="tg o">наша оценка</i></td><td class="nf">Дрип-пакеты у нас появятся — иначе предложить нечего</td><td class="nf">нет данных</td></tr>
+<tr class="grp z"><th colspan="14" scope="colgroup">Зерно — продаём уже сейчас</th></tr>
+<tr class="win dz">
+<th scope="row"><span class="code z">Ц1</span> <b>Дом · кофемашина, капучино</b><span class="who">Купил кофемашину-автомат (у 30&nbsp;% новых — капучинатор) и переносит кофейню домой.</span></th>
+<td class="tot"><b>71</b><small>из 100</small><span class="bar z" role="img" aria-label="71 из 100"><i style="width:71%"></i></span><span class="vd win">Кандидат 1</span></td><td><span class="mini" aria-label="баллы по критериям: Размер 5, Рост 5, Платят 2&nbsp;250 3, Наш продукт 3, Конкуренция 2, Доступ 3, Повтор 5"><i style="height:100%" title="Размер: 5 из 5"></i><i style="height:100%" title="Рост: 5 из 5"></i><i style="height:60%" title="Платят 2&nbsp;250: 3 из 5"></i><i style="height:60%" title="Наш продукт: 3 из 5"></i><i style="height:40%" title="Конкуренция: 2 из 5"></i><i style="height:60%" title="Доступ: 3 из 5"></i><i style="height:100%" title="Повтор: 5 из 5"></i></span></td>
+<td>Кофемашина-автомат</td><td>Зерно, 1&nbsp;кг</td><td>Размер зернового яруса 15–25&nbsp;млрд ₽ <i class="tg o">допущение</i>, большая часть зерна идёт в кофемашины (у Авито кофемашина — 33&nbsp;%, первое место) <i class="tg p">пересказ</i>. Всё зерно: 16&nbsp;% денег розницы ≈&nbsp;49&nbsp;млрд ₽, +35,9&nbsp;% в деньгах и +11,5&nbsp;% в кг за год <i class="tg p">пересказ</i> Nielsen; ярус ≈&nbsp;15–25&nbsp;млрд ₽ <i class="tg o">допущение</i>. Кофемашин продают 2,5–2,6&nbsp;млн в год <i class="tg p">пересказ</i> — это продажи техники, а не расход зерна</td><td>Частично: Lavazza Oro ≈&nbsp;2&nbsp;600, Tasty от 2&nbsp;379, но на маркетплейсе много зерна дешевле</td><td>Рекомендации и клуб; кофемашины на 55–60&nbsp;% продаются через маркетплейсы <i class="tg p">пересказ</i>; зерно онлайн: 21&nbsp;% в штуках вместе с молотым, 2023 <i class="tg p">пересказ</i> — доступ через маркетплейс реальнее, чем у М1</td><td>Tasty Coffee (5,2&nbsp;тыс. т в 2025), Lavazza, Poetti, «Живой кофе», дешёвое зерно на WB</td>
+<td>Свежая обжарка с датой, пачка 1&nbsp;кг; для молока нужна обжарка темнее <i class="tg o">наша оценка</i><span class="weak">Слабое: Самая плотная конкуренция; Эфиопия в молоке раскрывается хуже бразильской основы</span></td>
+<td class="nf">Зерно +35,9&nbsp;% в деньгах, +11,5&nbsp;% в кг за год (Nielsen) <i class="tg p">пересказ</i>; кофемашин 2,5–2,6&nbsp;млн в год <i class="tg p">пересказ</i>; Lavazza Oro ≈&nbsp;2&nbsp;600, Tasty от 2&nbsp;379 ₽/кг</td><td class="nf">Ярус 15–25&nbsp;млрд ₽ <i class="tg o">наша оценка</i>; для молока подойдёт более тёмная обжарка; эфиопский лот в молоке раскрывается хуже</td><td class="nf">Пачек 1&nbsp;кг меньше 30&nbsp;% заказов или повтор ниже 30&nbsp;% за 45 дней — вперёд Ц3 и офис</td><td class="nf">45 дней продаж; вопрос «чем варите?» в заказе; в рублях — нет данных</td></tr>
+<tr class="second dz">
+<th scope="row"><span class="code z">Ц3</span> <b>Дом · мелет сам, турка или гейзер</b><span class="who">Покупает зерно и мелет кофемолкой прямо перед варкой в турке или гейзере.</span></th>
+<td class="tot"><b>66</b><small>из 100</small><span class="bar z" role="img" aria-label="66 из 100"><i style="width:66%"></i></span><span class="vd second">Второй</span></td><td><span class="mini" aria-label="баллы по критериям: Размер 2, Рост 3, Платят 2&nbsp;250 4, Наш продукт 4, Конкуренция 3, Доступ 3, Повтор 4"><i style="height:40%" title="Размер: 2 из 5"></i><i style="height:60%" title="Рост: 3 из 5"></i><i style="height:80%" title="Платят 2&nbsp;250: 4 из 5"></i><i style="height:80%" title="Наш продукт: 4 из 5"></i><i style="height:60%" title="Конкуренция: 3 из 5"></i><i style="height:60%" title="Доступ: 3 из 5"></i><i style="height:80%" title="Повтор: 4 из 5"></i></span></td>
+<td>Турка или гейзер + своя кофемолка</td><td>Зерно, 500&nbsp;г</td><td>Не измерен <i class="tg o">гипотеза</i>; зерно пьют 34&nbsp;% анкеты (47 ответов)</td><td>Да: те же 1&nbsp;600–2&nbsp;800&nbsp;₽/кг</td><td>Рекомендации; кофемолка в подарок к первой пачке — отдельная гипотеза окупаемости: ≈&nbsp;2&nbsp;000&nbsp;₽ (под турку; дешёвые ручные не годятся <i class="tg p">пересказ</i>) при первой покупке 500&nbsp;г за 1&nbsp;125&nbsp;₽ <i class="tg o">гипотеза</i></td><td>Те же обжарщики и зерно масс-марок</td>
+<td>Можно уже сейчас: продаём зерно. Мост к турке, пока нет помола на обжарке<span class="weak">Слабое: Размер не знаем — узнаем вопросом «чем варите?»; подарочная кофемолка на первом заказе не окупается</span></td>
+<td class="nf">Зерно пьют 34&nbsp;% анкеты (47 ответов, почти все из круга знакомых — сигнал, а не карта рынка); зерно продаём уже сейчас</td><td class="nf">У покупателя уже есть кофемолка; размер сегмента не измерен <i class="tg o">гипотеза</i>; окупаемость кофемолки в подарок — отдельная гипотеза</td><td class="nf">Мало ответов «мелю сам» на вопрос «чем варите?»; либо у обжарщика появится помол — тогда М1 вместо моста</td><td class="nf">Кофемолка ≈&nbsp;2&nbsp;000&nbsp;₽ на первую покупку 1&nbsp;125&nbsp;₽: окупаемость посчитать до теста; остальное — нет данных</td></tr>
+<tr class="spare dz">
+<th scope="row"><span class="code z">Ц5</span> <b>Офис 10–50 человек</b><span class="who">Малый бизнес покупает кофе для сотрудников и гостей.</span></th>
+<td class="tot"><b>58</b><small>из 100</small><span class="bar z" role="img" aria-label="58 из 100"><i style="width:58%"></i></span><span class="vd spare">Запасной</span></td><td><span class="mini" aria-label="баллы по критериям: Размер 3, Рост 3, Платят 2&nbsp;250 2, Наш продукт 3, Конкуренция 2, Доступ 3, Повтор 5"><i style="height:60%" title="Размер: 3 из 5"></i><i style="height:60%" title="Рост: 3 из 5"></i><i style="height:40%" title="Платят 2&nbsp;250: 2 из 5"></i><i style="height:60%" title="Наш продукт: 3 из 5"></i><i style="height:40%" title="Конкуренция: 2 из 5"></i><i style="height:60%" title="Доступ: 3 из 5"></i><i style="height:100%" title="Повтор: 5 из 5"></i></span></td>
+<td>Кофемашина-автомат в офисе</td><td>Зерно, опт 10–30&nbsp;кг в месяц</td><td>Расход 0,3–0,65&nbsp;кг на сотрудника в месяц; 30–55&nbsp;тыс. ₽ в месяц на 30–50 человек <i class="t"><i class="tg p">пересказ</i> блоги поставщиков</i>; размер в РФ не найден</td><td>Нет: офисы Перми берут кофе от 1&nbsp;000&nbsp;₽/кг с машиной в придачу («Ростов-Пермь», Italco-Пермь), наша цена вдвое выше <i class="tg s">источник, сайты 29.10</i></td><td>Через владельцев, которые пьют наш кофе дома; 3–5 офисов на пробу</td><td>В Перми минимум 5–6 поставщиков с бесплатной машиной и сервисом (Italco-Пермь, «Ростов-Пермь», Пан Кофе, Kofedomoj); офисные поставщики, Lavazza, Poetti</td>
+<td>Свежесть и история для гостей; один офис — как 20–50 домашних покупателей <i class="tg o">наша оценка</i><span class="weak">Слабое: Бренд вторичен: важны сервис, машина и доставка по графику; ждать объёма не стоит — проба в 3–5 офисах, но запасной сегмент</span></td>
+<td class="nf">Расход 0,3–0,65&nbsp;кг на сотрудника в месяц (блоги поставщиков) <i class="tg p">пересказ</i>; малых предприятий в Пермском крае 3&nbsp;575 (реестр МСП ФНС, 10.10.2026) <i class="tg s">источник</i>; офисов на 10–50 человек в Перми ≈&nbsp;700–1&nbsp;200 <i class="tg o">расчёт + 4 допущения</i></td><td class="nf">Решает руководитель или офис-менеджер, а свежесть и история весят больше цены и сервиса <i class="tg o">гипотеза</i></td><td class="nf">Ни одного повтора через месяц у 3–5 офисов — офис позже, вместе с сервисом; предложение с машиной в придачу — нет данных</td><td class="nf">3–5 офисов на пробу, 30–45 дней; в рублях — нет данных</td></tr>
+<tr class="later dz">
+<th scope="row"><span class="code z">Ц2</span> <b>Дом · рожковая и кофемолка</b><span class="who">Домашний бариста: сам делает эспрессо, следит за обжаркой и датой.</span></th>
+<td class="tot"><b>58</b><small>из 100</small><span class="bar z" role="img" aria-label="58 из 100"><i style="width:58%"></i></span><span class="vd later">Позже</span></td><td><span class="mini" aria-label="баллы по критериям: Размер 2, Рост 4, Платят 2&nbsp;250 3, Наш продукт 3, Конкуренция 2, Доступ 3, Повтор 4"><i style="height:40%" title="Размер: 2 из 5"></i><i style="height:80%" title="Рост: 4 из 5"></i><i style="height:60%" title="Платят 2&nbsp;250: 3 из 5"></i><i style="height:60%" title="Наш продукт: 3 из 5"></i><i style="height:40%" title="Конкуренция: 2 из 5"></i><i style="height:60%" title="Доступ: 3 из 5"></i><i style="height:80%" title="Повтор: 4 из 5"></i></span></td>
+<td>Рожковая кофеварка, ручная эспрессо</td><td>Зерно, 250&nbsp;г – 1&nbsp;кг</td><td>Не посчитан; малый <i class="tg o">наша оценка</i></td><td>Да: у обжарщиков платят 2&nbsp;200–3&nbsp;000&nbsp;₽/кг</td><td>Сообщества и обжарщики напрямую; нам — трудно</td><td>Tasty, Torrefacto, «Сварщица», Skuratov</td>
+<td>Натуральная Эфиопия для эспрессо годится, но этот покупатель ждёт лот и оценку SCA<span class="weak">Слабое: Сравнивает с топовыми обжарщиками</span></td>
+<td class="nf">У обжарщиков платят 2&nbsp;200–3&nbsp;000&nbsp;₽/кг</td><td class="nf">Размер малый <i class="tg o">наша оценка</i>; покупатель ждёт лот и оценку SCA</td><td class="nf">Известны грейд и регион лота и он сильный (вопрос поставщику 1)</td><td class="nf">нет данных</td></tr>
+<tr class="later dz">
+<th scope="row"><span class="code z">Ц7</span> <b>Покупатель зерна для фильтра и капельной</b><span class="who">Обычный покупатель, не ценитель спешелти: берёт зерно для фильтра или капельной кофеварки и мелет дома или в магазине.</span></th>
+<td class="tot"><b>56</b><small>из 100</small><span class="bar z" role="img" aria-label="56 из 100"><i style="width:56%"></i></span><span class="vd later">Позже</span></td><td><span class="mini" aria-label="баллы по критериям: Размер 3, Рост 3, Платят 2&nbsp;250 2, Наш продукт 3, Конкуренция 2, Доступ 3, Повтор 4"><i style="height:60%" title="Размер: 3 из 5"></i><i style="height:60%" title="Рост: 3 из 5"></i><i style="height:40%" title="Платят 2&nbsp;250: 2 из 5"></i><i style="height:60%" title="Наш продукт: 3 из 5"></i><i style="height:40%" title="Конкуренция: 2 из 5"></i><i style="height:60%" title="Доступ: 3 из 5"></i><i style="height:80%" title="Повтор: 4 из 5"></i></span></td>
+<td>Фильтр, капельная кофеварка</td><td>Зерно, 500&nbsp;г – 1&nbsp;кг</td><td>Не измерен; доля способа в опросах не найдена. Зерно в целом: +11,5&nbsp;% в кг за год <i class="tg p">пересказ</i></td><td>Скорее нет: много зерна дешевле 1&nbsp;600&nbsp;₽/кг <i class="tg o">наша оценка</i></td><td>Рекомендации; магазин и маркетплейс, где конкуренция по цене</td><td>Масс-марки зерна (Lavazza, Poetti, «Живой кофе»), дешёвое зерно на WB, Tasty</td>
+<td>Свежая обжарка с датой; для такого покупателя вкус «не кислый» важнее происхождения <i class="tg o">наша оценка</i><span class="weak">Слабое: Эфиопия часто кислит; цена решает; сегмент пропущен в первой версии, оценка <i class="tg o">наша оценка</i></span></td>
+<td class="nf">Нет данных по сегменту; общий фон — зерно +11,5&nbsp;% в кг за год <i class="tg p">пересказ</i></td><td class="nf">Такой покупатель платит ближе к цене дешёвой полки, а эфиопский вкус может показаться кислым <i class="tg o">наша оценка</i></td><td class="nf">Вопрос «чем варите?» покажет большую долю фильтра; слепая проба покажет реакцию на вкус</td><td class="nf">нет данных</td></tr>
+<tr class="later dz">
+<th scope="row"><span class="code z">Ц6</span> <b>Кофейни, пекарни, HoReCa</b><span class="who">Малые кофейни и пекарни покупают зерно оптом.</span></th>
+<td class="tot"><b>54</b><small>из 100</small><span class="bar z" role="img" aria-label="54 из 100"><i style="width:54%"></i></span><span class="vd later">Позже</span></td><td><span class="mini" aria-label="баллы по критериям: Размер 4, Рост 3, Платят 2&nbsp;250 2, Наш продукт 2, Конкуренция 1, Доступ 3, Повтор 5"><i style="height:80%" title="Размер: 4 из 5"></i><i style="height:60%" title="Рост: 3 из 5"></i><i style="height:40%" title="Платят 2&nbsp;250: 2 из 5"></i><i style="height:40%" title="Наш продукт: 2 из 5"></i><i style="height:20%" title="Конкуренция: 1 из 5"></i><i style="height:60%" title="Доступ: 3 из 5"></i><i style="height:100%" title="Повтор: 5 из 5"></i></span></td>
+<td>Профессиональная кофемашина</td><td>Зерно, опт</td><td>18–27&nbsp;кг в месяц на кофейню <i class="t"><i class="tg p">пересказ</i> зарубежный сайт</i></td><td>Спорно: наши 2&nbsp;250&nbsp;₽ внутри диапазона опта 2&nbsp;160–2&nbsp;700&nbsp;₽/кг, но торгуются <i class="tg p">пересказ</i>. Балл 2 — <i class="tg o">наша оценка</i></td><td>Сегодняшний опт поставщика (по данным поставщика, 29.10)</td><td>Оптовые обжарщики</td>
+<td>Цена прямого поставщика; бренд здесь не строится<span class="weak">Слабое: Нужны стабильность вкуса и сервис</span></td>
+<td class="nf">Опт 2&nbsp;160–2&nbsp;700&nbsp;₽/кг, торгуются; 18–27&nbsp;кг в месяц на кофейню (зарубежный сайт) <i class="tg p">пересказ</i></td><td class="nf">Покупают по нашей цене при стабильном вкусе и сервисе <i class="tg o">гипотеза</i></td><td class="nf">Расчёт маржи при опте внутри диапазона 2&nbsp;160–2&nbsp;700&nbsp;₽/кг</td><td class="nf">нет данных</td></tr>
+<tr class="later dz">
+<th scope="row"><span class="code z">Ц4</span> <b>Ценители спешелти</b><span class="who">Знатоки: воронка, аэропресс; ищут редкие лоты и оценку дегустатора.</span></th>
+<td class="tot"><b>43</b><small>из 100</small><span class="bar z" role="img" aria-label="43 из 100"><i style="width:43%"></i></span><span class="vd later">Не сейчас</span></td><td><span class="mini" aria-label="баллы по критериям: Размер 1, Рост 4, Платят 2&nbsp;250 3, Наш продукт 2, Конкуренция 1, Доступ 2, Повтор 3"><i style="height:20%" title="Размер: 1 из 5"></i><i style="height:80%" title="Рост: 4 из 5"></i><i style="height:60%" title="Платят 2&nbsp;250: 3 из 5"></i><i style="height:40%" title="Наш продукт: 2 из 5"></i><i style="height:20%" title="Конкуренция: 1 из 5"></i><i style="height:40%" title="Доступ: 2 из 5"></i><i style="height:60%" title="Повтор: 3 из 5"></i></span></td>
+<td>Воронка, аэропресс</td><td>Зерно, 200–250&nbsp;г</td><td>Малый: в анкете у обжарщика берут 6 из 47</td><td>Да, но больше: 2&nbsp;900–4&nbsp;500&nbsp;₽/кг</td><td>Сообщества, обжарщики; нам — трудно</td><td>Submarine, «Сварщица», Tasty, десятки обжарщиков</td>
+<td>Нужен топовый лот; грейд и регион первой партии не известны<span class="weak">Слабое: Нет данных о лоте; сильная конкуренция</span></td>
+<td class="nf">В анкете у обжарщика берут 6 из 47; платят 2&nbsp;900–4&nbsp;500&nbsp;₽/кг</td><td class="nf">Нужен топовый лот; грейд и регион первой партии не известны</td><td class="nf">Ответ поставщика на вопрос 1: G1–G2 приближают к ценителям</td><td class="nf">нет данных</td></tr>
+<tr class="grp b"><th colspan="14" scope="colgroup">Оба направления — сезонный слой</th></tr>
+<tr class="layer db">
+<th scope="row"><span class="code b">П1</span> <b>Личный подарок</b><span class="who">Дарят пачку «попробуй» родным и друзьям, к праздникам.</span></th>
+<td class="tot"><b>63</b><small>из 100</small><span class="bar b" role="img" aria-label="63 из 100"><i style="width:63%"></i></span><span class="vd layer">Слой к декабрю</span></td><td><span class="mini" aria-label="баллы по критериям: Размер 2, Рост 3, Платят 2&nbsp;250 4, Наш продукт 4, Конкуренция 3, Доступ 4, Повтор 1"><i style="height:40%" title="Размер: 2 из 5"></i><i style="height:60%" title="Рост: 3 из 5"></i><i style="height:80%" title="Платят 2&nbsp;250: 4 из 5"></i><i style="height:80%" title="Наш продукт: 4 из 5"></i><i style="height:60%" title="Конкуренция: 3 из 5"></i><i style="height:80%" title="Доступ: 4 из 5"></i><i style="height:20%" title="Повтор: 1 из 5"></i></span></td>
+<td>Любой</td><td>Молотый или зерно, 250–500&nbsp;г, красивая пачка</td><td>Кофе — в 13&nbsp;% подарочных предпочтений <i class="t"><i class="tg p">пересказ</i> Nielsen 2024</i>; пик продаж кофе — декабрь <i class="t"><i class="tg p">пересказ</i> «О'кей»</i></td><td>Да: за подарок платят больше</td><td>Довольные покупатели дарят дальше — та же петля «пачка другу»</td><td>Подарочные наборы обжарщиков и масс-марок</td>
+<td>Готовая история «с родины кофе»<span class="weak">Слабое: Разово и сезонно — слой к декабрю, не кандидат на первый шаг</span></td>
+<td class="nf">Кофе — в 13&nbsp;% подарочных предпочтений (Nielsen 2024) <i class="tg p">пересказ</i>; пик продаж кофе — декабрь («О'кей») <i class="tg p">пересказ</i></td><td class="nf">Довольные покупатели дарят дальше; красивая пачка готова к декабрю</td><td class="nf">Нет упаковки и партии к декабрю — слой не состоится</td><td class="nf">нет данных</td></tr>
+<tr class="layer db">
+<th scope="row"><span class="code b">П2</span> <b>Корпоративный подарок к Новому году</b><span class="who">Компании дарят сотрудникам и клиентам.</span></th>
+<td class="tot"><b>60</b><small>из 100</small><span class="bar b" role="img" aria-label="60 из 100"><i style="width:60%"></i></span><span class="vd layer">Слой к декабрю</span></td><td><span class="mini" aria-label="баллы по критериям: Размер 3, Рост 3, Платят 2&nbsp;250 4, Наш продукт 4, Конкуренция 3, Доступ 2, Повтор 1"><i style="height:60%" title="Размер: 3 из 5"></i><i style="height:60%" title="Рост: 3 из 5"></i><i style="height:80%" title="Платят 2&nbsp;250: 4 из 5"></i><i style="height:80%" title="Наш продукт: 4 из 5"></i><i style="height:60%" title="Конкуренция: 3 из 5"></i><i style="height:40%" title="Доступ: 2 из 5"></i><i style="height:20%" title="Повтор: 1 из 5"></i></span></td>
+<td>Любой</td><td>Наборы, 250&nbsp;г – 1&nbsp;кг</td><td>58&nbsp;% компаний тратят на подарок сотруднику до 3&nbsp;тыс. ₽; продукты хотят 28&nbsp;% <i class="t"><i class="tg p">пересказ</i></i></td><td>Да, в бюджете подарка</td><td>Через владельцев бизнеса из круга; заказ — в ноябре</td><td>Мерч-агентства, наборы обжарщиков</td>
+<td>История и красивая пачка; партия должна успеть к декабрю<span class="weak">Слабое: Разово; нужна готовая упаковка к ноябрю</span></td>
+<td class="nf">58&nbsp;% компаний тратят на подарок сотруднику до 3&nbsp;тыс. ₽; продукты хотят 28&nbsp;% <i class="tg p">пересказ</i></td><td class="nf">Заказ через владельцев бизнеса из круга; партия и упаковка успевают к декабрю</td><td class="nf">Нет готовой упаковки к ноябрю</td><td class="nf">нет данных</td></tr>
+</tbody>
+</table>
+</div>
+  <div class="cards">
+<h3 class="cgrp g">Молотый — если обжарщик мелет</h3>
+<details class="card win dg">
+<summary><span class="code g">М1</span><span class="cn"><b>Дом · турка</b><span class="vd win">Кандидат 1</span></span><span class="cs"><b>73</b><small>из 100</small><span class="bar g" role="img" aria-label="73 из 100"><i style="width:73%"></i></span></span><span class="more" aria-hidden="true"><span class="m1">Подробнее</span><span class="m2">Свернуть</span><span class="ar">▾</span></span></summary>
+<dl><div><dt>Кто и повод</dt><dd>Семья варит кофе утром дома, часто с молоком и сахаром; сейчас берёт вакуумную пачку с полки (Жокей, Jardin, Lavazza).</dd></div><div><dt>Способ · форма</dt><dd>Турка · Молотый, мелкий помол</dd></div><div><dt>Размер</dt><dd>Размер всего яруса молотого 1&nbsp;600–2&nbsp;800&nbsp;₽/кг ≈&nbsp;12–19&nbsp;млрд ₽, 6–9&nbsp;тыс. т — это не размер турки <i class="tg o">расчёт + допущение</i>. На турку приходится ≈&nbsp;4–10&nbsp;млрд ₽ (12–19 ×&nbsp;31–54&nbsp;%) <i class="tg o">расчёт</i>: доля турки — 28–31&nbsp;% у Авито (10&nbsp;тыс. человек) и 54&nbsp;% в опросе «МАЙ» 2024, 11→14&nbsp;% у ЮMoney (2025→2026) <i class="tg p">пересказ</i></dd></div><div><dt>Платят 2&nbsp;250&nbsp;₽/кг?</dt><dd>Да, на верхней границе: с полки платят 1&nbsp;600–2&nbsp;800&nbsp;₽/кг; медиана анкеты —&nbsp;2&nbsp;000&nbsp;₽/кг. До двери наши 2&nbsp;250 ≈&nbsp;2&nbsp;515–2&nbsp;740&nbsp;₽ <i class="tg o">расчёт</i>. Эфиопия у Tasty — 2&nbsp;719&nbsp;₽/кг, наши на 17&nbsp;% дешевле <i class="tg o">расчёт</i> по <i class="tg s">источник, сайт 29.10</i></dd></div><div><dt>Как дотянуться</dt><dd>Старт — рекомендации и клуб. Через 3–6 мес. — маркетплейс, но свежий помол только своей отгрузкой (FBS/rFBS): склад площадки требует остатка срока ≥&nbsp;70–90&nbsp;% <i class="tg p">пересказ</i>; комиссия и логистика съедают 25–40&nbsp;% цены <i class="tg o">наша оценка</i></dd></div><div><dt>Конкуренты</dt><dd>Tasty Coffee (85 сортов «для турки» от 2&nbsp;509&nbsp;₽/кг, есть на Ozon), Majaro, ZAVOD, Manufactory; масс-марки Жокей, Jardin, Lavazza Rossa, Coffee Like — без даты обжарки <i class="tg p">пересказ</i></dd></div><div><dt>Наша сила</dt><dd>Свежий помол под турку у обжарщиков уже есть — как один из помолов к десяткам сортов, поэтому это не свободное место <i class="tg s">источник, сайты 29.10</i>. Свободно узкое: бренд вокруг турки, эфиопская история, дата помола на пачке — такого обещания не нашли, фото пачек не смотрели <i class="tg o">наша оценка</i></dd></div><div><dt>Слабое</dt><dd>Вкус: эфиопский часто кислит, а массовый покупатель хвалит «не кислый» <i class="tg p">пересказ</i>. В «О'кей» спрос на турки за год −30&nbsp;% (одна сеть) <i class="tg p">пересказ</i>, а по ЮMoney турка выросла с 11 до 14&nbsp;% — падение не подтверждено <i class="tg p">пересказ</i></dd></div><div class="nf"><dt>Подтверждённое основание</dt><dd>Цены полки 1&nbsp;600–2&nbsp;800&nbsp;₽/кг и разделы «для турки» у Tasty, Majaro, ZAVOD (сайты, 29.10) <i class="tg s">источник</i>; доля турки 11–54&nbsp;% в опросах <i class="tg p">пересказ</i></dd></div><div class="nf"><dt>Ключевое допущение</dt><dd>Бренд с эфиопской историей и датой помола на пачке — довод покупки, хотя свежий помол под турку уже продают другие <i class="tg o">гипотеза</i>; вкус эфиопского лота принимают</dd></div><div class="nf"><dt>Что изменит выбор</dt><dd>Обжарщик не может молоть; слепая проба ниже 30&nbsp;% оплат; повтор ниже 30&nbsp;%; у Tasty или Majaro есть та же история с датой на пачке — смотрим М2 и Ц1</dd></div><div class="nf"><dt>Цена следующей проверки</dt><dd>Образец лота ≈&nbsp;300&nbsp;г до оплаты партии; слепая проба ≥&nbsp;20 человек, 14 дней; в рублях — нет данных</dd></div></dl>
+<p class="crit-h">Баллы по критериям (1–5, вес в скобках)</p><ul class="crit"><li><span>Размер <em>×15</em></span><span class="cb"><i style="width:80%"></i></span><b>4</b></li><li><span>Рост <em>×10</em></span><span class="cb"><i style="width:40%"></i></span><b>2</b></li><li><span>Платят 2&nbsp;250 <em>×15</em></span><span class="cb"><i style="width:80%"></i></span><b>4</b></li><li><span>Наш продукт <em>×20</em></span><span class="cb"><i style="width:80%"></i></span><b>4</b></li><li><span>Конкуренция <em>×15</em></span><span class="cb"><i style="width:60%"></i></span><b>3</b></li><li><span>Доступ <em>×15</em></span><span class="cb"><i style="width:80%"></i></span><b>4</b></li><li><span>Повтор <em>×10</em></span><span class="cb"><i style="width:80%"></i></span><b>4</b></li></ul>
+</details>
+<details class="card second dg">
+<summary><span class="code g">М2</span><span class="cn"><b>Дом · гейзер (мока)</b><span class="vd second">Второй</span></span><span class="cs"><b>66</b><small>из 100</small><span class="bar g" role="img" aria-label="66 из 100"><i style="width:66%"></i></span></span><span class="more" aria-hidden="true"><span class="m1">Подробнее</span><span class="m2">Свернуть</span><span class="ar">▾</span></span></summary>
+<dl><div><dt>Кто и повод</dt><dd>Те же семьи, но варят в гейзерной кофеварке на плите; крепкий кофе, часто с молоком.</dd></div><div><dt>Способ · форма</dt><dd>Гейзер · Молотый, средний помол</dd></div><div><dt>Размер</dt><dd>Малый: гейзер —&nbsp;3–7&nbsp;% ответов в опросах <i class="t"><i class="tg p">пересказ</i></i>; в деньгах не посчитан</dd></div><div><dt>Платят 2&nbsp;250&nbsp;₽/кг?</dt><dd>Да: та же полка, 1&nbsp;600–2&nbsp;800&nbsp;₽/кг</dd></div><div><dt>Как дотянуться</dt><dd>Тот же покупатель и канал, что у М1: вопрос «чем варите?» в заказе</dd></div><div><dt>Конкуренты</dt><dd>ZAVOD («для турки или гейзерки»), Majaro (отдельный помол под гейзер), Coffee Like, Lavazza, Kimbo, Жокей</dd></div><div><dt>Наша сила</dt><dd>Помол под гейзер с датой; натуральная Эфиопия в гейзере даёт плотный ягодный вкус <i class="tg o">наша оценка</i></dd></div><div><dt>Слабое</dt><dd>Маленький сам по себе; живёт как продолжение М1; конкуренты уже делают помол под гейзер</dd></div><div class="nf"><dt>Подтверждённое основание</dt><dd>Гейзер — 3–7&nbsp;% ответов в опросах <i class="tg p">пересказ</i>; та же полка 1&nbsp;600–2&nbsp;800&nbsp;₽/кг</dd></div><div class="nf"><dt>Ключевое допущение</dt><dd>Живёт как продолжение М1: тот же покупатель и канал; плотный ягодный вкус в гейзере <i class="tg o">наша оценка</i></dd></div><div class="nf"><dt>Что изменит выбор</dt><dd>М1 не проходит проверку на повтор — тогда смотрим гейзер; размер в деньгах не посчитан</dd></div><div class="nf"><dt>Цена следующей проверки</dt><dd>Вопрос «чем варите?» в каждом заказе; отдельная цена — нет данных</dd></div></dl>
+<p class="crit-h">Баллы по критериям (1–5, вес в скобках)</p><ul class="crit"><li><span>Размер <em>×15</em></span><span class="cb"><i style="width:40%"></i></span><b>2</b></li><li><span>Рост <em>×10</em></span><span class="cb"><i style="width:60%"></i></span><b>3</b></li><li><span>Платят 2&nbsp;250 <em>×15</em></span><span class="cb"><i style="width:80%"></i></span><b>4</b></li><li><span>Наш продукт <em>×20</em></span><span class="cb"><i style="width:80%"></i></span><b>4</b></li><li><span>Конкуренция <em>×15</em></span><span class="cb"><i style="width:60%"></i></span><b>3</b></li><li><span>Доступ <em>×15</em></span><span class="cb"><i style="width:60%"></i></span><b>3</b></li><li><span>Повтор <em>×10</em></span><span class="cb"><i style="width:80%"></i></span><b>4</b></li></ul>
+</details>
+<details class="card spare dg">
+<summary><span class="code g">М3</span><span class="cn"><b>Дом · капельная, френч-пресс</b><span class="vd spare">Запасной</span></span><span class="cs"><b>58</b><small>из 100</small><span class="bar g" role="img" aria-label="58 из 100"><i style="width:58%"></i></span></span><span class="more" aria-hidden="true"><span class="m1">Подробнее</span><span class="m2">Свернуть</span><span class="ar">▾</span></span></summary>
+<dl><div><dt>Кто и повод</dt><dd>Заваривают крупный помол без кофемашины; спокойная чашка дома или на даче.</dd></div><div><dt>Способ · форма</dt><dd>Капельная, френч-пресс, «в чашке» · Молотый, крупный помол</dd></div><div><dt>Размер</dt><dd>Френч-пресс 6&nbsp;%, «в чашке» 25&nbsp;% (опрос «МАЙ» 2024) <i class="t"><i class="tg p">пересказ</i></i>; в «О'кей» спрос на френч-прессы −54&nbsp;% <i class="t"><i class="tg p">пересказ</i></i></dd></div><div><dt>Платят 2&nbsp;250&nbsp;₽/кг?</dt><dd>Частично: многие берут дешевле 1&nbsp;600&nbsp;₽/кг <i class="tg o">наша оценка</i></dd></div><div><dt>Как дотянуться</dt><dd>Тот же канал; карточка «для френч-пресса»</dd></div><div><dt>Конкуренты</dt><dd>Обжарщики с помолом под способ: Tasty, «Сварщица Екатерина», Torrefacto</dd></div><div><dt>Наша сила</dt><dd>Натуральная Эфиопия хорошо раскрывается в фильтре <i class="tg o">наша оценка</i></dd></div><div><dt>Слабое</dt><dd>Обжарщики уже здесь; способ теряет покупателей. По баллам М4 на 2 выше, но ему нужны дрип-пакеты — М3 закрываем тем же помолом</dd></div><div class="nf"><dt>Подтверждённое основание</dt><dd>Френч-пресс 6&nbsp;%, «в чашке» 25&nbsp;% (опрос «МАЙ» 2024); в «О'кей» френч-прессы −54&nbsp;% <i class="tg p">пересказ</i></dd></div><div class="nf"><dt>Ключевое допущение</dt><dd>Покупатель платит от 1&nbsp;600&nbsp;₽/кг (многие берут дешевле — <i class="tg o">наша оценка</i>); Эфиопия раскрывается в фильтре <i class="tg o">наша оценка</i></dd></div><div class="nf"><dt>Что изменит выбор</dt><dd>Появятся дрип-пакеты: М4 (60) станет выше М3 (58); обжарщики с помолом под способ закрывают спрос</dd></div><div class="nf"><dt>Цена следующей проверки</dt><dd>нет данных</dd></div></dl>
+<p class="crit-h">Баллы по критериям (1–5, вес в скобках)</p><ul class="crit"><li><span>Размер <em>×15</em></span><span class="cb"><i style="width:40%"></i></span><b>2</b></li><li><span>Рост <em>×10</em></span><span class="cb"><i style="width:60%"></i></span><b>3</b></li><li><span>Платят 2&nbsp;250 <em>×15</em></span><span class="cb"><i style="width:60%"></i></span><b>3</b></li><li><span>Наш продукт <em>×20</em></span><span class="cb"><i style="width:80%"></i></span><b>4</b></li><li><span>Конкуренция <em>×15</em></span><span class="cb"><i style="width:40%"></i></span><b>2</b></li><li><span>Доступ <em>×15</em></span><span class="cb"><i style="width:60%"></i></span><b>3</b></li><li><span>Повтор <em>×10</em></span><span class="cb"><i style="width:60%"></i></span><b>3</b></li></ul>
+</details>
+<details class="card later dg">
+<summary><span class="code g">М4</span><span class="cn"><b>Переход с растворимого</b><span class="vd later">Позже, с дрипами</span></span><span class="cs"><b>60</b><small>из 100</small><span class="bar g" role="img" aria-label="60 из 100"><i style="width:60%"></i></span></span><span class="more" aria-hidden="true"><span class="m1">Подробнее</span><span class="m2">Свернуть</span><span class="ar">▾</span></span></summary>
+<dl><div><dt>Кто и повод</dt><dd>Пьёт растворимый, хочет «настоящий» кофе без техники и хлопот.</dd></div><div><dt>Способ · форма</dt><dd>«В чашке», дрип-пакет · Молотый; лучше — дрип-пакеты (у нас нет)</dd></div><div><dt>Размер</dt><dd>Растворимый —&nbsp;58,2&nbsp;% денег розницы, −4,9&nbsp;% в штуках за год <i class="t"><i class="tg p">пересказ</i> Nielsen</i>; дрип ×2,2</dd></div><div><dt>Платят 2&nbsp;250&nbsp;₽/кг?</dt><dd>Нет: пачка растворимого в среднем 456&nbsp;₽, ищут удобство, а не свежесть</dd></div><div><dt>Как дотянуться</dt><dd>Магазин и маркетплейс; рекомендации слабее</dd></div><div><dt>Конкуренты</dt><dd>Дрип-пакеты обжарщиков и масс-марок</dd></div><div><dt>Наша сила</dt><dd>История «с родины кофе»; но без дрип-пакетов нечего предложить</dd></div><div><dt>Слабое</dt><dd>Цена и формат не наши</dd></div><div class="nf"><dt>Подтверждённое основание</dt><dd>Растворимый — 58,2&nbsp;% денег розницы, −4,9&nbsp;% в штуках за год (Nielsen) <i class="tg p">пересказ</i>; пачка растворимого в среднем 456&nbsp;₽</dd></div><div class="nf"><dt>Ключевое допущение</dt><dd>Покупателю с растворимого нужен дрип-пакет; ищет удобство, а не свежесть <i class="tg o">наша оценка</i></dd></div><div class="nf"><dt>Что изменит выбор</dt><dd>Дрип-пакеты у нас появятся — иначе предложить нечего</dd></div><div class="nf"><dt>Цена следующей проверки</dt><dd>нет данных</dd></div></dl>
+<p class="crit-h">Баллы по критериям (1–5, вес в скобках)</p><ul class="crit"><li><span>Размер <em>×15</em></span><span class="cb"><i style="width:100%"></i></span><b>5</b></li><li><span>Рост <em>×10</em></span><span class="cb"><i style="width:60%"></i></span><b>3</b></li><li><span>Платят 2&nbsp;250 <em>×15</em></span><span class="cb"><i style="width:20%"></i></span><b>1</b></li><li><span>Наш продукт <em>×20</em></span><span class="cb"><i style="width:60%"></i></span><b>3</b></li><li><span>Конкуренция <em>×15</em></span><span class="cb"><i style="width:60%"></i></span><b>3</b></li><li><span>Доступ <em>×15</em></span><span class="cb"><i style="width:60%"></i></span><b>3</b></li><li><span>Повтор <em>×10</em></span><span class="cb"><i style="width:60%"></i></span><b>3</b></li></ul>
+</details>
+<h3 class="cgrp z">Зерно — продаём уже сейчас</h3>
+<details class="card win dz">
+<summary><span class="code z">Ц1</span><span class="cn"><b>Дом · кофемашина, капучино</b><span class="vd win">Кандидат 1</span></span><span class="cs"><b>71</b><small>из 100</small><span class="bar z" role="img" aria-label="71 из 100"><i style="width:71%"></i></span></span><span class="more" aria-hidden="true"><span class="m1">Подробнее</span><span class="m2">Свернуть</span><span class="ar">▾</span></span></summary>
+<dl><div><dt>Кто и повод</dt><dd>Купил кофемашину-автомат (у 30&nbsp;% новых — капучинатор) и переносит кофейню домой.</dd></div><div><dt>Способ · форма</dt><dd>Кофемашина-автомат · Зерно, 1&nbsp;кг</dd></div><div><dt>Размер</dt><dd>Размер зернового яруса 15–25&nbsp;млрд ₽ <i class="tg o">допущение</i>, большая часть зерна идёт в кофемашины (у Авито кофемашина — 33&nbsp;%, первое место) <i class="tg p">пересказ</i>. Всё зерно: 16&nbsp;% денег розницы ≈&nbsp;49&nbsp;млрд ₽, +35,9&nbsp;% в деньгах и +11,5&nbsp;% в кг за год <i class="tg p">пересказ</i> Nielsen; ярус ≈&nbsp;15–25&nbsp;млрд ₽ <i class="tg o">допущение</i>. Кофемашин продают 2,5–2,6&nbsp;млн в год <i class="tg p">пересказ</i> — это продажи техники, а не расход зерна</dd></div><div><dt>Платят 2&nbsp;250&nbsp;₽/кг?</dt><dd>Частично: Lavazza Oro ≈&nbsp;2&nbsp;600, Tasty от 2&nbsp;379, но на маркетплейсе много зерна дешевле</dd></div><div><dt>Как дотянуться</dt><dd>Рекомендации и клуб; кофемашины на 55–60&nbsp;% продаются через маркетплейсы <i class="tg p">пересказ</i>; зерно онлайн: 21&nbsp;% в штуках вместе с молотым, 2023 <i class="tg p">пересказ</i> — доступ через маркетплейс реальнее, чем у М1</dd></div><div><dt>Конкуренты</dt><dd>Tasty Coffee (5,2&nbsp;тыс. т в 2025), Lavazza, Poetti, «Живой кофе», дешёвое зерно на WB</dd></div><div><dt>Наша сила</dt><dd>Свежая обжарка с датой, пачка 1&nbsp;кг; для молока нужна обжарка темнее <i class="tg o">наша оценка</i></dd></div><div><dt>Слабое</dt><dd>Самая плотная конкуренция; Эфиопия в молоке раскрывается хуже бразильской основы</dd></div><div class="nf"><dt>Подтверждённое основание</dt><dd>Зерно +35,9&nbsp;% в деньгах, +11,5&nbsp;% в кг за год (Nielsen) <i class="tg p">пересказ</i>; кофемашин 2,5–2,6&nbsp;млн в год <i class="tg p">пересказ</i>; Lavazza Oro ≈&nbsp;2&nbsp;600, Tasty от 2&nbsp;379 ₽/кг</dd></div><div class="nf"><dt>Ключевое допущение</dt><dd>Ярус 15–25&nbsp;млрд ₽ <i class="tg o">наша оценка</i>; для молока подойдёт более тёмная обжарка; эфиопский лот в молоке раскрывается хуже</dd></div><div class="nf"><dt>Что изменит выбор</dt><dd>Пачек 1&nbsp;кг меньше 30&nbsp;% заказов или повтор ниже 30&nbsp;% за 45 дней — вперёд Ц3 и офис</dd></div><div class="nf"><dt>Цена следующей проверки</dt><dd>45 дней продаж; вопрос «чем варите?» в заказе; в рублях — нет данных</dd></div></dl>
+<p class="crit-h">Баллы по критериям (1–5, вес в скобках)</p><ul class="crit"><li><span>Размер <em>×15</em></span><span class="cb"><i style="width:100%"></i></span><b>5</b></li><li><span>Рост <em>×10</em></span><span class="cb"><i style="width:100%"></i></span><b>5</b></li><li><span>Платят 2&nbsp;250 <em>×15</em></span><span class="cb"><i style="width:60%"></i></span><b>3</b></li><li><span>Наш продукт <em>×20</em></span><span class="cb"><i style="width:60%"></i></span><b>3</b></li><li><span>Конкуренция <em>×15</em></span><span class="cb"><i style="width:40%"></i></span><b>2</b></li><li><span>Доступ <em>×15</em></span><span class="cb"><i style="width:60%"></i></span><b>3</b></li><li><span>Повтор <em>×10</em></span><span class="cb"><i style="width:100%"></i></span><b>5</b></li></ul>
+</details>
+<details class="card second dz">
+<summary><span class="code z">Ц3</span><span class="cn"><b>Дом · мелет сам, турка или гейзер</b><span class="vd second">Второй</span></span><span class="cs"><b>66</b><small>из 100</small><span class="bar z" role="img" aria-label="66 из 100"><i style="width:66%"></i></span></span><span class="more" aria-hidden="true"><span class="m1">Подробнее</span><span class="m2">Свернуть</span><span class="ar">▾</span></span></summary>
+<dl><div><dt>Кто и повод</dt><dd>Покупает зерно и мелет кофемолкой прямо перед варкой в турке или гейзере.</dd></div><div><dt>Способ · форма</dt><dd>Турка или гейзер + своя кофемолка · Зерно, 500&nbsp;г</dd></div><div><dt>Размер</dt><dd>Не измерен <i class="tg o">гипотеза</i>; зерно пьют 34&nbsp;% анкеты (47 ответов)</dd></div><div><dt>Платят 2&nbsp;250&nbsp;₽/кг?</dt><dd>Да: те же 1&nbsp;600–2&nbsp;800&nbsp;₽/кг</dd></div><div><dt>Как дотянуться</dt><dd>Рекомендации; кофемолка в подарок к первой пачке — отдельная гипотеза окупаемости: ≈&nbsp;2&nbsp;000&nbsp;₽ (под турку; дешёвые ручные не годятся <i class="tg p">пересказ</i>) при первой покупке 500&nbsp;г за 1&nbsp;125&nbsp;₽ <i class="tg o">гипотеза</i></dd></div><div><dt>Конкуренты</dt><dd>Те же обжарщики и зерно масс-марок</dd></div><div><dt>Наша сила</dt><dd>Можно уже сейчас: продаём зерно. Мост к турке, пока нет помола на обжарке</dd></div><div><dt>Слабое</dt><dd>Размер не знаем — узнаем вопросом «чем варите?»; подарочная кофемолка на первом заказе не окупается</dd></div><div class="nf"><dt>Подтверждённое основание</dt><dd>Зерно пьют 34&nbsp;% анкеты (47 ответов, почти все из круга знакомых — сигнал, а не карта рынка); зерно продаём уже сейчас</dd></div><div class="nf"><dt>Ключевое допущение</dt><dd>У покупателя уже есть кофемолка; размер сегмента не измерен <i class="tg o">гипотеза</i>; окупаемость кофемолки в подарок — отдельная гипотеза</dd></div><div class="nf"><dt>Что изменит выбор</dt><dd>Мало ответов «мелю сам» на вопрос «чем варите?»; либо у обжарщика появится помол — тогда М1 вместо моста</dd></div><div class="nf"><dt>Цена следующей проверки</dt><dd>Кофемолка ≈&nbsp;2&nbsp;000&nbsp;₽ на первую покупку 1&nbsp;125&nbsp;₽: окупаемость посчитать до теста; остальное — нет данных</dd></div></dl>
+<p class="crit-h">Баллы по критериям (1–5, вес в скобках)</p><ul class="crit"><li><span>Размер <em>×15</em></span><span class="cb"><i style="width:40%"></i></span><b>2</b></li><li><span>Рост <em>×10</em></span><span class="cb"><i style="width:60%"></i></span><b>3</b></li><li><span>Платят 2&nbsp;250 <em>×15</em></span><span class="cb"><i style="width:80%"></i></span><b>4</b></li><li><span>Наш продукт <em>×20</em></span><span class="cb"><i style="width:80%"></i></span><b>4</b></li><li><span>Конкуренция <em>×15</em></span><span class="cb"><i style="width:60%"></i></span><b>3</b></li><li><span>Доступ <em>×15</em></span><span class="cb"><i style="width:60%"></i></span><b>3</b></li><li><span>Повтор <em>×10</em></span><span class="cb"><i style="width:80%"></i></span><b>4</b></li></ul>
+</details>
+<details class="card spare dz">
+<summary><span class="code z">Ц5</span><span class="cn"><b>Офис 10–50 человек</b><span class="vd spare">Запасной</span></span><span class="cs"><b>58</b><small>из 100</small><span class="bar z" role="img" aria-label="58 из 100"><i style="width:58%"></i></span></span><span class="more" aria-hidden="true"><span class="m1">Подробнее</span><span class="m2">Свернуть</span><span class="ar">▾</span></span></summary>
+<dl><div><dt>Кто и повод</dt><dd>Малый бизнес покупает кофе для сотрудников и гостей.</dd></div><div><dt>Способ · форма</dt><dd>Кофемашина-автомат в офисе · Зерно, опт 10–30&nbsp;кг в месяц</dd></div><div><dt>Размер</dt><dd>Расход 0,3–0,65&nbsp;кг на сотрудника в месяц; 30–55&nbsp;тыс. ₽ в месяц на 30–50 человек <i class="t"><i class="tg p">пересказ</i> блоги поставщиков</i>; размер в РФ не найден</dd></div><div><dt>Платят 2&nbsp;250&nbsp;₽/кг?</dt><dd>Нет: офисы Перми берут кофе от 1&nbsp;000&nbsp;₽/кг с машиной в придачу («Ростов-Пермь», Italco-Пермь), наша цена вдвое выше <i class="tg s">источник, сайты 29.10</i></dd></div><div><dt>Как дотянуться</dt><dd>Через владельцев, которые пьют наш кофе дома; 3–5 офисов на пробу</dd></div><div><dt>Конкуренты</dt><dd>В Перми минимум 5–6 поставщиков с бесплатной машиной и сервисом (Italco-Пермь, «Ростов-Пермь», Пан Кофе, Kofedomoj); офисные поставщики, Lavazza, Poetti</dd></div><div><dt>Наша сила</dt><dd>Свежесть и история для гостей; один офис — как 20–50 домашних покупателей <i class="tg o">наша оценка</i></dd></div><div><dt>Слабое</dt><dd>Бренд вторичен: важны сервис, машина и доставка по графику; ждать объёма не стоит — проба в 3–5 офисах, но запасной сегмент</dd></div><div class="nf"><dt>Подтверждённое основание</dt><dd>Расход 0,3–0,65&nbsp;кг на сотрудника в месяц (блоги поставщиков) <i class="tg p">пересказ</i>; малых предприятий в Пермском крае 3&nbsp;575 (реестр МСП ФНС, 10.10.2026) <i class="tg s">источник</i>; офисов на 10–50 человек в Перми ≈&nbsp;700–1&nbsp;200 <i class="tg o">расчёт + 4 допущения</i></dd></div><div class="nf"><dt>Ключевое допущение</dt><dd>Решает руководитель или офис-менеджер, а свежесть и история весят больше цены и сервиса <i class="tg o">гипотеза</i></dd></div><div class="nf"><dt>Что изменит выбор</dt><dd>Ни одного повтора через месяц у 3–5 офисов — офис позже, вместе с сервисом; предложение с машиной в придачу — нет данных</dd></div><div class="nf"><dt>Цена следующей проверки</dt><dd>3–5 офисов на пробу, 30–45 дней; в рублях — нет данных</dd></div></dl>
+<p class="crit-h">Баллы по критериям (1–5, вес в скобках)</p><ul class="crit"><li><span>Размер <em>×15</em></span><span class="cb"><i style="width:60%"></i></span><b>3</b></li><li><span>Рост <em>×10</em></span><span class="cb"><i style="width:60%"></i></span><b>3</b></li><li><span>Платят 2&nbsp;250 <em>×15</em></span><span class="cb"><i style="width:40%"></i></span><b>2</b></li><li><span>Наш продукт <em>×20</em></span><span class="cb"><i style="width:60%"></i></span><b>3</b></li><li><span>Конкуренция <em>×15</em></span><span class="cb"><i style="width:40%"></i></span><b>2</b></li><li><span>Доступ <em>×15</em></span><span class="cb"><i style="width:60%"></i></span><b>3</b></li><li><span>Повтор <em>×10</em></span><span class="cb"><i style="width:100%"></i></span><b>5</b></li></ul>
+</details>
+<details class="card later dz">
+<summary><span class="code z">Ц2</span><span class="cn"><b>Дом · рожковая и кофемолка</b><span class="vd later">Позже</span></span><span class="cs"><b>58</b><small>из 100</small><span class="bar z" role="img" aria-label="58 из 100"><i style="width:58%"></i></span></span><span class="more" aria-hidden="true"><span class="m1">Подробнее</span><span class="m2">Свернуть</span><span class="ar">▾</span></span></summary>
+<dl><div><dt>Кто и повод</dt><dd>Домашний бариста: сам делает эспрессо, следит за обжаркой и датой.</dd></div><div><dt>Способ · форма</dt><dd>Рожковая кофеварка, ручная эспрессо · Зерно, 250&nbsp;г – 1&nbsp;кг</dd></div><div><dt>Размер</dt><dd>Не посчитан; малый <i class="tg o">наша оценка</i></dd></div><div><dt>Платят 2&nbsp;250&nbsp;₽/кг?</dt><dd>Да: у обжарщиков платят 2&nbsp;200–3&nbsp;000&nbsp;₽/кг</dd></div><div><dt>Как дотянуться</dt><dd>Сообщества и обжарщики напрямую; нам — трудно</dd></div><div><dt>Конкуренты</dt><dd>Tasty, Torrefacto, «Сварщица», Skuratov</dd></div><div><dt>Наша сила</dt><dd>Натуральная Эфиопия для эспрессо годится, но этот покупатель ждёт лот и оценку SCA</dd></div><div><dt>Слабое</dt><dd>Сравнивает с топовыми обжарщиками</dd></div><div class="nf"><dt>Подтверждённое основание</dt><dd>У обжарщиков платят 2&nbsp;200–3&nbsp;000&nbsp;₽/кг</dd></div><div class="nf"><dt>Ключевое допущение</dt><dd>Размер малый <i class="tg o">наша оценка</i>; покупатель ждёт лот и оценку SCA</dd></div><div class="nf"><dt>Что изменит выбор</dt><dd>Известны грейд и регион лота и он сильный (вопрос поставщику 1)</dd></div><div class="nf"><dt>Цена следующей проверки</dt><dd>нет данных</dd></div></dl>
+<p class="crit-h">Баллы по критериям (1–5, вес в скобках)</p><ul class="crit"><li><span>Размер <em>×15</em></span><span class="cb"><i style="width:40%"></i></span><b>2</b></li><li><span>Рост <em>×10</em></span><span class="cb"><i style="width:80%"></i></span><b>4</b></li><li><span>Платят 2&nbsp;250 <em>×15</em></span><span class="cb"><i style="width:60%"></i></span><b>3</b></li><li><span>Наш продукт <em>×20</em></span><span class="cb"><i style="width:60%"></i></span><b>3</b></li><li><span>Конкуренция <em>×15</em></span><span class="cb"><i style="width:40%"></i></span><b>2</b></li><li><span>Доступ <em>×15</em></span><span class="cb"><i style="width:60%"></i></span><b>3</b></li><li><span>Повтор <em>×10</em></span><span class="cb"><i style="width:80%"></i></span><b>4</b></li></ul>
+</details>
+<details class="card later dz">
+<summary><span class="code z">Ц7</span><span class="cn"><b>Покупатель зерна для фильтра и капельной</b><span class="vd later">Позже</span></span><span class="cs"><b>56</b><small>из 100</small><span class="bar z" role="img" aria-label="56 из 100"><i style="width:56%"></i></span></span><span class="more" aria-hidden="true"><span class="m1">Подробнее</span><span class="m2">Свернуть</span><span class="ar">▾</span></span></summary>
+<dl><div><dt>Кто и повод</dt><dd>Обычный покупатель, не ценитель спешелти: берёт зерно для фильтра или капельной кофеварки и мелет дома или в магазине.</dd></div><div><dt>Способ · форма</dt><dd>Фильтр, капельная кофеварка · Зерно, 500&nbsp;г – 1&nbsp;кг</dd></div><div><dt>Размер</dt><dd>Не измерен; доля способа в опросах не найдена. Зерно в целом: +11,5&nbsp;% в кг за год <i class="tg p">пересказ</i></dd></div><div><dt>Платят 2&nbsp;250&nbsp;₽/кг?</dt><dd>Скорее нет: много зерна дешевле 1&nbsp;600&nbsp;₽/кг <i class="tg o">наша оценка</i></dd></div><div><dt>Как дотянуться</dt><dd>Рекомендации; магазин и маркетплейс, где конкуренция по цене</dd></div><div><dt>Конкуренты</dt><dd>Масс-марки зерна (Lavazza, Poetti, «Живой кофе»), дешёвое зерно на WB, Tasty</dd></div><div><dt>Наша сила</dt><dd>Свежая обжарка с датой; для такого покупателя вкус «не кислый» важнее происхождения <i class="tg o">наша оценка</i></dd></div><div><dt>Слабое</dt><dd>Эфиопия часто кислит; цена решает; сегмент пропущен в первой версии, оценка <i class="tg o">наша оценка</i></dd></div><div class="nf"><dt>Подтверждённое основание</dt><dd>Нет данных по сегменту; общий фон — зерно +11,5&nbsp;% в кг за год <i class="tg p">пересказ</i></dd></div><div class="nf"><dt>Ключевое допущение</dt><dd>Такой покупатель платит ближе к цене дешёвой полки, а эфиопский вкус может показаться кислым <i class="tg o">наша оценка</i></dd></div><div class="nf"><dt>Что изменит выбор</dt><dd>Вопрос «чем варите?» покажет большую долю фильтра; слепая проба покажет реакцию на вкус</dd></div><div class="nf"><dt>Цена следующей проверки</dt><dd>нет данных</dd></div></dl>
+<p class="crit-h">Баллы по критериям (1–5, вес в скобках)</p><ul class="crit"><li><span>Размер <em>×15</em></span><span class="cb"><i style="width:60%"></i></span><b>3</b></li><li><span>Рост <em>×10</em></span><span class="cb"><i style="width:60%"></i></span><b>3</b></li><li><span>Платят 2&nbsp;250 <em>×15</em></span><span class="cb"><i style="width:40%"></i></span><b>2</b></li><li><span>Наш продукт <em>×20</em></span><span class="cb"><i style="width:60%"></i></span><b>3</b></li><li><span>Конкуренция <em>×15</em></span><span class="cb"><i style="width:40%"></i></span><b>2</b></li><li><span>Доступ <em>×15</em></span><span class="cb"><i style="width:60%"></i></span><b>3</b></li><li><span>Повтор <em>×10</em></span><span class="cb"><i style="width:80%"></i></span><b>4</b></li></ul>
+</details>
+<details class="card later dz">
+<summary><span class="code z">Ц6</span><span class="cn"><b>Кофейни, пекарни, HoReCa</b><span class="vd later">Позже</span></span><span class="cs"><b>54</b><small>из 100</small><span class="bar z" role="img" aria-label="54 из 100"><i style="width:54%"></i></span></span><span class="more" aria-hidden="true"><span class="m1">Подробнее</span><span class="m2">Свернуть</span><span class="ar">▾</span></span></summary>
+<dl><div><dt>Кто и повод</dt><dd>Малые кофейни и пекарни покупают зерно оптом.</dd></div><div><dt>Способ · форма</dt><dd>Профессиональная кофемашина · Зерно, опт</dd></div><div><dt>Размер</dt><dd>18–27&nbsp;кг в месяц на кофейню <i class="t"><i class="tg p">пересказ</i> зарубежный сайт</i></dd></div><div><dt>Платят 2&nbsp;250&nbsp;₽/кг?</dt><dd>Спорно: наши 2&nbsp;250&nbsp;₽ внутри диапазона опта 2&nbsp;160–2&nbsp;700&nbsp;₽/кг, но торгуются <i class="tg p">пересказ</i>. Балл 2 — <i class="tg o">наша оценка</i></dd></div><div><dt>Как дотянуться</dt><dd>Сегодняшний опт поставщика (по данным поставщика, 29.10)</dd></div><div><dt>Конкуренты</dt><dd>Оптовые обжарщики</dd></div><div><dt>Наша сила</dt><dd>Цена прямого поставщика; бренд здесь не строится</dd></div><div><dt>Слабое</dt><dd>Нужны стабильность вкуса и сервис</dd></div><div class="nf"><dt>Подтверждённое основание</dt><dd>Опт 2&nbsp;160–2&nbsp;700&nbsp;₽/кг, торгуются; 18–27&nbsp;кг в месяц на кофейню (зарубежный сайт) <i class="tg p">пересказ</i></dd></div><div class="nf"><dt>Ключевое допущение</dt><dd>Покупают по нашей цене при стабильном вкусе и сервисе <i class="tg o">гипотеза</i></dd></div><div class="nf"><dt>Что изменит выбор</dt><dd>Расчёт маржи при опте внутри диапазона 2&nbsp;160–2&nbsp;700&nbsp;₽/кг</dd></div><div class="nf"><dt>Цена следующей проверки</dt><dd>нет данных</dd></div></dl>
+<p class="crit-h">Баллы по критериям (1–5, вес в скобках)</p><ul class="crit"><li><span>Размер <em>×15</em></span><span class="cb"><i style="width:80%"></i></span><b>4</b></li><li><span>Рост <em>×10</em></span><span class="cb"><i style="width:60%"></i></span><b>3</b></li><li><span>Платят 2&nbsp;250 <em>×15</em></span><span class="cb"><i style="width:40%"></i></span><b>2</b></li><li><span>Наш продукт <em>×20</em></span><span class="cb"><i style="width:40%"></i></span><b>2</b></li><li><span>Конкуренция <em>×15</em></span><span class="cb"><i style="width:20%"></i></span><b>1</b></li><li><span>Доступ <em>×15</em></span><span class="cb"><i style="width:60%"></i></span><b>3</b></li><li><span>Повтор <em>×10</em></span><span class="cb"><i style="width:100%"></i></span><b>5</b></li></ul>
+</details>
+<details class="card later dz">
+<summary><span class="code z">Ц4</span><span class="cn"><b>Ценители спешелти</b><span class="vd later">Не сейчас</span></span><span class="cs"><b>43</b><small>из 100</small><span class="bar z" role="img" aria-label="43 из 100"><i style="width:43%"></i></span></span><span class="more" aria-hidden="true"><span class="m1">Подробнее</span><span class="m2">Свернуть</span><span class="ar">▾</span></span></summary>
+<dl><div><dt>Кто и повод</dt><dd>Знатоки: воронка, аэропресс; ищут редкие лоты и оценку дегустатора.</dd></div><div><dt>Способ · форма</dt><dd>Воронка, аэропресс · Зерно, 200–250&nbsp;г</dd></div><div><dt>Размер</dt><dd>Малый: в анкете у обжарщика берут 6 из 47</dd></div><div><dt>Платят 2&nbsp;250&nbsp;₽/кг?</dt><dd>Да, но больше: 2&nbsp;900–4&nbsp;500&nbsp;₽/кг</dd></div><div><dt>Как дотянуться</dt><dd>Сообщества, обжарщики; нам — трудно</dd></div><div><dt>Конкуренты</dt><dd>Submarine, «Сварщица», Tasty, десятки обжарщиков</dd></div><div><dt>Наша сила</dt><dd>Нужен топовый лот; грейд и регион первой партии не известны</dd></div><div><dt>Слабое</dt><dd>Нет данных о лоте; сильная конкуренция</dd></div><div class="nf"><dt>Подтверждённое основание</dt><dd>В анкете у обжарщика берут 6 из 47; платят 2&nbsp;900–4&nbsp;500&nbsp;₽/кг</dd></div><div class="nf"><dt>Ключевое допущение</dt><dd>Нужен топовый лот; грейд и регион первой партии не известны</dd></div><div class="nf"><dt>Что изменит выбор</dt><dd>Ответ поставщика на вопрос 1: G1–G2 приближают к ценителям</dd></div><div class="nf"><dt>Цена следующей проверки</dt><dd>нет данных</dd></div></dl>
+<p class="crit-h">Баллы по критериям (1–5, вес в скобках)</p><ul class="crit"><li><span>Размер <em>×15</em></span><span class="cb"><i style="width:20%"></i></span><b>1</b></li><li><span>Рост <em>×10</em></span><span class="cb"><i style="width:80%"></i></span><b>4</b></li><li><span>Платят 2&nbsp;250 <em>×15</em></span><span class="cb"><i style="width:60%"></i></span><b>3</b></li><li><span>Наш продукт <em>×20</em></span><span class="cb"><i style="width:40%"></i></span><b>2</b></li><li><span>Конкуренция <em>×15</em></span><span class="cb"><i style="width:20%"></i></span><b>1</b></li><li><span>Доступ <em>×15</em></span><span class="cb"><i style="width:40%"></i></span><b>2</b></li><li><span>Повтор <em>×10</em></span><span class="cb"><i style="width:60%"></i></span><b>3</b></li></ul>
+</details>
+<h3 class="cgrp b">Оба направления — сезонный слой</h3>
+<details class="card layer db">
+<summary><span class="code b">П1</span><span class="cn"><b>Личный подарок</b><span class="vd layer">Слой к декабрю</span></span><span class="cs"><b>63</b><small>из 100</small><span class="bar b" role="img" aria-label="63 из 100"><i style="width:63%"></i></span></span><span class="more" aria-hidden="true"><span class="m1">Подробнее</span><span class="m2">Свернуть</span><span class="ar">▾</span></span></summary>
+<dl><div><dt>Кто и повод</dt><dd>Дарят пачку «попробуй» родным и друзьям, к праздникам.</dd></div><div><dt>Способ · форма</dt><dd>Любой · Молотый или зерно, 250–500&nbsp;г, красивая пачка</dd></div><div><dt>Размер</dt><dd>Кофе — в 13&nbsp;% подарочных предпочтений <i class="t"><i class="tg p">пересказ</i> Nielsen 2024</i>; пик продаж кофе — декабрь <i class="t"><i class="tg p">пересказ</i> «О'кей»</i></dd></div><div><dt>Платят 2&nbsp;250&nbsp;₽/кг?</dt><dd>Да: за подарок платят больше</dd></div><div><dt>Как дотянуться</dt><dd>Довольные покупатели дарят дальше — та же петля «пачка другу»</dd></div><div><dt>Конкуренты</dt><dd>Подарочные наборы обжарщиков и масс-марок</dd></div><div><dt>Наша сила</dt><dd>Готовая история «с родины кофе»</dd></div><div><dt>Слабое</dt><dd>Разово и сезонно — слой к декабрю, не кандидат на первый шаг</dd></div><div class="nf"><dt>Подтверждённое основание</dt><dd>Кофе — в 13&nbsp;% подарочных предпочтений (Nielsen 2024) <i class="tg p">пересказ</i>; пик продаж кофе — декабрь («О'кей») <i class="tg p">пересказ</i></dd></div><div class="nf"><dt>Ключевое допущение</dt><dd>Довольные покупатели дарят дальше; красивая пачка готова к декабрю</dd></div><div class="nf"><dt>Что изменит выбор</dt><dd>Нет упаковки и партии к декабрю — слой не состоится</dd></div><div class="nf"><dt>Цена следующей проверки</dt><dd>нет данных</dd></div></dl>
+<p class="crit-h">Баллы по критериям (1–5, вес в скобках)</p><ul class="crit"><li><span>Размер <em>×15</em></span><span class="cb"><i style="width:40%"></i></span><b>2</b></li><li><span>Рост <em>×10</em></span><span class="cb"><i style="width:60%"></i></span><b>3</b></li><li><span>Платят 2&nbsp;250 <em>×15</em></span><span class="cb"><i style="width:80%"></i></span><b>4</b></li><li><span>Наш продукт <em>×20</em></span><span class="cb"><i style="width:80%"></i></span><b>4</b></li><li><span>Конкуренция <em>×15</em></span><span class="cb"><i style="width:60%"></i></span><b>3</b></li><li><span>Доступ <em>×15</em></span><span class="cb"><i style="width:80%"></i></span><b>4</b></li><li><span>Повтор <em>×10</em></span><span class="cb"><i style="width:20%"></i></span><b>1</b></li></ul>
+</details>
+<details class="card layer db">
+<summary><span class="code b">П2</span><span class="cn"><b>Корпоративный подарок к Новому году</b><span class="vd layer">Слой к декабрю</span></span><span class="cs"><b>60</b><small>из 100</small><span class="bar b" role="img" aria-label="60 из 100"><i style="width:60%"></i></span></span><span class="more" aria-hidden="true"><span class="m1">Подробнее</span><span class="m2">Свернуть</span><span class="ar">▾</span></span></summary>
+<dl><div><dt>Кто и повод</dt><dd>Компании дарят сотрудникам и клиентам.</dd></div><div><dt>Способ · форма</dt><dd>Любой · Наборы, 250&nbsp;г – 1&nbsp;кг</dd></div><div><dt>Размер</dt><dd>58&nbsp;% компаний тратят на подарок сотруднику до 3&nbsp;тыс. ₽; продукты хотят 28&nbsp;% <i class="t"><i class="tg p">пересказ</i></i></dd></div><div><dt>Платят 2&nbsp;250&nbsp;₽/кг?</dt><dd>Да, в бюджете подарка</dd></div><div><dt>Как дотянуться</dt><dd>Через владельцев бизнеса из круга; заказ — в ноябре</dd></div><div><dt>Конкуренты</dt><dd>Мерч-агентства, наборы обжарщиков</dd></div><div><dt>Наша сила</dt><dd>История и красивая пачка; партия должна успеть к декабрю</dd></div><div><dt>Слабое</dt><dd>Разово; нужна готовая упаковка к ноябрю</dd></div><div class="nf"><dt>Подтверждённое основание</dt><dd>58&nbsp;% компаний тратят на подарок сотруднику до 3&nbsp;тыс. ₽; продукты хотят 28&nbsp;% <i class="tg p">пересказ</i></dd></div><div class="nf"><dt>Ключевое допущение</dt><dd>Заказ через владельцев бизнеса из круга; партия и упаковка успевают к декабрю</dd></div><div class="nf"><dt>Что изменит выбор</dt><dd>Нет готовой упаковки к ноябрю</dd></div><div class="nf"><dt>Цена следующей проверки</dt><dd>нет данных</dd></div></dl>
+<p class="crit-h">Баллы по критериям (1–5, вес в скобках)</p><ul class="crit"><li><span>Размер <em>×15</em></span><span class="cb"><i style="width:60%"></i></span><b>3</b></li><li><span>Рост <em>×10</em></span><span class="cb"><i style="width:60%"></i></span><b>3</b></li><li><span>Платят 2&nbsp;250 <em>×15</em></span><span class="cb"><i style="width:80%"></i></span><b>4</b></li><li><span>Наш продукт <em>×20</em></span><span class="cb"><i style="width:80%"></i></span><b>4</b></li><li><span>Конкуренция <em>×15</em></span><span class="cb"><i style="width:60%"></i></span><b>3</b></li><li><span>Доступ <em>×15</em></span><span class="cb"><i style="width:40%"></i></span><b>2</b></li><li><span>Повтор <em>×10</em></span><span class="cb"><i style="width:20%"></i></span><b>1</b></li></ul>
+</details>
+</div>
+  <div class="chg" id="changes"><h3>Что изменила проверка рынка (29.10): баллы «было → стало»</h3><p class="note" style="margin:0 0 12px">Веса не менялись: они заданы до оценки. Все баллы — наша оценка. «Рост» М1 (2), все баллы Ц3, подарки, М3 и М4 не менялись. В тексте М1 исправлено: «место свободно» → «свободно только узкое».</p><table class="data chgt"><thead><tr><th>Сегмент · критерий</th><th>Было</th><th>Стало</th><th>Почему и откуда</th></tr></thead><tbody><tr><td data-k="Сегмент · критерий">М1 · Размер</td><td data-k="Было">5</td><td data-k="Стало">4</td><td data-k="Почему">12–19&nbsp;млрд ₽ — весь молотый ярус; на турку ≈&nbsp;4–10&nbsp;млрд ₽ (× доля турки 31–54&nbsp;%), ниже порога «≥&nbsp;10&nbsp;млрд» <i class="tg o">расчёт</i><i class="tg p">пересказ</i></td></tr><tr><td data-k="Сегмент · критерий">М1 · Наш продукт</td><td data-k="Было">5</td><td data-k="Стало">4</td><td data-k="Почему">Свежий помол «для турки» продают Tasty, Majaro, ZAVOD; наше — бренд под турку, Эфиопия, дата помола на пачке <i class="tg s">источник</i><i class="tg o">наша оценка</i></td></tr><tr><td data-k="Сегмент · критерий">М1 · Конкуренция</td><td data-k="Было">4</td><td data-k="Стало">3</td><td data-k="Почему">Tasty: 85 сортов «для турки» от 2&nbsp;509&nbsp;₽/кг, Эфиопия за 2&nbsp;719; есть на Ozon <i class="tg s">источник</i><i class="tg p">пересказ</i></td></tr><tr><td data-k="Сегмент · критерий"><b>М1 · итог</b></td><td data-k="Было"><b>83</b></td><td data-k="Стало"><b>73</b></td><td data-k="Почему">60 + 20 + 60 + 80 + 45 + 60 + 40 = 365, делим на 5 <i class="tg o">наша оценка</i></td></tr><tr><td data-k="Сегмент · критерий">М2 · Конкуренция</td><td data-k="Было">4</td><td data-k="Стало">3</td><td data-k="Почему">У ZAVOD раздел «для турки или гейзерки», у Majaro отдельный помол под гейзер <i class="tg s">источник</i></td></tr><tr><td data-k="Сегмент · критерий"><b>М2 · итог</b></td><td data-k="Было"><b>69</b></td><td data-k="Стало"><b>66</b></td><td data-k="Почему"> <i class="tg o">наша оценка</i></td></tr><tr><td data-k="Сегмент · критерий">Ц1 · Размер</td><td data-k="Было">4</td><td data-k="Стало">5</td><td data-k="Почему">Зерновой ярус 15–25&nbsp;млрд ₽, большая часть зерна идёт в кофемашины; у Авито кофемашина — 33&nbsp;%, первое место <i class="tg o">допущение</i><i class="tg p">пересказ</i></td></tr><tr><td data-k="Сегмент · критерий"><b>Ц1 · итог</b></td><td data-k="Было"><b>68</b></td><td data-k="Стало"><b>71</b></td><td data-k="Почему">75 + 50 + 45 + 60 + 30 + 45 + 50 = 355, делим на 5 <i class="tg o">наша оценка</i></td></tr><tr><td data-k="Сегмент · критерий">Ц5 · Платят 2&nbsp;250</td><td data-k="Было">3</td><td data-k="Стало">2</td><td data-k="Почему">Офисы Перми берут кофе от 1&nbsp;000&nbsp;₽/кг с бесплатной машиной; наша цена вдвое выше <i class="tg s">источник</i></td></tr><tr><td data-k="Сегмент · критерий">Ц5 · Конкуренция</td><td data-k="Было">3</td><td data-k="Стало">2</td><td data-k="Почему">В Перми минимум 5–6 поставщиков с бесплатной арендой и сервисом (Italco-Пермь — с 2003 года) <i class="tg s">источник</i><i class="tg p">пересказ</i></td></tr><tr><td data-k="Сегмент · критерий"><b>Ц5 · итог</b></td><td data-k="Было"><b>64</b></td><td data-k="Стало"><b>58</b></td><td data-k="Почему">Остаётся запасным: проба в 3–5 офисах, но без надежды на объём <i class="tg o">наша оценка</i></td></tr></tbody></table><p class="note">Порядок после поправок: М1 73 · Ц1 71 · Ц3 66 · М2 66 · Ц5 58. Отрыв М1 от Ц1 — 2 балла.</p></div>
+</section>
+
+<!-- 5. Матрица -->
+<section class="sec" id="matrix" aria-labelledby="mxH">
+  <h2 id="mxH"><span class="n">04</span>Матрица «привлекательность × наша сила»</h2>
+  <p class="lead">По вертикали — размер, рост, готовность платить и повтор; по горизонтали — подходит ли наш продукт, свободно ли место, дотянемся ли без рекламы. Правый верхний угол — что проверять в первую очередь. Все баллы — наша оценка.</p>
+  <div class="mxgrid">
+    <div class="mxbox"><svg viewBox="0 0 420 372" role="img" aria-labelledby="mxT mxD" class="mx">
+<title id="mxT">Матрица: привлекательность сегмента × наша сила</title>
+<desc id="mxD">М1 Дом · турка: привлекательность 72, сила 74; М2 Дом · гейзер (мока): привлекательность 64, сила 68; М3 Дом · капельная, френч-пресс: привлекательность 54, сила 62; М4 Переход с растворимого: привлекательность 60, сила 60; Ц1 Дом · кофемашина, капучино: привлекательность 88, сила 54; Ц2 Дом · рожковая и кофемолка: привлекательность 62, сила 54; Ц3 Дом · мелет сам, турка или гейзер: привлекательность 64, сила 68; Ц4 Ценители спешелти: привлекательность 52, сила 34; Ц5 Офис 10–50 человек: привлекательность 62, сила 54; Ц6 Кофейни, пекарни, HoReCa: привлекательность 68, сила 40; П1 Личный подарок: привлекательность 52, сила 74; П2 Корпоративный подарок к Новому году: привлекательность 58, сила 62; Ц7 Покупатель зерна для фильтра и капельной: привлекательность 58, сила 54</desc>
+<rect class="z-out" x="48.0" y="215.1" width="121.8" height="102.9"/><rect class="z-out" x="48.0" y="112.2" width="121.8" height="102.9"/><rect class="z-sel" x="48.0" y="14.0" width="121.8" height="98.2"/><rect class="z-out" x="169.8" y="215.1" width="121.8" height="102.9"/><rect class="z-sel" x="169.8" y="112.2" width="121.8" height="102.9"/><rect class="z-in" x="169.8" y="14.0" width="121.8" height="98.2"/><rect class="z-sel" x="291.7" y="215.1" width="116.3" height="102.9"/><rect class="z-in" x="291.7" y="112.2" width="116.3" height="102.9"/><rect class="z-in" x="291.7" y="14.0" width="116.3" height="98.2"/>
+<rect class="frame" x="48" y="14" width="360" height="304"/>
+<text class="zl" x="402" y="30" text-anchor="end">проверять первыми</text>
+<text class="zl" x="54" y="310">не сейчас</text>
+<text class="tk" x="103.4" y="334" text-anchor="middle">40</text><text class="tk" x="42" y="275.2" text-anchor="end">40</text><text class="tk" x="214.2" y="334" text-anchor="middle">60</text><text class="tk" x="42" y="181.7" text-anchor="end">60</text><text class="tk" x="324.9" y="334" text-anchor="middle">80</text><text class="tk" x="42" y="88.2" text-anchor="end">80</text>
+<text class="ax" x="228.0" y="366" text-anchor="middle">Наша сила →</text>
+<text class="ax" transform="translate(13 166.0) rotate(-90)" text-anchor="middle">Привлекательность →</text>
+<g class="pt g"><title>М1 Дом · турка: привлекательность 72, наша сила 74</title><circle cx="291.7" cy="121.6" r="8"/><text x="302.7" y="125.6" text-anchor="start">М1</text></g><g class="pt g"><title>М2 Дом · гейзер (мока): привлекательность 64, наша сила 68</title><circle cx="251.0" cy="159.0" r="8"/><text x="240.0" y="163.0" text-anchor="end">М2</text></g><g class="pt g"><title>М3 Дом · капельная, френч-пресс: привлекательность 54, наша сила 62</title><circle cx="225.2" cy="205.7" r="8"/><text x="236.2" y="209.7" text-anchor="start">М3</text></g><g class="pt g"><title>М4 Переход с растворимого: привлекательность 60, наша сила 60</title><circle cx="214.2" cy="177.7" r="6"/><text x="223.2" y="181.7" text-anchor="start">М4</text></g><g class="pt z"><title>Ц1 Дом · кофемашина, капучино: привлекательность 88, наша сила 54</title><circle cx="180.9" cy="46.7" r="8"/><text x="191.9" y="50.7" text-anchor="start">Ц1</text></g><g class="pt z"><title>Ц2 Дом · рожковая и кофемолка: привлекательность 62, наша сила 54</title><circle cx="173.4" cy="168.3" r="6"/><text x="164.4" y="172.3" text-anchor="end">Ц2</text></g><g class="pt z"><title>Ц3 Дом · мелет сам, турка или гейзер: привлекательность 64, наша сила 68</title><circle cx="266.0" cy="159.0" r="8"/><text x="277.0" y="163.0" text-anchor="start">Ц3</text></g><g class="pt z"><title>Ц4 Ценители спешелти: привлекательность 52, наша сила 34</title><circle cx="70.2" cy="215.1" r="6"/><text x="79.2" y="219.1" text-anchor="start">Ц4</text></g><g class="pt z"><title>Ц5 Офис 10–50 человек: привлекательность 62, наша сила 54</title><circle cx="188.4" cy="168.3" r="8"/><text x="188.4" y="155.3" text-anchor="middle">Ц5</text></g><g class="pt z"><title>Ц6 Кофейни, пекарни, HoReCa: привлекательность 68, наша сила 40</title><circle cx="103.4" cy="140.3" r="6"/><text x="112.4" y="144.3" text-anchor="start">Ц6</text></g><g class="pt b"><title>П1 Личный подарок: привлекательность 52, наша сила 74</title><circle cx="291.7" cy="215.1" r="6"/><text x="300.7" y="219.1" text-anchor="start">П1</text></g><g class="pt b"><title>П2 Корпоративный подарок к Новому году: привлекательность 58, наша сила 62</title><circle cx="225.2" cy="187.0" r="6"/><text x="234.2" y="191.0" text-anchor="start">П2</text></g><g class="pt z"><title>Ц7 Покупатель зерна для фильтра и капельной: привлекательность 58, наша сила 54</title><circle cx="180.9" cy="187.0" r="6"/><text x="171.9" y="191.0" text-anchor="end">Ц7</text></g>
+</svg></div>
+    <div>
+      <p class="note" style="margin:0 0 8px">Цифры после названия — привлекательность · наша сила, из 100, наша оценка. Ц2 и Ц5 получили одинаковые баллы (62 · 54), точки разнесены для читаемости.</p><ul class="mxleg" aria-label="Сегменты: привлекательность · сила"><li><span class="code g">М1</span> Дом · турка <em>72 · 74</em></li><li><span class="code g">М2</span> Дом · гейзер (мока) <em>64 · 68</em></li><li><span class="code g">М3</span> Дом · капельная, френч-пресс <em>54 · 62</em></li><li><span class="code g">М4</span> Переход с растворимого <em>60 · 60</em></li><li><span class="code z">Ц1</span> Дом · кофемашина, капучино <em>88 · 54</em></li><li><span class="code z">Ц2</span> Дом · рожковая и кофемолка <em>62 · 54</em></li><li><span class="code z">Ц3</span> Дом · мелет сам, турка или гейзер <em>64 · 68</em></li><li><span class="code z">Ц4</span> Ценители спешелти <em>52 · 34</em></li><li><span class="code z">Ц5</span> Офис 10–50 человек <em>62 · 54</em></li><li><span class="code z">Ц6</span> Кофейни, пекарни, HoReCa <em>68 · 40</em></li><li><span class="code b">П1</span> Личный подарок <em>52 · 74</em></li><li><span class="code b">П2</span> Корпоративный подарок к Новому году <em>58 · 62</em></li><li><span class="code z">Ц7</span> Покупатель зерна для фильтра и капельной <em>58 · 54</em></li></ul>
+      <div class="mxread">
+        <p><b>М1 «турка» и Ц1 «кофемашина»</b> — два близких кандидата одного дома (73 и 71): М1 сильнее по нам, Ц1 — по рынку. М1 больше не «единственный сегмент, где сильны и рынок, и мы»: оценки «наш продукт» и «конкуренция» не проверены (см. «Насколько устойчив выбор»).</p>
+        <p><b>Ц1</b> — самый привлекательный рынок, но наша сила средняя: здесь Tasty и Lavazza. Входим, но не с него одного.</p>
+        <p><b>Подарок</b> — сила высокая, рынок разовый: слой к декабрю поверх кандидатов.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 6. План проверки -->
+<section class="sec" id="plan" aria-labelledby="planH">
+  <h2 id="planH"><span class="n">05</span>Что проверяем первым и как</h2>
+  <p class="lead">Первым проверяем не сегмент, а одно предложение: доступный продукт за полную цену и деньги с заказа. Пороги — наша оценка, записываем до старта и задним числом не меняем. В каждый заказ и анкету — вопрос «Чем варите?»: без него сегмент не проверить.</p>
+  <div class="firststep">
+    <h3>Первый шаг — один тест</h3>
+    <ol class="flow">
+      <li><b>Доступный продукт</b>То, что можем поставить уже сейчас: зерно; молотый — если обжарщик мелет. Образец лота ≈&nbsp;300&nbsp;г до оплаты партии.</li>
+      <li><b>Предложение с полной ценой</b>500&nbsp;г по полной цене с доставкой и сроком; не пробник и не скидка.</li>
+      <li><b>Оплата и доход с заказа</b>Кто заплатил и сколько остаётся после себестоимости, доставки, помола и упаковки — считаем до продажи (H7).</li>
+    </ol>
+    <p>Оплата после дегустации проверяет сразу вкус, цену, доставку и доверие, поэтому при отказе сначала выясняем причину, а не меняем лот. 6 оплат из 20 — предварительный сигнал. Остальные гипотезы ниже — после результата этого теста, с отдельным бюджетом времени.</p>
+  </div>
+  <div class="plan">
+    <p class="plan-head">Гипотеза → мера → порог → срок → что делаем при «нет»</p>
+    <div class="hyp b first"><span class="hn">H1</span><div><span class="k">Гипотеза · оба</span>Вкус лота нравится массовому покупателю <span class="t">оплата проверяет сразу вкус, цену, доставку и доверие</span></div><div><span class="k">Мера</span>Слепая проба: наш, Жокей, Lavazza Rossa и привычный кофе участника; ≥&nbsp;20 человек, не только знакомые</div><div><span class="k">Порог</span>≥&nbsp;30&nbsp;% сразу оплатили 500&nbsp;г по полной цене с доставкой (6 из 20 — предварительный сигнал, не основание масштабировать)</div><div><span class="k">Срок</span>14 дней с образца лота</div><div><span class="k">При «нет»</span>Сначала выясняем причину отказа — вкус, цена, доставка или доверие; только потом меняем обжарку, лот или предложение</div></div>
+    <div class="hyp b"><span class="hn">H7</span><div><span class="k">Экономика · оба</span>Заказ приносит доход после переменных затрат</div><div><span class="k">Мера</span>Себестоимость кофе, доставка, помол, упаковка и пробники на один заказ — посчитать до продажи</div><div><span class="k">Порог</span>Доход с заказа больше нуля; порог задаём до старта <span class="t">наша оценка</span></div><div><span class="k">Срок</span>До первой продажи</div><div><span class="k">При «нет»</span>Меняем цену, размер пачки или состав затрат; продажу не начинаем</div></div>
+    <div class="hyp g"><span class="hn">H2</span><div><span class="k">Гипотеза · молотый</span>Турка повторяет покупку</div><div><span class="k">Мера</span>Повтор к концу пачки по расходу из анкеты +&nbsp;15 дней; гейзер считаем отдельно</div><div><span class="k">Порог</span>≥&nbsp;30&nbsp;% повторили</div><div><span class="k">Срок</span>45 дней с первой продажи</div><div><span class="k">При «нет»</span>Смотрим гейзер (М2) и зерно для кофемашины (Ц1)</div></div>
+    <div class="hyp g"><span class="hn">H3</span><div><span class="k">Гипотеза · молотый</span>Цена 1&nbsp;125&nbsp;₽ за 500&nbsp;г проходит</div><div><span class="k">Мера</span>Из получивших пробник оплатили пачку</div><div><span class="k">Порог</span>≥&nbsp;25&nbsp;%</div><div><span class="k">Срок</span>30 дней</div><div><span class="k">При «нет»</span>Пачка 250&nbsp;г, а не скидка</div></div>
+    <div class="hyp z"><span class="hn">H4</span><div><span class="k">Гипотеза · зерно</span>Дом с кофемашиной берёт 1&nbsp;кг и возвращается</div><div><span class="k">Мера</span>Доля пачек 1&nbsp;кг; повтор у ответивших «кофемашина»</div><div><span class="k">Порог</span>1&nbsp;кг ≥&nbsp;30&nbsp;% заказов; повтор ≥&nbsp;30&nbsp;%</div><div><span class="k">Срок</span>45 дней</div><div><span class="k">При «нет»</span>Вперёд Ц3 «мелет сам» и офис</div></div>
+    <div class="hyp z"><span class="hn">H5</span><div><span class="k">Гипотеза · зерно</span>Офис покупает повторно</div><div><span class="k">Мера</span>3–5 офисов на пробу</div><div><span class="k">Порог</span>≥&nbsp;1 повтор через месяц</div><div><span class="k">Срок</span>30–45 дней</div><div><span class="k">При «нет»</span>Офис — позже, вместе с сервисом</div></div>
+    <div class="hyp b"><span class="hn">H6</span><div><span class="k">Гипотеза · оба</span>Это сегмент, а не дружба</div><div><span class="k">Мера</span>Оплаты от людей вне круга знакомых — через «пачку другу»</div><div><span class="k">Порог</span>≥&nbsp;10 оплат</div><div><span class="k">Срок</span>60 дней</div><div><span class="k">При «нет»</span>Меняем канал: маркетплейс и местные магазины</div></div>
+  </div>
+  <div class="grind">
+    <div class="gcase yes">
+      <h3>Если обжарщик мелет — молотый сразу</h3>
+      <ul>
+        <li>Старт с М1: линейка по способу — «для турки» (мелкий), «для гейзера» (средний), «для френч-пресса» (крупный).</li>
+        <li>Дата обжарки и помола на пачке, клапан и зип: молотый выдыхается быстрее зерна — пачка 500&nbsp;г, партии меньше и чаще <span class="t"><i class="tg o">наша оценка</i></span>.</li>
+        <li>Каждый помол — отдельный товар: своя карточка, свой код «Честного знака». «Честный знак» с 01.06.2026 обязателен и для зерна, и для молотого (ТН ВЭД 0901), маркирует фасовщик <span class="t"><i class="tg s">источник</i> постановление № 1682</span>.</li>
+        <li>На пачке — слово «молотый» и обязательные сведения по ТР ТС 022/2011 <span class="t"><i class="tg s">источник</i></span>.</li>
+      </ul>
+    </div>
+    <div class="gcase no">
+      <h3>Если молоть пока нельзя — зерно</h3>
+      <ul>
+        <li>Старт с Ц1 и Ц3: зерно тем, у кого уже есть подходящая техника.</li>
+        <li>Кофемолка в подарок к первой пачке — отдельная гипотеза окупаемости, не мост к турке: она стоит ≈&nbsp;2&nbsp;000&nbsp;₽ (под турку нужна от этой суммы, дешёвые ручные до 800&nbsp;₽ мелют неровно <span class="t"><i class="tg p">пересказ</i></span>), а первая покупка — 500&nbsp;г за 1&nbsp;125&nbsp;₽. До себестоимости кофе первый заказ уже в минусе; проверять отдельно от основного теста.</li>
+        <li>Запасной путь к помолу — контрактный обжарщик в Перми: «Брю Ми», RoastBerry, RB Roasters и другие <span class="t"><i class="tg s">источник</i> ura.news, 09.12.2025; условия и цены не известны</span>.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 7. Данные -->
+<section class="sec" id="data" aria-labelledby="dataH">
+  <h2 id="dataH"><span class="n">06</span>Данные: что есть и чего не хватает</h2>
+  <p class="lead">Для выбора кандидатов на проверку данных хватает. Не хватает, чтобы объявить победителя: точно посчитать размер сегментов, экономику заказа и выбрать между близкими сегментами (Ц1 и Ц3, М1 и молотый для гейзера). Пробелы, которые могут поменять выбор, — ниже отдельным списком.</p>
+  <table class="data">
+    <thead><tr><th>Что нужно</th><th>Есть?</th><th>Что есть и откуда</th><th>Чего не хватает</th></tr></thead>
+    <tbody>
+      <tr><td>Объём и рост молотого и зерна, деньги и кг</td><td class="st-mid"><i class="tg p">пересказ</i> есть</td><td data-k="Что есть">Доли и рост — Nielsen через «Коммерсантъ» (07.2025); рынок 308&nbsp;млрд ₽ — MegaResearch (10.2025); кг — расчёт</td><td data-k="Не хватает">Первоисточник Nielsen; кг по форме — только расчёт</td></tr>
+      <tr><td>Ценовые ярусы</td><td class="st-ok"><i class="tg s">источник</i> цены есть</td><td data-k="Что есть">Цены полки и обжарщиков, 21 марка — сайты, 25.10.2026; средняя 2&nbsp;051&nbsp;₽/кг — АКРА <i class="tg p">пересказ</i></td><td data-k="Не хватает">Доля денег в ярусе 1&nbsp;600–2&nbsp;800 — допущение</td></tr>
+      <tr><td>Каналы: магазин, маркетплейс, онлайн, кофейни, офисы</td><td class="st-mid"><i class="tg p">пересказ</i> частично</td><td data-k="Что есть">Онлайн-покупки зерна +17&nbsp;%, молотого +10&nbsp;% (<i class="tg s">источник</i> CheckIndex, ОФД, 1П 2026); анкета: магазин 72&nbsp;%, маркетплейс 45&nbsp;%. Зерно вместе с молотым онлайн — 21&nbsp;% в штуках, 2023 <i class="tg p">пересказ</i> Nielsen. Свежий помол — только своей отгрузкой (FBS/rFBS): склад площадки требует остатка срока ≥&nbsp;70–90&nbsp;% <i class="tg p">пересказ</i>. Комиссия WB 15,5–30,5&nbsp;%, Ozon — оценки расходятся <i class="tg p">пересказ</i></td><td data-k="Не хватает">Точная комиссия по «кофе» и пороги срока годности — в кабинете продавца; доля маркетплейсов в молотом и зерне</td></tr>
+      <tr><td>Способы заваривания дома</td><td class="st-mid"><i class="tg p">пересказ</i> разброс</td><td data-k="Что есть">Турка 11–54&nbsp;%: Авито (10&nbsp;тыс. человек) — 28–31&nbsp;%, кофемашина 33&nbsp;%; ЮMoney — турка 11&nbsp;% (2025) → 14&nbsp;% (2026); «МАЙ» 2024 — 54&nbsp;% <i class="tg p">пересказ</i>. «О'кей»: турки −30&nbsp;% — одна сеть, посуда <i class="tg p">пересказ</i></td><td data-k="Не хватает">Репрезентативная доля по способам (ВЦИОМ, ФОМ, Ромир — не нашли); падение турки не подтверждено</td></tr>
+      <tr><td>География: Пермь, Урал, РФ</td><td class="st-mid"><i class="tg p">пересказ</i> мало</td><td data-k="Что есть">Население края 2,48&nbsp;млн; цены пермского обжарщика (Пан Кофе, <i class="tg s">источник</i> 25.10); список обжарщиков Перми (<i class="tg s">источник</i>); средняя цена натурального кофе в Перми ≈&nbsp;2&nbsp;201&nbsp;₽/кг, вероятно август 2025 <i class="tg p">пересказ</i></td><td data-k="Не хватает">Продажи кофе в Перми и на Урале — только пересчёт на душу</td></tr>
+      <tr><td>Сезонность</td><td class="st-mid"><i class="tg p">пересказ</i> качественно</td><td data-k="Что есть">Пик — декабрь, спад — июль («О'кей», ТАСС 09.2025) <i class="tg p">пересказ</i></td><td data-k="Не хватает">Доли по месяцам</td></tr>
+      <tr><td>Конкуренты в ярусе 1&nbsp;600–2&nbsp;800&nbsp;₽/кг</td><td class="st-ok"><i class="tg s">источник</i> есть</td><td data-k="Что есть">21 марка: цена, слово, канал, подписка (сайты, 25.10.2026). Свежий помол «для турки» уже продают: Tasty — 85 сортов от 2&nbsp;509&nbsp;₽/кг, Эфиопия 2&nbsp;719; Majaro, ZAVOD (сайты, 29.10); масс-марки — без даты обжарки <i class="tg p">пересказ</i></td><td data-k="Не хватает">Объём продаж карточек «для турки»; есть ли дата помола на пачках Tasty и Majaro (фото не смотрели)</td></tr>
+      <tr><td>B2B: офисы, HoReCa</td><td class="st-mid"><i class="tg p">пересказ</i> слабо</td><td data-k="Что есть">Расход и чек офиса — блоги поставщиков <i class="tg p">пересказ</i>; Пермь: офисы берут кофе от 1&nbsp;000&nbsp;₽/кг с бесплатной машиной (Italco-Пермь, «Ростов-Пермь», сайты 29.10); малых предприятий в крае 3&nbsp;575 (реестр ФНС, 10.10.2026)</td><td data-k="Не хватает">Число офисов по городам — только расчёт (Пермь ≈&nbsp;700–1&nbsp;200, 4 допущения) <i class="tg o">наша оценка</i>; кто решает</td></tr>
+      <tr><td>Подарки</td><td class="st-mid"><i class="tg p">пересказ</i> есть</td><td data-k="Что есть">58&nbsp;% компаний — до 3&nbsp;тыс. ₽ на подарок; кофе в 13&nbsp;% предпочтений (Nielsen 2024)</td><td data-k="Не хватает">Динамика, доля кофе в корпоративных заказах</td></tr>
+      <tr><td>Повтор и лояльность</td><td class="st-no"><i class="tg n">нет данных</i> по РФ</td><td data-k="Что есть">Отток подписок 5–10&nbsp;% в месяц — зарубежные ориентиры; 78&nbsp;% анкеты берут до 500&nbsp;г в месяц</td><td data-k="Не хватает">Российские цифры повтора — узнаем только пилотом</td></tr>
+      <tr><td>«Честный знак» для молотого и зерна</td><td class="st-ok"><i class="tg s">источник</i> есть</td><td data-k="Что есть">С 01.06.2026 для ТН ВЭД 0901, маркирует фасовщик; розница сообщает о продаже с 01.06.2027 (постановление № 1682)</td><td data-k="Не хватает">Кто маркирует у поставщика и на сколько позиций</td></tr>
+      <tr><td>Наш продукт: грейд, регион, вкус</td><td class="st-mid">по данным поставщика, 29.10; ждём спецификацию партии</td><td data-k="Что есть">Натуральная обработка, G1–G4; регионы возможны: Иргачеф, Сидамо, Гуджи, Лиму (по данным поставщика, 29.10)</td><td data-k="Не хватает">Грейд и регион первой партии, цена по грейдам — вопросы ниже</td></tr>
+      <tr><td>Экономика заказа: себестоимость, доставка, помол, упаковка, пробники</td><td class="st-no"><i class="tg n">нет данных</i></td><td data-k="Что есть">Цена продажи 2&nbsp;250&nbsp;₽/кг; закупка по грейдам не получена</td><td data-k="Не хватает">Все переменные затраты на заказ и стоимость привлечения — посчитать до продажи</td></tr>
+    </tbody>
+  </table>
+  <h3 style="margin:22px 0 4px;font-size:18px">Пробелы: какие закрыла проверка рынка 29.10, а какие остались</h3>
+  <div class="gaps">
+    <div class="gcase yes"><h3>Закрыто или сдвинуто</h3><ul>
+      <li><b>«Свободное место» у М1 — неверно.</b> Свежий помол «для турки» продают Tasty (85 сортов от 2&nbsp;509&nbsp;₽/кг), Majaro, ZAVOD <i class="tg s">источник</i>. Свободно узкое: бренд вокруг турки, эфиопская история, дата помола на пачке <i class="tg o">наша оценка</i>.</li>
+      <li><b>Размер М1.</b> 12–19&nbsp;млрд ₽ — весь ярус; на турку ≈&nbsp;4–10&nbsp;млрд ₽ <i class="tg o">расчёт</i>.</li>
+      <li><b>Турка растёт или падает?</b> ЮMoney: 11→14&nbsp;% при выборке 1&nbsp;500 человек <i class="tg p">пересказ</i>; «О'кей» −30&nbsp;% — данные одной сети. Падение не подтверждено.</li>
+      <li><b>Маркетплейсы.</b> Свежий помол — только своей отгрузкой, не со склада площадки <i class="tg p">пересказ</i>.</li>
+      <li><b>Офис.</b> Рынок — от 1&nbsp;000&nbsp;₽/кг с машиной в придачу, наша цена вдвое выше: офис остаётся запасным <i class="tg s">источник</i>.</li>
+    </ul></div>
+    <div class="gcase no"><h3>Остаётся открытым</h3><ul>
+      <li><b>Объём продаж карточек «для турки»</b> на Ozon и WB — не нашли: площадки и сервисы аналитики закрыты; заменить можно числом отзывов или ручным снимком 10 карточек.</li>
+      <li><b>Доля денег в ярусе 1&nbsp;600–2&nbsp;800&nbsp;₽/кг</b> — закрытые данные Nielsen; остаётся допущением <i class="tg o">наша оценка</i>.</li>
+      <li><b>Национальный опрос</b> по способам заваривания (ВЦИОМ, ФОМ, Ромир) — не нашли; самый большой ряд — Авито, 10&nbsp;тыс. человек.</li>
+      <li><b>Экономика заказа</b> — себестоимость, доставка, помол, упаковка: нет данных.</li>
+      <li>Число офисов по городам и кто решает — расчёт на допущениях; точные комиссии площадок — сверить в кабинете продавца.</li>
+    </ul></div>
+  </div>
+
+</section>
+
+<!-- 8. Вопросы -->
+<section class="sec" id="ask" aria-labelledby="askH">
+  <h2 id="askH"><span class="n">07</span>Что спросить у поставщика</h2>
+  <p class="lead">Ответы двигают сегменты: от грейда зависит, кому мы продаём, от помола — с какого направления стартуем.</p>
+  <ol class="qs">
+    <li>Какой грейд и регион в первой партии, год урожая?<span>G1–G2 — ближе к ценителям и домашним бариста; G3–G4 — к турке, офису и тёмной обжарке.</span></li>
+    <li>Цена закупки по грейдам — за кг зелёного и жареного?<span>Покажет, держим ли 2&nbsp;250&nbsp;₽/кг в каждом сегменте.</span></li>
+    <li>Объём партии и сколько жареного в месяц; минимальная партия обжарки?<span>От этого — сколько сегментов тянем одновременно.</span></li>
+    <li>Может ли обжарщик молоть: какие помолы, минимальная партия на помол, дата обжарки и помола на пачке?<span>Да — стартуем с М1; нет — с Ц1 и Ц3.</span></li>
+    <li>Два профиля из одного лота: средне-тёмная «для турки и молока» и светлее «для фильтра»?<span>Нужно для М1, Ц1 и М3 одновременно.</span></li>
+    <li>Кто маркирует «Честный знак» и на сколько товарных позиций?<span>Каждый помол — отдельная позиция.</span></li>
+    <li>Образец лота ≈&nbsp;300&nbsp;г до оплаты партии — для слепой пробы?<span>Без него H1 не начать.</span></li>
+  </ol>
+</section>
+
+<section class="sec" aria-labelledby="srcH">
+  <h2 id="srcH"><span class="n">08</span>Источники и метод</h2>
+  <ol class="srcs">
+    <li>Nielsen: структура и рост розницы, 06.2024–05.2025 — через «Коммерсантъ» и ECOMHUB, 18.07.2025 <i class="tg p">пересказ</i></li>
+    <li>MegaResearch: рынок кофе РФ, 13.10.2025 <i class="tg p">пересказ</i></li>
+    <li>ICMR: динамика рынка кофе, 01.10.2025 <i class="tg p">пересказ</i></li>
+    <li>АКРА: средняя цена 2&nbsp;051&nbsp;₽/кг, август 2026 — через Mail, 04.10.2026 <i class="tg p">пересказ</i></li>
+    <li>«О'кей»: продажи кофе, кофемашин и турок — ТАСС через Mail, 18.09.2025 <i class="tg p">пересказ</i> (открыт 29.10.2026)</li>
+    <li>Способы дома: опрос «МАЙ» 2024 — tea.ru, 10.04.2025 <i class="tg p">пересказ</i>; Авито — regions.ru, 08.10.2026 <i class="tg p">пересказ</i>; ЮMoney и «Эвотор» — retail.ru, 20.10.2026 <i class="tg p">пересказ</i></li>
+    <li>CheckIndex («Платформа ОФД»): кофейный рынок, 1П 2026 <i class="tg s">источник</i> (открыт 24.10.2026)</li>
+    <li>Кофемашины: «Коммерсантъ» 19.02.2026 и «Ведомости» 21.08.2026 <i class="tg p">пересказ</i></li>
+    <li>Цены полки и обжарщиков: сайты марок и сетей, 25.10.2026 <i class="tg s">источник</i>/<i class="tg p">пересказ</i></li>
+    <li>Постановление Правительства РФ № 1682 от 30.11.2024 (ред. 18.08.2026), «Честный знак» <i class="tg s">источник</i></li>
+    <li>ТР ТС 022/2011, ст. 4.1 — маркировка пищевой продукции <i class="tg s">источник</i></li>
+    <li>Подарки: «Золотое Яблоко» и ЮMoney — «Коммерсантъ» <i class="tg p">пересказ</i>; Анкетолог — Mail <i class="tg p">пересказ</i>; Nielsen 2024 <i class="tg p">пересказ</i></li>
+    <li>Офисы и опт: блоги поставщиков (thecoffeeroom, Пан Кофе) <i class="tg p">пересказ</i></li>
+    <li>Подписки: Recurly 2023 и 2026 <i class="tg s">источник</i>; сайты обжарщиков, 25.10.2026 <i class="tg s">источник</i></li>
+    <li>Население Пермского края на 01.01.2025 — Росстат через открытые сводки <i class="tg p">пересказ</i> (открыт 29.10.2026)</li>
+    <li>Обжарщики Перми — ura.news, 09.12.2025 <i class="tg s">источник</i></li>
+    <li>Кофемолки — сайт Kitfort и оптовые площадки, 24.10.2026 <i class="tg s">источник</i>; качество помола — обзор 101kofemashina, 2020 <i class="tg p">пересказ</i></li>
+    <li>Сайты Tasty Coffee, ZAVOD COFFEE, Majaro: разделы «для турки», цены за кг, 29.10.2026 <i class="tg s">источник</i>; Italco-Пермь и «Ростов-Пермь»: условия офисных поставок, 29.10.2026 <i class="tg s">источник</i></li>
+    <li>Реестр МСП ФНС, Пермский край, 10.10.2026 <i class="tg s">источник</i>; Свердловская область — 1cont, без даты <i class="tg p">пересказ</i></li>
+    <li>Авито (УрФО, 10&nbsp;тыс. человек) — «Урал-Меридиан», 03.10.2026 <i class="tg p">пересказ</i>; ЮMoney 2025 — yoomoney.ru <i class="tg p">пересказ</i>; NielsenIQ про онлайн-долю кофе — Sostav, 12.04.2023 <i class="tg p">пересказ</i></li>
+    <li>Комиссии и сроки годности на маркетплейсах: iseller.pro, sellermarket, блог обжарщика — сверять в кабинете продавца <i class="tg p">пересказ</i></li>
+    <li>Анкета «Кофе»: 47 ответов, 25.10.2026, почти все — из круга знакомых партнёров; сигнал, не карта рынка</li>
+    <li>Метод: Blank &amp; Dorf (2012); Kotler &amp; Keller; Christensen (2016); Moore (1991); Aulet (2013); Ries &amp; Trout (1981); Dunford (2019); Sharp (2010)</li>
+  </ol>
+</section>
+
+<footer>«Кофе» · сегменты · 29.10.2026 · материал для обсуждения, не финальное решение.</footer>
+</div>
+<script>
+(function(){
+  var root=document.documentElement, h=location.hash;
+  if(h.indexOf('dark')>-1) root.setAttribute('data-theme','dark');
+  if(h.indexOf('light')>-1) root.setAttribute('data-theme','light');
+  document.getElementById('themeBtn').addEventListener('click',function(){
+    var cur=root.getAttribute('data-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
+    root.setAttribute('data-theme',cur==='dark'?'light':'dark');
+  });
+  if(h.indexOf('open')>-1) document.querySelectorAll('details.card').forEach(function(d,i){ if(i<1) d.open=true; });
+})();
+</script>
+</body>
+</html>
