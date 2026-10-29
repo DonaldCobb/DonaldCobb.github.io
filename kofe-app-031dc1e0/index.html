@@ -20,6 +20,7 @@
   --acc-text:#B8430A;     /* ссылка оранжевым на светлом, 5:1 */
   --nav:rgba(255,255,255,.82); --sheet:#FFFFFF; --shadow:0 10px 30px rgba(20,10,0,.10);
   --logo-cut:#FFFFFF;
+  --nav-solid:#FFFFFF;
   --hero-ink:#1A0E08; --hero-more:rgba(255,255,255,.6); --hero-more-ink:#1A0E08;
   /* цвета сортов — фон раздела, не кнопки */
   --eth:#24061A; --bra:#8E5F43; --uga:#0B1D15; --nab:#DCC4AF; --pass:#03050C;
@@ -29,14 +30,14 @@
 :root[data-theme="dark"]{
   --bg:#0C0C0E; --surface:#1A1A1D; --surface-2:#26262A; --ink:#F5F5F7; --ink-2:#A3A3AB; --line:rgba(255,255,255,.08);
   --acc-text:#FF8A3D; --nav:rgba(20,20,22,.82); --sheet:#16161A; --shadow:0 10px 30px rgba(0,0,0,.4);
-  --hero-ink:#FFFFFF; --hero-more:rgba(20,20,22,.6); --hero-more-ink:#FFFFFF;
+  --nav-solid:#141416; --hero-ink:#FFFFFF; --hero-more:rgba(20,20,22,.6); --hero-more-ink:#FFFFFF;
   color-scheme:dark;
 }
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){
     --bg:#0C0C0E; --surface:#1A1A1D; --surface-2:#26262A; --ink:#F5F5F7; --ink-2:#A3A3AB; --line:rgba(255,255,255,.08);
     --acc-text:#FF8A3D; --nav:rgba(20,20,22,.82); --sheet:#16161A; --shadow:0 10px 30px rgba(0,0,0,.4);
-  --hero-ink:#FFFFFF; --hero-more:rgba(20,20,22,.6); --hero-more-ink:#FFFFFF;
+  --nav-solid:#141416; --hero-ink:#FFFFFF; --hero-more:rgba(20,20,22,.6); --hero-more-ink:#FFFFFF;
     color-scheme:dark;
   }
 }
@@ -56,10 +57,11 @@ svg.i{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8;stro
 /* ── общие детали ── */
 .round{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:rgba(0,0,0,.42);color:#fff;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
 .round.light{background:rgba(255,255,255,.55);color:#141416}
-.pill{display:flex;align-items:center;justify-content:center;gap:8px;height:56px;border-radius:999px;background:var(--acc);color:var(--acc-ink);font-size:20px;font-weight:500;width:100%}
+.pill{display:flex;align-items:center;justify-content:center;gap:8px;height:56px;border-radius:999px;background:var(--acc);color:var(--acc-ink);font-size:17px;font-weight:500;width:100%}
 .pill svg.i{width:22px;height:22px;stroke-width:2.2}
+.pill .pp{display:flex;flex-direction:column;align-items:flex-start;line-height:1.05}.pill .pp small{font-size:13px;font-weight:400;opacity:.9;margin-top:2px}
 .pill.ghost{background:transparent;color:inherit;border:1.5px solid currentColor;font-size:17px;height:50px}
-.tag{display:inline-block;font-size:12px;line-height:1;padding:5px 8px;border-radius:999px;background:rgba(127,127,127,.18);font-weight:500;letter-spacing:.01em;vertical-align:middle}
+.tag{display:inline-block;font-size:13px;line-height:1;padding:5px 8px;border-radius:999px;background:rgba(127,127,127,.18);font-weight:500;letter-spacing:.01em;vertical-align:middle}
 .glass{background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.16);backdrop-filter:blur(20px) saturate(1.3);-webkit-backdrop-filter:blur(20px) saturate(1.3)}
 .h2{font-size:22px;font-weight:500;letter-spacing:-.01em;margin:30px 16px 14px}
 .muted{color:var(--ink-2)}
@@ -69,17 +71,17 @@ svg.i{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8;stro
 /* знак: зерно + слово строчными (заглушка, рабочее имя) */
 .mark{display:flex;align-items:center;gap:8px}
 .mark svg{width:38px;height:38px;filter:drop-shadow(0 2px 6px rgba(120,40,0,.25))}
-.mark b{font-size:24px;font-weight:600;letter-spacing:-.03em}
+.mark b{font-size:22px;font-weight:600;letter-spacing:-.03em}
 
 /* ── нижнее меню ── */
-.nav{position:sticky;bottom:0;z-index:20;display:grid;grid-template-columns:repeat(5,1fr);padding:8px 6px calc(8px + env(safe-area-inset-bottom));background:var(--nav);backdrop-filter:blur(24px) saturate(1.4);-webkit-backdrop-filter:blur(24px) saturate(1.4);border-top:1px solid var(--line)}
-.nav button{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:12px;font-weight:500;color:var(--ink-2);padding:4px 0;position:relative}
+.nav{position:sticky;bottom:0;z-index:20;display:grid;grid-template-columns:repeat(5,1fr);padding:8px 6px calc(8px + env(safe-area-inset-bottom));background:var(--nav-solid);border-top:1px solid var(--line);border-top:1px solid var(--line)}
+.nav button{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:13px;font-weight:500;color:var(--ink-2);padding:4px 0;position:relative}
 .nav button svg.i{width:28px;height:28px}
 .nav button.on{color:var(--ink)}
 .nav button.on svg.i{color:var(--acc-text)}
-.badge{position:absolute;top:0;left:calc(50% + 6px);min-width:18px;height:18px;border-radius:9px;background:var(--acc);color:#fff;font-size:11px;display:grid;place-items:center;padding:0 5px}
-.dark-nav .nav{--nav:rgba(10,10,12,.72);--ink:#F5F5F7;--ink-2:#B7B7BE;--line:rgba(255,255,255,.08);--acc-text:#FF8A3D}
-.light-nav .nav{--nav:rgba(255,255,255,.7);--ink:#141416;--ink-2:#4D4D55;--line:rgba(0,0,0,.08);--acc-text:#B8430A}
+.badge{position:absolute;top:-2px;left:calc(50% + 6px);min-width:20px;height:20px;border-radius:10px;background:var(--acc);color:#fff;font-size:13px;display:grid;place-items:center;padding:0 5px}
+.dark-nav .nav{--nav-solid:#141416;--nav:rgba(10,10,12,.72);--ink:#F5F5F7;--ink-2:#B7B7BE;--line:rgba(255,255,255,.08);--acc-text:#FF8A3D}
+.light-nav .nav{--nav-solid:#FFFFFF;--nav:rgba(255,255,255,.7);--ink:#141416;--ink-2:#4D4D55;--line:rgba(0,0,0,.08);--acc-text:#B8430A}
 
 /* ── сторис ── */
 .story{background-size:cover;background-position:center top;min-height:100%;display:flex;flex-direction:column;justify-content:flex-end;padding:0 20px calc(24px + env(safe-area-inset-bottom))}
@@ -89,7 +91,7 @@ svg.i{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8;stro
 .story .bar i.f{background:currentColor}
 .story .beans{display:flex;justify-content:center;gap:10px;margin-bottom:18px}
 .story .beans svg{width:30px;height:30px}
-.story p{font-size:24px;line-height:1.22;text-align:center;font-weight:500;letter-spacing:-.01em;margin:0 6px 22px;text-wrap:balance}
+.story p{font-size:22px;line-height:1.22;text-align:center;font-weight:500;letter-spacing:-.01em;margin:0 6px 22px;text-wrap:balance}
 .story.lt{color:#141416}.story.dk{color:#fff}
 
 /* ── главная ── */
@@ -100,32 +102,32 @@ svg.i{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8;stro
 .prof{position:relative}
 .prof .plus{position:absolute;left:-3px;bottom:-1px;width:18px;height:18px;border-radius:50%;background:var(--acc);color:#fff;display:grid;place-items:center}
 .prof .plus svg.i{width:12px;height:12px;stroke-width:3}
-.hero{position:relative;height:500px;background-size:cover;background-position:center 30%;color:#1A0E08}
+.hero{position:relative;height:440px;background-size:cover;background-position:center 30%;color:#1A0E08}
 .hero::after{content:"";position:absolute;inset:auto 0 0 0;height:240px;background:linear-gradient(to bottom,rgba(0,0,0,0),var(--bg) 96%)}
 .hero .cap{position:absolute;left:0;right:0;bottom:86px;text-align:center;z-index:2}
 .hero .cap h1{font-size:30px;font-weight:500;letter-spacing:-.02em;line-height:1.08}
-.hero .cap .more{display:inline-flex;align-items:center;gap:6px;margin-top:12px;font-size:14px;padding:8px 14px;border-radius:999px;background:rgba(255,255,255,.6);color:#1A0E08;backdrop-filter:blur(10px)}
+.hero .cap .more{display:inline-flex;align-items:center;gap:6px;margin-top:12px;font-size:15px;height:44px;padding:0 18px;border-radius:999px;background:rgba(255,255,255,.6);color:#1A0E08;backdrop-filter:blur(10px)}
 .hero .cap .more svg.i{width:16px;height:16px}
 .home-hero{overflow:hidden;color:var(--hero-ink);background:linear-gradient(90deg,#da4e15,#ee8042 50%,#fddebe)}
-.home-hero .cap{bottom:68px}
+.home-hero .cap{bottom:22px}
 .home-hero .cap .more{background:var(--hero-more);color:var(--hero-more-ink)}
-.home-hero .hh{position:absolute;left:4%;right:4%;top:36px;height:464px;background:url(img/hero.jpg) center top/100% auto no-repeat;-webkit-mask-image:linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent);mask-image:linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent)}
+.home-hero .hh{position:absolute;left:13%;right:13%;top:30px;height:410px;background:url(img/hero.jpg) center top/100% auto no-repeat;-webkit-mask-image:linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent);mask-image:linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent)}
 .home-hero::before{content:"";position:absolute;inset:0 0 auto 0;height:200px;background:linear-gradient(90deg,#da4e15,#ee8042 50%,#fddebe);-webkit-mask-image:linear-gradient(to bottom,#000 35%,transparent);mask-image:linear-gradient(to bottom,#000 35%,transparent);z-index:1}
-.hero .plusbtn{position:absolute;right:50px;top:160px;width:62px;height:62px;border-radius:50%;background:rgba(255,255,255,.4);border:1px solid rgba(255,255,255,.6);backdrop-filter:blur(10px);display:grid;place-items:center;color:#1A0E08;z-index:2}
-.tabs{display:flex;gap:22px;padding:0 16px;overflow-x:auto;scrollbar-width:none;white-space:nowrap;font-size:21px;font-weight:500;letter-spacing:-.01em}
+.hero .plusbtn{position:absolute;right:62px;top:132px;width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,.4);border:1px solid rgba(255,255,255,.6);backdrop-filter:blur(10px);display:grid;place-items:center;color:#1A0E08;z-index:2}
+.tabs{display:flex;gap:22px;padding:0 16px;overflow-x:auto;scrollbar-width:none;white-space:nowrap;font-size:22px;font-weight:500;letter-spacing:-.01em}
 .tabs::-webkit-scrollbar{display:none}
 .tabs button{color:var(--tab-off,var(--ink-2));padding:6px 0 8px;position:relative}
 .tabs button.on{color:inherit}
 .tabs button.on::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;border-radius:1px;background:currentColor}
 .home-tabs{position:relative;z-index:3;margin-top:-62px}
-.anchors{position:sticky;top:0;z-index:8;display:flex;gap:18px;padding:14px 16px 12px;overflow-x:auto;white-space:nowrap;scrollbar-width:none;font-size:14px;background:var(--bg)}
+.anchors{position:sticky;top:0;z-index:8;display:flex;gap:18px;padding:14px 16px 12px;overflow-x:auto;white-space:nowrap;scrollbar-width:none;font-size:13px;background:var(--bg)}
 .anchors::-webkit-scrollbar{display:none}
 .anchors a{color:var(--ink-2);text-decoration:none}
 .anchors a.on{color:var(--ink);font-weight:500}
 .rail{display:flex;gap:10px;overflow-x:auto;padding:0 16px;scroll-padding-inline:16px;scrollbar-width:none;scroll-snap-type:x mandatory}
 .rail::-webkit-scrollbar{display:none}
 .card{background:var(--surface);border-radius:var(--r-l);box-shadow:var(--shadow)}
-.mini{flex:none;width:136px;padding:0 0 12px;overflow:hidden;scroll-snap-align:start;text-align:left;position:relative}
+.mini{flex:none;width:156px;padding:0 0 12px;overflow:hidden;scroll-snap-align:start;text-align:left;position:relative}
 .mini .ph{height:128px;background-size:cover;background-position:center 22%}
 .mini .t{font-size:15px;margin:10px 12px 0;font-weight:500}
 .mini .s{font-size:13px;margin:2px 12px 0;color:var(--ink-2)}
@@ -134,7 +136,7 @@ svg.i{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8;stro
 .mini.soon .ph{filter:grayscale(1) brightness(.85);opacity:.6}
 .plaque{margin:0 16px;display:flex;align-items:center;gap:14px;padding:18px;border-radius:var(--r-l);background:#141416;color:#fff;text-align:left;width:calc(100% - 32px);overflow:hidden;position:relative}
 .plaque .txt{flex:1;z-index:1}
-.plaque .txt b{display:block;font-size:18px;font-weight:500;line-height:1.25}
+.plaque .txt b{display:block;font-size:17px;font-weight:500;line-height:1.25}
 .plaque .txt small{display:block;font-size:13px;opacity:.75;margin-top:6px}
 .plaque .ic{width:92px;height:92px;border-radius:20px;background-size:cover;background-position:center 30%;flex:none;box-shadow:0 0 0 1px rgba(255,122,31,.5),0 0 24px rgba(255,122,31,.35)}
 .prog{height:8px;border-radius:4px;background:rgba(255,255,255,.16);overflow:hidden;margin-top:12px}
@@ -142,31 +144,31 @@ svg.i{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8;stro
 .set{flex:none;width:250px;padding:16px;scroll-snap-align:start;text-align:left}
 .set .pair{display:flex;gap:6px;height:120px;margin-bottom:12px}
 .set .pair i{flex:1;border-radius:14px;background-size:cover;background-position:center 25%}
-.set b{font-size:16px;font-weight:500;display:block}
+.set b{font-size:17px;font-weight:500;display:block}
 .set small{font-size:13px;color:var(--ink-2);display:block;margin-top:3px}
 .set .p{margin-top:12px;font-size:15px;font-weight:500;display:flex;justify-content:space-between;align-items:center}
 .row-card{margin:0 16px;display:flex;align-items:center;gap:14px;padding:16px;width:calc(100% - 32px);text-align:left}
 .row-card .av{display:flex}
-.row-card .av i{width:36px;height:36px;border-radius:50%;margin-right:-10px;border:2px solid var(--surface);display:grid;place-items:center;font-style:normal;font-size:14px;font-weight:600;color:#fff}
+.row-card .av i{width:36px;height:36px;border-radius:50%;margin-right:-10px;border:2px solid var(--surface);display:grid;place-items:center;font-style:normal;font-size:13px;font-weight:600;color:#fff}
 .row-card .txt{flex:1;margin-left:8px}
-.row-card .txt b{font-size:16px;font-weight:500;display:block}
+.row-card .txt b{font-size:17px;font-weight:500;display:block}
 .row-card .txt small{font-size:13px;color:var(--ink-2)}
 .big{margin:0 16px;height:420px;border-radius:var(--r-xl);background-size:cover;background-position:center 20%;position:relative;overflow:hidden;display:block;width:calc(100% - 32px);text-align:center;color:#fff}
 .big::after{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,rgba(3,5,12,.0) 40%,rgba(3,5,12,.85))}
 .big .cap{position:absolute;left:0;right:0;bottom:26px;z-index:1}
-.big .cap b{font-size:26px;font-weight:500;letter-spacing:-.01em;display:block}
-.big .cap small{font-size:14px;opacity:.8}
+.big .cap b{font-size:22px;font-weight:500;letter-spacing:-.01em;display:block}
+.big .cap small{font-size:13px;opacity:.8}
 .foot{margin:36px 16px 28px;font-size:13px;line-height:1.45;color:var(--ink-2);display:flex;gap:10px}
 .foot .mark svg{width:22px;height:22px}
 
 /* ── раздел (перекрашивает экран) ── */
 .sec{color:#fff;--tab-off:rgba(255,255,255,.9)}
-.sec .hero{color:inherit;height:560px;background-color:var(--secbg);background-size:100% auto;background-position:center 64px;background-repeat:no-repeat}
-.sec .hero::before{content:"";position:absolute;inset:0 0 auto 0;height:190px;background:linear-gradient(to bottom,var(--secbg) 30%,rgba(0,0,0,0));z-index:1}
+.sec .hero{color:inherit;height:440px;background-color:var(--secbg);background-size:78% auto;background-position:center 58px;background-repeat:no-repeat}
+.sec .hero::before{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,var(--secbg) 13%,rgba(0,0,0,0) 32%),linear-gradient(90deg,var(--secbg) 11%,rgba(0,0,0,0) 24%,rgba(0,0,0,0) 76%,var(--secbg) 89%);z-index:1}
 .sec .top{z-index:6}
 .sec .hero::after{background:linear-gradient(to bottom,rgba(0,0,0,0),var(--secbg) 94%)}
-.sec .hero .cap{bottom:40px}
-.sec .hero .cap h1{font-size:32px}
+.sec .hero .cap{bottom:22px}
+.sec .hero .cap h1{font-size:30px}
 .sec .hero .cap .pr{font-size:15px;opacity:.92;margin-top:6px}
 .chips{display:flex;gap:8px;padding:18px 16px 6px;overflow-x:auto;scrollbar-width:none}
 .chips button{flex:none;height:44px;padding:0 16px;border-radius:999px;border:1px solid rgba(255,255,255,.3);font-size:15px;display:flex;align-items:center;gap:8px}
@@ -190,25 +192,25 @@ svg.i{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8;stro
 .prod{background-color:var(--secbg);background-size:100% auto;background-position:center 150px;background-repeat:no-repeat;color:#fff;min-height:100%;position:relative}
 .prod::before{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,var(--secbg) 0,var(--secbg) 170px,rgba(0,0,0,0) 290px,rgba(0,0,0,0) 54%,var(--secbg) 80%);pointer-events:none}
 .prod .bar-top{position:absolute;top:calc(12px + env(safe-area-inset-top));left:16px;right:16px;display:flex;align-items:center;z-index:2}
-.prod .bar-top h3{flex:1;text-align:center;font-size:21px;font-weight:500;margin-right:44px}
+.prod .bar-top h3{flex:1;text-align:center;font-size:22px;font-weight:500;margin-right:44px}
 .stats{position:absolute;top:calc(74px + env(safe-area-inset-top));left:12px;right:12px;display:grid;grid-template-columns:repeat(4,1fr);gap:4px;text-align:center;z-index:2}
 .stats b{display:block;font-size:15px;font-weight:500;line-height:1.15}
-.stats small{display:block;font-size:12px;opacity:.9;margin-top:3px}
-.prod .more2{position:absolute;top:calc(138px + env(safe-area-inset-top));left:50%;transform:translateX(-50%);z-index:2;font-size:14px;display:flex;align-items:center;gap:6px;padding:8px 14px;border-radius:999px;background:rgba(0,0,0,.35);backdrop-filter:blur(10px);white-space:nowrap}
+.stats small{display:block;font-size:13px;opacity:.9;margin-top:3px}
+.prod .more2{position:absolute;top:calc(134px + env(safe-area-inset-top));left:50%;transform:translateX(-50%);z-index:2;font-size:15px;display:flex;align-items:center;gap:6px;height:44px;padding:0 18px;border-radius:999px;background:rgba(0,0,0,.35);backdrop-filter:blur(10px);white-space:nowrap}
 .prod .more2 svg.i{width:16px;height:16px}
 .prod .lower{position:absolute;left:0;right:0;bottom:0;z-index:3;padding:0 0 calc(16px + env(safe-area-inset-bottom))}
 .prod .lab{font-size:15px;margin:0 16px 10px;opacity:.85;display:flex;justify-content:space-between}
 .tiles{display:flex;gap:8px;padding:0 16px;overflow-x:auto;scrollbar-width:none}
 .tiles::-webkit-scrollbar{display:none}
-.tile{flex:none;width:96px;height:118px;border-radius:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;font-size:14px;line-height:1.15;text-align:center;color:#fff}
+.tile{flex:none;width:96px;height:118px;border-radius:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;font-size:13px;line-height:1.15;text-align:center;color:#fff}
 .tile svg{width:40px;height:40px}
 .tile.on{background:#fff;color:#141416;border-color:#fff}
 .notes{display:flex;gap:8px;padding:0 16px 14px;flex-wrap:wrap}
-.notes span{font-size:14px;padding:7px 12px;border-radius:999px}
+.notes span{font-size:13px;padding:7px 12px;border-radius:999px}
 .dock{margin:16px 12px 0;padding:8px;border-radius:999px;display:flex;align-items:center;gap:10px}
 .seg{display:flex;align-items:center;height:56px;border-radius:999px;padding:4px;gap:2px;background:rgba(255,255,255,.1);flex:none}
-.seg button{height:48px;min-width:64px;padding:0 12px;border-radius:999px;font-size:16px;font-weight:500;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1}
-.seg button small{font-size:11px;opacity:.7;font-weight:400;margin-top:3px}
+.seg button{height:48px;min-width:64px;padding:0 12px;border-radius:999px;font-size:17px;font-weight:500;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1}
+.seg button small{font-size:13px;opacity:.7;font-weight:400;margin-top:3px}
 .seg button.on{background:#fff;color:#141416}
 .seg button.on small{opacity:.6}
 .dock .pill{flex:1}
@@ -220,11 +222,11 @@ svg.i{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8;stro
 .sheet{width:100%;max-height:88%;overflow-y:auto;background:var(--sheet);color:var(--ink);border-radius:28px 28px 0 0;padding:22px 20px calc(26px + env(safe-area-inset-bottom));position:relative;animation:up .25s ease}
 @keyframes up{from{transform:translateY(40px)}to{transform:none}}
 .sheet .x{position:absolute;top:16px;right:16px;width:40px;height:40px;border-radius:50%;background:var(--surface-2);display:grid;place-items:center}
-.sheet h4{font-size:24px;font-weight:500;margin:4px 50px 10px 0;letter-spacing:-.01em}
-.sheet h5{font-size:19px;font-weight:500;margin:22px 0 6px}
-.sheet p{font-size:16px;line-height:1.45;color:var(--ink-2)}
+.sheet h4{font-size:22px;font-weight:500;margin:4px 50px 10px 0;letter-spacing:-.01em}
+.sheet h5{font-size:17px;font-weight:500;margin:22px 0 6px}
+.sheet p{font-size:17px;line-height:1.45;color:var(--ink-2)}
 .help{display:flex;gap:12px;justify-content:center;margin:22px 0 18px}
-.help button{width:104px;height:104px;border-radius:22px;background:var(--surface-2);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;font-size:14px}
+.help button{width:104px;height:104px;border-radius:22px;background:var(--surface-2);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;font-size:13px}
 .help button svg.i{width:32px;height:32px;color:var(--acc-text)}
 
 /* ── пасс ── */
@@ -233,20 +235,20 @@ svg.i{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8;stro
 .pass .head{padding-top:330px;text-align:center;position:relative}
 .pass .head::before{content:"";position:absolute;inset:180px 0 auto 0;height:170px;background:linear-gradient(to bottom,rgba(3,5,12,0),var(--pass));z-index:0}
 .pass .head *{position:relative}
-.pass .head h1{font-size:32px;font-weight:500;letter-spacing:-.02em}
-.pass .sub{display:flex;justify-content:center;gap:16px;margin-top:8px;font-size:18px}
-.pass .sub button{opacity:.5}.pass .sub button.on{opacity:1}
+.pass .head h1{font-size:30px;font-weight:500;letter-spacing:-.02em}
+.pass .sub{display:inline-flex;gap:2px;margin-top:12px;font-size:15px;padding:3px;border-radius:999px;border:1px solid rgba(255,255,255,.4)}
+.pass .sub button{height:40px;padding:0 18px;border-radius:999px;color:rgba(255,255,255,.88)}.pass .sub button.on{background:#fff;color:#141416}
 .facts{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:26px 12px 0;text-align:center}
 .facts .ic{width:52px;height:52px;margin:0 auto 8px;border-radius:50%;display:grid;place-items:center}
 .facts .ic svg.i{width:26px;height:26px}
-.facts span{display:block;font-size:14px;opacity:.85}
-.facts b{display:block;font-size:16px;font-weight:500;margin-top:2px}
+.facts span{display:block;font-size:13px;opacity:.85}
+.facts b{display:block;font-size:17px;font-weight:500;margin-top:2px}
 .facts s{opacity:.55;font-weight:400}
 .pass .h2,.kop .h2.dk{color:#fff}
 .grid3{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;padding:0 16px}
 .grid3 .g{border-radius:20px;padding:12px 12px 0;height:170px;display:flex;flex-direction:column;align-items:flex-start;overflow:hidden;position:relative;text-align:left;color:#fff}
 .grid3 .g b{font-size:15px;font-weight:500;position:relative;z-index:1}
-.grid3 .g small{display:block;font-size:12px;opacity:.75;position:relative;z-index:1}
+.grid3 .g small{display:block;font-size:13px;opacity:.75;position:relative;z-index:1}
 .grid3 .g i{position:absolute;inset:0;background-size:cover;background-position:center 30%}
 .grid3 .g::after{content:"";position:absolute;inset:0 0 45% 0;background:linear-gradient(to bottom,rgba(0,0,0,.72),rgba(0,0,0,0));z-index:0}
 .grid3 .g b,.grid3 .g small{z-index:2}
@@ -254,7 +256,7 @@ svg.i{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8;stro
 .how .c{border-radius:24px;padding:24px 20px 22px;text-align:center}
 .how .c .n{width:48px;height:48px;border-radius:50%;margin:0 auto 12px;display:grid;place-items:center;background:rgba(255,255,255,.1)}
 .how .c .n svg.i{width:24px;height:24px}
-.how .c b{display:block;font-size:20px;font-weight:500;margin-bottom:6px}
+.how .c b{display:block;font-size:17px;font-weight:500;margin-bottom:6px}
 .how .c p{font-size:15px;line-height:1.4;opacity:.78}
 .rules{display:block;margin:20px auto 8px;font-size:17px;padding:10px 16px}
 .pass .dockwrap{position:sticky;bottom:0;padding:8px 0 calc(14px + env(safe-area-inset-bottom));background:linear-gradient(to bottom,rgba(3,5,12,0),var(--pass) 40%);z-index:5}
@@ -267,28 +269,28 @@ svg.i{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8;stro
 .kop .dkblock{background:#050402;color:#fff;padding:0 16px 24px;margin-top:-1px}
 .kop .dkblock .k{font-size:15px;opacity:.85;text-align:center;margin-top:-64px;position:relative;z-index:2}
 .kop .dkblock .sum{font-size:56px;font-weight:500;letter-spacing:-.03em;text-align:center;position:relative;z-index:2;line-height:1.05;margin-top:4px}
-.kop .dkblock .goal{display:flex;justify-content:space-between;font-size:14px;opacity:.85;margin-top:18px}
+.kop .dkblock .goal{display:flex;justify-content:space-between;font-size:13px;opacity:.85;margin-top:18px}
 .kop .dkblock .prog{height:12px;border-radius:6px;margin-top:8px}
 .kop .dkblock .prog i{border-radius:6px}
 .kfacts{margin:20px 16px 0;padding:18px 6px;color:var(--ink)}
 .kfacts .ic{background:var(--surface-2)}
 .kfacts span{color:var(--ink-2);opacity:1}
 .kop .head-x{position:absolute;top:calc(14px + env(safe-area-inset-top));left:16px;right:16px;display:flex;justify-content:space-between;align-items:center;z-index:3;color:#fff}
-.kop .head-x h3{font-size:20px;font-weight:500}
+.kop .head-x h3{font-size:17px;font-weight:500}
 .invite{margin:14px 16px 0;padding:20px;border-radius:var(--r-xl)}
-.invite b{font-size:21px;font-weight:500;display:block;letter-spacing:-.01em}
+.invite b{font-size:22px;font-weight:500;display:block;letter-spacing:-.01em}
 .invite p{font-size:15px;color:var(--ink-2);margin-top:6px;line-height:1.4}
-.link{display:flex;align-items:center;gap:10px;margin:16px 0 14px;padding:0 6px 0 16px;height:52px;border-radius:16px;background:var(--surface-2);font-size:16px}
+.link{display:flex;align-items:center;gap:10px;margin:16px 0 14px;padding:0 6px 0 16px;height:52px;border-radius:16px;background:var(--surface-2);font-size:17px}
 .link span{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .link button{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;color:var(--acc-text)}
 .friends{margin:0 16px;padding:6px 16px;border-radius:var(--r-l)}
 .fr{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
 .fr:last-child{border:0}
 .fr .a{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:600;font-size:15px;flex:none}
-.fr .t{flex:1}.fr .t b{font-size:16px;font-weight:500;display:block}.fr .t small{font-size:13px;color:var(--ink-2)}
-.fr .v{font-size:16px;font-weight:500;color:var(--ink)}
+.fr .t{flex:1}.fr .t b{font-size:17px;font-weight:500;display:block}.fr .t small{font-size:13px;color:var(--ink-2)}
+.fr .v{font-size:17px;font-weight:500;color:var(--ink)}
 .steps{margin:0 16px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.steps div{padding:14px 12px;border-radius:18px;font-size:14px;line-height:1.3}
+.steps div{padding:14px 12px;border-radius:18px;font-size:13px;line-height:1.3}
 .steps div b{display:block;font-size:22px;font-weight:500;margin-bottom:6px}
 
 /* ── корзина ── */
@@ -297,7 +299,7 @@ svg.i{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8;stro
 .cart .hd .round{background:var(--surface);color:var(--ink);box-shadow:var(--shadow)}
 .cart .hd .t{flex:1;text-align:center;font-size:17px;font-weight:500;display:flex;align-items:center;justify-content:center;gap:6px}
 .cart .hd .t svg.i{color:var(--acc-text);width:20px;height:20px}
-.chain{font-size:13px;margin:0 16px 10px;padding:12px 14px;border-radius:18px;display:flex;align-items:center;justify-content:center;gap:8px;font-size:14px;background:var(--surface)}
+.chain{font-size:13px;margin:0 16px 10px;padding:12px 14px;border-radius:18px;display:flex;align-items:center;justify-content:center;gap:8px;font-size:13px;background:var(--surface)}
 .chain svg.i{width:18px;height:18px;color:var(--acc-text)}
 .items{margin:0 16px;padding:4px 14px;border-radius:var(--r-l)}
 .ci{display:flex;gap:14px;padding:14px 0;border-bottom:1px solid var(--line)}
@@ -307,17 +309,17 @@ svg.i{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8;stro
 .ci .tx small{font-size:13px;color:var(--ink-2);display:block}
 .ci .tx b{font-size:17px;font-weight:500;display:block;margin:2px 0 10px}
 .ci .row{display:flex;justify-content:space-between;align-items:center}
-.ci .row span{font-size:16px;font-weight:500}
+.ci .row span{font-size:17px;font-weight:500}
 .step{display:flex;align-items:center;gap:12px;font-size:15px}
 .step button{width:44px;height:44px;border-radius:50%;background:var(--surface-2);display:grid;place-items:center}
 .step button svg.i{width:18px;height:18px}
 .cstats{margin:10px 16px 0;padding:14px 8px;border-radius:var(--r-l);display:grid;grid-template-columns:repeat(3,1fr);text-align:center}
 .cstats b{display:block;font-size:17px;font-weight:500}
-.cstats small{font-size:12px;color:var(--ink-2)}
+.cstats small{font-size:13px;color:var(--ink-2)}
 .try{flex:none;width:132px;padding:12px;text-align:left;position:relative}
 .try .ph{height:96px;border-radius:12px;background-size:cover;background-position:center 25%;margin-bottom:10px}
-.try b{font-size:14px;font-weight:500;display:block;line-height:1.2;min-height:34px}
-.try .p{display:flex;justify-content:space-between;align-items:center;margin-top:8px;font-size:14px}
+.try b{font-size:13px;font-weight:500;display:block;line-height:1.2;min-height:34px}
+.try .p{display:flex;justify-content:space-between;align-items:center;margin-top:8px;font-size:13px}
 .try .p button{width:30px;height:30px;border-radius:50%;background:var(--surface-2);display:grid;place-items:center}
 .try .p button svg.i{width:16px;height:16px}
 .promo{margin:0 16px;padding:14px 16px;border-radius:var(--r-l);display:flex;align-items:center;gap:14px}
@@ -330,12 +332,12 @@ svg.i{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8;stro
 .paybar{position:sticky;bottom:0;padding:12px 16px calc(14px + env(safe-area-inset-bottom));background:var(--bg);border-top:1px solid var(--line);margin-top:22px;z-index:6}
 .paybar .r{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:12px;gap:12px}
 .paybar .way{padding:10px 14px;border-radius:14px;background:var(--surface);font-size:15px;display:flex;flex-direction:column;align-items:flex-start}
-.paybar .way small{font-size:12px;color:var(--ink-2)}
+.paybar .way small{font-size:13px;color:var(--ink-2)}
 .paybar .way span{display:flex;align-items:center;gap:6px}
 .paybar .way svg.i{width:18px;height:18px}
 .paybar .tot{text-align:right}
-.paybar .tot small{font-size:14px;color:var(--ink-2);display:block}
-.paybar .tot b{font-size:32px;font-weight:500;letter-spacing:-.02em}
+.paybar .tot small{font-size:13px;color:var(--ink-2);display:block}
+.paybar .tot b{font-size:30px;font-weight:500;letter-spacing:-.02em}
 .dlv{margin:12px 16px 0;font-size:13px;color:var(--ink-2);line-height:1.4}
 
 /* ── вход ── */
@@ -345,16 +347,16 @@ svg.i{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8;stro
 .login .hd b{font-size:17px;font-weight:500}
 .login .mid{flex:1;display:flex;flex-direction:column;justify-content:center;gap:12px}
 .login .mid h2{font-size:30px;font-weight:500;letter-spacing:-.02em;line-height:1.1;text-align:center}
-.login .mid p{font-size:16px;color:var(--ink-2);text-align:center;line-height:1.4;margin-bottom:18px}
+.login .mid p{font-size:17px;color:var(--ink-2);text-align:center;line-height:1.4;margin-bottom:18px}
 .ref{display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:18px;background:var(--surface);margin-bottom:8px}
 .ref .a{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:600;background:#6B4E9B;flex:none}
 .ref div{font-size:15px;line-height:1.35}
 .ref small{display:block;font-size:13px;color:var(--ink-2)}
 .tg{}
-.or{display:flex;align-items:center;gap:12px;color:var(--ink-2);font-size:14px;margin:8px 0}
+.or{display:flex;align-items:center;gap:12px;color:var(--ink-2);font-size:13px;margin:8px 0}
 .or::before,.or::after{content:"";flex:1;height:1px;background:var(--line)}
 .phone{height:60px;border-radius:18px;background:var(--surface);display:flex;align-items:center;padding:0 18px;font-size:22px;color:var(--ink-2);letter-spacing:.02em}
-.login .legal{font-size:12px;color:var(--ink-2);text-align:center;line-height:1.4;margin-top:14px}
+.login .legal{font-size:13px;color:var(--ink-2);text-align:center;line-height:1.4;margin-top:14px}
 .sec-btn{height:52px;border-radius:999px;background:var(--surface-2);font-size:17px;font-weight:500;width:100%}
 </style>
 </head>
@@ -405,7 +407,6 @@ svg.i{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8;stro
 <!-- ══ 1. сторис ══ -->
 <section class="scr" id="s-story1">
   <div class="story lt" style="background-image:url(img/story1.jpg);background-color:#C6E2FC">
-    <div class="bar"><i class="f"></i><i></i><i></i></div>
     <button class="round light x" data-go="home" aria-label="закрыть"><svg class="i"><use href="#i-x"/></svg></button>
     <div class="beans" style="color:var(--acc)"><svg><use href="#bean-o"/></svg><svg style="opacity:.25"><use href="#bean-o"/></svg><svg style="opacity:.25"><use href="#bean-o"/></svg></div>
     <p>закажи сегодня — обжарим вечером и&nbsp;отправим утром</p>
@@ -414,7 +415,6 @@ svg.i{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8;stro
 </section>
 <section class="scr" id="s-story2">
   <div class="story lt" style="background-image:url(img/story2.jpg);background-color:#DCC4AF">
-    <div class="bar"><i class="f"></i><i class="f"></i><i></i></div>
     <button class="round light x" data-go="home" aria-label="закрыть"><svg class="i"><use href="#i-x"/></svg></button>
     <div class="beans" style="color:var(--acc)"><svg><use href="#bean-o"/></svg><svg><use href="#bean-o"/></svg><svg style="opacity:.25"><use href="#bean-o"/></svg></div>
     <p>делись с&nbsp;друзьями — их&nbsp;покупки копятся в&nbsp;твоей копилке</p>
@@ -423,7 +423,6 @@ svg.i{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8;stro
 </section>
 <section class="scr" id="s-story3">
   <div class="story dk" style="background-image:url(img/story3.jpg);background-color:#050402">
-    <div class="bar"><i class="f"></i><i class="f"></i><i class="f"></i></div>
     <button class="round x" data-go="home" aria-label="закрыть"><svg class="i"><use href="#i-x"/></svg></button>
     <div class="beans" style="color:var(--acc-glow)"><svg><use href="#bean-o"/></svg><svg><use href="#bean-o"/></svg><svg><use href="#bean-o"/></svg></div>
     <p>копилка не сгорает — копи до&nbsp;бесплатной пачки</p>
@@ -441,13 +440,10 @@ svg.i{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8;stro
     <button class="plusbtn" data-go="product" data-p="eth" aria-label="в корзину"><svg class="i" style="width:30px;height:30px"><use href="#i-plus"/></svg></button>
     <div class="cap"><h1>свежая обжарка<br>под твой заказ</h1><button class="more" data-go="story1">как это работает <svg class="i"><use href="#i-right"/></svg></button></div>
   </div>
-  <div class="tabs home-tabs" data-tabs>
-    <button class="on" data-go="home">для тебя</button><button data-go="zerno" data-p="eth">зерно</button><button data-go="nabory">наборы</button><button data-go="pass">пасс</button><button data-go="kopilka">копилка</button>
-  </div>
 
   <h2 class="h2" style="margin-top:16px">популярное</h2>
   <div class="rail">
-    <button class="card mini" data-go="product" data-p="eth"><div class="ph" style="background-image:url(img/ethiopia.jpg)"></div><div class="t">эфиопия</div><div class="s">ягоды · жасмин</div><div class="p">2&nbsp;250&nbsp;₽ <svg class="i"><use href="#i-right"/></svg></div></button>
+    <button class="card mini" data-go="product" data-p="eth"><div class="ph" style="background-image:url(img/ethiopia.jpg)"></div><div class="t">эфиопия</div><div class="s">ягоды · жасмин</div><div class="p"><span style="white-space:nowrap">2&nbsp;250&nbsp;₽<span class="muted" style="font-weight:400">&nbsp;·&nbsp;1&nbsp;кг</span></span> <svg class="i"><use href="#i-right"/></svg></div></button>
     <button class="card mini" data-go="product" data-p="bra"><div class="ph" style="background-image:url(img/brazil.jpg)"></div><div class="t">бразилия</div><div class="s">шоколад · орех</div><div class="p"><span class="muted">цена скоро</span> <svg class="i"><use href="#i-right"/></svg></div></button>
     <button class="card mini" data-go="product" data-p="uga"><div class="ph" style="background-image:url(img/uganda.jpg)"></div><div class="t">уганда</div><div class="s">какао · пряности</div><div class="p"><span class="muted">цена скоро</span> <svg class="i"><use href="#i-right"/></svg></div></button>
     <button class="card mini soon" data-toast><div class="ph" style="background-image:url(img/brazil.jpg)"></div><div class="t">какао</div><div class="s">эфиопия</div><div class="p"><span class="tag">скоро</span></div></button>
@@ -493,7 +489,7 @@ svg.i{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8;stro
   </div>
   <div class="hero" data-f="hero"><div class="cap"><h1 data-f="name"></h1><div class="pr" data-f="sub"></div></div></div>
   <div class="tabs" data-tabs>
-    <button data-go="home">для тебя</button><button class="on" data-go="zerno" data-p="eth">зерно</button><button data-go="nabory">наборы</button><button data-go="pass">пасс</button><button data-go="kopilka">копилка</button>
+    <button class="on" data-go="zerno" data-p="eth" data-replace>зерно</button><button data-go="nabory" data-replace>наборы</button><button data-go="pass">пасс</button>
   </div>
   <div class="chips">
     <button data-go="zerno" data-p="eth" data-replace><i style="background:#5A1A3E"></i>эфиопия</button>
@@ -515,9 +511,9 @@ svg.i{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8;stro
   </div>
   <div class="hero" style="background-image:url(img/story2.jpg)"><div class="cap"><h1>пачка другу</h1><div class="pr">500&nbsp;г · 1&nbsp;300&nbsp;₽</div></div></div>
   <div class="tabs" data-tabs>
-    <button data-go="home">для тебя</button><button data-go="zerno" data-p="eth">зерно</button><button class="on" data-go="nabory">наборы</button><button data-go="pass">пасс</button><button data-go="kopilka">копилка</button>
+    <button data-go="zerno" data-p="eth" data-replace>зерно</button><button class="on" data-go="nabory" data-replace>наборы</button><button data-go="pass">пасс</button>
   </div>
-  <h2 class="h2" style="color:inherit">наборы</h2>
+  <div style="height:14px"></div>
   <div class="lst">
     <button class="it" data-go="product" data-p="eth"><div class="ph" style="background-image:url(img/story2.jpg)"></div><div class="tx"><b>пачка другу</b><small>500&nbsp;г эфиопии, с&nbsp;твоей ссылкой внутри</small><span class="p">1&nbsp;300&nbsp;₽</span></div><svg class="i"><use href="#i-right"/></svg></button>
     <button class="it" data-toast><div class="ph" style="background-image:url(img/hero.jpg)"></div><div class="tx"><b>три страны</b><small>эфиопия, бразилия, уганда · 3 × 500&nbsp;г</small><span class="p">цена скоро</span></div><svg class="i"><use href="#i-right"/></svg></button>
@@ -532,7 +528,7 @@ svg.i{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8;stro
   <div class="prod" data-f="prod">
     <div class="bar-top"><button class="round" data-back aria-label="назад"><svg class="i"><use href="#i-left"/></svg></button><h3 data-f="name"></h3></div>
     <div class="stats" data-f="stats"></div>
-    <button class="more2" data-sheet="more">подробнее · описание — пример <svg class="i"><use href="#i-down"/></svg></button>
+    <button class="more2" data-sheet="more">подробнее <svg class="i"><use href="#i-down"/></svg></button>
     <div class="lower">
       <div class="notes" data-f="notes"></div>
       <div class="lab"><span>помол</span></div>
@@ -593,7 +589,7 @@ svg.i{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8;stro
   <div class="dockwrap">
     <div class="dock glass">
       <div class="seg"><button>500<small>грамм</small></button><button class="on">1<small>кг</small></button></div>
-      <button class="pill" data-go="cart"><svg class="i"><use href="#i-plus"/></svg>6&nbsp;750&nbsp;₽</button>
+      <button class="pill" data-go="cart"><svg class="i"><use href="#i-plus"/></svg><span class="pp">6&nbsp;750&nbsp;₽<small>3 × 2&nbsp;250&nbsp;₽</small></span></button>
     </div>
   </div>
 </section>
