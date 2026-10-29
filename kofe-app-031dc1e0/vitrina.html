@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex, nofollow">
+<title>Витрина экранов</title>
+<style>
+:root{--bg:#F4F4F6;--ink:#141416;--ink-2:#5E5E66}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0C0C0E;--ink:#F5F5F7;--ink-2:#A3A3AB}}
+:root[data-theme="dark"]{--bg:#0C0C0E;--ink:#F5F5F7;--ink-2:#A3A3AB}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.4 system-ui,sans-serif;padding:20px 16px}
+h1{font-size:22px;margin:0 0 4px}p{color:var(--ink-2);margin:0 0 20px}
+.g{display:flex;flex-wrap:wrap;gap:18px}
+figure{margin:0;width:195px}
+.f{width:195px;height:422px;overflow:hidden;border-radius:22px;box-shadow:0 6px 20px rgba(0,0,0,.18)}
+iframe{width:390px;height:844px;border:0;transform:scale(.5);transform-origin:0 0}
+figcaption{font-size:13px;color:var(--ink-2);margin-top:6px}
+</style></head><body>
+<h1>Витрина экранов — для себя</h1>
+<p>Каждый экран — живой index.html в рамке 390×844 (масштаб 50 %). Слева светлая тема, справа тёмная.</p>
+<div class="g" id="g"></div>
+<script>
+const L=[['сторис 1','s=story1'],['сторис 2','s=story2'],['сторис 3','s=story3'],['главная','s=home'],['лента «для тебя»','s=home&y=560'],['лента ниже','s=home&y=1250'],['зерно · эфиопия','s=zerno&p=eth'],['зерно · бразилия','s=zerno&p=bra'],['зерно · уганда','s=zerno&p=uga'],['наборы','s=nabory'],['карточка · 1 кг','s=product&p=eth'],['карточка · 500 г','s=product&p=eth&w=500'],['подробнее','s=product&p=eth&o=more'],['карточка · бразилия','s=product&p=bra'],['кофе вперёд','s=pass'],['как это работает','s=pass&y=820'],['копилка','s=kopilka'],['пригласи друга','s=kopilka&y=560'],['корзина','s=cart'],['корзина · итого','s=cart&y=420'],['вход','s=login'],['напиши нам','s=login&o=help']];
+const g=document.getElementById('g');
+for(const [n,h] of L) for(const t of ['light','dark']){const f=document.createElement('figure');f.innerHTML=`<div class="f"><iframe loading="lazy" src="index.html#${h}&t=${t}"></iframe></div><figcaption>${n} · ${t==='light'?'светлая':'тёмная'}</figcaption>`;g.appendChild(f);}
+</script></body></html>
