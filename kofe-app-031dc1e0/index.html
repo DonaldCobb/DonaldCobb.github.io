@@ -20,6 +20,7 @@
   --acc-text:#B8430A;     /* ссылка оранжевым на светлом, 5:1 */
   --nav:rgba(255,255,255,.82); --sheet:#FFFFFF; --shadow:0 10px 30px rgba(20,10,0,.10);
   --logo-cut:#FFFFFF;
+  --hero-ink:#1A0E08; --hero-more:rgba(255,255,255,.6); --hero-more-ink:#1A0E08;
   /* цвета сортов — фон раздела, не кнопки */
   --eth:#24061A; --bra:#8E5F43; --uga:#0B1D15; --nab:#DCC4AF; --pass:#03050C;
   --r-xl:28px; --r-l:22px; --r-m:16px;
@@ -28,12 +29,14 @@
 :root[data-theme="dark"]{
   --bg:#0C0C0E; --surface:#1A1A1D; --surface-2:#26262A; --ink:#F5F5F7; --ink-2:#A3A3AB; --line:rgba(255,255,255,.08);
   --acc-text:#FF8A3D; --nav:rgba(20,20,22,.82); --sheet:#16161A; --shadow:0 10px 30px rgba(0,0,0,.4);
+  --hero-ink:#FFFFFF; --hero-more:rgba(20,20,22,.6); --hero-more-ink:#FFFFFF;
   color-scheme:dark;
 }
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){
     --bg:#0C0C0E; --surface:#1A1A1D; --surface-2:#26262A; --ink:#F5F5F7; --ink-2:#A3A3AB; --line:rgba(255,255,255,.08);
     --acc-text:#FF8A3D; --nav:rgba(20,20,22,.82); --sheet:#16161A; --shadow:0 10px 30px rgba(0,0,0,.4);
+  --hero-ink:#FFFFFF; --hero-more:rgba(20,20,22,.6); --hero-more-ink:#FFFFFF;
     color-scheme:dark;
   }
 }
@@ -92,7 +95,7 @@ svg.i{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8;stro
 /* ── главная ── */
 .top{position:absolute;top:0;left:0;right:0;z-index:5;display:flex;align-items:center;justify-content:space-between;padding:calc(12px + env(safe-area-inset-top)) 16px 0}
 .top .where{display:flex;flex-direction:column;margin-left:4px}
-.top .where small{font-size:13px;opacity:.78;display:flex;align-items:center;gap:4px}
+.top .where small{font-size:13px;opacity:.92;display:flex;align-items:center;gap:4px}
 .top .where small svg.i{width:15px;height:15px}
 .prof{position:relative}
 .prof .plus{position:absolute;left:-3px;bottom:-1px;width:18px;height:18px;border-radius:50%;background:var(--acc);color:#fff;display:grid;place-items:center}
@@ -103,9 +106,12 @@ svg.i{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8;stro
 .hero .cap h1{font-size:30px;font-weight:500;letter-spacing:-.02em;line-height:1.08}
 .hero .cap .more{display:inline-flex;align-items:center;gap:6px;margin-top:12px;font-size:14px;padding:8px 14px;border-radius:999px;background:rgba(255,255,255,.6);color:#1A0E08;backdrop-filter:blur(10px)}
 .hero .cap .more svg.i{width:16px;height:16px}
-.home-hero{background:url(img/hero.jpg) center 58px/100% auto no-repeat,linear-gradient(90deg,#da4e15,#ee8042 50%,#fddebe)}
+.home-hero{overflow:hidden;color:var(--hero-ink);background:linear-gradient(90deg,#da4e15,#ee8042 50%,#fddebe)}
+.home-hero .cap{bottom:68px}
+.home-hero .cap .more{background:var(--hero-more);color:var(--hero-more-ink)}
+.home-hero .hh{position:absolute;left:4%;right:4%;top:36px;height:464px;background:url(img/hero.jpg) center top/100% auto no-repeat;-webkit-mask-image:linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent);mask-image:linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent)}
 .home-hero::before{content:"";position:absolute;inset:0 0 auto 0;height:200px;background:linear-gradient(90deg,#da4e15,#ee8042 50%,#fddebe);-webkit-mask-image:linear-gradient(to bottom,#000 35%,transparent);mask-image:linear-gradient(to bottom,#000 35%,transparent);z-index:1}
-.hero .plusbtn{position:absolute;right:40px;top:250px;width:62px;height:62px;border-radius:50%;background:rgba(255,255,255,.4);border:1px solid rgba(255,255,255,.6);backdrop-filter:blur(10px);display:grid;place-items:center;color:#1A0E08;z-index:2}
+.hero .plusbtn{position:absolute;right:50px;top:160px;width:62px;height:62px;border-radius:50%;background:rgba(255,255,255,.4);border:1px solid rgba(255,255,255,.6);backdrop-filter:blur(10px);display:grid;place-items:center;color:#1A0E08;z-index:2}
 .tabs{display:flex;gap:22px;padding:0 16px;overflow-x:auto;scrollbar-width:none;white-space:nowrap;font-size:21px;font-weight:500;letter-spacing:-.01em}
 .tabs::-webkit-scrollbar{display:none}
 .tabs button{color:var(--tab-off,var(--ink-2));padding:6px 0 8px;position:relative}
@@ -163,7 +169,7 @@ svg.i{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8;stro
 .sec .hero .cap h1{font-size:32px}
 .sec .hero .cap .pr{font-size:15px;opacity:.92;margin-top:6px}
 .chips{display:flex;gap:8px;padding:18px 16px 6px;overflow-x:auto;scrollbar-width:none}
-.chips button{flex:none;height:38px;padding:0 16px;border-radius:999px;border:1px solid rgba(255,255,255,.3);font-size:15px;display:flex;align-items:center;gap:8px}
+.chips button{flex:none;height:44px;padding:0 16px;border-radius:999px;border:1px solid rgba(255,255,255,.3);font-size:15px;display:flex;align-items:center;gap:8px}
 .chips button i{width:12px;height:12px;border-radius:50%;border:1.5px solid rgba(255,255,255,.7)}
 .chips button.on{background:#fff;color:#141416;border-color:#fff}
 .sec.ink-dark{color:#1E140B;--tab-off:rgba(30,20,11,.74)}
@@ -175,10 +181,10 @@ svg.i{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8;stro
 .sec .it .ph{width:84px;height:96px;border-radius:14px;background-size:cover;background-position:center 25%;flex:none}
 .sec .it .tx{flex:1}
 .sec .it .tx b{font-size:17px;font-weight:500;display:block}
-.sec .it .tx small{font-size:13px;opacity:.75;display:block;margin-top:3px}
+.sec .it .tx small{font-size:13px;opacity:.9;display:block;margin-top:3px}
 .sec .it .tx .p{font-size:15px;margin-top:10px;display:block}
 .sec .it svg.i{opacity:.6}
-.sec .note{margin:16px 16px 26px;font-size:13px;opacity:.75;line-height:1.4}
+.sec .note{margin:16px 16px 26px;font-size:13px;opacity:.9;line-height:1.4}
 
 /* ── карточка зерна ── */
 .prod{background-color:var(--secbg);background-size:100% auto;background-position:center 150px;background-repeat:no-repeat;color:#fff;min-height:100%;position:relative}
@@ -303,7 +309,7 @@ svg.i{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8;stro
 .ci .row{display:flex;justify-content:space-between;align-items:center}
 .ci .row span{font-size:16px;font-weight:500}
 .step{display:flex;align-items:center;gap:12px;font-size:15px}
-.step button{width:34px;height:34px;border-radius:50%;background:var(--surface-2);display:grid;place-items:center}
+.step button{width:44px;height:44px;border-radius:50%;background:var(--surface-2);display:grid;place-items:center}
 .step button svg.i{width:18px;height:18px}
 .cstats{margin:10px 16px 0;padding:14px 8px;border-radius:var(--r-l);display:grid;grid-template-columns:repeat(3,1fr);text-align:center}
 .cstats b{display:block;font-size:17px;font-weight:500}
@@ -431,7 +437,7 @@ svg.i{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8;stro
     <div class="mark"><svg><use href="#logo"/></svg><div class="where"><b style="font-size:22px;font-weight:600;letter-spacing:-.03em">кофе</b><small><svg class="i"><use href="#i-truck"/></svg>доставка завтра · Пермь</small></div></div>
     <button class="round light prof" data-go="login" aria-label="профиль"><svg class="i"><use href="#i-user"/></svg><span class="plus"><svg class="i"><use href="#i-plus"/></svg></span></button>
   </div>
-  <div class="hero home-hero">
+  <div class="hero home-hero"><i class="hh" aria-hidden="true"></i>
     <button class="plusbtn" data-go="product" data-p="eth" aria-label="в корзину"><svg class="i" style="width:30px;height:30px"><use href="#i-plus"/></svg></button>
     <div class="cap"><h1>свежая обжарка<br>под твой заказ</h1><button class="more" data-go="story1">как это работает <svg class="i"><use href="#i-right"/></svg></button></div>
   </div>
@@ -645,8 +651,8 @@ svg.i{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8;stro
 
   <h2 class="h2">попробуй</h2>
   <div class="rail">
-    <div class="card try"><div class="ph" style="background-image:url(img/brazil.jpg)"></div><b>бразилия 500&nbsp;г</b><div class="p"><span class="muted">цена скоро</span><button data-toast aria-label="добавить"><svg class="i"><use href="#i-plus"/></svg></button></div></div>
-    <div class="card try"><div class="ph" style="background-image:url(img/uganda.jpg)"></div><b>уганда 500&nbsp;г</b><div class="p"><span class="muted">цена скоро</span><button data-toast aria-label="добавить"><svg class="i"><use href="#i-plus"/></svg></button></div></div>
+    <div class="card try"><div class="ph" style="background-image:url(img/brazil.jpg)"></div><b>бразилия 500&nbsp;г</b><div class="p"><span class="muted">цена скоро</span></div></div>
+    <div class="card try"><div class="ph" style="background-image:url(img/uganda.jpg)"></div><b>уганда 500&nbsp;г</b><div class="p"><span class="muted">цена скоро</span></div></div>
     <div class="card try"><div class="ph" style="background-image:url(img/ethiopia.jpg)"></div><b>ещё эфиопия 500&nbsp;г</b><div class="p"><span>1&nbsp;300&nbsp;₽</span><button data-toast aria-label="добавить"><svg class="i"><use href="#i-plus"/></svg></button></div></div>
   </div>
 
