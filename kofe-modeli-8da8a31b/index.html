@@ -1,0 +1,376 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Карта моделей кофе</title>
+<style>
+@font-face {
+  font-family: 'Onest';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(fonts/Onest-cyrillic-4c7562.woff2) format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Onest';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(fonts/Onest-latin-ext-27cee5.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Onest';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(fonts/Onest-latin-cebbb5.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Onest';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(fonts/Onest-cyrillic-4c7562.woff2) format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Onest';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(fonts/Onest-latin-ext-27cee5.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Onest';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(fonts/Onest-latin-cebbb5.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Onest';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(fonts/Onest-cyrillic-4c7562.woff2) format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Onest';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(fonts/Onest-latin-ext-27cee5.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Onest';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(fonts/Onest-latin-cebbb5.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Unbounded';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(fonts/Unbounded-cyrillic-c86556.woff2) format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Unbounded';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(fonts/Unbounded-latin-ext-80da0c.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Unbounded';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(fonts/Unbounded-latin-06f2e4.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Unbounded';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(fonts/Unbounded-cyrillic-c86556.woff2) format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Unbounded';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(fonts/Unbounded-latin-ext-80da0c.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Unbounded';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(fonts/Unbounded-latin-06f2e4.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Unbounded';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url(fonts/Unbounded-cyrillic-c86556.woff2) format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Unbounded';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url(fonts/Unbounded-latin-ext-80da0c.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Unbounded';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url(fonts/Unbounded-latin-06f2e4.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+:root{
+  --bg:#f6f1ea;--card:#fffdf9;--ink:#211a14;--mute:#7a6d60;--line:#e6dccf;--head:#efe6da;
+  --coffee:#6b3f22;--accent:#c7652a;
+  --yes:#2f7a46;--yes-bg:#e3f1e6;--mid:#8a5600;--mid-bg:#fbefd6;--no:#a8392e;--no-bg:#f8e1dd;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#17120e;--card:#211a15;--ink:#f2e9df;--mute:#a8998a;--line:#3a2f27;--head:#2a211b;
+  --coffee:#d9a77f;--accent:#e58a4e;
+  --yes:#7ccf94;--yes-bg:#1d3324;--mid:#f0c060;--mid-bg:#3a2e14;--no:#f08a7e;--no-bg:#3d201c;}}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:15px/1.4 Onest,system-ui,sans-serif;padding:28px 16px 48px}
+.wrap{max-width:1440px;margin:0 auto}
+h1{font-family:Unbounded,Onest,sans-serif;font-weight:700;font-size:30px;letter-spacing:-.5px;line-height:1.1}
+.sub{color:var(--mute);margin-top:8px;font-size:14px}
+.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:20px 0 14px}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;cursor:pointer;text-align:left;font:inherit;color:inherit}
+.tile.on{border-color:var(--coffee);box-shadow:inset 0 0 0 1px var(--coffee)}
+.tile b{display:block;font-family:Unbounded,Onest,sans-serif;font-size:26px;line-height:1.1}
+.tile span{color:var(--mute);font-size:13px}
+.tile.y b{color:var(--yes)}.tile.m b{color:var(--mid)}.tile.n b{color:var(--no)}
+.four{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;font-size:14px;margin-bottom:16px}
+.four b{color:var(--coffee)}
+.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:6px 0 12px}
+.bar .lbl{color:var(--mute);font-size:13px;margin-right:2px}
+.chip{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:6px 12px;font:inherit;font-size:13px;cursor:pointer}
+.chip.on{background:var(--coffee);border-color:var(--coffee);color:var(--bg)}
+input[type=search]{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:7px 14px;font:inherit;font-size:13px;min-width:200px}
+.scroll{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--card)}
+table{border-collapse:collapse;width:100%;min-width:1100px}
+th,td{text-align:left;vertical-align:top;padding:9px 10px;border-bottom:1px solid var(--line);font-size:13.5px}
+th{background:var(--head);color:var(--mute);font-weight:500;font-size:12px;text-transform:uppercase;letter-spacing:.3px;position:sticky;top:0;z-index:1}
+td.m,th.m{position:sticky;left:0;background:var(--card);z-index:2;min-width:170px;max-width:190px}
+th.m{background:var(--head);z-index:3}
+td.m b{display:block;font-weight:700;font-size:14px}
+td.m i{font-style:normal;color:var(--mute);font-size:12px}
+tr.g td{background:var(--head);font-family:Unbounded,Onest,sans-serif;font-weight:700;font-size:14px;color:var(--coffee);padding:12px 10px;position:static}
+tr.g td span{font-family:Onest,sans-serif;font-weight:400;color:var(--mute);font-size:12.5px;margin-left:8px}
+.ex b{font-weight:700}
+.c{color:var(--mute);font-size:12px}
+.num{font-variant-numeric:tabular-nums;min-width:96px}
+td.v{min-width:150px}td.r{min-width:150px}
+.pill{display:inline-block;border-radius:6px;padding:2px 7px;font-size:12px;font-weight:700}
+.p0{background:var(--yes-bg);color:var(--yes)}.p1{background:var(--mid-bg);color:var(--mid)}.p2{background:var(--no-bg);color:var(--no)}
+.fitc{min-width:150px}.fitc .why{margin-top:5px;font-size:12.5px;color:var(--mute)}
+td.s{min-width:170px}
+.src{display:inline-block;width:7px;height:7px;border-radius:50%;margin-left:4px;vertical-align:1px}
+.src.p{background:var(--mute)}.src.r{border:1.5px solid var(--mute)}
+td.mo{display:none}
+@media (min-width:1180px){.scroll{overflow:visible}}
+.legend{color:var(--mute);font-size:12.5px;margin:0 0 10px}
+.foot{color:var(--mute);font-size:12.5px;margin-top:14px;line-height:1.5}
+.empty{padding:24px;color:var(--mute);text-align:center}
+@media (max-width:720px){
+  body{padding:16px 16px 40px;font-size:15px}
+  h1{font-size:21px}
+  .sub{font-size:13px;margin-top:6px}
+  .tiles{grid-template-columns:repeat(4,1fr);gap:6px;margin:14px 0 10px}
+  .tile{padding:8px 8px;border-radius:12px}
+  .tile b{font-size:20px}
+  .tile span{font-size:11px;line-height:1.2;display:block}
+  .four{display:none}
+  .chip{padding:10px 14px}
+  input[type=search]{min-width:0;width:100%;padding:10px 14px;font-size:15px}
+  .scroll{overflow:visible;border:0;background:none}
+  table{min-width:0}
+  thead{display:none}
+  table,tbody,td{display:block;width:100%}
+  tr{display:flex;flex-direction:column;position:relative;background:var(--card);border:1px solid var(--line);border-radius:14px;margin-bottom:10px;padding:12px 14px}
+  tr.g{display:block;background:none;border:0;padding:14px 0 6px;margin:0}
+  tr.g td{background:none;padding:0;font-size:15px}
+  tr.g td span{display:block;margin:3px 0 0}
+  td{border:0;padding:0;font-size:15px}
+  td.m,th.m{position:static;min-width:0;max-width:none;background:none;padding-right:84px;order:0}
+  td.m b{font-size:16px}
+  td.s{order:1;min-width:0;margin:6px 0 2px}
+  td.fitc{order:2;min-width:0}
+  td.fitc .pill{position:absolute;right:14px;top:12px}
+  td.fitc .why{margin:0 0 8px;color:var(--coffee);font-size:13.5px}
+  td.ex,td[data-l="Где · когда"],td.num{display:none}
+  td.mo{display:block}
+  td.meta{order:3;font-size:13.5px;padding:6px 0;border-top:1px dashed var(--line)}
+  td.meta b{font-weight:600}
+  td.v,td.r{order:4;min-width:0}
+  td.r{order:6}
+  td.pills{order:5;padding:6px 0}
+  td[data-l]{display:flex;gap:10px;padding:5px 0;border-top:1px dashed var(--line);font-size:13.5px}
+  td[data-l]::before{content:attr(data-l);flex:0 0 78px;color:var(--mute);font-size:12px;padding-top:1px}
+  td.ex,td[data-l="Где · когда"],td.num{display:none}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>Карта бизнес-моделей «Кофе»</h1>
+<div class="sub">36 моделей из исследований 236–239 · мир и Россия · что подходит нам · 30.10.2026</div>
+
+<div class="tiles" id="tiles"></div>
+<div class="four">Любая модель — 4 вопроса: <b>кто клиент</b> · <b>что ему ценно</b> · <b>как доставляем</b> · <b>кто платит, за что и как часто</b>. Модели ниже отличаются прежде всего тем, <b>кто платит</b> — по этому они и сгруппированы.</div>
+
+<div class="bar"><span class="lbl">Группировать:</span>
+  <button class="chip on" data-g="grp">кто платит</button>
+  <button class="chip" data-g="fit">подходит нам</button>
+  <button class="chip" data-g="cap">деньги на старт</button>
+  <button class="chip" data-g="speed">первая выручка</button>
+</div>
+<div class="bar"><input type="search" id="q" placeholder="поиск: страна, компания"></div>
+<div class="legend">Плитки сверху — фильтр. <span class="src p"></span> цифра из первоисточника · <span class="src r"></span> пересказ или оценка</div>
+
+<div class="scroll"><table>
+<thead><tr><th class="m">Модель</th><th>Нам</th><th>Суть в одну фразу</th><th>Пример</th><th>Страна · год</th><th>Масштаб</th><th>Деньги на старт</th><th>Первая выручка</th><th>Главный риск</th></tr></thead>
+<tbody id="tb"></tbody>
+</table></div>
+
+<div class="foot">
+● — цифра из первоисточника (отчёт, сайт компании, закон) · <span class="src r"></span> — пересказ СМИ или оценка.<br>
+«Нам» — оценка для наших условий: Сергей жарит Эфиопию по 1 250 ₽/кг, Пермь, без капитала, тёплый круг и общины, IT у партнёров. Кандидат, а не решение — выбор на встрече 03.11.<br>
+Кофе в упаковке маркируется «Честным знаком» с 01.06.2026 — это касается почти всех моделей с пачками. Подробности и источники — в сводах исследований 236–239.
+</div>
+</div>
+
+<script>
+const G={
+ pre:["Покупатель платит вперёд","предзаказ, клуб, группа — деньги приходят до закупки"],
+ cause:["Покупатель платит ради цели","община, миссия, благотворительность"],
+ b2c:["Покупатель платит за свой кофе","бренд, магазин, подписка, рекомендации"],
+ b2b:["Платит компания","подарки, офисы, кофейни, своя марка"],
+ chain:["Звенья цепочки и инфраструктура","импорт, франшиза, софт, обучение"]
+};
+const FIT=["берём","потом","не берём"];
+const CAP=["≈ 0","мало (до 300 тыс. ₽)","много"];
+const SPD=["дни–недели","1–3 месяца","полгода и дольше"];
+// g группа · n модель · k паттерн · s суть · ex пример · c страна · y год · v масштаб · cap 0/1/2 · sp 0/1/2 · r риск · f 0/1/2 · w почему · src p/r
+const D=[
+ {g:"pre",n:"Клуб-предзаказ партии",k:"Crowdfunding / pre-order",s:"Собираем оплаты, потом жарим ровно под заказ",ex:"Pebble · TYPICA",c:"США · Япония",y:"2012 · 2019",v:"$10,3 млн от 68 929 чел. · лоты от 60 кг, ¥1,55 млрд инвестиций",cap:0,sp:0,r:"взять деньги под незакупленный товар (Bonaverde закрылась)",f:0,w:"деньги вперёд снимают «нет денег на старт»",src:"p"},
+ {g:"pre",n:"Двор / группа соседей",k:"Group buying",s:"Лидер дома или офиса собирает заказ 7–10 семей, выдача у него",ex:"Seikatsu Club · Xingsheng Youxuan",c:"Япония · Китай",y:"1965 · 2009",v:"341 тыс. членов, ¥82 млрд (2012) · 10 млрд юаней (2019)",cap:0,sp:0,r:"урезать награду лидеру — лидеры уходят",f:0,w:"дёшево, тёплый круг, лидеру — пачка кофе",src:"p"},
+ {g:"pre",n:"Членство с взносом",k:"Membership",s:"Платишь за год участия — получаешь лучшую цену и доступ",ex:"Costco",c:"США",y:"1983",v:"взносы $4,8 млрд ≈ 65 % прибыли, продлевают 90 % (2024)",cap:0,sp:1,r:"взнос без явной выгоды не платят",f:1,w:"после первой проверки спроса",src:"p"},
+ {g:"pre",n:"Усынови дерево",k:"Adopt-a-tree",s:"Платишь за год за «своё» дерево — получаешь его урожай",ex:"CrowdFarming",c:"Испания",y:"2017",v:"€65 млн, 287 тыс. «усыновлений» (2024)",cap:0,sp:1,r:"неурожай; нужна ферма по имени",f:1,w:"если Сергей знает ферму в Эфиопии",src:"r"},
+ {g:"pre",n:"Доля партии до прихода",k:"En primeur",s:"Покупаешь часть партии до прихода контейнера дешевле",ex:"Вина Бордо",c:"Франция",y:"XVII в.",v:"кампания 2024: цены −10 %",cap:0,sp:1,r:"если потом не дороже — не покупают",f:1,w:"годится под контейнер Сергея",src:"r"},
+ {g:"pre",n:"Подписка на урожай фермы",k:"CSA",s:"Платишь за сезон вперёд, берёшь, что выросло",ex:"Фермы CSA",c:"США",y:"1986",v:"7 244 фермы, $225 млн (2020); было 12 617",cap:0,sp:1,r:"уходят 40–55 % подписчиков за год",f:2,w:"нет выбора — покупатели уходят",src:"p"},
+ {g:"pre",n:"Потребкооператив",k:"Co-op",s:"Покупатели — пайщики, закупают вместе для себя",ex:"Park Slope Food Coop",c:"США",y:"1973",v:"16,2 тыс. членов, наценка 25 % (2026)",cap:1,sp:2,r:"юрформа и налоги, участники должны работать",f:2,w:"долго и сложно — не сейчас",src:"p"},
+
+ {g:"cause",n:"Кофе общины",k:"Faith-based channel",s:"Община подаёт и продаёт кофе, часть идёт на её дело",ex:"Equal Exchange Interfaith",c:"США",y:"1996",v:"11 000 общин, $8 млн, ≈ 20 % выручки кооператива",cap:0,sp:0,r:"доля общине — только по уставу, к юристу",f:0,w:"в России регулярного такого нет, Эфиопия — христианская страна",src:"p"},
+ {g:"cause",n:"Продажа для сбора средств",k:"Fundraising sale",s:"Группа продаёт пачки знакомым и оставляет себе часть",ex:"Java Joy · Girl Scouts",c:"США",y:"— · 1917",v:"группе $8–11 с пачки (38–46 %) · отряду 12–20 %, ~200 млн коробок",cap:0,sp:0,r:"при нашей марже 30 % отдать нечем — нужна цена выше",f:1,w:"только с отдельной ценой «пачки с целью»",src:"p"},
+ {g:"cause",n:"Кофейная церемония-вечер",k:"Experience selling",s:"Вечер эфиопской церемонии, гости покупают пачки на месте",ex:"Tearfund",c:"Великобритания",y:"—",v:"нет данных",cap:0,sp:0,r:"зависит от ведущих",f:0,w:"дёшево, продажа на месте без сети",src:"r"},
+ {g:"cause",n:"Бренд с миссией",k:"Mission brand",s:"Кофе продаётся историей и делом, которому помогает",ex:"Pura Vida · Land of a Thousand Hills",c:"Коста-Рика · Руанда / США",y:"1998 · 2006",v:"школа на 400+ детей, клиника 7 000+ пациентов",cap:0,sp:1,r:"миссия без экономики не живёт",f:1,w:"как история бренда, не как модель денег",src:"r"},
+ {g:"cause",n:"Фиксированные ₽ с пачки",k:"Robin Hood",s:"С каждой пачки — фиксированная сумма на один открытый проект",ex:"Patagonia",c:"США",y:"2022",v:"98 % акций фонду, ~$100 млн в год из прибыли",cap:0,sp:0,r:"обещание больше маржи",f:1,w:"фиксированные рубли, не процент",src:"p"},
+ {g:"cause",n:"«Один за один»",k:"Buy one give one",s:"Купил одну — вторую дарим нуждающимся",ex:"TOMS",c:"США",y:"2006",v:"100 млн пар; долг ≈ $300 млн, компания у кредиторов (2019)",cap:1,sp:1,r:"обещание дороже маржи",f:2,w:"разорительно",src:"p"},
+ {g:"cause",n:"Подвешенный кофе",k:"Pay it forward",s:"Платишь за чашку незнакомцу",ex:"Неаполь · «Кофеин»",c:"Италия · Россия",y:"XIX в. · 2013",v:"700+ чашек за пару лет",cap:0,sp:1,r:"масштаба нет",f:2,w:"не про продажу пачек",src:"r"},
+
+ {g:"b2c",n:"Свой онлайн-магазин свежей обжарки",k:"E-commerce / D2C",s:"Продаём свежую обжарку напрямую со своей маркой",ex:"Tasty Coffee · Torrefacto",c:"Россия",y:"2007 · 2013",v:"6,9 млрд ₽, +67 % (2025) · 42,5 млн ₽ (2014)",cap:1,sp:0,r:"покупатель не вернётся: повтор 8,5 % за 30 дней",f:0,w:"ядро, если повтор ≥ 30 % за 60 дней",src:"p"},
+ {g:"b2c",n:"Рекомендация в один уровень",k:"Referral",s:"Другу скидка, тому, кто привёл, — подарок",ex:"Dropbox · Tasty",c:"США · Россия",y:"2010 · —",v:"+60 % регистраций · другу −10 %, 5 % кешбэк",cap:0,sp:0,r:"награда больше маржи",f:0,w:"канал, а не модель; награда — кофе",src:"p"},
+ {g:"b2c",n:"Подписка",k:"Subscription",s:"Кофе приходит сам раз в месяц",ex:"Trade · Atlas · Coffis",c:"США · Россия",y:"2015–2018",v:"Atlas ≈ $22 млн/год; отток ≈ 20 % в месяц",cap:0,sp:1,r:"уходят быстро, растёт медленно",f:1,w:"после проверки повтора",src:"p"},
+ {g:"b2c",n:"Лидер с комиссией",k:"Social commerce",s:"Человек продаёт своим, получает процент только с их покупок",ex:"Meituan Youxuan · Super",c:"Китай · Индонезия",y:"2020 · 2018",v:"20 млн заказов в день за 5 месяцев",cap:0,sp:0,r:"урезали комиссию — лидеры ушли",f:1,w:"только один уровень, без взноса",src:"r"},
+ {g:"b2c",n:"Игра за покупки",k:"Gamification",s:"За покупки и приглашения растёт дерево — созревает пачка",ex:"Pinduoduo «ферма»",c:"Китай",y:"2018",v:"до 60 млн игроков в день",cap:0,sp:1,r:"дорогая разработка зря, если нет повтора",f:1,w:"после повтора, IT есть",src:"r"},
+ {g:"b2c",n:"Дропы редких лотов",k:"Scarcity / drops",s:"30 пачек редкого лота по расписанию",ex:"Supreme",c:"США",y:"1994",v:"нет данных по кофе",cap:0,sp:0,r:"нужна аудитория",f:1,w:"от 100 человек в базе",src:"r"},
+ {g:"b2c",n:"Маркетплейсы",k:"Marketplace seller",s:"Пачки на Ozon и Wildberries",ex:"Tasty",c:"Россия",y:"—",v:"15 % продаж Tasty; комиссия ≈ 30 %",cap:1,sp:1,r:"при закупке 1 250 — продажа в ноль",f:1,w:"только витрина",src:"r"},
+ {g:"b2c",n:"Многоуровневая сеть",k:"MLM",s:"Платят за привлечённых по многим линиям",ex:"Organo Gold · Yunji",c:"Канада · Китай",y:"2008 · 2015",v:"Yunji оштрафован, выручка упала вдвое; 47 % участников MLM в убытке",cap:0,sp:0,r:"ст. 172.2 УК, сеть съедает маржу",f:2,w:"на сеть уходит больше, чем зарабатывает компания",src:"p"},
+
+ {g:"b2b",n:"Подарок с выбором",k:"Gifting platform",s:"Компания платит только за забранные подарки, получатель выбирает сам",ex:"Snappy",c:"Израиль / США",y:"2015",v:"$30–50 млн (оценка)",cap:1,sp:0,r:"нужно юрлицо до заказов (ООО ≈ 09.11)",f:0,w:"быстрые деньги, сезон до 10.12",src:"r"},
+ {g:"b2b",n:"Своя марка для кафе, салонов, отелей",k:"Whitelabel",s:"Их логотип на нашем кофе",ex:"SOLO · BACCA · RoastMix",c:"Россия",y:"—",v:"от 10 кг / 100 пачек; в США своя марка 20,7 % продаж (2024)",cap:0,sp:0,r:"кто производитель для маркировки",f:0,w:"сбыт излишка Сергея",src:"r"},
+ {g:"b2b",n:"Дрип-пакеты к подаркам",k:"Add-on",s:"Пробники и наборы для подарков и знакомства",ex:"Cocar · LBRC",c:"Россия",y:"—",v:"11 ₽ за пакет от 500 шт.",cap:0,sp:0,r:"тираж и маркировка",f:0,w:"к подаркам и как пробник",src:"p"},
+ {g:"b2b",n:"Опт кофейням",k:"Wholesale",s:"Зерно кофейням и магазинам чая",ex:"Ingresso · Counter Culture",c:"Россия · США",y:"— · 1995",v:"25 т и 40 млн ₽ в месяц, 100+ кофеен",cap:0,sp:1,r:"ценовая война, нужен сервис",f:1,w:"specialty-кофейням по 1 600–1 800",src:"p"},
+ {g:"b2b",n:"Наборы через каталоги подарков",k:"Distributor",s:"Поставляем, продают другие",ex:"gifts.ru («Проект 111»)",c:"Россия",y:"—",v:"25 кофейных наборов 90–2 704 ₽",cap:0,sp:1,r:"их наценка режет нашу маржу",f:1,w:"второй канал подарков",src:"p"},
+ {g:"b2b",n:"Кофе как льгота сотрудникам",k:"Benefit platform",s:"Сотрудник выбирает пачку за баллы работодателя",ex:"BENEFACTORY",c:"Россия",y:"—",v:"440+ льгот, кофе нет",cap:0,sp:1,r:"вход на платформу",f:1,w:"пустое место на рынке",src:"r"},
+ {g:"b2b",n:"Офисам: машина бесплатно",k:"Office coffee service",s:"Машина бесплатно, офис покупает зерно",ex:"Италко",c:"Россия (и Пермь)",y:"—",v:"от 3 кг в месяц ≈ 1 010 ₽/кг",cap:1,sp:0,r:"цена ниже нашей закупки",f:2,w:"наш кофе дороже офисных смесей",src:"r"},
+ {g:"b2b",n:"Вендинг и микромаркеты",k:"Unattended retail",s:"Автоматы и холодильники в офисах",ex:"Briskly · Uvenco",c:"Россия",y:"—",v:"рынок 130 млрд ₽ (2025); 2 000+ микромаркетов",cap:2,sp:1,r:"берут дешёвое зерно",f:2,w:"не наш покупатель",src:"p"},
+
+ {g:"chain",n:"Импорт зелёного зерна",k:"Trading",s:"Везём контейнер и продаём обжарщикам",ex:"Royal Coffee · обжарщик vc.ru",c:"США · Россия",y:"—",v:"контейнер 19 т ≈ 12,7 млн ₽, в обороте ≈ 66 млн",cap:2,sp:2,r:"курс, биржа, заморозка денег",f:2,w:"это роль Сергея",src:"p"},
+ {g:"chain",n:"Прямая торговля с фермой",k:"Direct trade",s:"Покупаем у фермы и открыто пишем цену",ex:"Counter Culture",c:"США",y:"1995",v:"$4,18 за фунт при бирже $3,39, 9 партнёров в Эфиопии",cap:1,sp:2,r:"нужна прослеживаемость",f:1,w:"как история бренда",src:"p"},
+ {g:"chain",n:"Программа лояльности как продукт",k:"SaaS",s:"Продаём обжарщикам и кофейням готовую программу",ex:"UDS · Quick Resto",c:"Россия",y:"—",v:"4 000–10 400 ₽ в месяц",cap:1,sp:2,r:"рынок занят",f:1,w:"сила партнёров в IT, проверить интервью",src:"p"},
+ {g:"chain",n:"Обучение и дегустации",k:"Experience / education",s:"Курсы бариста, каппинги, дегустации",ex:"Ingresso · ProfCoffee",c:"Россия (и Пермь)",y:"—",v:"22 000 ₽ за 2 дня · 5–10 тыс. ₽",cap:1,sp:1,r:"мало людей",f:1,w:"как канал продаж",src:"p"},
+ {g:"chain",n:"Франшиза кофеен",k:"Franchising",s:"Продаём право открыть точку под маркой",ex:"Coffee Like · Cofix",c:"Россия",y:"2013 · 2015",v:"закрылись 44 из 164 точек · 191 кофейня",cap:2,sp:2,r:"место, аренда > 15 % оборота",f:2,w:"нужен капитал и проверенная точка",src:"p"},
+ {g:"chain",n:"Капсулы",k:"Razor and blade",s:"Машина дёшево, капсулы — всю жизнь",ex:"Nespresso",c:"Швейцария",y:"1986",v:"тираж от 5–10 тыс. капсул",cap:2,sp:2,r:"тираж и техника",f:2,w:"не по деньгам",src:"r"}
+];
+let grp="grp",flt="all",q="";
+const esc=s=>String(s).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+function key(d){return grp==="grp"?d.g:grp==="fit"?d.f:grp==="cap"?d.cap:d.sp}
+function title(k){
+ if(grp==="grp")return G[k];
+ if(grp==="fit")return[FIT[k],["подходят сейчас","после первой проверки или как канал","не по деньгам, закону или покупателю"][k]];
+ if(grp==="cap")return["Деньги на старт: "+CAP[k],""];
+ return["Первая выручка: "+SPD[k],""];
+}
+function render(){
+ const list=D.filter(d=>(flt==="all"||String(d.f)===flt)&&(!q||JSON.stringify(d).toLowerCase().includes(q)));
+ const order=grp==="grp"?Object.keys(G):[0,1,2];
+ let h="";
+ for(const k of order){
+  const rows=list.filter(d=>String(key(d))===String(k)).sort((a,b)=>a.f-b.f);
+  if(!rows.length)continue;
+  const [t,s]=title(k);
+  h+=`<tr class="g"><td colspan="9">${esc(t)}<span>${esc(s)} · ${rows.length}</span></td></tr>`;
+  for(const d of rows){
+   h+=`<tr><td class="m"><b>${esc(d.n)}</b><i>${esc(d.k)}</i></td>`+
+   `<td class="fitc"><span class="pill p${d.f}">${FIT[d.f]}</span><div class="why">${esc(d.w)}</div></td>`+
+   `<td class="s">${esc(d.s)}</td>`+
+   `<td class="ex" data-l="Пример"><b>${esc(d.ex)}</b></td><td data-l="Где · когда">${esc(d.c)}<div class="c">${esc(d.y)}</div></td>`+
+   `<td class="v" data-l="Масштаб"><span>${esc(d.v)}<span class="src ${d.src}"></span></span></td>`+
+   `<td class="num" data-l="На старт"><span class="pill p${d.cap}">${CAP[d.cap]}</span></td>`+
+   `<td class="num" data-l="Выручка"><span class="pill p${d.sp}">${SPD[d.sp]}</span></td>`+
+   `<td class="mo meta"><b>${esc(d.ex)}</b> — ${esc(d.c)}, ${esc(d.y)}</td>`+
+   `<td class="mo pills"><span class="pill p${d.cap}">старт ${CAP[d.cap]}</span> <span class="pill p${d.sp}">выручка: ${SPD[d.sp]}</span></td>`+
+   `<td class="r" data-l="Главный риск">${esc(d.r)}</td></tr>`;
+  }
+ }
+ document.getElementById("tb").innerHTML=h||`<tr><td colspan="9" class="empty">Ничего не нашлось · <a href="#" onclick="q='';flt='all';document.getElementById('q').value='';document.querySelectorAll('[data-f]').forEach(x=>x.classList.toggle('on',x.dataset.f==='all'));render();return false">сбросить</a></td></tr>`;
+}
+function tiles(){
+ const c=[0,1,2].map(i=>D.filter(d=>d.f===i).length);
+ document.getElementById("tiles").innerHTML=
+ `<button class="tile on" data-f="all"><b>${D.length}</b><span>все модели</span></button>`+
+ `<button class="tile y" data-f="0"><b>${c[0]}</b><span>берём сейчас</span></button>`+
+ `<button class="tile m" data-f="1"><b>${c[1]}</b><span>потом или канал</span></button>`+
+ `<button class="tile n" data-f="2"><b>${c[2]}</b><span>не берём</span></button>`;
+}
+document.querySelectorAll("[data-g]").forEach(b=>b.onclick=()=>{grp=b.dataset.g;document.querySelectorAll("[data-g]").forEach(x=>x.classList.toggle("on",x===b));render()});
+document.getElementById("q").oninput=e=>{q=e.target.value.trim().toLowerCase();render()};
+tiles();
+document.querySelectorAll("[data-f]").forEach(b=>b.onclick=()=>{flt=b.dataset.f;document.querySelectorAll("[data-f]").forEach(x=>x.classList.toggle("on",x===b));render()});
+render();
+</script>
+</body>
+</html>
