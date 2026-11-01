@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<title>Улей для «Кофе»</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;700&family=Unbounded:wght@500;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Схема-документ: одна колонка ~ 68 знаков, широкие схемы и таблицы — в своих прокрутках. Акцент — зелёное (сырое) зерно. */
+:root{
+  --bg:#f6f7f3; --surface:#ffffff; --ink:#1d2320; --muted:#5c665f; --line:#d5dbd2;
+  --accent:#4f6b23; --accent-soft:#e7eedb;
+  --warn:#9a5b00; --warn-soft:#fbefd9;
+  --stop:#a3302a; --stop-soft:#f8e3e1;
+  --f-display:"Unbounded","Onest",system-ui,sans-serif;
+  --f-body:"Onest",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#141815; --surface:#1c211d; --ink:#e6ebe4; --muted:#9aa59c; --line:#323a34;
+  --accent:#a9c96b; --accent-soft:#273220; --warn:#e8b25c; --warn-soft:#33281a; --stop:#ef8a82; --stop-soft:#3a2120; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#141815; --surface:#1c211d; --ink:#e6ebe4; --muted:#9aa59c; --line:#323a34;
+  --accent:#a9c96b; --accent-soft:#273220; --warn:#e8b25c; --warn-soft:#33281a; --stop:#ef8a82; --stop-soft:#3a2120; color-scheme:dark}
+body{background:var(--bg);color:var(--ink);font:16px/1.6 var(--f-body);}
+.wrap{max-width:1000px;margin:0 auto;padding-block:32px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:48px}
+.prose{max-width:68ch}
+h1,h2{font-family:var(--f-display);text-wrap:balance;line-height:1.2;margin:0}
+h1{font-size:clamp(28px,5vw,44px);font-weight:700;letter-spacing:-.01em}
+h2{font-size:clamp(20px,3vw,26px);font-weight:500}
+h3{font-size:17px;margin:0}
+p{margin:0}
+.stack{display:grid;gap:14px}
+.eyebrow{font:600 12px/1 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.lead{font-size:19px;color:var(--ink)}
+.status{display:inline-flex;gap:8px;align-items:center;font:500 13px/1 var(--f-mono);color:var(--muted);flex-wrap:wrap}
+.pill{border:1px solid var(--line);border-radius:999px;padding:6px 10px;background:var(--surface)}
+.pill.plan{border-color:var(--accent);color:var(--accent)}
+code,.mono{font-family:var(--f-mono);font-size:.88em}
+a{color:var(--accent)}
+a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.ten{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.ten > div{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px;display:grid;gap:6px;align-content:start;min-width:0}
+.ten b{font-family:var(--f-display);font-weight:500;font-size:15px}
+.ten p{color:var(--muted);font-size:15px}
+
+figure{margin:0;display:grid;gap:10px}
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+.scroll svg{display:block;min-width:820px;width:100%;height:auto}
+figcaption{color:var(--muted);font-size:14px;max-width:80ch}
+svg text{font-family:var(--f-body)}
+svg .t{font-size:13px;fill:var(--ink)}
+svg .s{font-size:11.5px;fill:var(--muted)}
+svg .h{font-size:13px;font-weight:700;fill:var(--ink)}
+svg .lab{font-size:11px;fill:var(--muted);font-family:var(--f-mono)}
+svg .box{fill:var(--surface);stroke:var(--line);stroke-width:1.3}
+svg .boxa{fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.5}
+svg .boxw{fill:var(--warn-soft);stroke:var(--warn);stroke-width:1.5}
+svg .boxs{fill:var(--stop-soft);stroke:var(--stop);stroke-width:1.3;stroke-dasharray:5 4}
+svg .zone{fill:none;stroke:var(--accent);stroke-width:1.3;stroke-dasharray:6 5}
+svg .dash{stroke-dasharray:5 4}
+svg .ln{stroke:var(--muted);stroke-width:1.4;fill:none}
+svg .lnw{stroke:var(--warn);stroke-width:1.6;fill:none}
+svg .ar{fill:var(--muted)}
+svg .arw{fill:var(--warn)}
+svg .ws{fill:var(--warn)}
+svg .ss{fill:var(--stop)}
+
+ol.steps{list-style:none;counter-reset:s;margin:0;padding:0;display:grid;gap:0}
+ol.steps li{counter-increment:s;display:grid;grid-template-columns:44px 1fr;gap:12px;padding:14px 0;border-top:1px solid var(--line)}
+ol.steps li::before{content:counter(s);font:700 15px/32px var(--f-display);width:32px;height:32px;text-align:center;border-radius:50%;background:var(--accent-soft);color:var(--accent)}
+ol.steps li.w::before{background:var(--warn-soft);color:var(--warn)}
+ol.steps li > div{min-width:0;display:grid;gap:4px}
+ol.steps .who{font:600 12px/1.4 var(--f-mono);color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.quote{border-left:3px solid var(--line);padding-left:12px;color:var(--ink);font-style:italic}
+
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:640px;font-size:15px}
+th,td{text-align:left;vertical-align:top;padding:10px 12px;border-bottom:1px solid var(--line)}
+th{font:600 12px/1.3 var(--f-mono);text-transform:uppercase;letter-spacing:.06em;color:var(--muted);background:var(--bg)}
+tr:last-child td{border-bottom:0}
+td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+.chip{display:inline-block;font:600 11px/1 var(--f-mono);padding:4px 7px;border-radius:5px;white-space:nowrap}
+.c-ok{background:var(--accent-soft);color:var(--accent)}
+.c-w{background:var(--warn-soft);color:var(--warn)}
+.c-no{background:var(--stop-soft);color:var(--stop)}
+
+.agents{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.agent{border:1px solid var(--line);border-radius:10px;background:var(--surface);padding:16px;display:grid;gap:8px;align-content:start;min-width:0}
+.agent .path{font:12px/1.4 var(--f-mono);color:var(--muted);word-break:break-all}
+.agent ul{margin:0;padding-left:18px;color:var(--ink);font-size:15px;display:grid;gap:2px}
+.agent .no{color:var(--stop)}
+
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.opt{border:1px solid var(--line);border-radius:10px;background:var(--surface);padding:16px;display:grid;gap:8px;align-content:start;min-width:0}
+.opt.best{border:2px solid var(--accent)}
+.opt .tag{font:600 12px/1 var(--f-mono);color:var(--accent)}
+.opt ul{margin:0;padding-left:18px;font-size:15px;display:grid;gap:2px}
+
+.risks{display:grid;gap:10px}
+.risk{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start;padding:14px;border-radius:10px;background:var(--surface);border:1px solid var(--line)}
+.risk > div{min-width:0;display:grid;gap:4px}
+.risk p{color:var(--muted);font-size:15px}
+
+.forks{display:grid;gap:10px;counter-reset:f}
+.fork{padding:16px;border-radius:10px;border:1px solid var(--accent);background:var(--accent-soft);display:grid;gap:6px}
+.fork b{font-family:var(--f-display);font-weight:500}
+.foot{color:var(--muted);font-size:14px;border-top:1px solid var(--line);padding-top:16px;display:grid;gap:6px}
+@media (prefers-reduced-motion: reduce){*{scroll-behavior:auto}}
+</style>
+
+<div class="wrap">
+
+<header class="stack prose">
+  <span class="eyebrow">Разбор · свой «VelsAgents» · пример — «Кофе»</span>
+  <h1>Улей для «Кофе»</h1>
+  <p class="lead">Команда «Кофе» пишет задачи агентам в своём чате. У каждого человека свои права и свой лимит в рублях на ИИ. Каждый ход попадает в журнал. Рискованное агент делает только после кнопки владельца. Агенты живут на отдельной машине и не видят ни твоего ассистента, ни данных покупателей.</p>
+  <div class="status"><span class="pill plan">📄 план — ничего не собрано</span><span class="pill">размер L</span><span class="pill">2026-11-02</span><span class="pill">«Улей» — рабочее имя, можно сменить</span></div>
+</header>
+
+<section class="stack">
+  <span class="eyebrow">Главное за 10 секунд</span>
+  <div class="ten">
+    <div><b>Почти всё уже есть</b><p>Claude Code на сервере, бот-куратор в чатах проектов, хуки подтверждения, учёт трат, общий репозиторий с Тимофеем. Не хватает одного звена: привратника, который знает, кто пишет, что ему можно и сколько он уже потратил.</p></div>
+    <div><b>Две разные системы</b><p>Рабочее место команды из 4–5 человек — это агенты. Магазин и лояльность для 30–50 покупателей — обычный сайт или бот. Смешивать их нельзя: агенту с доступом к файлам не место рядом с телефонами покупателей.</p></div>
+    <div><b>Начать с Telegram</b><p>Ты, Тимофей и Соломон уже в чате «Кофе MLM» (Сергея там пока нет, куратор сейчас молчит, пока к нему не обратятся). Темы чата становятся агентами: «Склад», «План», «Продажи», «Секретарь». Веб-чат, как у Велса, — вторым шагом, на том же привратнике.</p></div>
+    <div><b>Нужно три решения</b><p>Что делаем первым, кто платит за ИИ и где это крутится. Без них сборку не начинаю. Подробнее — внизу страницы.</p></div>
+  </div>
+</section>
+
+<section class="stack">
+  <span class="eyebrow">Схема</span>
+  <h2>Кто куда пишет и где проходит граница</h2>
+  <figure>
+    <div class="scroll">
+    <svg viewBox="0 0 1000 600" role="img" aria-label="Люди команды Кофе пишут в Telegram или веб-чат. Привратник определяет, кто пишет, проверяет права и лимит, пишет журнал и запускает агента нужной темы в песочнице проекта. Агенты читают и пишут репозиторий Кофе и ходят к модели по ключу проекта. Рискованное уходит кнопкой владельцу. Ассистент Юлая и данные покупателей отделены, прохода туда нет.">
+      <defs>
+        <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="ar"/></marker>
+        <marker id="aw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="arw"/></marker>
+      </defs>
+
+      <!-- column labels -->
+      <text x="20" y="34" class="lab">ЛЮДИ</text>
+      <text x="230" y="34" class="lab">ДВЕРИ</text>
+      <text x="450" y="34" class="lab">ПРИВРАТНИК</text>
+      <text x="690" y="30" class="lab">ПЕСОЧНИЦА «КОФЕ»</text>
+
+      <!-- people -->
+      <rect x="20" y="50" width="160" height="42" rx="7" class="box"/>
+      <text x="32" y="69" class="h">Юлай</text><text x="32" y="84" class="s">разработка</text>
+      <rect x="20" y="102" width="160" height="42" rx="7" class="box"/>
+      <text x="32" y="121" class="h">Тимофей</text><text x="32" y="136" class="s">партнёр, сеть</text>
+      <rect x="20" y="154" width="160" height="42" rx="7" class="box"/>
+      <text x="32" y="173" class="h">Сергей «Кофе»</text><text x="32" y="188" class="s">поставки</text>
+      <rect x="20" y="206" width="160" height="42" rx="7" class="box"/>
+      <text x="32" y="225" class="h">Мусихин</text><text x="32" y="240" class="s">продажи в сети</text>
+      <rect x="20" y="258" width="160" height="42" rx="7" class="box dash"/>
+      <text x="32" y="277" class="h">Соломон</text><text x="32" y="292" class="s">агент Тимофея, в git</text>
+
+      <!-- people -> doors: bus -->
+      <path d="M180 71 H205 M180 123 H205 M180 175 H205 M180 227 H205 M205 71 V227" class="ln"/>
+      <path d="M205 117 H228" class="ln" marker-end="url(#a)"/>
+      <path d="M205 210 H228" class="ln dash" marker-end="url(#a)"/>
+
+      <!-- doors -->
+      <rect x="230" y="80" width="170" height="74" rx="8" class="boxa"/>
+      <text x="242" y="102" class="h">Telegram</text>
+      <text x="242" y="119" class="s">чат «Кофе MLM»,</text>
+      <text x="242" y="134" class="s">тема = агент</text>
+      <text x="242" y="148" class="lab">этап 1</text>
+      <rect x="230" y="190" width="170" height="74" rx="8" class="box dash"/>
+      <text x="242" y="212" class="h">Веб-чат</text>
+      <text x="242" y="229" class="s">личные и общие чаты,</text>
+      <text x="242" y="244" class="s">вход через Telegram</text>
+      <text x="242" y="258" class="lab">этап 2</text>
+
+      <!-- doors -> gate -->
+      <path d="M402 117 L448 140" class="ln" marker-start="url(#a)" marker-end="url(#a)"/>
+      <path d="M400 227 L448 200" class="ln dash" marker-end="url(#a)"/>
+
+      <!-- gatekeeper -->
+      <rect x="450" y="50" width="190" height="250" rx="10" class="boxa"/>
+      <text x="464" y="74" class="h">Привратник</text>
+      <text x="464" y="90" class="s">наш код, один процесс</text>
+      <line x1="464" y1="102" x2="626" y2="102" stroke="var(--line)"/>
+      <text x="464" y="124" class="t">1 · Кто пишет</text><text x="464" y="140" class="s">Telegram ID → человек</text>
+      <text x="464" y="166" class="t">2 · Что ему можно</text><text x="464" y="182" class="s">роль × папка × инструменты</text>
+      <text x="464" y="208" class="t">3 · Хватает ли лимита</text><text x="464" y="224" class="s">₽ в день на человека</text>
+      <text x="464" y="250" class="t">4 · Журнал</text><text x="464" y="266" class="s">кто, что, сколько стоило</text>
+      <text x="464" y="288" class="lab">очередь: 1–2 хода разом</text>
+
+      <!-- gate -> sandbox -->
+      <path d="M642 175 L688 175" class="ln" marker-start="url(#a)" marker-end="url(#a)"/>
+      <text x="645" y="166" class="lab">запуск</text>
+      <text x="645" y="192" class="lab">ответ</text>
+
+      <!-- sandbox -->
+      <rect x="690" y="40" width="290" height="280" rx="12" class="zone"/>
+      <text x="704" y="60" class="s">свой пользователь Linux, только «Кофе»</text>
+      <rect x="704" y="72" width="262" height="40" rx="7" class="box"/>
+      <text x="716" y="90" class="h">Склад</text><text x="716" y="104" class="s">остатки, заказы на обжарку</text>
+      <rect x="704" y="118" width="262" height="40" rx="7" class="box"/>
+      <text x="716" y="136" class="h">План</text><text x="716" y="150" class="s">расчёт премий по плану</text>
+      <rect x="704" y="164" width="262" height="40" rx="7" class="box"/>
+      <text x="716" y="182" class="h">Продажи</text><text x="716" y="196" class="s">тексты, ответы друзьям сети</text>
+      <rect x="704" y="210" width="262" height="40" rx="7" class="box"/>
+      <text x="716" y="228" class="h">Секретарь</text><text x="716" y="242" class="s">встреча → протокол и задачи</text>
+      <rect x="704" y="256" width="262" height="40" rx="7" class="box dash"/>
+      <text x="716" y="274" class="h">Разработчик</text><text x="716" y="288" class="s">магазин и сайт — только Юлай</text>
+
+      <!-- sandbox -> repo, model -->
+      <path d="M760 320 L760 378" class="ln" marker-end="url(#a)"/>
+      <text x="768" y="352" class="lab">читает, пишет, коммит</text>
+      <path d="M915 320 L915 378" class="ln" marker-end="url(#a)"/>
+      <text x="923" y="352" class="lab">ходы</text>
+      
+      <rect x="690" y="380" width="150" height="70" rx="8" class="box"/>
+      <text x="702" y="402" class="h">Репозиторий</text>
+      <text x="702" y="418" class="s">kofe-obshchee,</text>
+      <text x="702" y="433" class="s">папки по ролям</text>
+      <rect x="850" y="380" width="130" height="70" rx="8" class="box"/>
+      <text x="862" y="402" class="h">Модель Claude</text>
+      <text x="862" y="418" class="s">ключ «Кофе» — у</text>
+      <text x="862" y="433" class="s">прокси привратника</text>
+
+      <!-- gate -> journal page -->
+      <path d="M545 300 L545 378" class="ln" marker-end="url(#a)"/>
+      <rect x="450" y="380" width="190" height="70" rx="8" class="box"/>
+      <text x="462" y="402" class="h">Страница владельца</text>
+      <text x="462" y="418" class="s">журнал, расход по людям,</text>
+      <text x="462" y="433" class="s">лимиты</text>
+
+      <!-- risky -> confirm -->
+      <path d="M470 300 L398 380" class="lnw" marker-end="url(#aw)"/>
+      <text x="404" y="350" class="lab" style="fill:var(--warn)" text-anchor="end">рискованное</text>
+      <rect x="230" y="380" width="170" height="70" rx="8" class="boxw"/>
+      <text x="242" y="402" class="h">Подтверждение</text>
+      <text x="242" y="418" class="s">деньги, отправка людям,</text>
+      <text x="242" y="433" class="s">удаление, публикация</text>
+      <path d="M230 432 H10 V71 H18" class="lnw" marker-end="url(#aw)"/>
+      <path d="M10 123 H18" class="lnw" marker-end="url(#aw)"/>
+      <text x="24" y="424" class="lab" style="fill:var(--warn)">кнопка Юлаю или Тимофею</text>
+
+      <!-- separated systems -->
+      <line x1="20" y1="482" x2="980" y2="482" stroke="var(--stop)" stroke-width="1.5" stroke-dasharray="2 5"/>
+      <text x="20" y="504" class="lab" style="fill:var(--stop)">ГРАНИЦА · агенты «Кофе» сюда не ходят</text>
+      <rect x="20" y="516" width="300" height="66" rx="8" class="boxs"/>
+      <text x="34" y="540" class="h">Твой ассистент и «второй мозг»</text>
+      <text x="34" y="558" class="s">другая машина, другие ключи;</text>
+      <text x="34" y="573" class="s">общее — только через репозиторий</text>
+      <rect x="340" y="516" width="300" height="66" rx="8" class="boxs"/>
+      <text x="354" y="540" class="h">Магазин и данные покупателей</text>
+      <text x="354" y="558" class="s">30–50 человек пилота: телефоны, заказы;</text>
+      <text x="354" y="573" class="s">агенту — только обезличенные цифры</text>
+      <rect x="660" y="516" width="320" height="66" rx="8" class="boxs"/>
+      <text x="674" y="540" class="h">Пароли и ключи</text>
+      <text x="674" y="558" class="s">у привратника, агентам не видны;</text>
+      <text x="674" y="573" class="s">чтение .env закрыто на уровне системы</text>
+    </svg>
+    </div>
+    <figcaption>Пунктир — второй этап. Стрелки в обе стороны: вопрос туда, ответ обратно в чат. Агенты ходят к модели через прокси привратника, поэтому настоящего ключа у них нет. Соломон работает через общий репозиторий; в чат он пишет с аккаунта Тимофея, и привратник видел бы его как Тимофея (см. ловушки). Красная линия — граница: прохода через неё нет ни у одного агента «Кофе».</figcaption>
+  </figure>
+</section>
+
+<section class="stack">
+  <span class="eyebrow">Как проходит один ход</span>
+  <h2>Пример: Сергей сообщает о поставке</h2>
+  <ol class="steps">
+    <li><div><span class="who">Сергей · тема «Склад»</span><p class="quote">«Пришло 300 кг Бразилии. Обжарщик берёт 40 кг в день. Когда закроем предзаказы?»</p></div></li>
+    <li><div><span class="who">Привратник</span><p>По Telegram ID это Сергей, роль «Поставки». Ему открыта запись в <code>supply/</code> и чтение <code>orders/</code>. Сегодня потрачено 40 ₽ из 300. Пропускает и пишет строку в журнал.</p></div></li>
+    <li><div><span class="who">Агент «Склад»</span><p>Запускается в песочнице с папкой «Кофе». Читает остатки и обезличенный список предзаказов: 46 кг. Считает: обжарка займёт 2 дня, отгрузка — в четверг.</p></div></li>
+    <li><div><span class="who">Агент «Склад»</span><p>Обновляет <code>supply/stock.md</code> и коммитит. Отвечает в тему: «Остаток 254 кг. Предзаказы 46 кг закроем к четвергу, если обжарка начнётся завтра».</p></div></li>
+    <li class="w"><div><span class="who">Агент хочет больше</span><p>Предлагает написать покупателям, что заказ едет в четверг. Это отправка людям, поэтому шаг стоит, пока Тимофей или ты не нажмёте «✅ Отправить» под карточкой.</p></div></li>
+    <li><div><span class="who">Журнал</span><p>Строка: 01:12 · Сергей · «Склад» · ход 0,9 ₽ · правка <code>supply/stock.md</code> · рассылка ждёт подтверждения Тимофея.</p></div></li>
+    <li><div><span class="who">Вечером</span><p>Ты видишь на странице владельца, кто сколько потратил за день, что агенты поменяли в репозитории и что ждёт кнопки.</p></div></li>
+  </ol>
+  <p class="prose" style="color:var(--muted);font-size:15px">Цифры в примере придуманы для показа хода. Реальные остатки, мощность обжарщика и предзаказы в наших файлах не записаны.</p>
+</section>
+
+<section class="stack">
+  <span class="eyebrow">Права</span>
+  <h2>Кто что может</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>Кто</th><th>Агенты</th><th>Папки</th><th>Подтверждает</th><th>Лимит в день</th></tr></thead>
+    <tbody>
+      <tr><td><b>Юлай</b><br><span style="color:var(--muted);font-size:13px">хозяин системы</span></td><td>все + «Разработчик»</td><td>всё в «Кофе»</td><td><span class="chip c-ok">всё</span></td><td class="num">без потолка, сигнал</td></tr>
+      <tr><td><b>Тимофей</b></td><td>«План», «Продажи», «Секретарь», «Склад»</td><td>всё, кроме <code>dev/</code></td><td><span class="chip c-ok">рассылки, план</span></td><td class="num">≈ 500 ₽</td></tr>
+      <tr><td><b>Сергей «Кофе»</b></td><td>«Склад», «Секретарь»</td><td><code>supply/</code> запись, <code>orders/</code> чтение</td><td><span class="chip c-w">нет</span></td><td class="num">≈ 300 ₽</td></tr>
+      <tr><td><b>Мусихин</b></td><td>«Продажи», «План» (чтение)</td><td><code>sales/</code>, <code>plan/</code> чтение</td><td><span class="chip c-w">нет</span></td><td class="num">≈ 300 ₽</td></tr>
+      <tr><td><b>Соломон</b></td><td>не через чат</td><td>репозиторий, как сейчас</td><td><span class="chip c-no">никогда</span></td><td class="num">свой ключ Тимофея</td></tr>
+      <tr><td><b>Покупатели</b></td><td>нет</td><td>нет</td><td><span class="chip c-no">—</span></td><td class="num">—</td></tr>
+    </tbody>
+  </table></div>
+  <p class="prose" style="color:var(--muted);font-size:15px">Лимиты — моё предложение для старта, не договорённость. Права задаются системой (папки и список инструментов агента), а не просьбой в промпте: агент Сергея физически не может открыть <code>plan/</code>.</p>
+</section>
+
+<section class="stack">
+  <span class="eyebrow">Агенты «Кофе»</span>
+  <h2>Из чего сделан каждый агент</h2>
+  <p class="prose">Агент — это папка с инструкцией, список разрешённых инструментов и модель. Те же навыки и хуки, что у твоего ассистента, только урезанные.</p>
+  <div class="agents">
+    <div class="agent"><h3>Склад</h3><span class="path">agents/sklad · Sonnet · Read, Edit в supply/</span><ul><li>остатки, приход, заказы на обжарку</li><li>срок отгрузки по мощности обжарщика</li><li class="no">не пишет людям сам</li></ul></div>
+    <div class="agent"><h3>План</h3><span class="path">agents/plan · Sonnet · Read plan/, расчёты</span><ul><li>сколько получит участник по текущему плану вознаграждения</li><li>сравнение версий плана</li><li class="no">не меняет план без Тимофея</li></ul></div>
+    <div class="agent"><h3>Продажи</h3><span class="path">agents/prodazhi · Sonnet · Read, Write в sales/drafts</span><ul><li>тексты другу, ответы на возражения</li><li>подсказки по анкете покупателей</li><li class="no">только черновики</li></ul></div>
+    <div class="agent"><h3>Секретарь</h3><span class="path">agents/sekretar · Haiku · Write в notes/</span><ul><li>запись встречи → протокол, решения, задачи</li><li>сводка недели в чат</li><li class="no">личное и оценки людей не пишет</li></ul></div>
+    <div class="agent"><h3>Разработчик</h3><span class="path">agents/dev · Opus · Bash в dev/</span><ul><li>магазин, кабинет участника, лояльность</li><li>доступ только у Юлая</li><li class="no">без доступа к данным покупателей</li></ul></div>
+  </div>
+</section>
+
+<section class="stack">
+  <span class="eyebrow">Что берём из нашего</span>
+  <h2>Готовое у нас и куда оно идёт</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>Что у нас уже есть</th><th>Роль в «Улье»</th><th>Статус</th></tr></thead>
+    <tbody>
+      <tr><td>Бот-куратор в чатах проектов (<code>bin/project-chat</code>), чат «Кофе MLM» с темами</td><td>Дверь этапа 1: читает темы, отвечает от бота</td><td><span class="chip c-ok">✅ работает</span></td></tr>
+      <tr><td>Хуки: защита секретов, «неприкосновенное», стоп опасных команд</td><td>Ограждение песочницы</td><td><span class="chip c-ok">✅ работает у нас</span></td></tr>
+      <tr><td>Кнопки «✅ / ❌» и черновик вместо отправки</td><td>Подтверждение рискованного</td><td><span class="chip c-ok">✅ работает</span></td></tr>
+      <tr><td>Учёт трат за день (<code>bin/budget</code>), сигнал при $150</td><td>Основа лимита на человека; нужно делить по людям</td><td><span class="chip c-w">🛠 только общий счёт</span></td></tr>
+      <tr><td>Общий репозиторий <code>kofe-obshchee</code> с правилами</td><td>Память команды</td><td><span class="chip c-ok">✅ работает</span></td></tr>
+      <tr><td>Claude Agent SDK: проверка каждого инструмента перед запуском, своя папка, свой набор инструментов</td><td>Сердце исполнителя</td><td><span class="chip c-w">📄 по документации</span></td></tr>
+      <tr><td>Привратник: человек → права → лимит → журнал</td><td>Новое звено</td><td><span class="chip c-no">нет, собрать</span></td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section class="stack" id="ready">
+  <span class="eyebrow">Готовое в мире</span>
+  <h2>Можно ли не собирать с нуля</h2>
+  <p class="prose" id="ready-text">Готового открытого решения, которое закрывает всё сразу (несколько людей, права, лимит в рублях, журнал, подтверждения), нет. Есть куски. Самое короткое — свой тонкий привратник на официальном Claude Agent SDK: проверка инструментов, сессии, модель на чат и стоимость хода там уже есть.</p>
+  <div class="tbl"><table>
+    <thead><tr><th>Решение</th><th>Что даёт</th><th>Чего нет</th><th>Берём?</th></tr></thead>
+    <tbody>
+      <tr><td><a href="https://code.claude.com/docs/en/agent-sdk/overview" target="_blank" rel="noopener"><b>Claude Agent SDK</b></a><br><span class="mono" style="color:var(--muted)">Anthropic, MIT, обновлён 31.10</span></td><td>Проверка каждого инструмента до запуска (туда вешаем кнопку в Telegram), своя папка на агента, продолжение сессий, модель на запрос, стоимость каждого хода</td><td>Людей, прав и интерфейса — пишем сами</td><td><span class="chip c-ok">основа</span></td></tr>
+      <tr><td><a href="https://github.com/siteboon/claudecodeui" target="_blank" rel="noopener"><b>CloudCLI</b></a><br><span class="mono" style="color:var(--muted)">14,4 тыс. ★, AGPL, 31.10</span></td><td>Лучший веб-интерфейс над Claude Code: проекты, сессии, телефон</td><td>На своём сервере — только один человек; лимитов и журнала нет</td><td><span class="chip c-w">образец экрана</span></td></tr>
+      <tr><td><a href="https://docs.litellm.ai/docs/proxy/virtual_keys" target="_blank" rel="noopener"><b>LiteLLM</b></a><br><span class="mono" style="color:var(--muted)">62,5 тыс. ★, 01.11</span></td><td>Ключ на человека с бюджетом и журналом трат; Claude Code работает через него</td><td>Чата нет; нужна база Postgres — на 2 ГБ тесно</td><td><span class="chip c-w">на этапе 3</span></td></tr>
+      <tr><td><a href="https://www.librechat.ai/changelog/v0.8.8" target="_blank" rel="noopener"><b>LibreChat</b></a><br><span class="mono" style="color:var(--muted)">46,6 тыс. ★, MIT, 01.11</span></td><td>Вход, много людей, агенты, одобрение инструментов</td><td>Внутри не Claude Code, а свой движок; лимит в токенах; нужна MongoDB</td><td><span class="chip c-no">нет</span></td></tr>
+    </tbody>
+  </table></div>
+  <p class="prose" style="color:var(--muted);font-size:15px">Данные GitHub на 2026-11-02. Что CloudCLI на своём сервере работает только для одного человека, видно по его коду регистрации в открытом запросе на правку; основной код не открывал. AGPL значит: если отдавать его клиентам как сервис, исходники придётся открыть.</p>
+</section>
+
+<section class="stack">
+  <span class="eyebrow">Где крутится</span>
+  <h2>Три места, одно советую</h2>
+  <div class="opts">
+    <div class="opt best"><span class="tag">СОВЕТУЮ</span><h3>🅰 Отдельный сервер на 4 ГБ</h3><ul><li>Beget: 990 ₽ в месяц — цена апгрейда нашего сервера до 4 ГБ; отдельный — уточнить</li><li>Telegram с Beget режут, но у нас уже есть запасной путь; рядом нет твоих данных</li><li>счёт можно записать на «Кофе»</li><li>трата — решаешь ты</li></ul></div>
+    <div class="opt"><span class="tag">МОЖНО</span><h3>🅱 «Цех» (уже оплачен)</h3><ul><li>4 ядра, память 7,8 ГБ (свободно ~6,5), диск свободно ~9 ГБ</li><li>оттуда не открывается Telegram — нужен обходной туннель</li><li>там идёт монтаж Евы; выключает ли Иван машину на ночь — не знаем</li></ul></div>
+    <div class="opt"><span class="tag">НЕЛЬЗЯ</span><h3>🅲 Наш сервер</h3><ul><li>2 ГБ памяти, диск занят на 97 %</li><li>рядом твоя переписка, ключи и личные данные людей</li><li>чужие люди с агентами — слишком близко</li></ul></div>
+  </div>
+</section>
+
+<section class="stack">
+  <span class="eyebrow">Путь сборки</span>
+  <h2>Три этапа, у каждого — судья</h2>
+  <ol class="steps">
+    <li><div><span class="who">Этап 1 · Telegram</span><p><b>Привратник и одна тема.</b> Ты и Тимофей, тема «План», лимит, журнал файлом, подтверждение кнопкой. Готово, когда Тимофей 5 будних дней сам задаёт вопросы агенту, а проверка показывает, что агент не смог открыть чужую папку и прочитать ключи.</p></div></li>
+    <li><div><span class="who">Этап 2 · люди и темы</span><p><b>Сергей, Мусихин, все четыре агента.</b> Страница владельца: журнал и расход по людям. Готово, когда каждый хотя бы раз получил полезный ответ и ни один ход не прошёл мимо журнала.</p></div></li>
+    <li><div><span class="who">Этап 3 · веб и продукт</span><p><b>Веб-чат с личными и общими чатами.</b> Тот же привратник. После этого «Улей» можно показывать производствам как «ИИ-сотрудника отдела».</p></div></li>
+  </ol>
+  <p class="prose" style="color:var(--muted);font-size:15px">Сроки по замерам не назову: таких сборок у нас ещё не было. Судья каждого этапа — свежий агент и живой пользователь, не тот, кто собирал.</p>
+</section>
+
+<section class="stack">
+  <span class="eyebrow">Ловушки</span>
+  <h2>Где это может сломаться</h2>
+  <div class="risks">
+    <div class="risk"><span class="chip c-no">деньги</span><div><b>Чей ключ платит за ИИ</b><p>По правилам Anthropic нельзя пропускать запросы других людей через свою подписку Pro или Max: разрешён свой ключ API для своих людей, если счёт идёт владельцу ключа (<a href="https://code.claude.com/docs/en/legal-and-compliance" target="_blank" rel="noopener">условия Claude Code</a>, <a href="https://www.anthropic.com/legal/consumer-terms" target="_blank" rel="noopener">условия для подписок</a>). Наш нынешний шлюз за ключом держит пул аккаунтов, поэтому для команды «Кофе» его не берём: нужен свой ключ проекта с потолком в день.</p></div></div>
+    <div class="risk"><span class="chip c-no">закон</span><div><b>Данные покупателей</b><p>Телефоны и заказы 30–50 участников пилота — персональные данные. Нужны согласие, оператор (будущее ООО) и хранение в России. Агентам — только обезличенные цифры. Первоисточник закона ещё не сверял.</p></div></div>
+    <div class="risk"><span class="chip c-w">люди</span><div><b>Соломон пишет с аккаунта Тимофея</b><p>Привратник не отличит Тимофея от его агента, и Соломон получит права Тимофея, включая подтверждения. Нужно: либо отдельный аккаунт Соломону, либо Соломон работает только через репозиторий, как сейчас.</p></div></div>
+    <div class="risk"><span class="chip c-w">граница</span><div><b>Чужие сообщения как команды</b><p>Любой текст в общем чате может попытаться приказать агенту. Защита держится на системе: папка, список инструментов, кнопка на рискованное. Просьба в промпте её не заменяет.</p></div></div>
+    <div class="risk"><span class="chip c-w">время</span><div><b>Сборка ради сборки</b><p>Это инструмент для проекта, где сейчас идёт выбор названия и плана вознаграждения. Если команда не будет им пользоваться, этап 1 — потолок, дальше не строим.</p></div></div>
+  </div>
+</section>
+
+<section class="stack">
+  <span class="eyebrow">Решает Юлай</span>
+  <h2>Три развилки до сборки</h2>
+  <div class="forks">
+    <div class="fork"><b>0 · Нужно ли это Тимофею</b><p>Его никто не спрашивал. Сначала одна строка ему: «хочешь, чтобы команда работала с агентами в чате, с лимитами и журналом?» — и что он сделает первым. Нет интереса — не строим.</p></div>
+    <div class="fork"><b>А · Что первым</b><p>Рабочее место команды с агентами или магазин с лояльностью для покупателей. Советую рабочее место: магазин ждёт ООО, названия и юриста, а агенты помогают уже сейчас.</p></div>
+    <div class="fork"><b>Б · Кто платит</b><p>Счёт за ИИ и сервер — на «Кофе», а сама сборка — твоя работа для проекта. Это прямой повод для разговора с Тимофеем о деньгах за твою часть. До разговора — потолок бесплатных часов (предлагаю 6) и дата разговора о деньгах. Расход на модель: при лимитах из таблицы максимум около 1 100 ₽ в день на всех; реальный — замеров нет.</p></div>
+    <div class="fork"><b>В · Где крутится</b><p>🅰 отдельный сервер, 🅱 «Цех» или 🅲 подождать. Советую 🅰.</p></div>
+  </div>
+</section>
+
+<footer class="foot">
+  <p>Основа: пост Никиты Велса о VelsAgents (2026-11-01, только слова и скрины автора, продукт закрытый), документация Claude Agent SDK (проверка инструментов перед запуском, режимы прав), наши файлы проекта «Кофе» и сервера.</p>
+  <p>Статус: 📄 план. Ничего не собрано и не установлено. Размер L: до сборки нужны решение Юлая, два критика и что выключаем взамен. Страницу проверил приёмщик со свежим взглядом, правки внесены.</p>
+</footer>
+</div>
+
+</body>
+</html>
