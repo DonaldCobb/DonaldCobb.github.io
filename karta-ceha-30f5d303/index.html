@@ -1,0 +1,190 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><style>html{color-scheme:light}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style></head><body><title>Карта Цеха</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Onest:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Схема цеха: слои производства сверху вниз, как этажи; одна сигнальная оранжевая линия — путь задачи */
+:root {
+  --bg: #f4f6f8; --panel: #ffffff; --ink: #18202a; --muted: #5d6874; --line: #d6dde4;
+  --steel: #2f6680; --signal: #d9541a; --signal-soft: #fbe6dc; --ok: #2f7d4f; --warn: #a76a00; --stop: #b3261e;
+  --display: "Unbounded", "Onest", system-ui, sans-serif;
+  --body: "Onest", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #11161c; --panel: #19212a; --ink: #e5eaef; --muted: #9aa6b2; --line: #2c3744;
+  --steel: #6fb0cf; --signal: #ff7a3d; --signal-soft: #3a2216; --ok: #5cc28a; --warn: #e0a23a; --stop: #ef6b62; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #11161c; --panel: #19212a; --ink: #e5eaef; --muted: #9aa6b2; --line: #2c3744;
+  --steel: #6fb0cf; --signal: #ff7a3d; --signal-soft: #3a2216; --ok: #5cc28a; --warn: #e0a23a; --stop: #ef6b62; color-scheme: dark }
+* { box-sizing: border-box }
+body { background: var(--bg); color: var(--ink); font: 15px/1.55 var(--body); padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 28px 56px }
+.wrap { max-width: 980px; margin: 0 auto; display: grid; gap: 40px }
+h1, h2 { font-family: var(--display); text-wrap: balance; margin: 0; line-height: 1.15 }
+h1 { font-size: clamp(28px, 6vw, 44px); font-weight: 700 }
+h2 { font-size: 20px; font-weight: 500 }
+h3 { margin: 0; font-size: 15px; font-weight: 600 }
+p { margin: 0; max-width: 68ch }
+.eyebrow { font: 600 11px/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--muted) }
+.lead { font-size: 17px; color: var(--ink) }
+.lead b { color: var(--signal) }
+section { display: grid; gap: 16px }
+.muted { color: var(--muted) }
+.mono { font-family: var(--mono); font-variant-numeric: tabular-nums }
+
+/* hero */
+.hero { display: grid; gap: 14px }
+.io { display: grid; grid-template-columns: 1fr auto 1fr; gap: 12px; align-items: stretch; margin-top: 6px }
+.io > div { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; min-width: 0 }
+.io .arrow { display: grid; place-items: center; font: 700 22px var(--mono); color: var(--signal); background: none; border: 0; padding: 0 }
+.io q { font-size: 16px; quotes: "«" "»" }
+@media (max-width: 620px) { .io { grid-template-columns: 1fr } .io .arrow { transform: rotate(90deg); height: 20px } }
+
+/* layers */
+.floors { display: grid; gap: 0; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: var(--panel) }
+.floor { display: grid; grid-template-columns: 44px 170px 1fr; gap: 14px; padding: 14px 16px; border-top: 1px solid var(--line); align-items: start }
+.floor:first-child { border-top: 0 }
+.floor .n { font: 600 13px var(--mono); color: var(--signal); padding-top: 2px }
+.floor .chips { display: flex; flex-wrap: wrap; gap: 6px; min-width: 0 }
+.chip { font-size: 13px; padding: 3px 9px; border-radius: 999px; border: 1px solid var(--line); white-space: nowrap }
+.chip.on { border-color: var(--signal); background: var(--signal-soft) }
+@media (max-width: 620px) { .floor { grid-template-columns: 30px 1fr } .floor .chips { grid-column: 2 } }
+.glue { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 12px }
+.glue div { border-left: 3px solid var(--steel); padding: 2px 0 2px 12px; display: grid; gap: 4px }
+
+/* recipe timeline */
+.track { display: grid; gap: 0; counter-reset: st }
+.st { display: grid; grid-template-columns: 34px 1fr auto; gap: 12px; padding: 12px 0; border-top: 1px dashed var(--line); align-items: start }
+.st:first-child { border-top: 0 }
+.st .k { font: 600 13px var(--mono); color: var(--muted) }
+.st .who { font: 600 11px var(--mono); letter-spacing: .06em; text-transform: uppercase; padding: 3px 8px; border-radius: 6px; white-space: nowrap }
+.who.h { background: var(--signal-soft); color: var(--signal) }
+.who.m { color: var(--muted); border: 1px solid var(--line) }
+.st p { font-size: 14px; color: var(--muted) }
+
+/* tables */
+.tbl { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; background: var(--panel) }
+table { border-collapse: collapse; width: 100%; min-width: 640px; font-size: 14px }
+th, td { text-align: left; padding: 9px 12px; border-top: 1px solid var(--line); vertical-align: top }
+th { font: 600 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); border-top: 0; background: var(--bg) }
+td.num { font-family: var(--mono); font-variant-numeric: tabular-nums; white-space: nowrap }
+.dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; vertical-align: 1px }
+.dot.ok { background: var(--ok) } .dot.warn { background: var(--warn) } .dot.stop { background: var(--stop) }
+
+/* plan */
+.plan { display: grid; gap: 10px; padding: 0; margin: 0; list-style: none }
+.plan li { display: grid; grid-template-columns: 34px 1fr auto; gap: 12px; align-items: start; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px }
+.plan .sz { font: 600 12px var(--mono); padding: 2px 8px; border-radius: 6px; border: 1px solid var(--steel); color: var(--steel) }
+.plan .n { font: 600 13px var(--mono); color: var(--signal) }
+.risk { border: 1px solid var(--line); border-left: 3px solid var(--stop); border-radius: 0 10px 10px 0; padding: 14px 16px; background: var(--panel); display: grid; gap: 8px }
+.risk ul { margin: 0; padding-left: 18px; display: grid; gap: 4px }
+footer { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 14px }
+</style>
+
+<div class="wrap">
+
+<header class="hero">
+  <span class="eyebrow">Исследование 258 · 04.11.2026 · решение до 06.11</span>
+  <h1>Карта Цеха</h1>
+  <p class="lead">Одна дверь в чате: желание на входе, готовый результат на выходе. Внутри <b>тонкий маршрутизатор с рецептами и судьёй</b>, а генерируют облако, «Цех» и ПК — каждый своё. Строим рецепт за рецептом от настоящих заказов, а не движок под любую задачу.</p>
+  <div class="io">
+    <div><span class="eyebrow">Вход</span><br><q>Хочу рекламный ролик для своей компании</q></div>
+    <div class="arrow">→</div>
+    <div><span class="eyebrow">Выход</span><br>Ролик 20 с, принятый судьёй, с отчётом: что сделано, сколько стоило, сколько заняло</div>
+  </div>
+</header>
+
+<section>
+  <span class="eyebrow">Устройство</span>
+  <h2>Пять слоёв</h2>
+  <div class="floors">
+    <div class="floor"><span class="n">1</span><h3>Продукты</h3><div class="chips"><span class="chip">картинка</span><span class="chip">серия</span><span class="chip">карусель</span><span class="chip on">ролик</span><span class="chip on">брендинг</span><span class="chip">лендинг</span><span class="chip">мини-апп</span></div></div>
+    <div class="floor"><span class="n">2</span><h3>Рецепты</h3><div class="chips"><span class="chip">бриф-интервью</span><span class="chip">постановка</span><span class="chip">исследование</span><span class="chip">концепт</span><span class="chip">производство</span><span class="chip">приёмка</span><span class="chip">выдача</span></div></div>
+    <div class="floor"><span class="n">3</span><h3>Операции</h3><div class="chips"><span class="chip">кадр по референсу</span><span class="chip">оживление</span><span class="chip">апскейл</span><span class="chip">3D-продукт</span><span class="chip">монтаж</span><span class="chip">логотип SVG</span><span class="chip">голос</span><span class="chip">субтитры</span></div></div>
+    <div class="floor"><span class="n">4</span><h3>Инструменты</h3><div class="chips"><span class="chip">Kling 3.0 Pro</span><span class="chip">Veo 3.1</span><span class="chip">Seedance 2.5</span><span class="chip">GPT Image 2.5</span><span class="chip">Recraft</span><span class="chip">Remotion</span><span class="chip">ffmpeg</span><span class="chip">Blender</span><span class="chip">GigaAM</span></div></div>
+    <div class="floor"><span class="n">5</span><h3>Железо</h3><div class="chips"><span class="chip">облако</span><span class="chip">«Цех»: 4 ядра, 7 ГБ</span><span class="chip">«Цех» + RTX 2070 — позже</span><span class="chip">ПК: GTX 1650, 4 ГБ</span></div></div>
+  </div>
+  <div class="glue">
+    <div><h3>Маршрутизатор</h3><p class="muted">Интервью ставит рамку «быстро, дёшево или качественно», бюджет и срок, а маршрутизатор подбирает под неё рецепт и инструменты.</p></div>
+    <div><h3>«Библия» клиента</h3><p class="muted">Один файл на клиента: палитра, шрифты, логотип, 5–10 референсов, паспорт героя и продукта, тон, запреты. Её читают все рецепты и судья.</p></div>
+    <div><h3>Книга лучших путей</h3><p class="muted">Каждый прогон записывает цену, время и оценку судьи. Лучший путь становится запуском одной командой.</p></div>
+    <div><h3>Опыты</h3><p class="muted">Новый инструмент проверяем на той же задаче рядом со старым и вслепую, остаётся победитель.</p></div>
+  </div>
+</section>
+
+<section>
+  <span class="eyebrow">Первый рецепт</span>
+  <h2>Рекламный ролик: где нужен ты</h2>
+  <div class="track">
+    <div class="st"><span class="k">0</span><div><h3>Бриф-интервью</h3><p>4 вопроса: что на выходе, есть ли «библия», какие форматы, куда, срок и бюджет. До 3 уточнений. Выбор пакета.</p></div><span class="who h">ты</span></div>
+    <div class="st"><span class="k">1</span><div><h3>Постановка и «библия»</h3><p>Герой, продукт, свет, палитра, объективы. Лист героя и лист продукта — один набор референсов на весь ролик.</p></div><span class="who h">ты</span></div>
+    <div class="st"><span class="k">2</span><div><h3>Исследование и референсы</h3><p>Аналоги и техники из базы (253, 255), сценарий и раскадровка сеткой 2×4.</p></div><span class="who m">машина</span></div>
+    <div class="st"><span class="k">3</span><div><h3>Утверждение раскадровки</h3><p>Одно решение по всей сетке, а не по каждому кадру.</p></div><span class="who h">ты</span></div>
+    <div class="st"><span class="k">4</span><div><h3>Кадры и оживление</h3><p>Кадры в GPT Image, лицо — Kling 3.0 Pro, продукт и среда — Seedance. По 2–5 попыток, судья выбирает лучшую.</p></div><span class="who m">машина</span></div>
+    <div class="st"><span class="k">5</span><div><h3>Сборка на «Цехе»</h3><p>Монтаж под музыку, единый цвет, зерно, титры, субтитры, громкость.</p></div><span class="who m">машина</span></div>
+    <div class="st"><span class="k">6</span><div><h3>Приёмка и выдача</h3><p>Судья по рубрике, потом твой финальный просмотр. Отчёт: цена, время, путь — в книгу путей.</p></div><span class="who h">ты</span></div>
+  </div>
+</section>
+
+<section>
+  <span class="eyebrow">Лестница продуктов</span>
+  <h2>Сколько раз нужен человек и что стоит на рынке</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>Ступень</th><th>Утверждений</th><th>Судья</th><th>Рынок Перми и РФ</th></tr></thead>
+    <tbody>
+      <tr><td>Картинка</td><td class="num">1</td><td>проверщик + ты</td><td class="muted">—</td></tr>
+      <tr><td>Серия</td><td class="num">1 — на якоре</td><td>сверка серии с «библией»</td><td class="muted">—</td></tr>
+      <tr><td>Карусель</td><td class="num">1</td><td>вычитка + бренд</td><td class="num">1–3 тыс. ₽</td></tr>
+      <tr><td>Ролик</td><td class="num">3</td><td>рубрика + слепой тест</td><td class="num">200 тыс. – 1,5 млн ₽</td></tr>
+      <tr><td>Брендинг</td><td class="num">4</td><td>ты + скептик + товарный знак</td><td class="num">лого 30 тыс. · стиль 80 тыс. · под ключ от 250 тыс.</td></tr>
+      <tr><td>Лендинг, мини-апп</td><td class="num">2</td><td>тесты + дизайн-критик (Эталон)</td><td class="num">15–200 тыс. · 50–500 тыс.</td></tr>
+    </tbody>
+  </table></div>
+  <p class="muted">Цены рынка взяты из поисковой выдачи, сами страницы не открывались. Разброс в 5–10 раз — это место, где можно встать дешевле агентств.</p>
+</section>
+
+<section>
+  <span class="eyebrow">Правило выбора места</span>
+  <h2>Где считать</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>Задача</th><th>Где</th><th>Почему</th></tr></thead>
+    <tbody>
+      <tr><td>Есть лица или материалы клиента</td><td><span class="dot stop"></span>ПК или облако</td><td>«Цех» — чужая машина, правило от 19.10</td></tr>
+      <tr><td>Финал для клиента: кадры и видео</td><td><span class="dot ok"></span>облако</td><td>качество, и 1 500 ₽ в месяц ≈ 130 секунд Kling</td></tr>
+      <tr><td>Монтаж, речь, субтитры, код-видео</td><td><span class="dot ok"></span>«Цех», процессор</td><td>уже работает для Евы</td></tr>
+      <tr><td>Серии в стиле бренда, апскейл видео</td><td><span class="dot warn"></span>«Цех» + RTX 2070</td><td>после установки карты; Flux — только с 16 ГБ памяти</td></tr>
+      <tr><td>Срочное</td><td><span class="dot ok"></span>облако</td><td>очередь «Цеха» одна</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section>
+  <span class="eyebrow">План сборки</span>
+  <h2>Семь шагов</h2>
+  <ol class="plan">
+    <li><span class="n">1</span><div><h3>Формат рецепта, «библии» и журнала прогона</h3><p class="muted">Делаем на ролике, который уже в работе.</p></div><span class="sz">S</span></li>
+    <li><span class="n">2</span><div><h3>Вход: команда в чате</h3><p class="muted">4 вопроса → рецепт и пакет → бриф.</p></div><span class="sz">M</span></li>
+    <li><span class="n">3</span><div><h3>Судья по рубрике</h3><p class="muted">Модель со зрением, лучший из 2–3 вариантов.</p></div><span class="sz">M</span></li>
+    <li><span class="n">4</span><div><h3>Рецепт «бренд-пакет»</h3><p class="muted">Знак, упаковка и ролик 15 с — первый прогон на «Кофе».</p></div><span class="sz">M</span></li>
+    <li><span class="n">5</span><div><h3>Учёт денег на задачу</h3><p class="muted">Видео через OpenRouter сейчас в учёт не попадает.</p></div><span class="sz">S</span></li>
+    <li><span class="n">6</span><div><h3>Книга путей и опыты вслепую</h3><p class="muted">Лучший прогон становится запуском одной командой.</p></div><span class="sz">M</span></li>
+    <li><span class="n">7</span><div><h3>ComfyUI на «Цехе»</h3><p class="muted">После RTX 2070 и 16 ГБ памяти; сначала перемерить Blender и апскейл.</p></div><span class="sz">позже</span></li>
+  </ol>
+</section>
+
+<section>
+  <span class="eyebrow">Скептик</span>
+  <div class="risk">
+    <h3>Где это провалится</h3>
+    <ul>
+      <li>Строим станок вместо продаж: доход 0, денег до начала декабря.</li>
+      <li>«Сама улучшается» — не на чем, пока нет независимого судьи и потока задач.</li>
+      <li>30+ инструментов через VPN; fal не принимает карты РФ; нет коммерческой музыки и липсинка; голоса Silero и F5 — только некоммерческие.</li>
+      <li>Мера на две недели: три рецепта прогнаны вживую и одно предложение с ценой клиенту, сделанное «Цехом». Кратчайший путь — платный бренд-пакет «Кофе».</li>
+    </ul>
+  </div>
+</section>
+
+<footer>Основа: исследование 258 (4 угла: готовое в мире, типы задач, железо, реестр наших инструментов), свежий взгляд и скептик. Не проверено: замеры RTX 2070 и GTX 1650 для генерации, работа западных сервисов из РФ, цены агентств.</footer>
+</div>
+</body></html>
