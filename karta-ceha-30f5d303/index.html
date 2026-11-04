@@ -108,14 +108,14 @@ footer { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line)
     <div><b>42</b><span>продукта в 8 семьях</span></div>
     <div><b>16</b><span>общих станков</span></div>
     <div><b>40+</b><span>инструментов уже у нас</span></div>
-    <div><b>9</b><span>ролей студии</span></div>
+    <div><b>11</b><span>ролей студии</span></div>
   </div>
 </header>
 
 <section>
   <span class="eyebrow">Кто работает</span>
   <h2>Роли студии</h2>
-  <p class="muted">Каждая роль — агент со своим промптом, правами и судьёй. Ты — креативный директор на воротах: задаёшь цель, утверждаешь главное, принимаешь итог.</p>
+  <p class="muted">Вся студия — внутри «Цеха»: каждая роль — агент со своим промптом, правами и судьёй. Ты — креативный директор на воротах: задаёшь цель, утверждаешь главное, принимаешь итог.</p>
   <div class="roles">
     <div class="role you"><span class="tag">ты</span><h3>Креативный директор</h3><p class="small">Цель, вкус, утверждения на воротах, финальный взгляд. Последние 20 % — твои, за них и платят.</p></div>
     <div class="role"><span class="tag">оркестратор</span><h3>Продюсер</h3><p class="small">Разбирает запрос, выбирает рецепт и пакет, держит бюджет и срок, раздаёт работу, собирает отчёт.</p></div>
@@ -126,6 +126,8 @@ footer { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line)
     <div class="role"><span class="tag">руки</span><h3>Операторы станков</h3><p class="small">Генерация, монтаж, 3D, голос, вёрстка, код — каждый знает паспорт своих инструментов.</p></div>
     <div class="role"><span class="tag">качество</span><h3>Судья</h3><p class="small">Рубрика с весами, сверка с «библией», выбор лучшего из 2–3. Никогда не тот, кто делал.</p></div>
     <div class="role"><span class="tag">память</span><h3>Архивариус</h3><p class="small">Журнал каждого прогона, книга лучших путей, слежение за новыми моделями и опыты.</p></div>
+    <div class="role"><span class="tag">ресурсы</span><h3>Снабженец</h3><p class="small">Держит реестр сервисов, стоков и наборов. Не хватает — ищет, проверяет лицензию, цену и доступ из РФ, делает пробу и вносит в реестр.</p></div>
+    <div class="role"><span class="tag">дизайн</span><h3>Дизайнер</h3><p class="small">Вёрстка, сетки, иконки, интерфейсы, презентации — по «библии» и прототипному пути.</p></div>
   </div>
 </section>
 
@@ -183,7 +185,7 @@ footer { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line)
   <div class="fam"><div class="fam-head"><h3>Бренд и документы</h3><span class="muted small">ступень, которая рождает «библию» для всех остальных</span></div>
   <div class="prods">
     <div class="prod"><div class="top"><b>Бренд-пакет</b><span class="st part">частично</span></div><p>стратегия, имя, знак, палитра, шрифты, гайд — база Б3 есть</p></div>
-    <div class="prod"><div class="top"><b>Логотип SVG</b><span class="st no">нет</span></div><p>Recraft — доступа нет; руками в Penpot</p></div>
+    <div class="prod"><div class="top"><b>Логотип SVG</b><span class="st part">частично</span></div><p>Recraft V4 Vector есть в OpenRouter — не пробовали; Penpot руками</p></div>
     <div class="prod"><div class="top"><b>Презентация, питч</b><span class="st ok">делаем</span></div><p>bin/slides в фирменном стиле</p></div>
     <div class="prod"><div class="top"><b>КП, одностраничник</b><span class="st ok">делаем</span></div><p>«Перо» + bin/md-html</p></div>
     <div class="prod"><div class="top"><b>Карточки маркетплейса</b><span class="st part">частично</span></div><p>Nitteroum, WB — кадр + вёрстка + тексты</p></div>
@@ -248,6 +250,25 @@ footer { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line)
     <div class="mod"><h3>Код</h3><span class="tools">Эталон 0.16 · прототипы HTML · фабрика ботов</span></div>
     <div class="mod"><h3>Судья и выдача</h3><span class="tools">рубрика + зрение · second-opinion · выбор лучшего · отчёт · публикация только с твоим ✅</span></div>
   </div>
+</section>
+
+<section>
+  <span class="eyebrow">Откуда берёт</span>
+  <h2>Снабжение: сервисы, стоки, наборы</h2>
+  <p class="muted">У «Цеха» есть реестр внешних источников с паспортом: что даёт, цена, оплата из РФ, лицензия для клиента. Не хватает операции — снабженец ищет, делает пробу и вносит в реестр. Новые траты решаешь ты.</p>
+  <div class="tbl"><table class="wide">
+    <thead><tr><th>Источник</th><th>Что даёт</th><th>Доступ из РФ</th><th>Статус</th></tr></thead>
+    <tbody>
+      <tr><td>OpenRouter</td><td>31 видеомодель, ElevenLabs и MiniMax, Recraft SVG, Gemini по видео</td><td>через наш выход в Амстердаме</td><td><span class="st ok">есть</span></td></tr>
+      <tr><td>Шлюз AgentHello</td><td>Claude, GPT 6, GPT Image 2.5</td><td>напрямую</td><td><span class="st ok">есть</span></td></tr>
+      <tr><td>GenAPI</td><td>липсинк, аватары, Suno, Udio, Kling, апскейл</td><td>карта РФ, без VPN</td><td><span class="st part">проба</span></td></tr>
+      <tr><td>fal.ai</td><td>музыка Lyria, 3D Trellis и Hunyuan, фон, апскейл SeedVR2</td><td>карты РФ не принимает</td><td><span class="st no">нет</span></td></tr>
+      <tr><td>WaveSpeed, Runware, Replicate</td><td>дешёвый липсинк, Veo, любые открытые модели</td><td>не сверено</td><td><span class="st part">в списке</span></td></tr>
+      <tr><td>Стоки с лицензией</td><td>музыка, звуки, фото, футажи для клиентов</td><td>зависит от стока</td><td><span class="st no">подобрать</span></td></tr>
+      <tr><td>Открытые наборы CC0</td><td>звуки, 3D-модели, текстуры, шрифты (Kenney, Poly Haven, Google Fonts)</td><td>свободно</td><td><span class="st part">частично</span></td></tr>
+    </tbody>
+  </table></div>
+  <p class="muted small">Наборы с торрентов — только с открытой лицензией (CC0, CC BY). Пиратское в работу не берём: для клиента это иск, для нас — удар по имени. Разбор агрегаторов — исследование 205.</p>
 </section>
 
 <section>
