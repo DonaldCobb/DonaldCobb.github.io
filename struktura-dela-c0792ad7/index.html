@@ -1,0 +1,184 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><style>html{color-scheme:light}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style></head><body><title>Структура дела и «Цех»</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Manrope:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Чертёж: бумага-миллиметровка, тушь, один синий карандаш для связей; схема — сетка блоков, текст — колонка ~68 знаков */
+:root{
+  --paper:#F2F4F6; --sheet:#FFFFFF; --ink:#16212C; --muted:#5A6774; --line:#CCD4DC;
+  --pencil:#2C55D6; --pencil-soft:#E4EAFB; --ok:#1E7F52; --warn:#A6620A; --bad:#B2322A;
+  --f-display:"Unbounded","Manrope",system-ui,sans-serif;
+  --f-body:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#10161C; --sheet:#18212A; --ink:#E6ECF2; --muted:#9AA8B5; --line:#2E3A46;
+  --pencil:#7C9BFF; --pencil-soft:#1E2A47; --ok:#4FC48A; --warn:#E3A24A; --bad:#F07A70; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#10161C; --sheet:#18212A; --ink:#E6ECF2; --muted:#9AA8B5; --line:#2E3A46;
+  --pencil:#7C9BFF; --pencil-soft:#1E2A47; --ok:#4FC48A; --warn:#E3A24A; --bad:#F07A70; color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.6 var(--f-body);
+  background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);
+  background-size:32px 32px;background-attachment:fixed}
+body::after{content:"";position:fixed;inset:0;background:var(--paper);opacity:.86;z-index:-1}
+.wrap{max-width:980px;margin:0 auto;padding-block:40px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:40px}
+h1,h2,h3{text-wrap:balance;margin:0}
+h1{font:700 clamp(28px,5vw,44px)/1.15 var(--f-display);letter-spacing:-.01em}
+h2{font:500 22px/1.3 var(--f-display)}
+h3{font:700 16px/1.35 var(--f-body)}
+p{margin:0;max-width:68ch}
+.eyebrow{font:600 12px/1 var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--pencil)}
+.lead{font-size:18px;color:var(--ink);max-width:62ch}
+.muted{color:var(--muted)}
+.small{font-size:14px}
+section{display:flex;flex-direction:column;gap:16px}
+.stamp{display:flex;flex-wrap:wrap;gap:8px 20px;font:400 13px/1.4 var(--f-mono);color:var(--muted)}
+.stamp b{color:var(--ink);font-weight:600}
+/* схема */
+.diagram{background:var(--sheet);border:1px solid var(--line);padding:16px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.tier{border:1.5px solid var(--ink);padding:12px 14px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.tier .tag{font:600 11px/1.3 var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.tier.dash{border-style:dashed}
+.tier.pen{border-color:var(--pencil);background:var(--pencil-soft)}
+.tier.core{border-width:2.5px}
+.arrow{align-self:center;font:600 13px/1.3 var(--f-mono);color:var(--pencil);text-align:center}
+.mods{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.mod{border:1px solid var(--line);background:var(--paper);padding:12px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.mod.pen{border-color:var(--pencil)}
+.mod .io{font:400 12.5px/1.5 var(--f-mono);color:var(--muted)}
+.mod .io b{color:var(--ink);font-weight:600}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font:400 12.5px/1.3 var(--f-mono);border:1px solid var(--line);background:var(--paper);padding:5px 8px;min-width:0;overflow-wrap:anywhere}
+.chip.pen{border-color:var(--pencil);color:var(--pencil)}
+.links{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:6px 20px;margin:0;padding:0;list-style:none;font-size:14.5px}
+.links li::before{content:"→ ";color:var(--pencil);font-family:var(--f-mono)}
+.three{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px}
+.rules{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px}
+.rule{background:var(--sheet);border:1px solid var(--line);padding:14px 16px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.rule .src{font:400 12px/1.4 var(--f-mono);color:var(--muted)}
+.rule .n{font:600 12px/1 var(--f-mono);color:var(--pencil)}
+.pill{display:inline-block;font:600 11.5px/1 var(--f-mono);padding:4px 7px;border:1px solid currentColor;white-space:nowrap}
+.pill.ok{color:var(--ok)}.pill.warn{color:var(--warn)}.pill.bad{color:var(--bad)}
+.tbl{overflow-x:auto;background:var(--sheet);border:1px solid var(--line)}
+table{border-collapse:collapse;width:100%;font-size:14.5px}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font:600 12px/1.3 var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+tr:last-child td{border-bottom:0}
+.nums{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin:0;padding:0;list-style:none;counter-reset:n}
+.nums li{background:var(--sheet);border:1px solid var(--line);padding:12px 14px;display:flex;flex-direction:column;gap:6px;counter-increment:n;font-size:14.5px}
+.nums li::before{content:counter(n);font:700 22px/1 var(--f-display);color:var(--pencil)}
+.stop{background:var(--sheet);border:2px solid var(--bad);padding:14px 16px;display:flex;flex-direction:column;gap:6px}
+.bignote{background:var(--sheet);border:2px solid var(--pencil);padding:16px;display:flex;flex-direction:column;gap:10px}
+.bignote ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
+.diagram.life{border:2px dashed var(--ink)}
+.lifetag{font:600 12px/1.3 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.mod{border-color:var(--muted)}
+.mod.wide,.arrow.wide{grid-column:1/-1}
+.legend{margin:4px 0 0;font:400 12px/1.5 var(--f-mono);color:var(--muted);border-top:1px solid var(--line);padding-top:10px;max-width:none}
+.under{display:flex;align-items:center;gap:10px;font:600 11px/1 var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:4px}
+.under::before,.under::after{content:"";flex:1;border-top:1px solid var(--muted)}
+@media (max-width:600px){
+.chip{font:400 14px/1.3 var(--f-body)}
+.tier .small,.links{font-size:15px}
+.tier .tag{font-size:12px}
+.mods{grid-template-columns:minmax(0,1fr);border-left:2px solid var(--pencil);padding-left:12px;gap:14px}
+.mod{position:relative}
+.mod::before{content:"";position:absolute;left:-14px;top:22px;width:12px;border-top:2px solid var(--pencil)}
+.arrow.wide{text-align:left}
+}
+ul.plain{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
+footer{font:400 12.5px/1.5 var(--f-mono);color:var(--muted);border-top:1px solid var(--line);padding-top:16px}
+@media (prefers-reduced-motion:no-preference){.mod,.rule{transition:border-color .15s}.mod:hover,.rule:hover{border-color:var(--pencil)}}
+</style>
+
+<div class="wrap">
+  <header style="display:flex;flex-direction:column;gap:14px">
+    <span class="eyebrow">Чертёж · структура · 04.11.2026</span>
+    <h1>Структура дела и «Цех»</h1>
+    <p class="lead">Одна система вместо россыпи: Штаб, два активных дела, общее производство и помощники на срок. Ниже — две схемы, что изменилось и как проверим.</p>
+  </header>
+
+  <section>
+    <span class="eyebrow">Главное за 10 секунд</span>
+    <div class="bignote">
+      <ul>
+        <li><b>Одна система:</b> Штаб → дела (активных не больше двух) → общее («Цех», «Касса и право») → помощники на срок. Ядро под всем.</li>
+        <li><b>«Цех»</b> — производство под всеми делами, «Эталон» внутри него.</li>
+        <li><b>Как язык — да, как новый проект — нет.</b> Сначала неделя вручную: одна таблица, одна ставка, расход ИИ каждый день.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <span class="eyebrow">Схема 1 · общая</span>
+    <h2>Как устроено всё</h2>
+    <div class="diagram life" role="img" aria-label="Схема: Юлай, Штаб, три ветки и ядро внутри границ жизни">
+      <span class="tag lifetag">Жизнь · границы: вера · семья · здоровье · дело</span>
+      <div class="tier dash"><span class="tag">Юлай</span><p class="small">цель · вкус · «нет» · деньги · люди</p></div>
+      <span class="arrow">↓</span>
+      <div class="tier pen"><span class="tag">Штаб · бот</span><div class="chips"><span class="chip pen">стол ставок раз в 2 недели</span><span class="chip pen">табло</span><span class="chip pen">очередь</span><span class="chip pen">касса по делам</span></div></div>
+      <span class="arrow">↓ три ветки</span>
+      <div class="mods">
+        <div class="mod wide"><h3>Дела</h3><span class="io"><b>активных не больше 2</b><br>у каждого: тип (заказ · доля · своё · семья), ведущий, стадия, касса, шаг, «закрываем, если…»</span>
+          <div class="chips"><span class="chip ">Студия — окно к клиентам, первая очередь в «Цехе»</span><span class="chip ">«Кофе»</span><span class="chip ">«Сокол»</span><span class="chip ">Сетевик</span><span class="chip ">Nitteroum — актив</span></div>
+          <span class="io">внутри дела: стратегия, продажа, клиент</span></div>
+        <span class="arrow wide">↓ заказ → · ← результат ↑</span>
+        <div class="mod"><h3>Общее</h3><span class="io">по заказу, расход — на дело</span>
+          <div class="chips"><span class="chip"><b>«Цех»</b> — производство (схема 2)</span><span class="chip"><b>Касса и право</b> — счёт, договор, акт, статус, учёт расхода <b>← расход ИИ по делам</b></span></div></div>
+        <div class="mod"><h3>Помощники на срок</h3><div class="chips"><span class="chip ">совет директоров</span><span class="chip ">исследования</span><span class="chip ">«Улучши»</span><span class="chip ">разведка людей</span></div></div>
+      </div>
+      <span class="arrow">↓ всё пишется в одно</span>
+      <div class="tier core"><span class="tag">Ядро · под всем</span><p class="small">карточки дел и заказов · приёмка · деньги ₽ и $ · уроки</p></div>
+      <p class="legend">сплошная — система · пунктир — люди и рамки · синим — бот и связи · жирная — основа</p>
+    </div>
+  </section>
+
+  <section>
+    <span class="eyebrow">Схема 2 · «Цех»</span>
+    <h2>Как работает производство</h2>
+    <div class="diagram" role="img" aria-label="Схема Цеха: вход, люди и агенты, навыки, продукты, станки, выход, учёт, железо">
+      <div class="tier"><span class="tag">1 · Вход</span><p class="small">заказ от дела: клиент Студии · «Кофе» · «Сокол» · свои каналы и семья</p><div class="chips"><span class="chip ">бриф-интервью</span><span class="chip ">«библия» бренда</span></div></div>
+      <span class="arrow">↓</span>
+      <div class="three">
+        <div class="tier dash"><span class="tag">2 · Люди</span><p class="small"><b>Юлай — креативный директор:</b> бриф утверждает · вкус · итог утверждает. Монтаж и лицо — семья.</p></div>
+        <div class="tier pen"><span class="tag">2 · Агенты, 4 вида</span><div class="chips"><span class="chip pen">продюсер-режиссёр (ведёт заказ)</span><span class="chip pen">исполнители вариантов</span><span class="chip pen">судья</span><span class="chip pen">операторы станков</span></div></div>
+      </div>
+      <span class="arrow">↓ роли подгружаются под задачу</span>
+      <div class="tier"><span class="tag">3 · Навыки-роли</span><div class="chips"><span class="chip ">стратег</span><span class="chip ">арт-директор</span><span class="chip ">сценарист «Перо»</span><span class="chip ">раскадровщик</span><span class="chip ">монтажёр</span><span class="chip ">финишер</span><span class="chip ">композитор</span><span class="chip ">моушн</span><span class="chip ">3D</span><span class="chip ">дизайнер</span><span class="chip ">вычитка</span><span class="chip ">выпускающий</span><span class="chip ">менеджер клиента</span><span class="chip ">SMM-аналитик</span></div></div>
+      <span class="arrow">↓</span>
+      <div class="tier core"><span class="tag">4 · Станки, 21</span><div class="chips"><span class="chip ">бриф</span><span class="chip ">библия</span><span class="chip ">референсы</span><span class="chip ">текст</span><span class="chip ">раскадровка</span><span class="chip ">кадр</span><span class="chip ">оживление</span><span class="chip ">3D</span><span class="chip ">голос</span><span class="chip ">звук</span><span class="chip ">монтаж</span><span class="chip ">субтитры</span><span class="chip ">улучшение</span><span class="chip ">вёрстка</span><span class="chip ">код</span><span class="chip ">предполёт</span><span class="chip ">судья</span><span class="chip ">вектор</span><span class="chip ">анимация</span><span class="chip ">пакет из таблицы</span><span class="chip ">публикация</span></div></div>
+      <span class="arrow">↓</span>
+      <div class="tier"><span class="tag">5 · Выход</span><span class="pill ok" style="align-self:flex-start">новое против прежней карты</span><div class="chips"><span class="chip">версии и согласования для клиента</span><span class="chip">выдача с правами на каждый файл</span><span class="chip">отчёт «одно число»</span><span class="chip">продление</span></div></div>
+      <div class="tier"><span class="tag">Продукты, 8 семей · что выдаём</span><div class="chips"><span class="chip ">визуал</span><span class="chip ">соцсети</span><span class="chip ">видео</span><span class="chip ">голос и звук</span><span class="chip ">3D</span><span class="chip ">бренд и документы</span><span class="chip ">ассеты</span><span class="chip ">цифровые продукты = «Эталон»</span></div></div>
+      <div class="under"><span>под каждым шагом</span></div>
+      <div class="tier dash"><span class="tag">Учёт каждого заказа</span><p class="small">чьё дело · план и факт ₽ и $ на ИИ · права · срок · судья</p></div>
+      <div class="tier"><span class="tag">Железо</span><div class="chips"><span class="chip ">ПК «Цех»</span><span class="chip ">сервер</span><span class="chip ">Mac и ПК Юлая</span></div></div>
+      <p class="legend">сплошная — система · пунктир — люди и рамки · синим — бот и связи · жирная — основа</p>
+    </div>
+  </section>
+
+  <section>
+    <span class="eyebrow">Что изменилось и почему</span>
+    <h2>Восемь решений схемы</h2>
+    <div class="rules"><div class="rule"><span class="n">1</span><h3>Не больше двух активных дел</h3><p class="small">Раз в две недели — «стол ставок» на 15 минут: какие 1–2 дела двигаем, остальные явно «спят до даты». У дела есть стадия и условие «закрываем, если… к дате». Система тоже занимает слот.</p><span class="src">Shape Up, студии-инкубаторы, наш опыт</span></div><div class="rule"><span class="n">2</span><h3>Общих блоков три, не семь</h3><p class="small">«Цех», «Касса и право», помощники на срок. Стратегия, продажи и клиент живут внутри дела, у ведущего. Исследования, совет и «Улучши» — на срок, не отделы.</p><span class="src">Amazon, команды из одного ведущего</span></div><div class="rule"><span class="n">3</span><h3>«Цех» под всеми делами, Студия — окно</h3><p class="small">Студия — вход для внешних клиентов и источник денег, у неё первая очередь в «Цехе». Сам «Цех» работает на любое дело.</p><span class="src">Гэлбрейт: фронт и бэк, Every</span></div><div class="rule"><span class="n">4</span><h3>Расход ИИ — по делам</h3><p class="small">В каждом задании агенту — метка дела, у дела потолок и стоп. «Система» — отдельная строка со своим бюджетом.</p><span class="src">Haier, Paperclip, Idealab</span></div><div class="rule"><span class="n">5</span><h3>Часы и бюджет — тому, где есть деньги</h3><p class="small">Дело получает время Юлая и ИИ, если у него есть деньги или дата денег. Заказ «Цеху» настоящий, только если за ним платящий.</p><span class="src">Constellation, Tiny</span></div><div class="rule"><span class="n">6</span><h3>Карточки заменяют, а не добавляются</h3><p class="small">Карточка дела заменяет прежние списки «ждёт» и «ближайшие шаги». Недельный проход — внутри обычного обзора. Ядро одно.</p><span class="src">Наш опыт: пульт и «штурвал» умерли за сутки</span></div><div class="rule"><span class="n">7</span><h3>«Жизнь» — снаружи</h3><p class="small">Вера, семья, здоровье задают границы: часы, выходные. Это рамка над делами, а не ещё одна колонка рядом.</p><span class="src">Гербер, Бир</span></div><div class="rule"><span class="n">8</span><h3>Карта «агенты по отделам» отменена</h3><p class="small">Постоянных агентов по отделам не строим: цель, судья и бюджет задаются руками, роли подгружаются под задачу.</p><span class="src">Моллик, наш опыт с навыками</span></div></div>
+  </section>
+
+  <section>
+    <span class="eyebrow">Как проверим · судья схемы</span>
+    <h2>Пять чисел каждую неделю</h2>
+    <ol class="nums">
+      <li><b>Деньги пришли</b></li>
+      <li><b>Остаток</b> и чистый расход в день</li>
+      <li><b>Подтверждённый шаг</b> покупателя</li>
+      <li><b>Предложений с ценой</b> внешним — не меньше 3</li>
+      <li><b>Доля расхода ИИ</b> на дела с кассой</li>
+    </ol>
+    <div class="stop"><span class="pill bad" style="align-self:flex-start">стоп</span><p class="small">Две недели подряд без предложений — или нет оплаты к 18.11 — схему замораживаем, остаётся одна услуга.</p></div>
+    <p class="small muted">Сначала неделя ручного теста: одна таблица (деньги, обязательства, покупатели, следующий шаг, лимит расхода) и одна ближайшая проверяемая возможность оплаты. Расход ИИ смотрим каждый день, а не раз в две недели.</p>
+  </section>
+
+  <footer>Схема как язык описания · внедряется неделей ручного теста, не сборкой · страница по неугадываемому адресу</footer>
+</div>
+</body></html>
