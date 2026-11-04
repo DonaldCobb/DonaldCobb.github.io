@@ -6,310 +6,326 @@
 <title>Карта системы «Кофе» — к первой партии</title>
 <style>
 :root{
-  --bg:#f7f2ea;--card:#fffdf9;--ink:#2a1d14;--muted:#6f5d4f;--line:#e6dccd;
-  --brand:#5b3622;--accent:#d99a2b;--ok:#3f8a5c;--warn:#c9861a;--bad:#c0533a;--chip:#efe5d6;
-}
-[data-theme="dark"]{
-  --bg:#17120e;--card:#211a14;--ink:#f1e8dc;--muted:#b3a291;--line:#3a2f25;
-  --brand:#e1b48a;--accent:#e6ad48;--ok:#6cc08a;--warn:#e6ad48;--bad:#e5806a;--chip:#2e251d;
+  --bg:#f7f2ea;--card:#fffdf9;--ink:#2a1d14;--muted:#5f4e41;--line:#e0d4c2;
+  --brand:#5b3622;--accent:#b97708;--ok:#2b6b45;--warn:#8a5a0a;--bad:#a63e28;--chip:#efe5d6;
+  --b1:#5b3622;--b2:#8a6a55;--b3:#b08d74;--b4:#cdb9a4;--b5:#d99a2b;--b6:#3f8a5c;--okbg:#e3f1e8;--warnbg:#fbefd5;--badbg:#f8e1db;--onbrand:#fffdf9;
 }
 @media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){
-    --bg:#17120e;--card:#211a14;--ink:#f1e8dc;--muted:#b3a291;--line:#3a2f25;
-    --brand:#e1b48a;--accent:#e6ad48;--ok:#6cc08a;--warn:#e6ad48;--bad:#e5806a;--chip:#2e251d;
+  :root{
+    --bg:#17120e;--card:#211a14;--ink:#f1e8dc;--muted:#c0b09f;--line:#3a2f25;
+    --brand:#e8bd94;--accent:#e6ad48;--ok:#7ccb98;--warn:#e9b455;--bad:#ee8f7a;--chip:#2e251d;
+    --b1:#c49a7a;--b2:#a47f66;--b3:#8a6a55;--b4:#6d5444;--b5:#d99a2b;--b6:#5fae7e;--okbg:#1d3326;--warnbg:#3a2d12;--badbg:#3d211a;--onbrand:#17120e;
   }
 }
 *{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
 body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 -apple-system,"Segoe UI",Roboto,"PT Sans",sans-serif}
-.wrap{max-width:920px;margin:0 auto;padding:16px}
-header{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
-h1{font-size:24px;line-height:1.2;margin:4px 0 4px;color:var(--brand)}
-h2{font-size:20px;margin:32px 0 10px;color:var(--brand)}
-h3{font-size:16px;margin:0 0 6px}
+.wrap{max-width:760px;margin:0 auto;padding:16px}
+h1{font-size:26px;line-height:1.2;margin:4px 0 8px;color:var(--brand)}
+h2{font-size:20px;line-height:1.25;margin:0;color:var(--brand);display:flex;align-items:center;gap:10px}
+h3{font-size:16px;margin:0 0 6px;display:flex;align-items:center;gap:8px}
 p{margin:6px 0}
-.sub{color:var(--muted);font-size:14px}
-.btn{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:10px;padding:6px 10px;font-size:14px;cursor:pointer;white-space:nowrap}
+a{color:var(--brand);text-underline-offset:2px}
+.sub{color:var(--muted)}
+.small{font-size:16px}
+svg.ic{width:30px;height:30px;flex:none;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+h3 svg.ic{width:28px;height:28px}
+abbr{text-decoration:underline dotted;text-underline-offset:3px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+/* KPI */
+.kpi{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
+.k{border-radius:14px;padding:12px;border:1px solid var(--line);background:var(--card)}
+.k b{display:block;font-size:26px;line-height:1.1;color:var(--brand)}
+.k span{font-size:13px;color:var(--muted);display:block;margin-top:4px}
+.k.r{background:var(--badbg);border-color:var(--bad)}.k.r b{color:var(--bad)}
+/* карточки и секции */
 .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin:10px 0}
 .hero{border:2px solid var(--accent)}
-.grid{display:grid;gap:10px;grid-template-columns:1fr}
-@media(min-width:640px){.grid.two{grid-template-columns:1fr 1fr}.grid.three{grid-template-columns:1fr 1fr 1fr}}
-.kpi{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
-.kpi div{background:var(--chip);border-radius:10px;padding:8px 10px}
-.kpi b{display:block;font-size:20px;color:var(--brand)}
-.kpi span{font-size:13px;color:var(--muted)}
-.chip{display:inline-block;background:var(--chip);border-radius:999px;padding:1px 9px;font-size:13px;margin:2px 2px 2px 0}
+details.sec{background:var(--card);border:1px solid var(--line);border-radius:14px;margin:12px 0;padding:0}
+details.sec>summary{padding:14px;cursor:pointer;list-style:none;display:flex;align-items:center;gap:8px;min-height:56px}
+details.sec>summary::-webkit-details-marker{display:none}
+details.sec>summary::after{content:"";margin-left:auto;width:10px;height:10px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(45deg);transition:transform .2s;flex:none}
+details.sec[open]>summary::after{transform:rotate(-135deg)}
+details.sec>summary h2{flex:1;min-width:0}
+details.sec>summary .hint{display:block;font-size:13px;font-weight:400;color:var(--muted)}
+.body{padding:0 14px 14px}
+details.sub2{border:1px solid var(--line);border-radius:12px;margin:8px 0;background:var(--bg)}
+details.sub2>summary{padding:12px;cursor:pointer;font-weight:600;min-height:48px;display:flex;align-items:center;gap:8px}
+details.sub2>.in{padding:0 12px 12px}
+ul{margin:6px 0;padding-left:20px}li{margin:4px 0}
+.tag{display:inline-block;font-size:13px;font-weight:600;border-radius:8px;padding:1px 8px;border:1px solid currentColor;white-space:nowrap}
 .ok{color:var(--ok)}.warn{color:var(--warn)}.bad{color:var(--bad)}
-.tag{font-size:12px;font-weight:600;border-radius:6px;padding:1px 6px;border:1px solid currentColor;white-space:nowrap}
-ul{margin:6px 0;padding-left:20px}li{margin:3px 0}
-details{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin:8px 0}
-summary{cursor:pointer;font-weight:600}
-summary .sub{font-weight:400}
-.flow{counter-reset:s;list-style:none;padding:0;margin:0}
-.flow li{position:relative;padding:10px 12px 10px 46px;background:var(--card);border:1px solid var(--line);border-radius:12px;margin:8px 0}
-.flow li::before{counter-increment:s;content:counter(s);position:absolute;left:12px;top:10px;width:24px;height:24px;border-radius:50%;background:var(--brand);color:var(--bg);font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center}
-.flow .who{font-size:13px;color:var(--muted)}
-.tbl{width:100%;border-collapse:collapse;font-size:14px}
-.tbl th,.tbl td{border-bottom:1px solid var(--line);padding:8px 6px;text-align:left;vertical-align:top}
-.tbl th{color:var(--muted);font-weight:600;font-size:13px}
-.scroll{overflow-x:auto}
-.rec{border-left:4px solid var(--ok)}
-a{color:var(--brand)}
-.foot{font-size:13px;color:var(--muted)}
-.bar{display:flex;height:22px;border-radius:6px;overflow:hidden;margin:8px 0 4px}
+.pm li{list-style:none;margin-left:-20px}
+/* схема */
+.schema{width:100%;max-width:420px;height:auto;display:block;margin:0 auto}
+.schema text{font:600 15px -apple-system,"Segoe UI",Roboto,sans-serif;fill:var(--ink)}
+.schema .t2{font-weight:400;font-size:13px;fill:var(--muted)}
+.schema .lab{font-weight:700;font-size:13px;fill:var(--muted);letter-spacing:.04em}
+.schema .nd{fill:var(--card);stroke:var(--line);stroke-width:1.5;cursor:pointer}
+.schema .site{fill:var(--brand);stroke:none}
+.schema text.onb{fill:var(--onbrand)}
+.schema .ext{fill:var(--warnbg);stroke:var(--warn)}
+.schema .own{fill:var(--okbg);stroke:var(--ok)}
+.schema g[role=button]{cursor:pointer;outline:none}
+.schema g[role=button]:focus-visible .nd,.schema g.sel .nd{stroke:var(--accent);stroke-width:3}
+.schema path.ar{stroke:var(--muted);stroke-width:2;fill:none}
+.schema .ico{stroke:var(--brand);fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+#info{background:var(--chip);border-radius:12px;padding:12px;margin-top:8px;min-height:84px}
+#info b{color:var(--brand)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:13px;color:var(--muted);margin-top:8px}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-1px;border:1.5px solid}
+/* поток */
+.flow{list-style:none;padding:0;margin:0;counter-reset:s}
+.flow li{position:relative;margin:0;padding:0 0 14px 44px}
+.flow li::before{counter-increment:s;content:counter(s);position:absolute;left:0;top:0;width:30px;height:30px;border-radius:50%;background:var(--brand);color:var(--onbrand);font-weight:700;display:flex;align-items:center;justify-content:center}
+.flow li::after{content:"";position:absolute;left:14px;top:34px;bottom:4px;width:2px;background:var(--line)}
+.flow li:last-child::after{display:none}
+.flow .who{font-size:13px;color:var(--muted);margin-top:2px}
+/* таймлайн */
+.tl{display:flex;gap:4px;margin:6px 0 10px}
+.tl div{flex:1;border-radius:8px;padding:8px 2px;text-align:center;font-size:13px;font-weight:700;background:var(--chip);color:var(--ink);line-height:1.2}
+.tl div small{display:block;font-weight:400;font-size:13px;color:var(--muted);margin-top:2px}
+.tl .t0{background:var(--badbg)}.tl .t1{background:var(--warnbg)}.tl .t2{background:var(--warnbg)}.tl .t3{background:var(--okbg)}
+.tl .tn{flex:.8}
+/* решения */
+.dec{border-left:5px solid var(--bad);padding:12px 14px}
+.dec .n{display:inline-flex;width:28px;height:28px;border-radius:50%;background:var(--bad);color:var(--onbrand);font-weight:700;align-items:center;justify-content:center;margin-right:8px;flex:none}
+.dec h3{align-items:flex-start}
+.dec dl{margin:6px 0 0;display:grid;grid-template-columns:auto 1fr;gap:4px 10px;font-size:16px}
+.dec dt{color:var(--muted);font-size:13px}.dec dd{margin:0}
+/* деньги */
+.bar{display:flex;height:26px;border-radius:8px;overflow:hidden;margin:8px 0 6px}
 .bar i{display:block;height:100%}
-.legend{font-size:13px;color:var(--muted);display:flex;flex-wrap:wrap;gap:4px 12px}
-.legend b{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:4px;vertical-align:middle}
+.lg{display:grid;grid-template-columns:1fr 1fr;gap:4px 10px;font-size:13px}
+.lg span b{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+/* варианты */
+.var{border-left:5px solid var(--line)}
+.var.rec{border-left-color:var(--ok)}
+.var .pl{color:var(--ok)}.var .mn{color:var(--bad)}
+.row{border-top:1px solid var(--line);padding:10px 0}
+.row:first-child{border-top:0}
+.row .nm{font-weight:600}
+#tip{position:fixed;left:12px;right:12px;bottom:12px;background:var(--brand);color:var(--onbrand);border-radius:12px;padding:12px 14px;font-size:16px;display:none;z-index:9;box-shadow:0 4px 18px #0005}
+.foot{font-size:13px;color:var(--muted)}
+@media(min-width:760px){.kpi{grid-template-columns:repeat(4,1fr)}}
 </style>
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<defs>
+<symbol id="i-cup" viewBox="0 0 24 24"><path d="M4 9h12v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V9z"/><path d="M16 11h2a2 2 0 0 1 0 4h-2"/><path d="M8 3v3M12 3v3"/></symbol>
+<symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M3 19a6 6 0 0 1 12 0"/><circle cx="17" cy="9" r="2.4"/><path d="M17 14a4.5 4.5 0 0 1 4 4.5"/></symbol>
+<symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 20V4M4 20h16"/><path d="M8 16v-4M12 16V8M16 16v-6"/></symbol>
+<symbol id="i-fire" viewBox="0 0 24 24"><path d="M12 3c1 4 5 5.5 5 10a5 5 0 0 1-10 0c0-2 1-3 2-4 .3 1.5 1 2 1.8 2C10.5 8 11 5.5 12 3z"/></symbol>
+<symbol id="i-receipt" viewBox="0 0 24 24"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2V3z"/><path d="M9 8h6M9 12h6"/></symbol>
+<symbol id="i-truck" viewBox="0 0 24 24"><path d="M2 6h11v10H2zM13 9h4l4 3v4h-8"/><circle cx="6.5" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/></symbol>
+<symbol id="i-flow" viewBox="0 0 24 24"><circle cx="5" cy="5" r="2"/><circle cx="19" cy="12" r="2"/><circle cx="5" cy="19" r="2"/><path d="M7 5h5a3 3 0 0 1 3 3v1M7 19h5a3 3 0 0 0 3-3v-2"/></symbol>
+<symbol id="i-tools" viewBox="0 0 24 24"><path d="M14 6a4 4 0 0 0 4.5 5.2L20 13l-7 7-3-3 7-7"/><path d="M4 20l5-5"/></symbol>
+<symbol id="i-flag" viewBox="0 0 24 24"><path d="M5 21V4M5 4h12l-2 4 2 4H5"/></symbol>
+<symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></symbol>
+<symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.4-1 .9-1 1.7M12 17v.5"/></symbol>
+<symbol id="i-src" viewBox="0 0 24 24"><path d="M5 4h10l4 4v12H5z"/><path d="M14 4v5h5M8 13h8M8 17h6"/></symbol>
+<symbol id="i-money" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2"/><circle cx="12" cy="12" r="2.8"/></symbol>
+<symbol id="i-law" viewBox="0 0 24 24"><path d="M12 3v17M7 20h10M5 7h14"/><path d="M5 7l-3 6a3 3 0 0 0 6 0zM19 7l-3 6a3 3 0 0 0 6 0z"/></symbol>
+<symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></symbol>
+<symbol id="i-phone" viewBox="0 0 24 24"><rect x="7" y="3" width="10" height="18" rx="2"/><path d="M11 18h2"/></symbol>
+<symbol id="i-mega" viewBox="0 0 24 24"><path d="M4 10v4h3l8 4V6L7 10z"/><path d="M18 9a4 4 0 0 1 0 6"/></symbol>
+<symbol id="i-tag" viewBox="0 0 24 24"><path d="M3 12V4h8l10 10-8 8z"/><circle cx="7.5" cy="8.5" r="1.3"/></symbol>
+<symbol id="i-doc" viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z"/><path d="M9 12h7M9 16h5"/></symbol>
+<symbol id="i-coin" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M14.5 9a3 3 0 0 0-5 1.5c0 3 5 1.5 5 4.5a3 3 0 0 1-5 1.5M12 6.5v1.5M12 16v1.5"/></symbol>
+<symbol id="i-list" viewBox="0 0 24 24"><path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1"/><circle cx="4.5" cy="12" r="1"/><circle cx="4.5" cy="18" r="1"/></symbol>
+<symbol id="i-layers" viewBox="0 0 24 24"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l3 3 5-6"/></symbol>
+</defs>
+</svg>
+
 <div class="wrap">
 
-<header>
-  <div>
-    <div class="sub">«Кофе» · карта системы · 2026-11-03 · черновик для Юлая и Тимофея</div>
-    <h1>Что строить к первой партии кофе — и в каком порядке</h1>
-  </div>
-  <button class="btn" id="tt" aria-label="Сменить тему">◐ Тема</button>
-</header>
+<p class="sub small" style="margin:0">«Кофе» · карта системы · 2026-11-03 · черновик для Юлая и Тимофея</p>
+<h1>Что строить к первой партии кофе — и в каком порядке</h1>
 
-<!-- ============ 1. ГЛАВНОЕ ЗА 10 СЕКУНД ============ -->
-<section class="card hero">
-  <h2 style="margin-top:0">Главное за 10 секунд</h2>
+<!-- ГЛАВНОЕ ЗА 10 СЕКУНД -->
+<section class="card hero summary" id="glavnoe">
+  <h2><svg class="ic"><use href="#i-flag"/></svg>Главное за 10 секунд</h2>
+  <div class="kpi">
+    <div class="k"><b>1 сайт</b><span>у каждого свои экраны</span></div>
+    <div class="k"><b>≈ 3 нед.</b><span>до первой продажи по ссылке. Грубо, замеров нет*</span></div>
+    <div class="k"><b>24–28.11</b><span>первая продажа, если решения до 06.11 и <abbr title="Общество с ограниченной ответственностью">ООО</abbr> к 10.11*</span></div>
+    <div class="k r"><b>4 решения</b><span>нужны от Юлая и Тимофея. Без 1–2 нельзя продавать</span></div>
+  </div>
+  <p class="small" style="margin:6px 0 0">* допущения — внизу, в «Источниках». Тормозит не программа, а продавец: нужны ООО со счётом, коды «Честного знака» и ответ юриста.</p>
+  <details class="sub2"><summary><svg class="ic" style="width:28px;height:28px"><use href="#i-list"/></svg>Почему так · 4 тезиса</summary><div class="in">
   <ul>
-    <li><b>Одно приложение, а не пять.</b> Это один сайт с одним входом. Человек входит — и видит свои экраны: покупатель — магазин, партнёр — свою копилку, владелец — продажи, обжарщик — что жарить сегодня. В Telegram и MAX открывается тот же сайт кнопкой. Курьеру приложение не нужно — посылки везёт СДЭК или Яндекс Доставка.</li>
-    <li><b>Сами делаем только то, чего нет в готовом виде:</b> магазин, который помнит «кто кого привёл», копилку и ступени по плану v12, экран обжарщика. <b>Берём готовое:</b> приём оплаты и чеки (ЮKassa), доставку (СДЭК / Яндекс), позже — выплаты деньгами через банк.</li>
-    <li><b>По плану v12 людям копится кофе, а не деньги.</b> Набралась пачка — она едет бесплатно. Переводов на карты на старте нет — это проще и для закона, и для налогов, и для сборки.</li>
+    <li><b>Одно приложение, а не пять.</b> Один сайт с одним входом. Покупатель видит магазин, партнёр — копилку, владелец — продажи, обжарщик — что жарить сегодня. В Telegram и MAX — тот же сайт кнопкой. Курьеру приложение не нужно: посылки везёт СДЭК или Яндекс Доставка.</li>
+    <li><b>Сами делаем то, чего нет готового:</b> магазин, который помнит «кто кого привёл», копилку и ступени по плану v12, экран обжарщика. <b>Берём готовое:</b> оплату и чеки (ЮKassa), доставку (СДЭК / Яндекс), позже — выплаты деньгами через банк.</li>
+    <li><b>По плану v12 людям копится кофе, а не деньги.</b> Набралась пачка — она едет бесплатно. Переводов на карты на старте нет: проще для закона, налогов и сборки.</li>
     <li><b>Тормозит не программа, а продавец:</b> пока нет ООО с расчётным счётом, принять настоящие деньги нельзя никаким сервисом. Ещё нужны коды «Честного знака» на пачках и ответ юриста про 7 уровней.</li>
   </ul>
-  <div class="kpi">
-    <div><b>1</b><span>сайт, у каждого свои экраны</span></div>
-    <div><b>≈ 3 нед.</b><span>от решений до первой продажи по ссылке — грубо, замеров нет*</span></div>
-    <div><b>≈ 24–28.11</b><span>первая продажа, если решения до 06.11 и ООО к 10.11*</span></div>
-    <div><b>кофе</b><span>а не деньги — награда партнёрам на старте</span></div>
-  </div>
-  <p class="sub" style="margin-top:10px">* Допущения: ООО и счёт есть к ≈ 10.11; юрист отвечает за неделю; поставщик даёт пачки уже с кодами; партия на месте. ООО позже — дата сдвигается на столько же. Запасной путь: если кофе приедет раньше сайта, первую партию можно продать по ссылке на оплату и вести копилки в таблице.</p>
+  <p class="small"><a href="https://donaldcobb.github.io/kofe-app-031dc1e0/">Прототип «как Дринкит» — 22 экрана, светлая и тёмная тема (30.10)</a></p>
+  </div></details>
 </section>
 
-<!-- ============ РЕШИТЬ НА ВСТРЕЧЕ ============ -->
-<section class="card">
-  <h2 style="margin-top:0">Решить вдвоём — 4 вопроса</h2>
-  <p class="sub">У каждого — что мы предлагаем по умолчанию. Без ответов на 1–2 нельзя начать продавать.</p>
-  <ol>
-    <li><b>Кто продавец</b> — чьё ООО принимает деньги и когда оно будет? <span class="sub">По умолчанию: ваше с Тимофеем ООО, Сергей — поставщик по договору (разбор 02.11).</span></li>
-    <li><b>Сколько уровней на старте</b> — 7 сразу или 1–2, а остальные после юриста? <span class="sub">По умолчанию: 2 уровня до ответа юриста, программа готова к 7.</span></li>
-    <li><b>Доставка</b> — внутри 2 250 ₽ (как в v12) или платит покупатель (как решили 24.10)? <span class="sub">По умолчанию: как в v12, раз план уже посчитан с ней.</span></li>
-    <li><b>Кто отвечает покупателям</b> на вопросы и жалобы? <span class="sub">По умолчанию: команда Тимофея; мы делаем кнопку «написать нам».</span></li>
-  </ol>
-</section>
+<!-- РЕШЕНИЯ -->
+<details class="sec" open>
+  <summary><h2><svg class="ic"><use href="#i-check"/></svg><span>Решить вдвоём — 4 вопроса<span class="hint">что решить · варианты · срок</span></span></h2></summary>
+  <div class="body">
+    <p class="sub small">У каждого — что мы предлагаем по умолчанию. Срок общий: до 06.11, иначе сдвигается первая продажа.</p>
+    <div class="card dec"><h3><span class="n">1</span>Кто продавец — чьё ООО принимает деньги и когда оно будет?</h3>
+      <dl><dt>Варианты</dt><dd>ваше с Тимофеем ООО; Сергей — поставщик по договору (разбор 02.11)</dd><dt>По умолчанию</dt><dd>ваше с Тимофеем ООО</dd><dt>Срок</dt><dd>до 06.11, ООО к ≈ 10.11. Без ответа нельзя продавать</dd></dl></div>
+    <div class="card dec"><h3><span class="n">2</span>Сколько уровней на старте?</h3>
+      <dl><dt>Варианты</dt><dd>7 сразу или 1–2, остальные после юриста</dd><dt>По умолчанию</dt><dd>2 уровня до ответа юриста, программа готова к 7</dd><dt>Срок</dt><dd>до 06.11. Без ответа нельзя продавать</dd></dl></div>
+    <div class="card dec"><h3><span class="n">3</span>Доставка — в цене или платит покупатель?</h3>
+      <dl><dt>Варианты</dt><dd>внутри 2 250 ₽ (как в v12) или платит покупатель (как решили 24.10)</dd><dt>По умолчанию</dt><dd>как в v12: план уже посчитан с доставкой</dd><dt>Срок</dt><dd>до 06.11</dd></dl></div>
+    <div class="card dec"><h3><span class="n">4</span>Кто отвечает покупателям на вопросы и жалобы?</h3>
+      <dl><dt>Варианты</dt><dd>команда Тимофея; мы делаем кнопку «написать нам»</dd><dt>По умолчанию</dt><dd>команда Тимофея</dd><dt>Срок</dt><dd>до 06.11</dd></dl></div>
+  </div>
+</details>
 
-<!-- ============ КУДА ИДУТ 2 250 ============ -->
-<section class="card">
-  <h3>Куда идут 2 250 ₽ с одного кг — по плану v12 (Соломон, 01.11)</h3>
-  <div class="bar" role="img" aria-label="Закуп 1250, доставка 250, налог 135, платёжки и возвраты 100, компания 300, сеть 215">
-    <i style="width:55.6%;background:#5b3622"></i><i style="width:11.1%;background:#8a6a55"></i><i style="width:6%;background:#b08d74"></i><i style="width:4.4%;background:#cdb9a4"></i><i style="width:13.3%;background:#d99a2b"></i><i style="width:9.6%;background:#3f8a5c"></i>
-  </div>
-  <div class="legend">
-    <span><b style="background:#5b3622"></b>закуп 1 250</span><span><b style="background:#8a6a55"></b>доставка 250</span><span><b style="background:#b08d74"></b>налог 6 % — 135</span><span><b style="background:#cdb9a4"></b>оплата и возвраты 100</span><span><b style="background:#d99a2b"></b>компании 300</span><span><b style="background:#3f8a5c"></b>сети 215</span>
-  </div>
-  <p class="sub">Как мы читаем картинки v12: 215 ₽ с кг — это и подарок новичку на первом заказе, и копилки 7 уровней на повторных заказах (59 + 41 + 33 + 27 + 23 + 17 + 15 = 215). То есть одни и те же деньги, а не два расхода. Подтвердить у Соломона.</p>
-</section>
+<section class="card" aria-label="Этапы"><div class="tl" aria-label="Нед. 0 — решения, нед. 3 — первая партия, потом"><div class="t0">Нед. 0<small>решения</small></div><div class="t1">Нед. 1<small>тест</small></div><div class="t2">Нед. 2<small>по-настоящему</small></div><div class="t3">Нед. 3<small>партия</small></div><div class="tn">Потом</div></div><p class="sub" style="font-size:13px;margin:0">Подробно — в разделе «Этапы к первой партии».</p></section>
 
-<!-- ============ 2. РОЛИ × ЭКРАНЫ ============ -->
-<h2>1. Кто что видит и делает</h2>
-<p class="sub">Покупатель и партнёр — один и тот же человек: план v12 не делит людей на «сетевиков» и «покупателей», у каждого есть своя ссылка. Отличается только то, что открыто по ступени.</p>
+<!-- СХЕМА -->
+<details class="sec" open>
+  <summary><h2><svg class="ic"><use href="#i-layers"/></svg><span>Схема системы<span class="hint">роли → вход → данные и сервисы. Нажмите на блок</span></span></h2></summary>
+  <div class="body">
+<svg class="schema" viewBox="0 0 360 520" role="group" aria-label="Схема: роли, один сайт, данные и сервисы">
+  <text class="lab" x="4" y="16">РОЛИ</text>
+  <g role="button" tabindex="0" data-k="buyer"><rect class="nd" x="4" y="24" width="172" height="52" rx="12"/><svg x="12" y="36" width="28" height="28" viewBox="0 0 24 24" class="ico"><use href="#i-cup"/></svg><text x="48" y="55">Покупатель</text></g>
+  <g role="button" tabindex="0" data-k="partner"><rect class="nd" x="184" y="24" width="172" height="52" rx="12"/><svg x="192" y="36" width="28" height="28" viewBox="0 0 24 24" class="ico"><use href="#i-users"/></svg><text x="228" y="55">Партнёр</text></g>
+  <g role="button" tabindex="0" data-k="owner"><rect class="nd" x="4" y="84" width="172" height="52" rx="12"/><svg x="12" y="96" width="28" height="28" viewBox="0 0 24 24" class="ico"><use href="#i-chart"/></svg><text x="48" y="115">Владелец</text></g>
+  <g role="button" tabindex="0" data-k="roaster"><rect class="nd" x="184" y="84" width="172" height="52" rx="12"/><svg x="192" y="96" width="28" height="28" viewBox="0 0 24 24" class="ico"><use href="#i-fire"/></svg><text x="228" y="115">Обжарщик</text></g>
+  <g role="button" tabindex="0" data-k="acc"><rect class="nd" x="4" y="144" width="172" height="52" rx="12"/><svg x="12" y="156" width="28" height="28" viewBox="0 0 24 24" class="ico"><use href="#i-receipt"/></svg><text x="48" y="175">Бухгалтер</text></g>
+  <g role="button" tabindex="0" data-k="deliv"><rect class="nd" x="184" y="144" width="172" height="52" rx="12"/><svg x="192" y="156" width="28" height="28" viewBox="0 0 24 24" class="ico"><use href="#i-truck"/></svg><text x="228" y="175">Доставка</text></g>
+  <path class="ar" d="M180 204v26M174 224l6 8 6-8"/>
+  <rect class="site" x="4" y="238" width="352" height="64" rx="14"/>
+  <text class="onb" x="180" y="265" text-anchor="middle">Единый вход</text>
+  <text class="onb" x="180" y="288" text-anchor="middle" style="font-weight:400;font-size:13px">в Telegram и MAX — кнопкой</text>
+  <path class="ar" d="M180 310v26M174 330l6 8 6-8"/>
+  <text class="lab" x="4" y="356">ДАННЫЕ — СТРОИМ МЫ</text>
+  <g role="button" tabindex="0" data-k="orders"><rect class="nd own" x="4" y="364" width="112" height="56" rx="12"/><text x="60" y="388" text-anchor="middle">Заказы</text><text class="t2" x="60" y="407" text-anchor="middle">и ссылки</text></g>
+  <g role="button" tabindex="0" data-k="piggy"><rect class="nd own" x="124" y="364" width="112" height="56" rx="12"/><text x="180" y="388" text-anchor="middle">Копилка</text><text class="t2" x="180" y="407" text-anchor="middle">7 уровней</text></g>
+  <g role="button" tabindex="0" data-k="rules"><rect class="nd own" x="244" y="364" width="112" height="56" rx="12"/><text x="300" y="388" text-anchor="middle">План v12</text><text class="t2" x="300" y="407" text-anchor="middle">версии</text></g>
+  <text class="lab" x="4" y="444">ГОТОВЫЕ СЕРВИСЫ</text>
+  <g role="button" tabindex="0" data-k="yoo"><rect class="nd ext" x="4" y="452" width="112" height="56" rx="12"/><text x="60" y="476" text-anchor="middle">ЮKassa</text><text class="t2" x="60" y="495" text-anchor="middle">оплата, чеки</text></g>
+  <g role="button" tabindex="0" data-k="cdek"><rect class="nd ext" x="124" y="452" width="112" height="56" rx="12"/><text x="180" y="476" text-anchor="middle">СДЭК</text><text class="t2" x="180" y="495" text-anchor="middle">или Яндекс</text></g>
+  <g role="button" tabindex="0" data-k="cz"><rect class="nd ext" x="244" y="452" width="112" height="56" rx="12"/><text x="300" y="476" text-anchor="middle">Коды пачек</text><text class="t2" x="300" y="495" text-anchor="middle">«Честный знак»</text></g>
+</svg>
+    <div class="legend"><span><i style="background:var(--okbg);border-color:var(--ok)"></i>строим мы</span><span><i style="background:var(--warnbg);border-color:var(--warn)"></i>берём готовое</span></div>
+    <div id="info" aria-live="polite"><b>Нажмите на блок схемы</b> — здесь появятся подробности.</div>
+  </div>
+</details>
 
-<div class="grid two">
-  <div class="card">
-    <h3>☕ Покупатель</h3>
-    <p class="sub">✅ Уже есть: прототип «как Дринкит», 22 экрана, светлая и тёмная тема — <a href="https://donaldcobb.github.io/kofe-app-031dc1e0/">открыть</a> (30.10). Основа этих экранов; добавить копилку v12 и отказ в 7 дней.</p>
-    <ul>
-      <li>Каталог: сорт, 500 г / 1 кг, дата обжарки, цена 2 250 ₽/кг</li>
-      <li>Заказ и оплата (СБП или карта), чек на почту</li>
-      <li>Статус: «обжариваем → отправили → трек»</li>
-      <li>Подарок к первому заказу (215 ₽ с кг)</li>
-      <li>«Повторить заказ» в одно касание</li>
-      <li>Отказ от заказа в 7 дней — кнопкой</li>
-    </ul>
+<!-- ДЕНЬГИ -->
+<details class="sec">
+  <summary><h2><svg class="ic"><use href="#i-coin"/></svg><span>Куда идут 2 250 ₽ с кг<span class="hint">по плану v12 (Соломон, 01.11)</span></span></h2></summary>
+  <div class="body">
+    <div class="bar" role="img" aria-label="Закуп 1250, доставка 250, налог 135, платёжки и возвраты 100, компания 300, сеть 215">
+      <i style="width:55.6%;background:var(--b1)"></i><i style="width:11.1%;background:var(--b2)"></i><i style="width:6%;background:var(--b3)"></i><i style="width:4.4%;background:var(--b4)"></i><i style="width:13.3%;background:var(--b5)"></i><i style="width:9.6%;background:var(--b6)"></i>
+    </div>
+    <div class="lg">
+      <span><b style="background:var(--b1)"></b>закуп 1 250</span><span><b style="background:var(--b2)"></b>доставка 250</span><span><b style="background:var(--b3)"></b>налог 6 % — 135</span><span><b style="background:var(--b4)"></b>оплата и возвраты 100</span><span><b style="background:var(--b5)"></b>компании 300</span><span><b style="background:var(--b6)"></b>сети 215</span>
+    </div>
+    <p>Как мы читаем картинки v12: 215 ₽ с кг — это и подарок новичку на первом заказе, и копилки 7 уровней на повторных (59 + 41 + 33 + 27 + 23 + 17 + 15 = 215). То есть одни и те же деньги, а не два расхода. Подтвердить у Соломона.</p>
   </div>
-  <div class="card">
-    <h3>🤝 Партнёр (тот же покупатель)</h3>
-    <ul>
-      <li>Моя ссылка и QR — поделиться</li>
-      <li>Копилка в граммах и рублях: «до пачки 500 г осталось …»</li>
-      <li>Начисления: <i>ждёт 7 дней</i> · <i>зачислено</i> · <i>отменено возвратом</i></li>
-      <li>Ступень и прогресс: Друг (2 уровня) → Партнёр, 30 кг в команде (4) → Лидер, 150 кг (6) → Мастер, 500 кг (7); ступень не слетает. За какой срок считаются кг — в плане не сказано, уточнить</li>
-      <li>Кто пришёл по ссылке — только имя и сумма кг, без телефонов и адресов</li>
-      <li>«Забрать пачку из копилки» — создаёт бесплатный заказ</li>
-    </ul>
-  </div>
-  <div class="card">
-    <h3>📊 Владелец (Юлай, Тимофей)</h3>
-    <ul>
-      <li>Продажи за день и неделю: заказы, кг, рубли</li>
-      <li>Куда ушли 2 250 ₽ с кг (как в плане v12)</li>
-      <li>Сколько кофе мы должны по копилкам</li>
-      <li>Заказы, застрявшие дольше 2 дней; возвраты; жалобы</li>
-      <li>Остаток зерна по сортам</li>
-      <li>Правила плана: версия, дата, кто включил</li>
-    </ul>
-  </div>
-  <div class="card">
-    <h3>🔥 Обжарщик и упаковка (сторона поставщика)</h3>
-    <ul>
-      <li>«Сегодня обжарить»: кг по сортам из оплаченных заказов</li>
-      <li>Отметка «обжарено» → дата обжарки уходит покупателю</li>
-      <li>Сборка: отсканировать код «Честного знака» каждой пачки в заказ</li>
-      <li>Накладная СДЭК / Яндекс печатается сама</li>
-    </ul>
-  </div>
-  <div class="card">
-    <h3>🧾 Бухгалтер</h3>
-    <ul>
-      <li>Выгрузка продаж, чеков и возвратов за месяц</li>
-      <li>Копилка: сколько кофе выдано каждому за год в рублях (порог 4 000 ₽ — вопрос НДФЛ)</li>
-      <li>Позже: реестр выплат деньгами и документы</li>
-    </ul>
-  </div>
-  <div class="card">
-    <h3>🚚 Доставка</h3>
-    <ul>
-      <li>Своего экрана курьера не делаем: СДЭК или Яндекс берут посылку и дают трек</li>
-      <li>Свой курьер по Перми — только если появится самовывоз или «привезти сегодня»; тогда простой список «адрес · вручено»</li>
-    </ul>
-  </div>
-</div>
+</details>
 
-<!-- ============ 3. СКВОЗНОЙ ПУТЬ ============ -->
-<h2>2. Путь одного заказа — от ссылки до возврата</h2>
+<!-- РОЛИ -->
+<details class="sec">
+  <summary><h2><svg class="ic"><use href="#i-users"/></svg><span>Кто что видит и делает<span class="hint">6 ролей</span></span></h2></summary>
+  <div class="body">
+    <p class="sub">Покупатель и партнёр — один и тот же человек: план v12 не делит людей на «сетевиков» и «покупателей», у каждого есть своя ссылка. Отличается только то, что открыто по ступени.</p>
+    <details class="sub2" open><summary><svg class="ic" style="width:28px;height:28px"><use href="#i-cup"/></svg>Покупатель</summary><div class="in">
+      <p class="small">✅ Уже есть: <a href="https://donaldcobb.github.io/kofe-app-031dc1e0/">прототип «как Дринкит»</a>, 22 экрана, светлая и тёмная тема (30.10). Основа этих экранов; добавить копилку v12 и отказ в 7 дней.</p>
+      <ul><li>Каталог: сорт, 500 г / 1 кг, дата обжарки, цена 2 250 ₽/кг</li><li>Заказ и оплата (<abbr title="Система быстрых платежей">СБП</abbr> или карта), чек на почту</li><li>Статус: «обжариваем → отправили → трек»</li><li>Подарок к первому заказу (215 ₽ с кг)</li><li>«Повторить заказ» в одно касание</li><li>Отказ от заказа в 7 дней — кнопкой</li></ul></div></details>
+    <details class="sub2" open><summary><svg class="ic" style="width:28px;height:28px"><use href="#i-users"/></svg>Партнёр (тот же покупатель)</summary><div class="in">
+      <ul><li>Моя ссылка и QR — поделиться</li><li>Копилка в граммах и рублях: «до пачки 500 г осталось …»</li><li>Начисления: <i>ждёт 7 дней</i> · <i>зачислено</i> · <i>отменено возвратом</i></li><li>Ступень и прогресс: Друг (2 уровня) → Партнёр, 30 кг в команде (4) → Лидер, 150 кг (6) → Мастер, 500 кг (7); ступень не слетает. За какой срок считаются кг — в плане не сказано, уточнить</li><li>Кто пришёл по ссылке — только имя и сумма кг, без телефонов и адресов</li><li>«Забрать пачку из копилки» — создаёт бесплатный заказ</li></ul></div></details>
+    <details class="sub2" open><summary><svg class="ic" style="width:28px;height:28px"><use href="#i-chart"/></svg>Владелец (Юлай, Тимофей)</summary><div class="in">
+      <ul><li>Продажи за день и неделю: заказы, кг, рубли</li><li>Куда ушли 2 250 ₽ с кг (как в плане v12)</li><li>Сколько кофе мы должны по копилкам</li><li>Заказы, застрявшие дольше 2 дней; возвраты; жалобы</li><li>Остаток зерна по сортам</li><li>Правила плана: версия, дата, кто включил</li></ul></div></details>
+    <details class="sub2" open><summary><svg class="ic" style="width:28px;height:28px"><use href="#i-fire"/></svg>Обжарщик и упаковка (сторона поставщика)</summary><div class="in">
+      <ul><li>«Сегодня обжарить»: кг по сортам из оплаченных заказов</li><li>Отметка «обжарено» → дата обжарки уходит покупателю</li><li>Сборка: отсканировать код «Честного знака» каждой пачки в заказ</li><li>Накладная СДЭК / Яндекс печатается сама</li></ul></div></details>
+    <details class="sub2" open><summary><svg class="ic" style="width:28px;height:28px"><use href="#i-receipt"/></svg>Бухгалтер</summary><div class="in">
+      <ul><li>Выгрузка продаж, чеков и возвратов за месяц</li><li>Копилка: сколько кофе выдано каждому за год в рублях (порог 4 000 ₽ — вопрос <abbr title="Налог на доходы физических лиц">НДФЛ</abbr>)</li><li>Позже: реестр выплат деньгами и документы</li></ul></div></details>
+    <details class="sub2" open><summary><svg class="ic" style="width:28px;height:28px"><use href="#i-truck"/></svg>Доставка</summary><div class="in">
+      <ul><li>Своего экрана курьера не делаем: СДЭК или Яндекс берут посылку и дают трек</li><li>Свой курьер по Перми — только если появится самовывоз или «привезти сегодня»; тогда простой список «адрес · вручено»</li></ul></div></details>
+  </div>
+</details>
+
+<!-- ПУТЬ ЗАКАЗА -->
+<details class="sec">
+  <summary><h2><svg class="ic"><use href="#i-flow"/></svg><span>Путь одного заказа<span class="hint">от ссылки до возврата, 8 шагов</span></span></h2></summary>
+  <div class="body">
 <ol class="flow">
   <li><b>Ссылка партнёра.</b> Аня делится ссылкой; сайт запоминает «пришёл от Ани» — до первого заказа и навсегда.<div class="who">строим мы</div></li>
   <li><b>Заказ.</b> Друг выбирает кофе и пункт выдачи; к первому заказу — подарок 215 ₽ с кг.<div class="who">строим мы · стоимость доставки считает СДЭК / Яндекс</div></li>
-  <li><b>Оплата.</b> СБП или карта; чек по 54‑ФЗ уходит сам; в чеке — коды маркировки пачек.<div class="who">готовое: ЮKassa или Т‑Касса · деньги идут на счёт ООО</div></li>
+  <li><b>Оплата.</b> СБП или карта; чек по <abbr title="Закон о применении контрольно-кассовой техники: чек на каждую оплату">54‑ФЗ</abbr> уходит сам; в чеке — коды маркировки пачек.<div class="who">готовое: ЮKassa или Т‑Касса · деньги идут на счёт ООО</div></li>
   <li><b>Обжарка.</b> Оплаченные заказы складываются в «обжарить сегодня»; обжарщик отмечает «готово».<div class="who">строим мы · жарит поставщик</div></li>
   <li><b>Сборка и отправка.</b> Скан кода «Честного знака» каждой пачки → накладная → трек покупателю.<div class="who">готовое: СДЭК / Яндекс Доставка, подключённые к сайту</div></li>
-  <li><b>Начисление.</b> Когда друг заказывает <i>снова</i>, с каждого кг идёт в копилки 7 уровней вверх: 59 · 41 · 33 · 27 · 23 · 17 · 15 ₽ (это ≈ 47 г кофе Ане с кг друга и ≈ 33 г с кг друга её друга). Статус — «ждёт 7 дней».<div class="who">строим мы — сердце системы, с проверками на примерах плана</div></li>
+  <li><b>Начисление.</b> Когда друг заказывает <i>снова</i>, с каждого кг идёт в копилки 7 уровней вверх: 59 · 41 · 33 · 27 · 23 · 17 · 15 ₽ (≈ 47 г кофе Ане с кг друга и ≈ 33 г с кг друга её друга). Статус — «ждёт 7 дней».<div class="who">строим мы — сердце системы, с проверками на примерах плана</div></li>
   <li><b>Пачка из копилки.</b> Через 7 дней без возврата — «зачислено». Набралось 625 ₽ (столько стоит компании пачка 500 г по закупке; в магазине она 1 125 ₽) — партнёр нажимает «забрать пачку», и пачка едет бесплатно. Денег на карту на старте нет.<div class="who">строим мы · деньгами — позже, после юриста, через банк</div></li>
   <li><b>Возврат.</b> Отказ в 7 дней: деньги назад, чек возврата, начисления по этому заказу отменяются у всех уровней. Правила возврата обязательно пишем в оферте — иначе по закону покупатель может вернуть до 3 месяцев.<div class="who">готовое (возврат денег) + мы (отмена начислений)</div></li>
 </ol>
-
-<!-- ============ 4. СТРОИМ / БЕРЁМ ============ -->
-<h2>3. Строим сами или берём готовое <span class="sub">· подробности</span></h2>
-<p class="sub">Цены сверены 2026-11-03 по страницам сервисов и обзорам; там, где только обзор, — «по обзору». Точную ставку дают при подключении.</p>
-<div class="card scroll">
-<table class="tbl">
-<tr><th>Часть</th><th>Решение</th><th>Цена</th><th>Источник</th></tr>
-<tr><td>Витрина, заказ, «чья ссылка»</td><td><span class="tag ok">строим</span></td><td>наше время; сервер в РФ ≈ 1–2 тыс. ₽/мес (не проверено)</td><td>—</td></tr>
-<tr><td>Копилка, ступени, 7 уровней</td><td><span class="tag ok">строим</span></td><td>наше время; главное — тесты и бумажный прогон</td><td>план v12 (01.11)</td></tr>
-<tr><td>Экран обжарщика, кабинет владельца</td><td><span class="tag ok">строим</span></td><td>наше время</td><td>—</td></tr>
-<tr><td>Приём оплаты (эквайринг) + чеки по закону о кассах (54‑ФЗ)</td><td><span class="tag warn">берём</span> ЮKassa</td><td>СБП ≈ 0,4–0,7 %, карты ≈ 2,8–3,5 % (по обзорам); с 2026 на комиссию за карты — НДС 22 %; чеки с кодами маркировки поддерживаются; цена облачной кассы не найдена</td><td><a href="https://yookassa.ru/docs/support/payments/fees">тарифы</a>, <a href="https://yookassa.ru/developers/payment-acceptance/receipts/54fz/yoomoney/parameters-values">коды в чеке</a></td></tr>
-<tr><td>— запасной вариант оплаты</td><td><span class="tag warn">берём</span> Т‑Касса или CloudPayments</td><td>СБП от 0,4 %, карты ≈ 2,5–2,95 % (по обзорам)</td><td><a href="https://vc.ru/services/3197498-internet-ekvayring-dlya-ip-luchshie-servisy-s-bystrym-podklyucheniem">vc.ru</a></td></tr>
-<tr><td>Доставка</td><td><span class="tag warn">берём</span> СДЭК (договор «Интернет‑магазин») или Яндекс Доставка</td><td>подключение к сайту бесплатно при договоре; СДЭК Пермь → Москва ≈ 265 ₽ за 1 кг по договору (по сайту агента, 24.10)</td><td><a href="https://apidoc.cdek.ru/">СДЭК API</a>, <a href="https://yandex.com/support2/delivery-profile/ru/api">Яндекс API</a></td></tr>
-<tr><td>Коды «Честного знака»</td><td><span class="tag warn">у поставщика</span></td><td>код ≈ 0,5–0,6 ₽ (данные 2021); по словам Тимофея, маркировка входит в 1 250 ₽/кг — письменно не подтверждено</td><td><a href="https://saby.ru/articles/marking/markirovka_chaya_kofe_kakao">Saby</a></td></tr>
-<tr><td>Выплаты деньгами (позже)</td><td><span class="tag warn">берём</span> Т‑Бизнес: выплаты самозанятым</td><td>1,5 % + 29–49 ₽ на счёт, 1,8 % (мин. 40 ₽) по телефону; чеки самозанятых банк делает сам</td><td><a href="https://www.tbank.ru/business/online-payments/payouts/">Т‑Банк</a></td></tr>
-<tr><td>Рассылки, поддержка</td><td><span class="tag warn">берём</span> почта + Telegram / MAX</td><td>≈ 0 ₽ на старте</td><td>—</td></tr>
-</table>
-</div>
-
-<!-- ============ 5. ВАРИАНТЫ ============ -->
-<h2>4. На чём делать — три варианта</h2>
-<div class="grid three">
-  <div class="card rec">
-    <h3>A. Свой сайт + кнопка в Telegram и MAX ✅ советую</h3>
-    <p>Сайт на своём домене; в Telegram и MAX — та же страница кнопкой. Оплата, чеки и доставка — готовыми сервисами.</p>
-    <p class="ok">+ План v12 ложится точно, меняем за день<br>+ Чеки с кодами маркировки — через ЮKassa<br>+ Покупатели и данные — наши, сервер в РФ<br>+ Не зависит от Telegram</p>
-    <p class="bad">− Наше время на сборку и поддержку<br>− За ошибку в начислениях отвечаем мы → тесты и бумажный прогон</p>
-    <p><b>Деньги:</b> сервер ≈ 1–2 тыс. ₽/мес + % эквайринга. <b>Срок:</b> ≈ 3 недели до продажи по ссылке (грубо, замеров нет).</p>
   </div>
-  <div class="card">
-    <h3>B. Готовая МЛМ‑платформа + доработка</h3>
-    <p>Например, OKsoft (облако, цены открыты) или MLM‑PRO (цена по запросу).</p>
-    <p class="ok">+ Дерево, кабинет, кошелёк — уже есть<br>+ Опыт чужих сетевых компаний</p>
-    <p class="bad">− 25 350–55 900 ₽/мес у OKsoft, формулы плана — отдельно за деньги<br>− Выглядит как «ещё одна сетевая»<br>− Маркировку, чеки, доставку всё равно подключать<br>− Копилка кофе — нестандартна, будем доплачивать</p>
-    <p><b>Срок:</b> не проверено; внедрение по их оценке.</p>
-    <p class="sub"><a href="https://oksoft.ru/price_mlm_software">OKsoft — цены</a> · <a href="https://mlm-pro.ru/program/version">MLM‑PRO</a></p>
+</details>
+
+<!-- СТРОИМ / БЕРЁМ -->
+<details class="sec">
+  <summary><h2><svg class="ic"><use href="#i-tools"/></svg><span>Строим сами или берём готовое<span class="hint">9 частей, цены и источники</span></span></h2></summary>
+  <div class="body">
+    <p class="sub small">Цены сверены 2026-11-03 по страницам сервисов и обзорам; где только обзор — «по обзору». Точную ставку дают при подключении.</p>
+    <div class="row"><div class="nm">Витрина, заказ, «чья ссылка» <span class="tag ok">строим</span></div><div class="small">наше время; сервер в РФ ≈ 1–2 тыс. ₽/мес (не проверено)</div></div>
+    <div class="row"><div class="nm">Копилка, ступени, 7 уровней <span class="tag ok">строим</span></div><div class="small">наше время; главное — тесты и бумажный прогон. Источник: план v12 (01.11)</div></div>
+    <div class="row"><div class="nm">Экран обжарщика, кабинет владельца <span class="tag ok">строим</span></div><div class="small">наше время</div></div>
+    <div class="row"><div class="nm">Приём оплаты (<abbr title="Приём оплаты картой и по СБП через сервис">эквайринг</abbr>) и чеки по 54‑ФЗ <span class="tag warn">берём ЮKassa</span></div><div class="small">СБП ≈ 0,4–0,7 %, карты ≈ 2,8–3,5 % (по обзорам); с 2026 на комиссию за карты — НДС 22 %; чеки с кодами маркировки поддерживаются; цена облачной кассы не найдена. <a href="https://yookassa.ru/docs/support/payments/fees">тарифы</a>, <a href="https://yookassa.ru/developers/payment-acceptance/receipts/54fz/yoomoney/parameters-values">коды в чеке</a></div></div>
+    <div class="row"><div class="nm">Запасной вариант оплаты <span class="tag warn">берём Т‑Касса или CloudPayments</span></div><div class="small">СБП от 0,4 %, карты ≈ 2,5–2,95 % (по обзорам). <a href="https://vc.ru/services/3197498-internet-ekvayring-dlya-ip-luchshie-servisy-s-bystrym-podklyucheniem">vc.ru</a></div></div>
+    <div class="row"><div class="nm">Доставка <span class="tag warn">берём СДЭК или Яндекс</span></div><div class="small">СДЭК — договор «Интернет‑магазин». Подключение к сайту бесплатно при договоре; СДЭК Пермь → Москва ≈ 265 ₽ за 1 кг по договору (по сайту агента, 24.10). <a href="https://apidoc.cdek.ru/">СДЭК API</a>, <a href="https://yandex.com/support2/delivery-profile/ru/api">Яндекс API</a></div></div>
+    <div class="row"><div class="nm">Коды «Честного знака» <span class="tag warn">у поставщика</span></div><div class="small">код ≈ 0,5–0,6 ₽ (данные 2021); по словам Тимофея, маркировка входит в 1 250 ₽/кг — письменно не подтверждено. <a href="https://saby.ru/articles/marking/markirovka_chaya_kofe_kakao">Saby</a></div></div>
+    <div class="row"><div class="nm">Выплаты деньгами (позже) <span class="tag warn">берём Т‑Бизнес</span></div><div class="small">выплаты самозанятым: 1,5 % + 29–49 ₽ на счёт, 1,8 % (мин. 40 ₽) по телефону; чеки самозанятых банк делает сам. <a href="https://www.tbank.ru/business/online-payments/payouts/">Т‑Банк</a></div></div>
+    <div class="row"><div class="nm">Рассылки, поддержка <span class="tag warn">берём</span></div><div class="small">почта + Telegram / MAX; ≈ 0 ₽ на старте</div></div>
   </div>
-  <div class="card">
-    <h3>C. Гибрид: готовый магазин + наша копилка</h3>
-    <p>Магазин на InSales (от 2 295 ₽/мес при оплате за год) или UDS PRO (10 400 ₽/мес, рефералка до 3 уровней) + наша копилка, подключённая к магазину.</p>
-    <p class="ok">+ Витрина, корзина, оплата — за дни<br>+ Меньше нашего кода</p>
-    <p class="bad">− Две системы, синхронизация заказов и возвратов<br>− UDS: «товары с маркировкой пока не поддерживаются» (проверено 25.10)<br>− 7 уровней и копилки в граммах нет ни там, ни там<br>− Доп. ключ подключения InSales — 1 490 ₽/мес</p>
-    <p class="sub"><a href="https://www.insales.ru/page/obnovlenie-tarifov-insales-v-2026">InSales</a> · <a href="https://getuds.app/">UDS</a></p>
+</details>
+
+<!-- ВАРИАНТЫ -->
+<details class="sec">
+  <summary><h2><svg class="ic"><use href="#i-help"/></svg><span>На чём делать — три варианта<span class="hint">советуем вариант A</span></span></h2></summary>
+  <div class="body">
+    <div class="card var rec"><h3><svg class="ic"><use href="#i-check"/></svg>A. Свой сайт + кнопка в Telegram и MAX ✅ советую</h3>
+      <p>Сайт на своём домене; в Telegram и MAX — та же страница кнопкой. Оплата, чеки и доставка — готовыми сервисами.</p>
+      <ul class="pm"><li class="pl">+ План v12 ложится точно, меняем за день</li><li class="pl">+ Чеки с кодами маркировки — через ЮKassa</li><li class="pl">+ Покупатели и данные — наши, сервер в РФ</li><li class="pl">+ Не зависит от Telegram</li><li class="mn">− Наше время на сборку и поддержку</li><li class="mn">− За ошибку в начислениях отвечаем мы → тесты и бумажный прогон</li></ul>
+      <p><b>Деньги:</b> сервер ≈ 1–2 тыс. ₽/мес + % эквайринга. <b>Срок:</b> ≈ 3 недели до продажи по ссылке (грубо, замеров нет).</p></div>
+    <div class="card var"><h3><svg class="ic"><use href="#i-layers"/></svg>B. Готовая МЛМ‑платформа + доработка</h3>
+      <p>Например, OKsoft (облако, цены открыты) или MLM‑PRO (цена по запросу).</p>
+      <ul class="pm"><li class="pl">+ Дерево, кабинет, кошелёк — уже есть</li><li class="pl">+ Опыт чужих сетевых компаний</li><li class="mn">− 25 350–55 900 ₽/мес у OKsoft, формулы плана — отдельно за деньги</li><li class="mn">− Выглядит как «ещё одна сетевая»</li><li class="mn">− Маркировку, чеки, доставку всё равно подключать</li><li class="mn">− Копилка кофе нестандартна, будем доплачивать</li></ul>
+      <p><b>Срок:</b> не проверено; внедрение по их оценке.</p>
+      <p class="small"><a href="https://oksoft.ru/price_mlm_software">OKsoft — цены</a> · <a href="https://mlm-pro.ru/program/version">MLM‑PRO</a></p></div>
+    <div class="card var"><h3><svg class="ic"><use href="#i-list"/></svg>C. Гибрид: готовый магазин + наша копилка</h3>
+      <p>Магазин на InSales (от 2 295 ₽/мес при оплате за год) или UDS PRO (10 400 ₽/мес, рефералка до 3 уровней) + наша копилка, подключённая к магазину.</p>
+      <ul class="pm"><li class="pl">+ Витрина, корзина, оплата — за дни</li><li class="pl">+ Меньше нашего кода</li><li class="mn">− Две системы, синхронизация заказов и возвратов</li><li class="mn">− UDS: «товары с маркировкой пока не поддерживаются» (проверено 25.10)</li><li class="mn">− 7 уровней и копилки в граммах нет ни там, ни там</li><li class="mn">− Доп. ключ подключения InSales — 1 490 ₽/мес</li></ul>
+      <p class="small"><a href="https://www.insales.ru/page/obnovlenie-tarifov-insales-v-2026">InSales</a> · <a href="https://getuds.app/">UDS</a></p></div>
+    <div class="card"><p><b>Почему A.</b> Самое ценное в «Кофе» — план вознаграждения и покупатели. Ни одна готовая платформа не умеет копилку в граммах на 7 уровней, а платить за доработку чужого кода — дороже, чем написать свой. Всё, что готовые делают хорошо (оплата, чеки, доставка), — берём готовым.</p>
+      <p><b>Главный риск A:</b> ошибка в начислениях бьёт по доверию. Поэтому расчёт копилки проверяем на примерах самого плана (Аня получает ≈ 47 г с кг друга и ≈ 33 г с кг друга её друга; у v12 есть пример «10 друзей по 0,4 кг в месяц → ≈ 224 ₽ в месяц») и пробным прогоном 20 выдуманных заказов, который Тимофей сверяет вручную.</p></div>
   </div>
-</div>
-<div class="card">
-  <b>Почему A.</b> Самое ценное в «Кофе» — план вознаграждения и покупатели. Ни одна готовая платформа не умеет копилку в граммах на 7 уровней, а платить за доработку чужого кода — дороже, чем написать свой. Всё, что готовые делают хорошо (оплата, чеки, доставка), — берём готовым.
-  <br><b>Главный риск A:</b> ошибка в начислениях бьёт по доверию. Поэтому расчёт копилки проверяем на примерах самого плана (Аня получает ≈ 47 г с кг друга и ≈ 33 г с кг друга её друга; у v12 есть пример «10 друзей по 0,4 кг в месяц → ≈ 224 ₽ в месяц») и пробным прогоном 20 выдуманных заказов, который Тимофей сверяет вручную.
-</div>
-
-<!-- ============ 6. ПОДВОДНЫЕ КАМНИ ============ -->
-<h2>5. Подводные камни — и кто их снимает <span class="sub">· раскрыть нужное</span></h2>
-<p class="sub">Это не юридическое заключение. 🟢 — проверено по первоисточнику, 🟠 — по пересказу, «не проверено» — не сверяли.</p>
-
-<details>
-  <summary>⚖️ 7 уровней — зона внимания закона о пирамидах <span class="sub">· юрист</span></summary>
-  <p>Ст. 172.2 УК и 14.62 КоАП наказывают, когда доход прежним платят из денег новых, а настоящей торговли нет 🟢. В v12 нет платного входа и обязательных покупок, награда — с оплаченных заказов кофе, — это правильно. Но всё, что глубже первой линии, наше исследование 206 и разбор Соломона советуют показать юристу.</p>
-  <p><b>Что сделать:</b> юрист читает v12 и оферту до первого партнёра. Программу делаем так, чтобы число уровней включалось настройкой — можно стартовать с 1–2 и открыть 7 после ответа. <b>Кто:</b> юрист, Тимофей находит; мы — настройка.</p>
 </details>
 
-<details>
-  <summary>🧾 Налоги на копилку и подарки <span class="sub">· бухгалтер</span></summary>
-  <p>Подарки без НДФЛ — до 4 000 ₽ в год по каждому основанию; рекламные призы сверх — 35 % 🟠. Баллы без налога возможны по п. 68 ст. 217 НК (карта, публичная оферта), но награда за привлечение клиентов туда, по пересказу письма Минфина 2022, не попадает 🟠.</p>
-  <p><b>Что сделать:</b> бухгалтер говорит, как оформить кофе из копилки; мы считаем по каждому человеку «выдано за год в рублях» и предупреждаем у порога. <b>Кто:</b> бухгалтер, мы.</p>
+<!-- КАМНИ -->
+<details class="sec">
+  <summary><h2><svg class="ic"><use href="#i-law"/></svg><span>Подводные камни и кто их снимает<span class="hint">9 тем, раскрыть нужное</span></span></h2></summary>
+  <div class="body">
+    <p class="sub small">Это не юридическое заключение. 🟢 — проверено по первоисточнику, 🟠 — по пересказу, «не проверено» — не сверяли.</p>
+    <div class="row"><div class="nm" style="display:flex;gap:8px;align-items:center"><svg class="ic" style="width:28px;height:28px"><use href="#i-law"/></svg><span>7 уровней и закон о пирамидах · юрист</span></div><p>Ст. 172.2 УК и 14.62 КоАП наказывают, когда доход прежним платят из денег новых, а настоящей торговли нет 🟢. В v12 нет платного входа и обязательных покупок, награда — с оплаченных заказов кофе, — это правильно. Но всё, что глубже первой линии, наше исследование 206 и разбор Соломона советуют показать юристу.</p><details class="sub2"><summary>Что сделать</summary><div class="in"><p>юрист читает v12 и оферту до первого партнёра. Число уровней включается настройкой — можно стартовать с 1–2 и открыть 7 после ответа. <b>Кто:</b> юрист, Тимофей находит; мы — настройка.</p></div></details></div>
+    <div class="row"><div class="nm" style="display:flex;gap:8px;align-items:center"><svg class="ic" style="width:28px;height:28px"><use href="#i-receipt"/></svg><span>Налоги на копилку и подарки · бухгалтер</span></div><p>Подарки без НДФЛ — до 4 000 ₽ в год по каждому основанию; рекламные призы сверх — 35 % 🟠. Баллы без налога возможны по п. 68 ст. 217 НК (карта, публичная оферта), но награда за привлечение клиентов туда, по пересказу письма Минфина 2022, не попадает 🟠.</p><details class="sub2"><summary>Что сделать</summary><div class="in"><p>бухгалтер говорит, как оформить кофе из копилки; мы считаем по каждому человеку «выдано за год в рублях» и предупреждаем у порога. <b>Кто:</b> бухгалтер, мы.</p></div></details></div>
+    <div class="row"><div class="nm" style="display:flex;gap:8px;align-items:center"><svg class="ic" style="width:28px;height:28px"><use href="#i-money"/></svg><span>Выплаты деньгами (если появятся) · юрист + бухгалтер</span></div><p>Самозанятым нельзя продавать маркированный товар и работать по агентскому договору — только договор услуг «рекомендации» 🟢 (422‑ФЗ, ст. 4). Значит, продаёт всегда компания, а человеку платят за рекомендацию. Банк проверяет статус и делает чеки сам (Т‑Бизнес).</p><details class="sub2"><summary>Что сделать</summary><div class="in"><p>на старте — только кофе; деньги — отдельным решением после юриста. <b>Кто:</b> Юлай и Тимофей решают, юрист пишет договор.</p></div></details></div>
+    <div class="row"><div class="nm" style="display:flex;gap:8px;align-items:center"><svg class="ic" style="width:28px;height:28px"><use href="#i-tag"/></svg><span>«Честный знак» · поставщик + бухгалтер</span></div><p>Кофе (<abbr title="Товарная номенклатура внешнеэкономической деятельности">ТН ВЭД</abbr> 0901) маркируется с 01.06.2026; коды наносит производитель или фасовщик 🟠 (<a href="https://saby.ru/articles/marking/markirovka_chaya_kofe_kakao">Saby</a>, <a href="https://markznak.ru/markirovka_kofe_chaya_i_kakao_v_2026">Markznak</a>). Когда продавец обязан передавать продажу кода через кассу — источники расходятся: 01.06.2027, 01.07.2027 или раньше.</p><details class="sub2"><summary>Что сделать</summary><div class="in"><p>поставщик письменно: зарегистрирован, коды на каждой пачке, передаёт нам пачки электронными документами (<abbr title="Электронный документооборот">ЭДО</abbr>) — так требует «Честный знак». Мы с первого дня сканируем код пачки в заказ и пишем его в чек — тогда любая дата не страшна. <b>Кто:</b> поставщик, бухгалтер (дата), мы.</p></div></details></div>
+    <div class="row"><div class="nm" style="display:flex;gap:8px;align-items:center"><svg class="ic" style="width:28px;height:28px"><use href="#i-receipt"/></svg><span>Касса и возвраты · мы + бухгалтер</span></div><p>Чек на каждую оплату и каждый возврат (54‑ФЗ). При продаже онлайн покупатель может отказаться в 7 дней; если правила возврата не выданы письменно — до 3 месяцев 🟠 (ст. 26.1 ЗоЗПП).</p><details class="sub2"><summary>Что сделать</summary><div class="in"><p>правила возврата — в оферте и в письме после заказа; начисление зачисляется только через 7 дней. <b>Кто:</b> мы, юрист проверяет оферту.</p></div></details></div>
+    <div class="row"><div class="nm" style="display:flex;gap:8px;align-items:center"><svg class="ic" style="width:28px;height:28px"><use href="#i-doc"/></svg><span>Документы на кофе · поставщик</span></div><p>На пищевую продукцию нужна декларация соответствия (ТР ТС 021/2011) — не проверено для этой партии.</p><details class="sub2"><summary>Что сделать</summary><div class="in"><p>копия декларации и состав/срок годности для карточки товара. <b>Кто:</b> поставщик.</p></div></details></div>
+    <div class="row"><div class="nm" style="display:flex;gap:8px;align-items:center"><svg class="ic" style="width:28px;height:28px"><use href="#i-lock"/></svg><span>Персональные данные · мы + юрист</span></div><p>Имена, телефоны и адреса покупателей — это персональные данные (152‑ФЗ): уведомление в Роскомнадзор (<abbr title="Роскомнадзор">РКН</abbr>) до начала сбора, согласие на сайте, хранение данных граждан РФ на сервере в России — не проверено в деталях для нашего случая.</p><details class="sub2"><summary>Что сделать</summary><div class="in"><p>сервер в РФ, согласие и политика на сайте, уведомление РКН подаёт ООО. Партнёр видит только имя и кг друга — не телефон и не адрес. <b>Кто:</b> мы, юрист.</p></div></details></div>
+    <div class="row"><div class="nm" style="display:flex;gap:8px;align-items:center"><svg class="ic" style="width:28px;height:28px"><use href="#i-phone"/></svg><span>Telegram работает с перебоями · мы</span></div><p>Роскомнадзор 10.02.2026 подтвердил замедление Telegram 🟠 (<a href="https://www.rbc.ru/technology_and_media/10/02/2026/698b21a39a79473017a3cb4a">РБК</a>).</p><details class="sub2"><summary>Что сделать</summary><div class="in"><p>главное — сайт на своём домене; Telegram и MAX — только двери к нему. <b>Кто:</b> мы.</p></div></details></div>
+    <div class="row"><div class="nm" style="display:flex;gap:8px;align-items:center"><svg class="ic" style="width:28px;height:28px"><use href="#i-mega"/></svg><span>Что говорят партнёры · Тимофей + юрист</span></div><p>С 01.09.2025 запрещена реклама в Telegram и YouTube; ФАС не наказывает до конца 2026 🟠 (<a href="https://pravo.ru/news/262958/">pravo.ru</a>). Обещания «заработаешь миллион» от участников бьют по компании.</p><details class="sub2"><summary>Что сделать</summary><div class="in"><p>готовые тексты для партнёров без обещаний дохода; позиция юриста — считается ли ссылка партнёра рекламой. <b>Кто:</b> Тимофей, юрист.</p></div></details></div>
+    <div class="row"><div class="nm" style="display:flex;gap:8px;align-items:center"><svg class="ic" style="width:28px;height:28px"><use href="#i-coin"/></svg><span>Деньги в плане · Юлай + Тимофей</span></div>      <ul><li>Цена поставщика 1 250 ₽/кг не закреплена письменно; по расчёту исследования 239 она близка к его себестоимости — может вырасти.</li><li>В v12 доставка 250 ₽ заложена в цену 2 250 ₽, а 24.10 договорились «доставку платит покупатель» — нужно одно решение.</li><li>Резерв 100 ₽/кг на платёжки и возвраты: при СБП комиссия ≈ 10–16 ₽ с кг, при карте ≈ 63–79 ₽ (расчёт по ставкам выше).</li></ul></div>
+  </div>
 </details>
 
-<details>
-  <summary>💸 Выплаты деньгами (если появятся) <span class="sub">· юрист + бухгалтер</span></summary>
-  <p>Самозанятым нельзя продавать маркированный товар и работать по агентскому договору — только договор услуг «рекомендации» 🟢 (422‑ФЗ, ст. 4). Значит, продаёт всегда компания, а человеку платят за рекомендацию. Банк проверяет статус и делает чеки сам (Т‑Бизнес).</p>
-  <p><b>Что сделать:</b> на старте — только кофе; деньги — отдельным решением после юриста. <b>Кто:</b> Юлай и Тимофей решают, юрист пишет договор.</p>
-</details>
-
-<details>
-  <summary>🏷 «Честный знак» <span class="sub">· поставщик + бухгалтер</span></summary>
-  <p>Кофе (ТН ВЭД 0901) маркируется с 01.06.2026; коды наносит производитель или фасовщик 🟠 (<a href="https://saby.ru/articles/marking/markirovka_chaya_kofe_kakao">Saby</a>, <a href="https://markznak.ru/markirovka_kofe_chaya_i_kakao_v_2026">Markznak</a>). Когда продавец обязан передавать продажу кода через кассу — источники расходятся: 01.06.2027, 01.07.2027 или раньше.</p>
-  <p><b>Что сделать:</b> поставщик письменно: зарегистрирован, коды на каждой пачке, передаёт нам пачки электронными документами (ЭДО) — так требует «Честный знак». Мы с первого дня сканируем код пачки в заказ и пишем его в чек — тогда любая дата не страшна. <b>Кто:</b> поставщик, бухгалтер (дата), мы.</p>
-</details>
-
-<details>
-  <summary>🧮 Касса и возвраты <span class="sub">· мы + бухгалтер</span></summary>
-  <p>Чек на каждую оплату и каждый возврат (54‑ФЗ). При продаже онлайн покупатель может отказаться в 7 дней; если правила возврата не выданы письменно — до 3 месяцев 🟠 (ст. 26.1 ЗоЗПП).</p>
-  <p><b>Что сделать:</b> правила возврата — в оферте и в письме после заказа; начисление зачисляется только через 7 дней. <b>Кто:</b> мы, юрист проверяет оферту.</p>
-</details>
-
-<details>
-  <summary>📜 Документы на кофе <span class="sub">· поставщик</span></summary>
-  <p>На пищевую продукцию нужна декларация соответствия (ТР ТС 021/2011) — не проверено для этой партии.</p>
-  <p><b>Что сделать:</b> копия декларации и состав/срок годности для карточки товара. <b>Кто:</b> поставщик.</p>
-</details>
-
-<details>
-  <summary>🔐 Персональные данные <span class="sub">· мы + юрист</span></summary>
-  <p>Имена, телефоны и адреса покупателей — это персональные данные (152‑ФЗ): уведомление в Роскомнадзор до начала сбора, согласие на сайте, хранение данных граждан РФ на сервере в России — не проверено в деталях для нашего случая.</p>
-  <p><b>Что сделать:</b> сервер в РФ, согласие и политика на сайте, уведомление РКН подаёт ООО. Партнёр видит только имя и кг друга — не телефон и не адрес. <b>Кто:</b> мы, юрист.</p>
-</details>
-
-<details>
-  <summary>📵 Telegram работает с перебоями <span class="sub">· мы</span></summary>
-  <p>Роскомнадзор 10.02.2026 подтвердил замедление Telegram 🟠 (<a href="https://www.rbc.ru/technology_and_media/10/02/2026/698b21a39a79473017a3cb4a">РБК</a>).</p>
-  <p><b>Что сделать:</b> главное — сайт на своём домене; Telegram и MAX — только двери к нему. <b>Кто:</b> мы.</p>
-</details>
-
-<details>
-  <summary>📣 Что говорят партнёры <span class="sub">· Тимофей + юрист</span></summary>
-  <p>С 01.09.2025 запрещена реклама в Telegram и YouTube; ФАС не наказывает до конца 2026 🟠 (<a href="https://pravo.ru/news/262958/">pravo.ru</a>). Обещания «заработаешь миллион» от участников бьют по компании.</p>
-  <p><b>Что сделать:</b> готовые тексты для партнёров без обещаний дохода; позиция юриста — считается ли ссылка партнёра рекламой. <b>Кто:</b> Тимофей, юрист.</p>
-</details>
-
-<details>
-  <summary>💰 Деньги в плане <span class="sub">· Юлай + Тимофей</span></summary>
-  <ul>
-    <li>Цена поставщика 1 250 ₽/кг не закреплена письменно; по расчёту исследования 239 она близка к его себестоимости — может вырасти.</li>
-    <li>В v12 доставка 250 ₽ заложена в цену 2 250 ₽, а 24.10 договорились «доставку платит покупатель» — нужно одно решение.</li>
-    <li>Резерв 100 ₽/кг на платёжки и возвраты: при СБП комиссия ≈ 10–16 ₽ с кг, при карте ≈ 63–79 ₽ (расчёт по ставкам выше).</li>
-  </ul>
-</details>
-
-<!-- ============ 7. ЭТАПЫ ============ -->
-<h2>6. Этапы к первой партии</h2>
+<!-- ЭТАПЫ -->
+<details class="sec">
+  <summary><h2><svg class="ic"><use href="#i-calendar"/></svg><span>Этапы к первой партии<span class="hint">4 недели и «потом»</span></span></h2></summary>
+  <div class="body">
 <ol class="flow">
   <li><b>Неделя 0 — решения</b> (сейчас): кто продавец (чьё ООО), юрист и бухгалтер, доставка в цене или отдельно, план v12 — финальный. Мы: экраны покупателя берём из готового прототипа «как Дринкит» (30.10), дорисовываем роли партнёра, владельца и обжарщика; расчёт копилки с проверками.<div class="who">Юлай и Тимофей · мы</div></li>
   <li><b>Неделя 1 — продажа «в тесте»:</b> каталог, заказ, ссылка партнёра, тестовая оплата ЮKassa, экран обжарщика.<div class="who">мы</div></li>
@@ -317,59 +333,61 @@ a{color:var(--brand)}
   <li><b>Неделя 3 — первая партия:</b> 10–15 знакомых по ссылкам, оплата по полной цене, копилки видны. Пачки из копилки выдаём, следим за ошибками.<div class="who">все</div></li>
   <li><b>Потом:</b> больше уровней — после юриста; деньги вместо кофе — отдельным решением; название и домен — когда выберете (до этого работаем под рабочим именем).<div class="who">Юлай и Тимофей</div></li>
 </ol>
-<p class="sub">Можно продать первую партию и раньше, без приложения: ссылка оплаты ЮKassa + таблица копилок. Это честный запасной путь, если партия придёт до готовности сайта.</p>
+    <p class="sub">Можно продать первую партию и раньше, без приложения: ссылка оплаты ЮKassa + таблица копилок. Это честный запасной путь, если партия придёт до готовности сайта.</p>
+  </div>
+</details>
 
-<div class="grid three">
-  <div class="card">
-    <h3>Нужно от Юлая и Тимофея</h3>
-    <ul>
-      <li>Кто продавец: ООО, учредители, дата</li>
-      <li>Юрист и бухгалтер — имена</li>
-      <li>План v12 — «да» письменно, сколько уровней на старте</li>
-      <li>Доставка — в цене или платит покупатель</li>
-      <li>Кто отвечает покупателям</li>
-      <li>10–15 первых покупателей</li>
-    </ul>
+<!-- КТО ЧТО -->
+<details class="sec">
+  <summary><h2><svg class="ic"><use href="#i-list"/></svg><span>Кому что нужно сделать<span class="hint">Юлай и Тимофей · поставщик · мы</span></span></h2></summary>
+  <div class="body">
+    <details class="sub2" open><summary>От Юлая и Тимофея</summary><div class="in"><ul><li>Кто продавец: ООО, учредители, дата</li><li>Юрист и бухгалтер — имена</li><li>План v12 — «да» письменно, сколько уровней на старте</li><li>Доставка — в цене или платит покупатель</li><li>Кто отвечает покупателям</li><li>10–15 первых покупателей</li></ul></div></details>
+    <details class="sub2" open><summary>От поставщика</summary><div class="in"><ul><li>Цена за кг письменно на 3–6 месяцев</li><li>Сорта первой партии, грейд, объём, когда на месте</li><li>Сколько кг в день обжарка</li><li>«Честный знак»: регистрация, коды на пачках</li><li>Декларация, фото, описания</li><li>Адрес отгрузки для СДЭК</li></ul></div></details>
+    <details class="sub2" open><summary>Делаем мы</summary><div class="in"><ul><li>Сайт и кнопка в Telegram/MAX, экраны по ролям</li><li>Расчёт копилки с проверками</li><li>Подключение ЮKassa, СДЭК</li><li>Оферта и правила возврата — черновик юристу</li><li>Прогон заказов до первой продажи</li></ul></div></details>
   </div>
-  <div class="card">
-    <h3>Нужно от поставщика</h3>
-    <ul>
-      <li>Цена за кг письменно на 3–6 месяцев</li>
-      <li>Сорта первой партии, грейд, объём, когда на месте</li>
-      <li>Сколько кг в день обжарка</li>
-      <li>«Честный знак»: регистрация, коды на пачках</li>
-      <li>Декларация, фото, описания</li>
-      <li>Адрес отгрузки для СДЭК</li>
-    </ul>
-  </div>
-  <div class="card">
-    <h3>Делаем мы</h3>
-    <ul>
-      <li>Сайт и кнопка в Telegram/MAX, экраны по ролям</li>
-      <li>Расчёт копилки с проверками</li>
-      <li>Подключение ЮKassa, СДЭК</li>
-      <li>Оферта и правила возврата — черновик юристу</li>
-      <li>Прогон заказов до первой продажи</li>
-    </ul>
-  </div>
-</div>
+</details>
 
-<details>
-  <summary>Источники и даты</summary>
-  <ul class="foot">
+<details class="sec">
+  <summary><h2><svg class="ic"><use href="#i-src"/></svg><span>Источники и даты</span></h2></summary>
+  <div class="body"><ul class="small">
     <li>План вознаграждения v12 — картинки Соломона, 01.11.2026 (materials/2026-11-01-plan-v12-*.jpg).</li>
     <li>Цена 2 250 ₽/кг, закупка 1 250 ₽/кг с обжаркой, упаковкой и маркировкой — со слов Тимофея, 24.10; документами не сверено.</li>
     <li>Исследования проекта: 206 (механики и закон), 239 (модели), 240 (многоуровневые модели); общая база: «готовое или своё» (25.10), «доставка до двери» (24.10), «правовая рамка выплат» (24.10), «подготовка пилота» (29.10).</li>
     <li>Цены сервисов — поиск 03.11.2026: <a href="https://yookassa.ru/docs/support/payments/fees">ЮKassa</a>, <a href="https://www.tbank.ru/business/online-payments/payouts/">Т‑Банк выплаты</a>, <a href="https://oksoft.ru/price_mlm_software">OKsoft</a>, <a href="https://getuds.app/">UDS</a>, <a href="https://www.insales.ru/page/obnovlenie-tarifov-insales-v-2026">InSales</a>, <a href="https://apidoc.cdek.ru/">СДЭК</a>, <a href="https://yandex.com/support2/delivery-profile/ru/api">Яндекс Доставка</a>, <a href="https://www.consultant.ru/law/podborki/kod_markirovki_v_kassovom_cheke/">Консультант: код маркировки в чеке</a>.</li>
+    <li>* Допущения: ООО и счёт есть к ≈ 10.11; юрист отвечает за неделю; поставщик даёт пачки уже с кодами; партия на месте. ООО позже — дата сдвигается на столько же. Запасной путь: если кофе приедет раньше сайта, первую партию можно продать по ссылке на оплату и вести копилки в таблице.</li>
     <li>Сроки — грубая оценка без замеров; ставки эквайринга точные дают только при подключении.</li>
-  </ul>
+  </ul></div>
 </details>
 
 <p class="foot">Черновик. Юристом и бухгалтером не проверено. Решений здесь нет — только карта для разговора.</p>
 </div>
+<div id="tip" role="status"></div>
 <script>
-(function(){var r=document.documentElement,k='kofe-theme',s=localStorage.getItem(k);if(s)r.setAttribute('data-theme',s);
-document.getElementById('tt').onclick=function(){var d=r.getAttribute('data-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');var n=d==='dark'?'light':'dark';r.setAttribute('data-theme',n);localStorage.setItem(k,n);};})();
+(function(){
+var I={
+buyer:"<b>Покупатель.</b> Каталог, заказ и оплата (СБП или карта), статус до трека, подарок 215 ₽ с кг к первому заказу, «повторить заказ», отказ в 7 дней. Основа — готовый прототип «как Дринкит».",
+partner:"<b>Партнёр</b> — тот же покупатель. Ссылка и QR, копилка в граммах и рублях, начисления (ждёт 7 дней · зачислено · отменено), ступени Друг → Партнёр → Лидер → Мастер, «забрать пачку».",
+owner:"<b>Владелец.</b> Продажи за день и неделю, куда ушли 2 250 ₽ с кг, сколько кофе должны по копилкам, застрявшие заказы, остаток зерна, версия правил плана.",
+roaster:"<b>Обжарщик.</b> «Сегодня обжарить» по сортам, отметка «обжарено», скан кода «Честного знака» каждой пачки, накладная СДЭК / Яндекс печатается сама.",
+acc:"<b>Бухгалтер.</b> Выгрузка продаж, чеков и возвратов за месяц; сколько кофе выдано каждому за год в рублях (порог 4 000 ₽ — вопрос НДФЛ).",
+deliv:"<b>Доставка.</b> Своего экрана курьера нет: СДЭК или Яндекс берут посылку и дают трек. Свой курьер по Перми — только при самовывозе или «привезти сегодня».",
+orders:"<b>Заказы и «чья ссылка».</b> Сайт запоминает «пришёл от Ани» до первого заказа и навсегда. Строим мы.",
+piggy:"<b>Копилка.</b> Сердце системы: с каждого кг повторного заказа в копилки 7 уровней вверх — 59 · 41 · 33 · 27 · 23 · 17 · 15 ₽. Проверяем на примерах плана и прогоном 20 заказов.",
+rules:"<b>План v12.</b> Версия, дата, кто включил. Число уровней включается настройкой: можно стартовать с 1–2, открыть 7 после юриста.",
+yoo:"<b>ЮKassa</b> (запас — Т‑Касса или CloudPayments). Оплата СБП ≈ 0,4–0,7 %, карты ≈ 2,8–3,5 % (по обзорам); чеки по 54‑ФЗ с кодами маркировки. Деньги идут на счёт ООО.",
+cdek:"<b>СДЭК или Яндекс Доставка.</b> Подключение к сайту бесплатно при договоре; Пермь → Москва ≈ 265 ₽ за 1 кг по договору (по сайту агента, 24.10).",
+cz:"<b>«Честный знак».</b> Коды на пачках у поставщика (письменно не подтверждено). Мы с первого дня сканируем код в заказ и пишем в чек."};
+var info=document.getElementById('info'),sel=null;
+document.querySelectorAll('.schema g[role=button]').forEach(function(g){
+ function go(){if(sel)sel.classList.remove('sel');sel=g;g.classList.add('sel');info.innerHTML=I[g.getAttribute('data-k')]||'';info.scrollIntoView({block:'nearest',behavior:'smooth'});}
+ g.addEventListener('click',go);
+ g.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();go();}});
+});
+var tip=document.getElementById('tip'),tm;document.querySelectorAll('abbr[title]').forEach(function(a){a.setAttribute('tabindex','0');a.setAttribute('role','button');});
+document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('abbr[title]');
+ if(!a){tip.style.display='none';return;}
+ tip.textContent=a.textContent+' — '+a.getAttribute('title');tip.style.display='block';clearTimeout(tm);tm=setTimeout(function(){tip.style.display='none';},4000);});
+})();
 </script>
 </body>
 </html>
