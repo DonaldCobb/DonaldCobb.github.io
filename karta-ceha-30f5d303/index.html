@@ -3,79 +3,91 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Onest:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap">
 <style>
-/* Схема цеха: слои производства сверху вниз, как этажи; одна сигнальная оранжевая линия — путь задачи */
+/* Схема студии-цеха: роли сверху, каталог продуктов, общие станки и матрица «продукт × станок», маршрут, обучение, план волнами */
 :root {
   --bg: #f4f6f8; --panel: #ffffff; --ink: #18202a; --muted: #5d6874; --line: #d6dde4;
-  --steel: #2f6680; --signal: #d9541a; --signal-soft: #fbe6dc; --ok: #2f7d4f; --warn: #a76a00; --stop: #b3261e;
+  --steel: #2f6680; --signal: #d9541a; --signal-soft: #fbe6dc; --ok: #2f7d4f; --ok-soft: #e1f1e7; --warn: #a76a00; --warn-soft: #f7ecd6; --stop: #b3261e; --stop-soft: #f6e0de;
   --display: "Unbounded", "Onest", system-ui, sans-serif;
   --body: "Onest", system-ui, -apple-system, "Segoe UI", sans-serif;
   --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
 }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
   --bg: #11161c; --panel: #19212a; --ink: #e5eaef; --muted: #9aa6b2; --line: #2c3744;
-  --steel: #6fb0cf; --signal: #ff7a3d; --signal-soft: #3a2216; --ok: #5cc28a; --warn: #e0a23a; --stop: #ef6b62; color-scheme: dark } }
+  --steel: #6fb0cf; --signal: #ff7a3d; --signal-soft: #3a2216; --ok: #5cc28a; --ok-soft: #173225; --warn: #e0a23a; --warn-soft: #3a2e15; --stop: #ef6b62; --stop-soft: #3b1d1b; color-scheme: dark } }
 :root[data-theme="dark"] {
   --bg: #11161c; --panel: #19212a; --ink: #e5eaef; --muted: #9aa6b2; --line: #2c3744;
-  --steel: #6fb0cf; --signal: #ff7a3d; --signal-soft: #3a2216; --ok: #5cc28a; --warn: #e0a23a; --stop: #ef6b62; color-scheme: dark }
+  --steel: #6fb0cf; --signal: #ff7a3d; --signal-soft: #3a2216; --ok: #5cc28a; --ok-soft: #173225; --warn: #e0a23a; --warn-soft: #3a2e15; --stop: #ef6b62; --stop-soft: #3b1d1b; color-scheme: dark }
 * { box-sizing: border-box }
 body { background: var(--bg); color: var(--ink); font: 15px/1.55 var(--body); padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 28px 56px }
-.wrap { max-width: 980px; margin: 0 auto; display: grid; gap: 40px }
+.wrap { max-width: 1040px; margin: 0 auto; display: grid; gap: 44px }
 h1, h2 { font-family: var(--display); text-wrap: balance; margin: 0; line-height: 1.15 }
 h1 { font-size: clamp(28px, 6vw, 44px); font-weight: 700 }
 h2 { font-size: 20px; font-weight: 500 }
 h3 { margin: 0; font-size: 15px; font-weight: 600 }
-p { margin: 0; max-width: 68ch }
+p { margin: 0; max-width: 70ch }
 .eyebrow { font: 600 11px/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--muted) }
-.lead { font-size: 17px; color: var(--ink) }
+.lead { font-size: 17px }
 .lead b { color: var(--signal) }
 section { display: grid; gap: 16px }
 .muted { color: var(--muted) }
-.mono { font-family: var(--mono); font-variant-numeric: tabular-nums }
+.small { font-size: 13px }
 
-/* hero */
-.hero { display: grid; gap: 14px }
-.io { display: grid; grid-template-columns: 1fr auto 1fr; gap: 12px; align-items: stretch; margin-top: 6px }
+.io { display: grid; grid-template-columns: 1fr auto 1fr; gap: 12px; margin-top: 6px }
 .io > div { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; min-width: 0 }
 .io .arrow { display: grid; place-items: center; font: 700 22px var(--mono); color: var(--signal); background: none; border: 0; padding: 0 }
-.io q { font-size: 16px; quotes: "«" "»" }
 @media (max-width: 620px) { .io { grid-template-columns: 1fr } .io .arrow { transform: rotate(90deg); height: 20px } }
 
-/* layers */
-.floors { display: grid; gap: 0; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: var(--panel) }
-.floor { display: grid; grid-template-columns: 44px 170px 1fr; gap: 14px; padding: 14px 16px; border-top: 1px solid var(--line); align-items: start }
-.floor:first-child { border-top: 0 }
-.floor .n { font: 600 13px var(--mono); color: var(--signal); padding-top: 2px }
-.floor .chips { display: flex; flex-wrap: wrap; gap: 6px; min-width: 0 }
-.chip { font-size: 13px; padding: 3px 9px; border-radius: 999px; border: 1px solid var(--line); white-space: nowrap }
-.chip.on { border-color: var(--signal); background: var(--signal-soft) }
-@media (max-width: 620px) { .floor { grid-template-columns: 30px 1fr } .floor .chips { grid-column: 2 } }
-.glue { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 12px }
-.glue div { border-left: 3px solid var(--steel); padding: 2px 0 2px 12px; display: grid; gap: 4px }
+.stats { display: flex; flex-wrap: wrap; gap: 10px 28px }
+.stats div { display: grid; gap: 2px }
+.stats b { font: 700 26px var(--display); color: var(--ink) }
+.stats span { font-size: 13px; color: var(--muted) }
 
-/* recipe timeline */
-.track { display: grid; gap: 0; counter-reset: st }
-.st { display: grid; grid-template-columns: 34px 1fr auto; gap: 12px; padding: 12px 0; border-top: 1px dashed var(--line); align-items: start }
-.st:first-child { border-top: 0 }
-.st .k { font: 600 13px var(--mono); color: var(--muted) }
-.st .who { font: 600 11px var(--mono); letter-spacing: .06em; text-transform: uppercase; padding: 3px 8px; border-radius: 6px; white-space: nowrap }
-.who.h { background: var(--signal-soft); color: var(--signal) }
-.who.m { color: var(--muted); border: 1px solid var(--line) }
-.st p { font-size: 14px; color: var(--muted) }
+.roles { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 10px }
+.role { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; display: grid; gap: 4px; align-content: start }
+.role.you { border-color: var(--signal); background: var(--signal-soft) }
+.role .tag { font: 600 11px var(--mono); color: var(--steel); letter-spacing: .06em; text-transform: uppercase }
 
-/* tables */
+.fam { display: grid; gap: 10px }
+.fam-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 14px }
+.prods { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 8px }
+.prod { background: var(--panel); border: 1px solid var(--line); border-radius: 9px; padding: 10px 12px; display: grid; gap: 3px; min-width: 0 }
+.prod .top { display: flex; justify-content: space-between; gap: 8px; align-items: baseline }
+.prod p { font-size: 13px; color: var(--muted) }
+.st { font: 600 10.5px var(--mono); padding: 2px 7px; border-radius: 5px; white-space: nowrap }
+.st.ok { background: var(--ok-soft); color: var(--ok) }
+.st.part { background: var(--warn-soft); color: var(--warn) }
+.st.no { background: var(--stop-soft); color: var(--stop) }
+.legend { display: flex; flex-wrap: wrap; gap: 8px 16px; font-size: 13px; color: var(--muted); align-items: center }
+
 .tbl { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; background: var(--panel) }
-table { border-collapse: collapse; width: 100%; min-width: 640px; font-size: 14px }
-th, td { text-align: left; padding: 9px 12px; border-top: 1px solid var(--line); vertical-align: top }
-th { font: 600 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); border-top: 0; background: var(--bg) }
-td.num { font-family: var(--mono); font-variant-numeric: tabular-nums; white-space: nowrap }
-.dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; vertical-align: 1px }
-.dot.ok { background: var(--ok) } .dot.warn { background: var(--warn) } .dot.stop { background: var(--stop) }
+table { border-collapse: collapse; width: 100%; font-size: 13.5px }
+th, td { text-align: left; padding: 8px 10px; border-top: 1px solid var(--line); vertical-align: top }
+th { font: 600 10.5px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); border-top: 0; background: var(--bg) }
+.mx th:not(:first-child), .mx td:not(:first-child) { text-align: center; padding: 8px 6px }
+.mx { min-width: 860px }
+.mx th.v { writing-mode: vertical-rl; transform: rotate(180deg); height: 120px; text-align: left; white-space: nowrap }
+.mx td.y::before { content: "●"; color: var(--signal) }
+.mx td.c::before { content: "○"; color: var(--muted) }
+.mx tr.sum td { font: 600 12px var(--mono); color: var(--steel); background: var(--bg) }
+.wide { min-width: 720px }
 
-/* plan */
-.plan { display: grid; gap: 10px; padding: 0; margin: 0; list-style: none }
-.plan li { display: grid; grid-template-columns: 34px 1fr auto; gap: 12px; align-items: start; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px }
-.plan .sz { font: 600 12px var(--mono); padding: 2px 8px; border-radius: 6px; border: 1px solid var(--steel); color: var(--steel) }
-.plan .n { font: 600 13px var(--mono); color: var(--signal) }
+.mods { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 10px }
+.mod { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; display: grid; gap: 6px; min-width: 0 }
+.mod .tools { font: 12px var(--mono); color: var(--muted); overflow-wrap: anywhere }
+
+.dials { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px }
+.dials div { border-left: 3px solid var(--steel); padding: 2px 0 2px 12px; display: grid; gap: 4px }
+
+.loop { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 8px; counter-reset: lp }
+.loop div { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; display: grid; gap: 4px; position: relative }
+.loop div::before { counter-increment: lp; content: counter(lp); font: 600 12px var(--mono); color: var(--signal) }
+
+.waves { display: grid; gap: 12px }
+.wave { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; display: grid; gap: 10px }
+.wave .h { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 14px; align-items: baseline }
+.wave .when { font: 600 12px var(--mono); color: var(--signal) }
+.wave ul { margin: 0; padding-left: 18px; display: grid; gap: 4px }
+.wave .measure { font-size: 13px; border-top: 1px dashed var(--line); padding-top: 8px }
 .risk { border: 1px solid var(--line); border-left: 3px solid var(--stop); border-radius: 0 10px 10px 0; padding: 14px 16px; background: var(--panel); display: grid; gap: 8px }
 .risk ul { margin: 0; padding-left: 18px; display: grid; gap: 4px }
 footer { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 14px }
@@ -83,93 +95,261 @@ footer { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line)
 
 <div class="wrap">
 
-<header class="hero">
-  <span class="eyebrow">Исследование 258 · 04.11.2026 · решение до 06.11</span>
+<header style="display:grid;gap:14px">
+  <span class="eyebrow">Исследование 258 · версия 2 · 04.11.2026</span>
   <h1>Карта Цеха</h1>
-  <p class="lead">Одна дверь в чате: желание на входе, готовый результат на выходе. Внутри <b>тонкий маршрутизатор с рецептами и судьёй</b>, а генерируют облако, «Цех» и ПК — каждый своё. Строим рецепт за рецептом от настоящих заказов, а не движок под любую задачу.</p>
+  <p class="lead">«Цех» — наша студия-производство: любой контент, бренд и цифровой продукт по одной команде. Внутри <b>роли студии, общие станки и рецепты</b>; инструменты меняются, рецепты остаются. Строим станками, которые нужны многим продуктам сразу, и наполняем их настоящими задачами — своими, семьи и клиентов.</p>
   <div class="io">
-    <div><span class="eyebrow">Вход</span><br><q>Хочу рекламный ролик для своей компании</q></div>
+    <div><span class="eyebrow">Вход</span><br>«Сделай карусель про наш кофе», «рилс из этого видео», «бренд для компании X», «мини-апп со всем визуалом и звуком»</div>
     <div class="arrow">→</div>
-    <div><span class="eyebrow">Выход</span><br>Ролик 20 с, принятый судьёй, с отчётом: что сделано, сколько стоило, сколько заняло</div>
+    <div><span class="eyebrow">Выход</span><br>Готовый файл, принятый судьёй, и отчёт: путь, цена, время, что можно улучшить</div>
+  </div>
+  <div class="stats">
+    <div><b>42</b><span>продукта в 8 семьях</span></div>
+    <div><b>16</b><span>общих станков</span></div>
+    <div><b>40+</b><span>инструментов уже у нас</span></div>
+    <div><b>9</b><span>ролей студии</span></div>
   </div>
 </header>
 
 <section>
-  <span class="eyebrow">Устройство</span>
-  <h2>Пять слоёв</h2>
-  <div class="floors">
-    <div class="floor"><span class="n">1</span><h3>Продукты</h3><div class="chips"><span class="chip">картинка</span><span class="chip">серия</span><span class="chip">карусель</span><span class="chip on">ролик</span><span class="chip on">брендинг</span><span class="chip">лендинг</span><span class="chip">мини-апп</span></div></div>
-    <div class="floor"><span class="n">2</span><h3>Рецепты</h3><div class="chips"><span class="chip">бриф-интервью</span><span class="chip">постановка</span><span class="chip">исследование</span><span class="chip">концепт</span><span class="chip">производство</span><span class="chip">приёмка</span><span class="chip">выдача</span></div></div>
-    <div class="floor"><span class="n">3</span><h3>Операции</h3><div class="chips"><span class="chip">кадр по референсу</span><span class="chip">оживление</span><span class="chip">апскейл</span><span class="chip">3D-продукт</span><span class="chip">монтаж</span><span class="chip">логотип SVG</span><span class="chip">голос</span><span class="chip">субтитры</span></div></div>
-    <div class="floor"><span class="n">4</span><h3>Инструменты</h3><div class="chips"><span class="chip">Kling 3.0 Pro</span><span class="chip">Veo 3.1</span><span class="chip">Seedance 2.5</span><span class="chip">GPT Image 2.5</span><span class="chip">Recraft</span><span class="chip">Remotion</span><span class="chip">ffmpeg</span><span class="chip">Blender</span><span class="chip">GigaAM</span></div></div>
-    <div class="floor"><span class="n">5</span><h3>Железо</h3><div class="chips"><span class="chip">облако</span><span class="chip">«Цех»: 4 ядра, 7 ГБ</span><span class="chip">«Цех» + RTX 2070 — позже</span><span class="chip">ПК: GTX 1650, 4 ГБ</span></div></div>
-  </div>
-  <div class="glue">
-    <div><h3>Маршрутизатор</h3><p class="muted">Интервью ставит рамку «быстро, дёшево или качественно», бюджет и срок, а маршрутизатор подбирает под неё рецепт и инструменты.</p></div>
-    <div><h3>«Библия» клиента</h3><p class="muted">Один файл на клиента: палитра, шрифты, логотип, 5–10 референсов, паспорт героя и продукта, тон, запреты. Её читают все рецепты и судья.</p></div>
-    <div><h3>Книга лучших путей</h3><p class="muted">Каждый прогон записывает цену, время и оценку судьи. Лучший путь становится запуском одной командой.</p></div>
-    <div><h3>Опыты</h3><p class="muted">Новый инструмент проверяем на той же задаче рядом со старым и вслепую, остаётся победитель.</p></div>
-  </div>
-</section>
-
-<section>
-  <span class="eyebrow">Первый рецепт</span>
-  <h2>Рекламный ролик: где нужен ты</h2>
-  <div class="track">
-    <div class="st"><span class="k">0</span><div><h3>Бриф-интервью</h3><p>4 вопроса: что на выходе, есть ли «библия», какие форматы, куда, срок и бюджет. До 3 уточнений. Выбор пакета.</p></div><span class="who h">ты</span></div>
-    <div class="st"><span class="k">1</span><div><h3>Постановка и «библия»</h3><p>Герой, продукт, свет, палитра, объективы. Лист героя и лист продукта — один набор референсов на весь ролик.</p></div><span class="who h">ты</span></div>
-    <div class="st"><span class="k">2</span><div><h3>Исследование и референсы</h3><p>Аналоги и техники из базы (253, 255), сценарий и раскадровка сеткой 2×4.</p></div><span class="who m">машина</span></div>
-    <div class="st"><span class="k">3</span><div><h3>Утверждение раскадровки</h3><p>Одно решение по всей сетке, а не по каждому кадру.</p></div><span class="who h">ты</span></div>
-    <div class="st"><span class="k">4</span><div><h3>Кадры и оживление</h3><p>Кадры в GPT Image, лицо — Kling 3.0 Pro, продукт и среда — Seedance. По 2–5 попыток, судья выбирает лучшую.</p></div><span class="who m">машина</span></div>
-    <div class="st"><span class="k">5</span><div><h3>Сборка на «Цехе»</h3><p>Монтаж под музыку, единый цвет, зерно, титры, субтитры, громкость.</p></div><span class="who m">машина</span></div>
-    <div class="st"><span class="k">6</span><div><h3>Приёмка и выдача</h3><p>Судья по рубрике, потом твой финальный просмотр. Отчёт: цена, время, путь — в книгу путей.</p></div><span class="who h">ты</span></div>
+  <span class="eyebrow">Кто работает</span>
+  <h2>Роли студии</h2>
+  <p class="muted">Каждая роль — агент со своим промптом, правами и судьёй. Ты — креативный директор на воротах: задаёшь цель, утверждаешь главное, принимаешь итог.</p>
+  <div class="roles">
+    <div class="role you"><span class="tag">ты</span><h3>Креативный директор</h3><p class="small">Цель, вкус, утверждения на воротах, финальный взгляд. Последние 20 % — твои, за них и платят.</p></div>
+    <div class="role"><span class="tag">оркестратор</span><h3>Продюсер</h3><p class="small">Разбирает запрос, выбирает рецепт и пакет, держит бюджет и срок, раздаёт работу, собирает отчёт.</p></div>
+    <div class="role"><span class="tag">смысл</span><h3>Стратег</h3><p class="small">Бриф-интервью: цель, аудитория, что должен сделать зритель, главная мысль. Опора — база бренда (Б3) и плейбук рынка.</p></div>
+    <div class="role"><span class="tag">вкус</span><h3>Арт-директор</h3><p class="small">«Библия» бренда, референсы, стиль, палитра, сетки. Отбирает варианты до тебя и не пускает «вид мема».</p></div>
+    <div class="role"><span class="tag">слова</span><h3>Копирайтер «Перо»</h3><p class="small">Сценарии рилсов и YouTube, посты, карусели, подписи, КП — голосом заказчика, судья по шкале 100.</p></div>
+    <div class="role"><span class="tag">кадр</span><h3>Режиссёр</h3><p class="small">Раскадровка, шот-лист, объективы и свет, хук первых секунд, ритм монтажа.</p></div>
+    <div class="role"><span class="tag">руки</span><h3>Операторы станков</h3><p class="small">Генерация, монтаж, 3D, голос, вёрстка, код — каждый знает паспорт своих инструментов.</p></div>
+    <div class="role"><span class="tag">качество</span><h3>Судья</h3><p class="small">Рубрика с весами, сверка с «библией», выбор лучшего из 2–3. Никогда не тот, кто делал.</p></div>
+    <div class="role"><span class="tag">память</span><h3>Архивариус</h3><p class="small">Журнал каждого прогона, книга лучших путей, слежение за новыми моделями и опыты.</p></div>
   </div>
 </section>
 
 <section>
-  <span class="eyebrow">Лестница продуктов</span>
-  <h2>Сколько раз нужен человек и что стоит на рынке</h2>
-  <div class="tbl"><table>
-    <thead><tr><th>Ступень</th><th>Утверждений</th><th>Судья</th><th>Рынок Перми и РФ</th></tr></thead>
+  <span class="eyebrow">Что выпускает</span>
+  <h2>Каталог продуктов</h2>
+  <div class="legend"><span><span class="st ok">делаем</span> есть рабочий путь</span><span><span class="st part">частично</span> есть станки, нет рецепта</span><span><span class="st no">нет</span> нужен новый станок или доступ</span></div>
+
+  <div class="fam"><div class="fam-head"><h3>Визуал</h3><span class="muted small">картинки, на которых держится всё остальное</span></div>
+  <div class="prods">
+    <div class="prod"><div class="top"><b>Картинка, иллюстрация</b><span class="st ok">делаем</span></div><p>GPT Image 2.5 по референсам, до 4 образцов</p></div>
+    <div class="prod"><div class="top"><b>Серия в одном стиле</b><span class="st part">частично</span></div><p>нужен якорь стиля из «библии» и сверка серии</p></div>
+    <div class="prod"><div class="top"><b>Предметное фото продукта</b><span class="st part">частично</span></div><p>кадр по фото продукта; этикетка — через 3D</p></div>
+    <div class="prod"><div class="top"><b>Обложка, превью YouTube</b><span class="st ok">делаем</span></div><p>bin/cover и bin/card-render</p></div>
+    <div class="prod"><div class="top"><b>Баннер, рекламный креатив</b><span class="st part">частично</span></div><p>кадр + вёрстка; форматы площадок</p></div>
+    <div class="prod"><div class="top"><b>Аватар, стикеры, плашки</b><span class="st ok">делаем</span></div><p>прозрачный PNG из GPT Image</p></div>
+  </div></div>
+
+  <div class="fam"><div class="fam-head"><h3>Соцсети</h3><span class="muted small">Ева, Рома и Нина, Юлай, «Кофе» — спрос уже есть</span></div>
+  <div class="prods">
+    <div class="prod"><div class="top"><b>Пост Telegram</b><span class="st ok">делаем</span></div><p>«Перо» + обложка</p></div>
+    <div class="prod"><div class="top"><b>Карусель Instagram</b><span class="st ok">делаем</span></div><p>«Перо» + bin/carousel</p></div>
+    <div class="prod"><div class="top"><b>Сторис</b><span class="st part">частично</span></div><p>шаблон 9:16 и вёрстка</p></div>
+    <div class="prod"><div class="top"><b>Рилс, шортс</b><span class="st ok">делаем</span></div><p>монтаж по образцу, субтитры, титры — у Евы на «Цехе»</p></div>
+    <div class="prod"><div class="top"><b>Нарезка шортсов из длинного</b><span class="st part">частично</span></div><p>сцены, расшифровка, автокадр 9:16 есть</p></div>
+    <div class="prod"><div class="top"><b>Субтитры и перевод</b><span class="st ok">делаем</span></div><p>GigaAM + ASS; перевод — моделью</p></div>
+  </div></div>
+
+  <div class="fam"><div class="fam-head"><h3>Видео</h3><span class="muted small">самое дорогое на рынке — и самое заметное в портфолио</span></div>
+  <div class="prods">
+    <div class="prod"><div class="top"><b>Рекламный ролик ИИ</b><span class="st part">частично</span></div><p>бриф, пробы лица, шаблоны готовы</p></div>
+    <div class="prod"><div class="top"><b>YouTube длинный</b><span class="st part">частично</span></div><p>сценарий, главы, обложка, монтаж с паузами</p></div>
+    <div class="prod"><div class="top"><b>Видеоурок, курс</b><span class="st part">частично</span></div><p>курс по вайбкодингу: запись + монтаж + слайды</p></div>
+    <div class="prod"><div class="top"><b>Объясняющий моушн</b><span class="st ok">делаем</span></div><p>Remotion, HyperFrames, Motion Canvas</p></div>
+    <div class="prod"><div class="top"><b>Интервью, подкаст-видео</b><span class="st part">частично</span></div><p>шумодав, кто говорит, вырез пауз</p></div>
+    <div class="prod"><div class="top"><b>UGC-ролик, аватар-ведущий</b><span class="st no">нет</span></div><p>нужен липсинк — ключей нет</p></div>
+  </div></div>
+
+  <div class="fam"><div class="fam-head"><h3>Голос и звук</h3></div>
+  <div class="prods">
+    <div class="prod"><div class="top"><b>Озвучка диктором</b><span class="st part">частично</span></div><p>ElevenLabs, MiniMax через OpenRouter; Silero — только для себя</p></div>
+    <div class="prod"><div class="top"><b>Клон голоса</b><span class="st no">нет</span></div><p>F5 слишком медленный; права на голос</p></div>
+    <div class="prod"><div class="top"><b>Подкаст, аудио-выпуск</b><span class="st part">частично</span></div><p>монтаж звука, обложка, расшифровка</p></div>
+    <div class="prod"><div class="top"><b>Музыка и звуки</b><span class="st no">нет</span></div><p>8 CC0-треков; музыки с правами нет</p></div>
+    <div class="prod"><div class="top"><b>Расшифровка и выжимка</b><span class="st ok">делаем</span></div><p>GigaAM, YouTube-база знаний</p></div>
+  </div></div>
+
+  <div class="fam"><div class="fam-head"><h3>3D</h3></div>
+  <div class="prods">
+    <div class="prod"><div class="top"><b>3D-сцена продукта</b><span class="st part">частично</span></div><p>Blender стоит, готовых сцен нет</p></div>
+    <div class="prod"><div class="top"><b>Мокап упаковки</b><span class="st no">нет</span></div><p>нужны болванки и сцены света</p></div>
+    <div class="prod"><div class="top"><b>CAD-модель, визуализация</b><span class="st ok">делаем</span></div><p>build123d → GLB, смета (беседка)</p></div>
+  </div></div>
+
+  <div class="fam"><div class="fam-head"><h3>Бренд и документы</h3><span class="muted small">ступень, которая рождает «библию» для всех остальных</span></div>
+  <div class="prods">
+    <div class="prod"><div class="top"><b>Бренд-пакет</b><span class="st part">частично</span></div><p>стратегия, имя, знак, палитра, шрифты, гайд — база Б3 есть</p></div>
+    <div class="prod"><div class="top"><b>Логотип SVG</b><span class="st no">нет</span></div><p>Recraft — доступа нет; руками в Penpot</p></div>
+    <div class="prod"><div class="top"><b>Презентация, питч</b><span class="st ok">делаем</span></div><p>bin/slides в фирменном стиле</p></div>
+    <div class="prod"><div class="top"><b>КП, одностраничник</b><span class="st ok">делаем</span></div><p>«Перо» + bin/md-html</p></div>
+    <div class="prod"><div class="top"><b>Карточки маркетплейса</b><span class="st part">частично</span></div><p>Nitteroum, WB — кадр + вёрстка + тексты</p></div>
+  </div></div>
+
+  <div class="fam"><div class="fam-head"><h3>Цифровые продукты</h3><span class="muted small">Эталон: спека → прототип → код</span></div>
+  <div class="prods">
+    <div class="prod"><div class="top"><b>Прототип экранов</b><span class="st ok">делаем</span></div><p>3 варианта → критик → выбор, HTML</p></div>
+    <div class="prod"><div class="top"><b>Лендинг</b><span class="st ok">делаем</span></div><p>Эталон 0.16, сайт на страницах</p></div>
+    <div class="prod"><div class="top"><b>Мини-апп Telegram</b><span class="st ok">делаем</span></div><p>Эталон, фабрика ботов</p></div>
+    <div class="prod"><div class="top"><b>Бот</b><span class="st ok">делаем</span></div><p>фабрика ботов, чек-лист оформления</p></div>
+    <div class="prod"><div class="top"><b>Страница-отчёт, дашборд</b><span class="st ok">делаем</span></div><p>как эта карта</p></div>
+  </div></div>
+
+  <div class="fam"><div class="fam-head"><h3>Ассеты для продуктов</h3><span class="muted small">то, что «Цех» отдаёт другим задачам: приложению, сайту, боту</span></div>
+  <div class="prods">
+    <div class="prod"><div class="top"><b>Иконка и набор иконок</b><span class="st part">частично</span></div><p>GPT Image + вектор руками; нужен станок SVG</p></div>
+    <div class="prod"><div class="top"><b>Анимация интерфейса</b><span class="st part">частично</span></div><p>Remotion, HyperFrames; Lottie — нет</p></div>
+    <div class="prod"><div class="top"><b>Иллюстрации онбординга</b><span class="st ok">делаем</span></div><p>серия в стиле из «библии»</p></div>
+    <div class="prod"><div class="top"><b>Звуки интерфейса</b><span class="st part">частично</span></div><p>CC0-набор; свои — пробел</p></div>
+    <div class="prod"><div class="top"><b>Скриншоты магазина приложений</b><span class="st part">частично</span></div><p>скриншот + вёрстка + подписи</p></div>
+    <div class="prod"><div class="top"><b>Промо-ролик продукта</b><span class="st part">частично</span></div><p>запись экрана + моушн + голос</p></div>
+  </div></div>
+</section>
+
+<section>
+  <span class="eyebrow">Цех внутри других задач</span>
+  <h2>Одна большая задача — много заказов в Цех</h2>
+  <p class="muted">Любая работа, где нужен визуал, звук или видео, не делает их сама, а заказывает «Цеху». Пример: ты просишь мини-апп для «Кофе».</p>
+  <div class="tbl"><table class="wide">
+    <thead><tr><th>Шаг большой задачи</th><th>Заказ в «Цех»</th><th>Что возвращается</th></tr></thead>
     <tbody>
-      <tr><td>Картинка</td><td class="num">1</td><td>проверщик + ты</td><td class="muted">—</td></tr>
-      <tr><td>Серия</td><td class="num">1 — на якоре</td><td>сверка серии с «библией»</td><td class="muted">—</td></tr>
-      <tr><td>Карусель</td><td class="num">1</td><td>вычитка + бренд</td><td class="num">1–3 тыс. ₽</td></tr>
-      <tr><td>Ролик</td><td class="num">3</td><td>рубрика + слепой тест</td><td class="num">200 тыс. – 1,5 млн ₽</td></tr>
-      <tr><td>Брендинг</td><td class="num">4</td><td>ты + скептик + товарный знак</td><td class="num">лого 30 тыс. · стиль 80 тыс. · под ключ от 250 тыс.</td></tr>
-      <tr><td>Лендинг, мини-апп</td><td class="num">2</td><td>тесты + дизайн-критик (Эталон)</td><td class="num">15–200 тыс. · 50–500 тыс.</td></tr>
+      <tr><td>Эталон пишет спеку мини-аппа</td><td>«библия» «Кофе» — есть? нет → бренд-пакет</td><td>палитра, шрифты, логотип, тон</td></tr>
+      <tr><td>Прототип экранов</td><td>набор иконок, иллюстрации пустых состояний</td><td>SVG и PNG по сетке прототипа</td></tr>
+      <tr><td>Сборка кода</td><td>анимации кнопок и загрузки, звуки интерфейса</td><td>файлы анимаций, короткие звуки</td></tr>
+      <tr><td>Запуск</td><td>промо-ролик 15 с, карусель, пост в канал</td><td>ролик 9:16, карусель, текст</td></tr>
+      <tr><td>Витрина</td><td>скриншоты для каталога, обложка</td><td>картинки под форматы</td></tr>
     </tbody>
   </table></div>
-  <p class="muted">Цены рынка взяты из поисковой выдачи, сами страницы не открывались. Разброс в 5–10 раз — это место, где можно встать дешевле агентств.</p>
+  <p class="muted small">Каждый заказ — тот же рецепт, что и для клиента, только вход приходит от агента, а не от тебя. Готовое ложится в папку проекта, а книга путей учится и на этих прогонах.</p>
 </section>
 
 <section>
-  <span class="eyebrow">Правило выбора места</span>
-  <h2>Где считать</h2>
-  <div class="tbl"><table>
-    <thead><tr><th>Задача</th><th>Где</th><th>Почему</th></tr></thead>
+  <span class="eyebrow">Чем делает</span>
+  <h2>16 общих станков</h2>
+  <p class="muted">Станок — повторяемый кусок работы с паспортом инструментов, главным и запасным. Рецепт продукта собирается из станков, поэтому каждый новый станок сразу открывает несколько продуктов.</p>
+  <div class="mods">
+    <div class="mod"><h3>Бриф-интервью</h3><span class="tools">4 вопроса + до 3 уточнений · шаблоны ступеней</span></div>
+    <div class="mod"><h3>«Библия» бренда</h3><span class="tools">палитра · шрифты · логотип · 5–10 референсов · паспорт героя и продукта · тон · запреты</span></div>
+    <div class="mod"><h3>Исследование и референсы</h3><span class="tools">база 253/255/Б3 · бот-браузер Pinterest, Instagram · yt-scout</span></div>
+    <div class="mod"><h3>Текст</h3><span class="tools">«Перо» · Claude, GPT 6 · судья 100</span></div>
+    <div class="mod"><h3>Раскадровка</h3><span class="tools">сетка 2×4 одной генерацией · шот-лист</span></div>
+    <div class="mod"><h3>Кадр</h3><span class="tools">GPT Image 2.5 → запас flare / gpt-image-2</span></div>
+    <div class="mod"><h3>Оживление</h3><span class="tools">лицо: Kling 3.0 Pro → Veo 3.1 · без лица: Seedance 2.5 → Wan 3.0</span></div>
+    <div class="mod"><h3>3D</h3><span class="tools">Blender (ПК Cycles, «Цех» после AVX2 перемерить) · build123d</span></div>
+    <div class="mod"><h3>Голос</h3><span class="tools">ElevenLabs v4 → MiniMax 2.8 · Silero только для себя</span></div>
+    <div class="mod"><h3>Звук и музыка</h3><span class="tools">DeepFilterNet · Demucs · −14 LUFS · CC0-треки · права на музыку — пробел</span></div>
+    <div class="mod"><h3>Монтаж</h3><span class="tools">ffmpeg · монтаж по образцу · auto-editor · сцены · ритм · DaVinci руками</span></div>
+    <div class="mod"><h3>Субтитры и титры</h3><span class="tools">GigaAM + ASS · Remotion · HyperFrames · eva-title</span></div>
+    <div class="mod"><h3>Улучшение</h3><span class="tools">апскейл: Flux Upscale (проба) → Real-ESRGAN · вырез фона RVM · автокадр 9:16 · LUT с образца</span></div>
+    <div class="mod"><h3>Вёрстка</h3><span class="tools">bin/slides · carousel · card-render · cover · md-html · Penpot</span></div>
+    <div class="mod"><h3>Код</h3><span class="tools">Эталон 0.16 · прототипы HTML · фабрика ботов</span></div>
+    <div class="mod"><h3>Судья и выдача</h3><span class="tools">рубрика + зрение · second-opinion · выбор лучшего · отчёт · публикация только с твоим ✅</span></div>
+  </div>
+</section>
+
+<section>
+  <span class="eyebrow">Что строить первым</span>
+  <h2>Матрица: продукт × станок</h2>
+  <p class="muted">● — станок обязателен, ○ — по ситуации. Внизу — сколько продуктов держится на станке: чем больше, тем раньше его строить.</p>
+  <div class="tbl"><table class="mx">
+    <thead><tr><th>Продукт</th><th class="v">Бриф</th><th class="v">«Библия»</th><th class="v">Референсы</th><th class="v">Текст</th><th class="v">Раскадровка</th><th class="v">Кадр</th><th class="v">Оживление</th><th class="v">3D</th><th class="v">Голос</th><th class="v">Звук</th><th class="v">Монтаж</th><th class="v">Субтитры</th><th class="v">Улучшение</th><th class="v">Вёрстка</th><th class="v">Код</th><th class="v">Судья</th></tr></thead>
     <tbody>
-      <tr><td>Есть лица или материалы клиента</td><td><span class="dot stop"></span>ПК или облако</td><td>«Цех» — чужая машина, правило от 19.10</td></tr>
-      <tr><td>Финал для клиента: кадры и видео</td><td><span class="dot ok"></span>облако</td><td>качество, и 1 500 ₽ в месяц ≈ 130 секунд Kling</td></tr>
-      <tr><td>Монтаж, речь, субтитры, код-видео</td><td><span class="dot ok"></span>«Цех», процессор</td><td>уже работает для Евы</td></tr>
-      <tr><td>Серии в стиле бренда, апскейл видео</td><td><span class="dot warn"></span>«Цех» + RTX 2070</td><td>после установки карты; Flux — только с 16 ГБ памяти</td></tr>
-      <tr><td>Срочное</td><td><span class="dot ok"></span>облако</td><td>очередь «Цеха» одна</td></tr>
+      <tr><td>Картинка, серия</td><td class="y"></td><td class="y"></td><td class="c"></td><td></td><td></td><td class="y"></td><td></td><td></td><td></td><td></td><td></td><td></td><td class="c"></td><td></td><td></td><td class="y"></td></tr>
+      <tr><td>Пост, карусель</td><td class="y"></td><td class="y"></td><td class="c"></td><td class="y"></td><td></td><td class="y"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class="y"></td><td></td><td class="y"></td></tr>
+      <tr><td>Рилс из видео</td><td class="y"></td><td class="c"></td><td class="y"></td><td class="c"></td><td></td><td></td><td></td><td></td><td></td><td class="y"></td><td class="y"></td><td class="y"></td><td class="y"></td><td></td><td></td><td class="y"></td></tr>
+      <tr><td>Рекламный ролик ИИ</td><td class="y"></td><td class="y"></td><td class="y"></td><td class="y"></td><td class="y"></td><td class="y"></td><td class="y"></td><td class="c"></td><td class="y"></td><td class="y"></td><td class="y"></td><td class="c"></td><td class="y"></td><td></td><td class="c"></td><td class="y"></td></tr>
+      <tr><td>YouTube длинный</td><td class="y"></td><td class="c"></td><td class="y"></td><td class="y"></td><td class="c"></td><td class="c"></td><td></td><td></td><td class="c"></td><td class="y"></td><td class="y"></td><td class="y"></td><td class="c"></td><td class="y"></td><td class="c"></td><td class="y"></td></tr>
+      <tr><td>Видеоурок</td><td class="y"></td><td class="c"></td><td></td><td class="y"></td><td></td><td></td><td></td><td></td><td class="c"></td><td class="y"></td><td class="y"></td><td class="y"></td><td></td><td class="y"></td><td class="c"></td><td class="y"></td></tr>
+      <tr><td>Подкаст</td><td class="y"></td><td></td><td></td><td class="c"></td><td></td><td></td><td></td><td></td><td></td><td class="y"></td><td class="y"></td><td class="y"></td><td></td><td class="c"></td><td></td><td class="y"></td></tr>
+      <tr><td>Бренд-пакет</td><td class="y"></td><td class="y"></td><td class="y"></td><td class="y"></td><td></td><td class="y"></td><td></td><td class="c"></td><td></td><td></td><td></td><td></td><td></td><td class="y"></td><td></td><td class="y"></td></tr>
+      <tr><td>Презентация, КП</td><td class="y"></td><td class="y"></td><td class="c"></td><td class="y"></td><td></td><td class="c"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class="y"></td><td></td><td class="y"></td></tr>
+      <tr><td>Карточки маркетплейса</td><td class="y"></td><td class="y"></td><td class="y"></td><td class="y"></td><td></td><td class="y"></td><td></td><td class="c"></td><td></td><td></td><td></td><td></td><td class="y"></td><td class="y"></td><td></td><td class="y"></td></tr>
+      <tr><td>3D-сцена, мокап</td><td class="y"></td><td class="y"></td><td class="y"></td><td></td><td></td><td class="c"></td><td class="c"></td><td class="y"></td><td></td><td></td><td class="c"></td><td></td><td class="c"></td><td></td><td></td><td class="y"></td></tr>
+      <tr><td>Лендинг, мини-апп</td><td class="y"></td><td class="y"></td><td class="y"></td><td class="y"></td><td></td><td class="y"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class="y"></td><td class="y"></td><td class="y"></td></tr>
+      <tr class="sum"><td>Продуктов</td><td>12</td><td>8</td><td>7</td><td>8</td><td>1</td><td>6</td><td>1</td><td>1</td><td>1</td><td>5</td><td>5</td><td>4</td><td>4</td><td>7</td><td>1</td><td>12</td></tr>
     </tbody>
   </table></div>
+  <p class="muted small">Вывод: бриф и судья нужны всем 12, «библия», текст и вёрстка — 7–8. Их строим первыми, тогда первые рецепты собираются почти даром. Оживление, 3D и голос нужны редким продуктам — их подключаем под конкретный заказ.</p>
 </section>
 
 <section>
-  <span class="eyebrow">План сборки</span>
-  <h2>Семь шагов</h2>
-  <ol class="plan">
-    <li><span class="n">1</span><div><h3>Формат рецепта, «библии» и журнала прогона</h3><p class="muted">Делаем на ролике, который уже в работе.</p></div><span class="sz">S</span></li>
-    <li><span class="n">2</span><div><h3>Вход: команда в чате</h3><p class="muted">4 вопроса → рецепт и пакет → бриф.</p></div><span class="sz">M</span></li>
-    <li><span class="n">3</span><div><h3>Судья по рубрике</h3><p class="muted">Модель со зрением, лучший из 2–3 вариантов.</p></div><span class="sz">M</span></li>
-    <li><span class="n">4</span><div><h3>Рецепт «бренд-пакет»</h3><p class="muted">Знак, упаковка и ролик 15 с — первый прогон на «Кофе».</p></div><span class="sz">M</span></li>
-    <li><span class="n">5</span><div><h3>Учёт денег на задачу</h3><p class="muted">Видео через OpenRouter сейчас в учёт не попадает.</p></div><span class="sz">S</span></li>
-    <li><span class="n">6</span><div><h3>Книга путей и опыты вслепую</h3><p class="muted">Лучший прогон становится запуском одной командой.</p></div><span class="sz">M</span></li>
-    <li><span class="n">7</span><div><h3>ComfyUI на «Цехе»</h3><p class="muted">После RTX 2070 и 16 ГБ памяти; сначала перемерить Blender и апскейл.</p></div><span class="sz">позже</span></li>
-  </ol>
+  <span class="eyebrow">Как выбирает путь</span>
+  <h2>Ручки маршрутизатора</h2>
+  <div class="dials">
+    <div><h3>Качество · скорость · деньги</h3><p class="muted small">Рамку ставишь ты в интервью или пакетом: эконом, стандарт, премиум. Это один рецепт с разными инструментами и числом попыток.</p></div>
+    <div><h3>Данные</h3><p class="muted small">Лица и материалы клиента — только ПК или облако; «Цех» берёт сборку и расчёты без персональных данных.</p></div>
+    <div><h3>Права</h3><p class="muted small">Для клиента — только инструменты с коммерческой лицензией. Silero, F5 и CC0 без проверки — только для себя.</p></div>
+    <div><h3>Деньги на задачу</h3><p class="muted small">Потолок на прогон, учёт каждой генерации. Видео через OpenRouter сейчас в учёт не попадает — закрыть первым делом.</p></div>
+    <div><h3>Запасной путь</h3><p class="muted small">У каждого станка главный и запасной инструмент. Упал главный — продюсер переключает без твоего участия.</p></div>
+    <div><h3>Где считать</h3><p class="muted small">Финал — облако; монтаж, речь, субтитры — «Цех»; серии в стиле и апскейл — «Цех» с RTX 2070; лица — ПК.</p></div>
+  </div>
+</section>
+
+<section>
+  <span class="eyebrow">Как учится</span>
+  <h2>Петля улучшения</h2>
+  <div class="loop">
+    <div><h3>Прогон</h3><p class="muted small">Журнал: рецепт, инструменты, цена, время, оценка судьи, твоя правка.</p></div>
+    <div><h3>Книга путей</h3><p class="muted small">Лучший путь продукта по каждому пакету — запуск одной командой.</p></div>
+    <div><h3>Опыт</h3><p class="muted small">Новый инструмент — на тех же задачах рядом со старым, судьи вслепую.</p></div>
+    <div><h3>Рецепт</h3><p class="muted small">Повторили руками 3 раза — предлагаю сделать рецептом, ты подтверждаешь.</p></div>
+    <div><h3>Слежение</h3><p class="muted small">Модели и репозитории раз в неделю; появилось лучше — в опыт.</p></div>
+  </div>
+  <p class="muted small">Учится не сама система, а книга путей. Поэтому скорость обучения — это число настоящих прогонов, а не число станков.</p>
+</section>
+
+<section>
+  <span class="eyebrow">План</span>
+  <h2>Три волны</h2>
+  <div class="waves">
+    <div class="wave">
+      <div class="h"><h3>Волна 1 — фундамент и первые деньги</h3><span class="when">до 18.11</span></div>
+      <ul>
+        <li>Станки, нужные всем: бриф-интервью, «библия», судья по рубрике, журнал прогона и учёт денег.</li>
+        <li>Рецепты на настоящих задачах: рилс по образцу (Ева), карусель и пост («Кофе», твой канал), рекламный ролик (идёт).</li>
+        <li>Платный бренд-пакет «Кофе»: знак, упаковка, ролик 15 с — с авансом.</li>
+      </ul>
+      <p class="measure">Мера: 3 рецепта прогнаны вживую, у каждого 3+ записи в книге путей; одно предложение с ценой отправлено клиенту.</p>
+    </div>
+    <div class="wave">
+      <div class="h"><h3>Волна 2 — каналы семьи и товар</h3><span class="when">до 02.12</span></div>
+      <ul>
+        <li>YouTube длинный и нарезка шортсов — канал Ромы и Нины, курс по вайбкодингу.</li>
+        <li>Карточки маркетплейса для Nitteroum: товар на 700 тыс. лежит дома, весна — сезон.</li>
+        <li>Презентации и КП — «Сокол» для ПроИИ, Строй-Центр.</li>
+      </ul>
+      <p class="measure">Мера: каждый рецепт отдан заказчику из семьи и принят без переделки; себестоимость каждого продукта известна.</p>
+    </div>
+    <div class="wave">
+      <div class="h"><h3>Волна 3 — тяжёлые станки и витрина</h3><span class="when">декабрь</span></div>
+      <ul>
+        <li>3D-сцены и мокапы упаковки, голос диктора с правами, музыка с лицензией, липсинк.</li>
+        <li>RTX 2070 и 16 ГБ памяти в «Цехе» — ComfyUI, серии в стиле, апскейл локально.</li>
+        <li>Витрина услуг с пакетами и ценами из книги путей.</li>
+      </ul>
+      <p class="measure">Мера: 2 платных заказа через «Цех»; цена каждого пакета посчитана по реальным прогонам.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <span class="eyebrow">Пробелы</span>
+  <h2>Чего пока нет</h2>
+  <div class="tbl"><table class="wide">
+    <thead><tr><th>Пробел</th><th>Что закрывает</th><th>Как закрыть</th></tr></thead>
+    <tbody>
+      <tr><td>Учёт денег на видео</td><td>цену любого пакета</td><td>писать ответ OpenRouter в журнал прогона — S, волна 1</td></tr>
+      <tr><td>Независимый судья видео</td><td>приёмку роликов</td><td>Gemini Flash по видео + рубрика; второй агент со свежим взглядом</td></tr>
+      <tr><td>Музыка с коммерческими правами</td><td>ролики, рилсы клиентам</td><td>стоки с лицензией или Suno Pro — траты решаешь ты</td></tr>
+      <tr><td>Липсинк, аватар-ведущий</td><td>UGC, говорящие головы</td><td>поиск в каталоге OpenRouter, проба</td></tr>
+      <tr><td>Логотип в SVG</td><td>бренд-пакет</td><td>Recraft через OpenRouter — проверить доступ; иначе вектор руками в Penpot</td></tr>
+      <tr><td>Kling 4.0, Topaz</td><td>премиум-видео</td><td>fal не принимает карты РФ — посредник или ждать OpenRouter</td></tr>
+      <tr><td>Видеокарта</td><td>локальные серии и апскейл</td><td>RTX 2070 к Ивану + просьба о 16 ГБ памяти</td></tr>
+    </tbody>
+  </table></div>
 </section>
 
 <section>
@@ -177,14 +357,14 @@ footer { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line)
   <div class="risk">
     <h3>Где это провалится</h3>
     <ul>
-      <li>Строим станок вместо продаж: доход 0, денег до начала декабря.</li>
-      <li>«Сама улучшается» — не на чем, пока нет независимого судьи и потока задач.</li>
-      <li>30+ инструментов через VPN; fal не принимает карты РФ; нет коммерческой музыки и липсинка; голоса Silero и F5 — только некоммерческие.</li>
-      <li>Мера на две недели: три рецепта прогнаны вживую и одно предложение с ценой клиенту, сделанное «Цехом». Кратчайший путь — платный бренд-пакет «Кофе».</li>
+      <li>Строим станки вместо продаж: доход 0, денег до начала декабря. Каждая волна заканчивается деньгами или заказом от семьи, а не готовым движком.</li>
+      <li>«Сама учится» без потока задач не работает. Поэтому первые рецепты — там, где спрос уже есть: Ева, семья, «Кофе».</li>
+      <li>Для продажи нужны права: голоса, музыка, данные клиентов — не на «Цехе».</li>
+      <li>Подписи и оплату без самозанятости не принять — оформить до первого «да».</li>
     </ul>
   </div>
 </section>
 
-<footer>Основа: исследование 258 (4 угла: готовое в мире, типы задач, железо, реестр наших инструментов), свежий взгляд и скептик. Не проверено: замеры RTX 2070 и GTX 1650 для генерации, работа западных сервисов из РФ, цены агентств.</footer>
+<footer>Основа: исследование 258 (4 угла: готовое в мире, типы задач, железо, реестр наших инструментов), свежий взгляд, скептик и разбор с позиций стратега, арт-директора и продюсера. Статусы продуктов — по нашим файлам на 04.11; цены рынка — по поисковой выдаче. Не проверено: замеры RTX 2070 и GTX 1650 для генерации, доступ к Recraft и липсинку через OpenRouter.</footer>
 </div>
 </body></html>
