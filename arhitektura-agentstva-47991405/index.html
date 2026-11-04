@@ -1,0 +1,214 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><style>html{color-scheme:light}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style></head><body><title>Архитектура ИИ-агентства</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Manrope:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Чертёж: бумага-миллиметровка, тушь, один синий карандаш для связей; схема — сетка блоков, текст — колонка ~68 знаков */
+:root{
+  --paper:#F2F4F6; --sheet:#FFFFFF; --ink:#16212C; --muted:#5A6774; --line:#CCD4DC;
+  --pencil:#2C55D6; --pencil-soft:#E4EAFB; --ok:#1E7F52; --warn:#A6620A; --bad:#B2322A;
+  --f-display:"Unbounded","Manrope",system-ui,sans-serif;
+  --f-body:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#10161C; --sheet:#18212A; --ink:#E6ECF2; --muted:#9AA8B5; --line:#2E3A46;
+  --pencil:#7C9BFF; --pencil-soft:#1E2A47; --ok:#4FC48A; --warn:#E3A24A; --bad:#F07A70; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#10161C; --sheet:#18212A; --ink:#E6ECF2; --muted:#9AA8B5; --line:#2E3A46;
+  --pencil:#7C9BFF; --pencil-soft:#1E2A47; --ok:#4FC48A; --warn:#E3A24A; --bad:#F07A70; color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.6 var(--f-body);
+  background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);
+  background-size:32px 32px;background-attachment:fixed}
+body::after{content:"";position:fixed;inset:0;background:var(--paper);opacity:.86;z-index:-1}
+.wrap{max-width:980px;margin:0 auto;padding-block:40px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:40px}
+h1,h2,h3{text-wrap:balance;margin:0}
+h1{font:700 clamp(28px,5vw,44px)/1.15 var(--f-display);letter-spacing:-.01em}
+h2{font:500 22px/1.3 var(--f-display)}
+h3{font:700 16px/1.35 var(--f-body)}
+p{margin:0;max-width:68ch}
+.eyebrow{font:600 12px/1 var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--pencil)}
+.lead{font-size:18px;color:var(--ink);max-width:62ch}
+.muted{color:var(--muted)}
+.small{font-size:14px}
+section{display:flex;flex-direction:column;gap:16px}
+.stamp{display:flex;flex-wrap:wrap;gap:8px 20px;font:400 13px/1.4 var(--f-mono);color:var(--muted)}
+.stamp b{color:var(--ink);font-weight:600}
+/* схема */
+.diagram{background:var(--sheet);border:1px solid var(--line);padding:20px;display:flex;flex-direction:column;gap:14px;overflow-x:auto}
+.tier{border:1.5px solid var(--ink);padding:14px 16px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.tier .tag{font:600 11px/1 var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.tier.founder{border-style:dashed}
+.tier.producer{border-color:var(--pencil);background:var(--pencil-soft)}
+.tier.core{border-width:2.5px}
+.arrow{align-self:center;font:600 13px/1 var(--f-mono);color:var(--pencil)}
+.mods{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.mod{border:1px solid var(--line);background:var(--paper);padding:12px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.mod .io{font:400 12.5px/1.45 var(--f-mono);color:var(--muted)}
+.mod .io b{color:var(--ink);font-weight:600}
+.core-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:6px 20px;margin:0;padding:0;list-style:none;font-size:14.5px}
+.core-list li::before{content:"▸ ";color:var(--pencil)}
+/* правила */
+.rules{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.rule{background:var(--sheet);border:1px solid var(--line);padding:14px 16px;display:flex;flex-direction:column;gap:6px}
+.rule .src{font:400 12px/1.4 var(--f-mono);color:var(--muted)}
+/* таблицы */
+.tbl{overflow-x:auto;background:var(--sheet);border:1px solid var(--line)}
+table{border-collapse:collapse;width:100%;font-size:14.5px;font-variant-numeric:tabular-nums}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font:600 12px/1.3 var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+tr:last-child td{border-bottom:0}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--pencil);vertical-align:middle}
+.dot.off{background:transparent;border:1.5px solid var(--line)}
+.pill{display:inline-block;font:600 11.5px/1 var(--f-mono);padding:4px 7px;border:1px solid currentColor;white-space:nowrap}
+.pill.ok{color:var(--ok)}.pill.warn{color:var(--warn)}.pill.bad{color:var(--bad)}
+/* опыт */
+.exp{background:var(--sheet);border:2px solid var(--pencil);padding:18px;display:flex;flex-direction:column;gap:12px}
+.split{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.split > div{border:1px solid var(--line);padding:12px;display:flex;flex-direction:column;gap:6px;min-width:0}
+ol.cond{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:8px;max-width:72ch}
+.critic{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px}
+.critic > div{background:var(--sheet);border:1px solid var(--line);padding:14px 16px;display:flex;flex-direction:column;gap:8px}
+ul.plain{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
+footer{font:400 12.5px/1.5 var(--f-mono);color:var(--muted);border-top:1px solid var(--line);padding-top:16px}
+@media (prefers-reduced-motion:no-preference){.mod,.rule{transition:border-color .15s}.mod:hover,.rule:hover{border-color:var(--pencil)}}
+</style>
+
+<div class="wrap">
+  <header style="display:flex;flex-direction:column;gap:14px">
+    <span class="eyebrow">Исследование 262 · чертёж v1 · 04.11.2026</span>
+    <h1>Архитектура ИИ-агентства</h1>
+    <p class="lead">Одна студия с одной кассой и одной карточкой клиента. Внутри — отделы-модули вокруг общего ядра, работу ведёт один продюсер. Наружу сначала выходит одна услуга, и её проверяют деньгами.</p>
+    <div class="stamp"><span>потоков <b>6</b></span><span>критиков <b>2</b></span><span>решение до <b>11.11</b></span><span>статус <b>📄 план, не собрано</b></span></div>
+  </header>
+
+  <section>
+    <span class="eyebrow">Целевая архитектура</span>
+    <h2>Кто за что отвечает</h2>
+    <div class="diagram" role="img" aria-label="Схема: основатель, продюсер, семь модулей, общее ядро">
+      <div class="tier founder">
+        <span class="tag">Основатель · архитектор и креативный директор</span>
+        <p class="small">Цель, вкус, утверждение брифа и итога, деньги, встречи с клиентами. Подключается только на точках «нужен ответ».</p>
+      </div>
+      <span class="arrow">↓ задача.md — пути к файлам, не пересказ</span>
+      <div class="tier producer">
+        <span class="tag">Продюсер · бот</span>
+        <p class="small">Один над всеми отделами. Ведёт маршрут, бюджет и стоп, сам пишет итог каждой задачи. Последовательные цепочки ведёт по очереди, параллельно запускает только варианты и разведку.</p>
+      </div>
+      <span class="arrow">↓ маршрут по таблице</span>
+      <div class="mods">
+        <div class="mod"><h3>Стратегия и маркетинг</h3><span class="io"><b>вход</b> бриф, рынок, данные<br><b>выход</b> позиционирование, оффер, контент-план, гипотезы</span></div>
+        <div class="mod"><h3>Бренд</h3><span class="io"><b>вход</b> стратегия<br><b>выход</b> «библия»: голос, цвета, шрифты, примеры, запреты</span></div>
+        <div class="mod"><h3>«Цех» · контент</h3><span class="io"><b>вход</b> задача + «библия»<br><b>выход</b> ролики, посты, обложки, 3D, звук</span></div>
+        <div class="mod"><h3>«Эталон» · разработка</h3><span class="io"><b>вход</b> ТЗ, спека<br><b>выход</b> боты, сайты, мини-аппы, сопровождение и релизы</span></div>
+        <div class="mod"><h3>Аккаунт и продажи</h3><span class="io"><b>вход</b> лид, запрос<br><b>выход</b> витрина, КП, страница правок, отчёт, продление</span></div>
+        <div class="mod"><h3>Аналитика</h3><span class="io"><b>вход</b> счётчики, выгрузки<br><b>выход</b> одно число результата клиента в месяц</span></div>
+        <div class="mod"><h3>Право и деньги</h3><span class="io"><b>вход</b> заказ<br><b>выход</b> договор, маркировка, права на файлы, себестоимость</span></div>
+        <div class="mod"><h3>Свои продукты</h3><span class="io"><b>вход</b> решение основателя<br><b>выход</b> «Кофе», «Сокол», курс — не больше двух одновременно</span></div>
+      </div>
+      <span class="arrow">↓ всё пишется в одно ядро</span>
+      <div class="tier core">
+        <span class="tag">Общее ядро · одно на все отделы и всех клиентов</span>
+        <ul class="core-list">
+          <li>заказчик → проект → задача</li>
+          <li>статусы: принята · в работе · нужен ответ · готово · отклонено</li>
+          <li>«библия» бренда живёт у заказчика, версии с откатом</li>
+          <li>правило из правки — только после ✅ человека</li>
+          <li>приёмка: судья со свежим контекстом</li>
+          <li>изоляция клиентов и доступов</li>
+          <li>деньги план/факт, у своих проектов — теневая смета</li>
+          <li>права на каждый файл</li>
+          <li>урок в плейбук модуля после каждой задачи</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <span class="eyebrow">Правила связи</span>
+    <h2>Почему так, а не холдинг из цехов</h2>
+    <div class="rules">
+      <div class="rule"><h3>Одна касса, а не холдинг</h3><p class="small">Холдинги дробились из-за конфликтов клиентов, покупок агентств и удержания людей. У нас ничего из этого нет. В 2025–2026 WPP, Omnicom и Publicis сами сводят агентства обратно под одну кассу.</p><span class="src">поток 1 · отчёты WPP 02.2026</span></div>
+      <div class="rule"><h3>Отдел — когда есть свой артефакт и свой судья</h3><p class="small">До этого модуль — набор навыков внутри продюсера. Маркетинг сейчас — модуль на входе всех пакетов.</p><span class="src">поток 3 + критик</span></div>
+      <div class="rule"><h3>Пишет один, проверяет другой</h3><p class="small">На последовательных задачах многоагентные схемы проигрывают 39–70 %. «Агент-директор» на той же модели повторяет ошибки исполнителя. Контроль — свежий исполнитель и основатель.</p><span class="src">поток 3 · Google и MIT 12.2025, опыт Anthropic (по пересказам)</span></div>
+      <div class="rule"><h3>Без рынка задач между агентами</h3><p class="small">В опыте Microsoft агенты брали первое же предложение. Работу распределяет продюсер по таблице маршрутов.</p><span class="src">поток 3 · Microsoft 10.2025</span></div>
+    </div>
+  </section>
+
+  <section>
+    <span class="eyebrow">Три пути через модули</span>
+    <h2>Компания с нуля, ведение, маленькая задача</h2>
+    <div class="tbl"><table>
+      <thead><tr><th>Модуль</th><th>Компания с нуля</th><th>Ведение бизнеса</th><th>Маленькая задача</th></tr></thead>
+      <tbody>
+        <tr><td>Стратегия и маркетинг</td><td><span class="dot"></span></td><td><span class="dot off"></span> раз в квартал</td><td><span class="dot off"></span></td></tr>
+        <tr><td>Бренд</td><td><span class="dot"></span> создаёт «библию»</td><td><span class="dot off"></span> берёт готовую</td><td><span class="dot off"></span> берёт готовую</td></tr>
+        <tr><td>«Цех»</td><td><span class="dot"></span></td><td><span class="dot"></span></td><td><span class="dot"></span> или «Эталон»</td></tr>
+        <tr><td>«Эталон»</td><td><span class="dot"></span></td><td><span class="dot"></span> правки, релизы</td><td><span class="dot"></span> или «Цех»</td></tr>
+        <tr><td>Аккаунт и продажи</td><td><span class="dot"></span></td><td><span class="dot"></span> отчёт, продление</td><td><span class="dot"></span> КП, приёмка</td></tr>
+        <tr><td>Аналитика</td><td><span class="dot"></span></td><td><span class="dot"></span></td><td><span class="dot off"></span></td></tr>
+        <tr><td>Право и деньги</td><td><span class="dot"></span></td><td><span class="dot"></span></td><td><span class="dot"></span></td></tr>
+      </tbody>
+    </table></div>
+    <p class="small muted">Свои и клиентские проекты идут по одним путям. Разница только в поле «чей», в правах и деньгах: у своего проекта нет счёта, есть теневая смета.</p>
+  </section>
+
+  <section>
+    <span class="eyebrow">Отдельный документ · первый коммерческий опыт</span>
+    <h2>Сегмент проверяем деньгами, не выбором</h2>
+    <div class="exp">
+      <p>Критики сошлись в одном: первый сегмент не должен задавать границу всей системы. Блогеры и эксперты с аудиторией 1–15 тыс. зарабатывают 5–30 тыс. ₽ в месяц, и пакет за 35–45 тыс. может оставить их в минусе. Поэтому за неделю — 10 адресных предложений одной малой услуги с предоплатой, по пять в каждый сегмент.</p>
+      <div class="split">
+        <div><h3>5 экспертов с готовой услугой</h3><p class="small">Не семья. Услуга — «Разбор»: аудит, оффер, план на 30 дней, 7–12 тыс. ₽.</p></div>
+        <div><h3>5 производств Перми</h3><p class="small">Ниша по решению от 05.10. Для одного завода прототип уже готов и ждёт звонка.</p></div>
+      </div>
+      <p class="small">Победителя определяем по оплатам. Параллельно замеряем часы и деньги на один рилс: себестоимость единицы пока никто не мерил.</p>
+      <div class="tbl"><table>
+        <thead><tr><th>Ступень (гипотеза)</th><th>Что входит</th><th>Цена</th></tr></thead>
+        <tbody>
+          <tr><td>0 · Разбор</td><td>аудит, распаковка 60 мин, одна услуга и оффер, план</td><td>7–12 тыс. ₽</td></tr>
+          <tr><td>1 · Старт, 30 дней</td><td>упаковка профилей, визуальная система, 12 рилс, 8 постов, бот-воронка с оплатой, отчёт</td><td>35–45 тыс. ₽</td></tr>
+          <tr><td>2 · Подписка</td><td>12 рилс, 8 постов, 4 карусели, правки бота, отчёт, созвон</td><td>20–30 тыс. ₽/мес</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </section>
+
+  <section>
+    <span class="eyebrow">Защиты</span>
+    <h2>Как нарисовать всё и не остановить продажи</h2>
+    <ol class="cond">
+      <li><b>Архитектура — документ до 11.11.</b> Код пишем только под звено, за которое есть предоплата.</li>
+      <li><b>Потолок трат на систему до первой предоплаты</b> задаёт основатель.</li>
+      <li><b>Не меньше 3 адресных предложений с ценой в неделю.</b> Две недели подряд ноль — сборки на паузу.</li>
+      <li><b>Один флагман на сегмент.</b> Остальные отделы — допродажа после первой оплаты.</li>
+      <li><b>Юридическая база до первой цены:</b> самозанятость и договор на одну страницу (права «в объёме возникших», маркировка, персональные данные, правило Instagram).</li>
+      <li><b>Семья — кейс и портфолио.</b> Мерило — внешние платящие.</li>
+      <li><b>Первая предоплата до 18.11, двое внешних платящих до 01.12.</b> Если нет — архитектура замораживается, остаётся одна услуга.</li>
+    </ol>
+  </section>
+
+  <section>
+    <span class="eyebrow">Критики</span>
+    <h2>Что исправили после двух проверок</h2>
+    <div class="critic">
+      <div><span class="pill bad">скептик · против в первой версии</span><ul class="plain small"><li>сегмент выбран по близости, а не по деньгам; конфликт с решением о нише не был назван</li><li>«один пакет» требует всех семи отделов</li><li>повтор октября: система без денежного порога</li></ul></div>
+      <div><span class="pill warn">второй критик · с оговорками</span><ul class="plain small"><li>глобальный цех подменили контент-агентством: развели на два документа</li><li>в ядре не было изоляции клиентов и отката «библии»: добавили</li><li>«своя продажа» у отдела не обязательна: убрали</li><li>порог перехода на ИП — наше правило, не закон</li></ul></div>
+    </div>
+  </section>
+
+  <section>
+    <span class="eyebrow">Не проверено</span>
+    <ul class="plain small muted">
+      <li>Цены пакетов взяты из прайсов продавцов услуг и расходятся в разы.</li>
+      <li>Часть данных о многоагентных схемах — по пересказам, первоисточники не открылись.</li>
+      <li>Маржа агентств по типам — из бесплатной части отчётов.</li>
+      <li>Российских ИИ-агентств с открытыми цифрами не нашли.</li>
+      <li>Себестоимость единицы контента у нас не мерили.</li>
+    </ul>
+  </section>
+
+  <footer>Свод: research/results/262-globalnyj-ceh.md · потоки 1–6 и мнения критиков — рядом в папке · смежные: 254, 259, 260, 261</footer>
+</div>
+</body></html>
