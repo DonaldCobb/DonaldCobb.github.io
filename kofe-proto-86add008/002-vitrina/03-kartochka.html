@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="ru" data-device="phone">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Карточка сорта</title>
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="base.css">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="bar">
+  <a class="iconbtn" href="01-vitrina.html"><i class="ico ico-back" aria-hidden="true"></i><span class="vh">Назад к витрине</span></a>
+  <span class="bar__side" aria-hidden="true"></span>
+</header>
+<main class="page">
+  <div class="stage stage--card">
+    <div class="pack pack--card" role="img" aria-label="Пачка: Эфиопия, натуральная обработка, 1 кг">
+      <div class="pack__label">
+        <span class="pack__brand brand"></span>
+        <div class="pack__foot">
+          <div><span class="pack__sort">Эфиопия</span><span class="pack__proc">натуральная обработка</span><span class="pack__date">обжарка 12.11</span></div>
+          <span class="pack__weight">1&nbsp;кг</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card__head">
+    <h1 class="sort-name">Эфиопия</h1>
+    <p class="muted">Арабика</p>
+  </div>
+
+  <div class="block weights" role="group" aria-label="Вес">
+    <button type="button" class="weight" aria-pressed="true"><b>1&nbsp;кг</b><span>2&nbsp;250&nbsp;₽ до двери</span></button>
+    <button type="button" class="weight" aria-disabled="true"><b>500&nbsp;г</b><span>цена скоро</span></button>
+  </div>
+  <section class="block" aria-labelledby="grind">
+    <h2 class="h-block" id="grind">Помол</h2>
+    <div class="tiles">
+      <button type="button" class="tile" aria-pressed="false"><i class="ico ico--lg ico-g-turka" aria-hidden="true"></i>турка</button>
+      <button type="button" class="tile" aria-pressed="false"><i class="ico ico--lg ico-g-press" aria-hidden="true"></i>френч-пресс</button>
+      <button type="button" class="tile" aria-pressed="false"><i class="ico ico--lg ico-g-filter" aria-hidden="true"></i>фильтр</button>
+      <button type="button" class="tile" aria-pressed="false"><i class="ico ico--lg ico-g-espresso" aria-hidden="true"></i>эспрессо</button>
+      <button type="button" class="tile" aria-pressed="true"><i class="ico ico--lg ico-g-beans" aria-hidden="true"></i>в зёрнах</button>
+      <a class="tile tile--ask" href="04-chem-varish.html"><i class="ico ico--lg ico-cup" aria-hidden="true"></i>не знаю</a>
+    </div>
+  </section>
+
+  <dl class="block facts">
+    <div><dt>Обработка</dt><dd>натуральная</dd></div>
+    <div><dt>Регион</dt><dd class="tbd">уточняем у обжарщика</dd></div>
+    <div><dt>Обжарка</dt><dd class="tbd">уточняем у обжарщика</dd></div>
+    <div><dt>Ноты вкуса</dt><dd class="tbd">уточняем у обжарщика</dd></div>
+  </dl>
+
+  <div class="block scale">
+    <div class="scale__head"><span class="small muted">Кислотность</span><span class="small sample"></span></div>
+    <div class="scale__row">
+      <span>горько</span>
+      <span class="scale__track" aria-hidden="true"><span class="scale__mark" style="--at: 50%"></span></span>
+      <span>кисло</span>
+    </div>
+  </div>
+
+
+  <ul class="block notes">
+    <li><b>Обжарим 12.11</b><span class="sample"></span></li>
+    <li>Не понравилась первая пачка — заменим<span class="sample"></span></li>
+  </ul>
+</main>
+<footer class="dock">
+  <div class="dock__action"><a class="action action--primary action--full" href="06-korzina.html">В корзину · 2&nbsp;250&nbsp;₽ · в&nbsp;зёрнах</a></div>
+</footer>
+</body>
+</html>

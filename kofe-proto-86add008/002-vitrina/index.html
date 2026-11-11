@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>«Кофе» — прототип 002</title>
+<script>
+/* Обзорная страница прототипа. Правится ТОЛЬКО этот блок — остальное
+   страница собирает сама: полосу экранов по порядку, подписи и карту
+   переходов, снятую с настоящих ссылок в экранах. */
+const prototype = {
+  title: "«Кофе» — прототип 002: витрина и карточка сорта",
+  note: "Слева направо — путь покупателя: витрина, карточка, «чем варишь», корзина. Решается, как выглядит наклейка на экране, в каком порядке читается карточка и что видно, пока у сорта нет нот, региона и обжарки. Тёмная тема — по системной настройке.",
+  // Устройство из design.md §1: телефон 390×844, ноутбук 1440×900.
+  device: { width: 390, height: 844 },
+  screens: [
+    { file: "01-vitrina.html", title: "Витрина", state: "штатно" },
+    { file: "02-vitrina-pusto.html", title: "Витрина", state: "пусто" },
+    { file: "03-kartochka.html", title: "Карточка сорта", state: "штатно" },
+    { file: "04-chem-varish.html", title: "Чем варишь?", state: "штатно" },
+    { file: "05-sovet-turka.html", title: "Совет: турка", state: "штатно" },
+    { file: "06-korzina.html", title: "Корзина", state: "одна пачка" },
+    { file: "07-korzina-pusto.html", title: "Корзина", state: "пусто" },
+  ],
+};
+</script>
+<style>
+  /* Нейтральная обвязка: страница не часть продукта и не спорит с его
+     направлением. Вид экранов — внутри фреймов. */
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 28px 24px 64px; font: 15px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; color: #1a1a1a; background: #f4f4f2; }
+  h1 { font-size: 20px; margin: 0 0 6px; font-weight: 600; }
+  h2 { font-size: 15px; margin: 0 0 8px; font-weight: 600; }
+  p { margin: 0; }
+  a { color: inherit; }
+  .head { max-width: 72ch; margin-bottom: 24px; }
+  .head p + p { margin-top: 6px; }
+  .dim { color: #6b6b6b; }
+  .strip { display: flex; gap: 24px; overflow-x: auto; padding: 4px 4px 20px; align-items: flex-start; }
+  .frame { flex: none; margin: 0; }
+  .cap { display: flex; justify-content: space-between; gap: 12px; font-size: 13px; margin-bottom: 8px; min-height: 20px; }
+  .cap b { font-weight: 600; }
+  .cap a { color: #6b6b6b; text-decoration: none; }
+  .cap a:hover { text-decoration: underline; }
+  .view { overflow: hidden; border: 1px solid #d9d9d5; background: #fff; }
+  .view iframe { border: 0; transform-origin: top left; display: block; }
+  .flow { margin-top: 12px; max-width: 72ch; }
+  .flow ol { margin: 0; padding-left: 20px; display: grid; gap: 3px; font-size: 14px; }
+  .flow .q { color: #6b6b6b; }
+  .flow .bad { color: #b3261e; }
+  .flow .note { margin-top: 8px; font-size: 13px; color: #6b6b6b; }
+</style>
+</head>
+<body>
+
+<header class="head">
+  <h1 id="title"></h1>
+  <p id="note" class="dim"></p>
+  <p class="dim">Кнопки ведут только на другие экраны прототипа и больше ничего не делают: формы не отправляются, данных из базы нет, цифры выдуманы. Клик внутри фрейма переключает экран прямо в нём.</p>
+</header>
+
+<div class="strip" id="strip"></div>
+
+<section class="flow" id="flow">
+  <h2 id="flow-title">Переходы</h2>
+  <ol id="flow-list"></ol>
+  <p class="note" id="flow-note"></p>
+</section>
+
+<script>
+(function () {
+  const p = prototype;
+  const pad = (n) => String(n).padStart(2, "0");
+  const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const name = (s) => `<b>${pad(s.n)}</b> ${esc(s.title)}${s.state ? ` · ${esc(s.state)}` : ""}`;
+
+  document.title = p.title;
+  document.getElementById("title").textContent = p.title;
+  document.getElementById("note").textContent = p.note;
+
+  const screens = p.screens.map((s, i) => ({ ...s, n: i + 1 }));
+  const byFile = new Map(screens.map((s) => [s.file, s]));
+  const strip = document.getElementById("strip");
+  const links = [];        // { from, to, label } — снимаются с экранов
+  const scanned = new Set();
+  let blocked = false;     // доступа к содержимому фреймов нет (открыто с диска)
+
+  for (const s of screens) {
+    const w = s.width ?? p.device.width;
+    const h = s.height ?? p.device.height;
+    const shown = Math.min(w, 640);          // телефон — 1:1, ноутбук — уменьшен
+    const k = shown / w;
+
+    const fig = document.createElement("figure");
+    fig.className = "frame";
+    fig.style.width = `${shown}px`;
+    fig.innerHTML =
+      `<figcaption class="cap"><span class="now">${name(s)}</span><a href="${esc(s.file)}">открыть</a></figcaption>` +
+      `<div class="view" style="width:${shown}px;height:${Math.round(h * k)}px">` +
+      `<iframe src="${esc(s.file)}" title="${esc(s.title)}" style="width:${w}px;height:${h}px;transform:scale(${k})"></iframe></div>`;
+    strip.appendChild(fig);
+
+    const iframe = fig.querySelector("iframe");
+    const now = fig.querySelector(".now");
+    iframe.addEventListener("load", () => {
+      let file;
+      try {
+        file = decodeURIComponent(iframe.contentWindow.location.pathname.split("/").pop());
+      } catch {
+        blocked = true;
+        renderFlow();
+        return;
+      }
+      if (file === s.file) {
+        now.innerHTML = name(s);
+        if (!scanned.has(s.file)) { scanned.add(s.file); scan(s, iframe); }
+        return;
+      }
+      const here = byFile.get(file);
+      now.innerHTML = `${name(s)} → ${here ? name(here) : esc(file)} <a href="#" class="back">вернуться</a>`;
+      now.querySelector(".back").addEventListener("click", (e) => { e.preventDefault(); iframe.src = s.file; });
+    });
+  }
+
+  function scan(s, iframe) {
+    let anchors;
+    try { anchors = iframe.contentDocument.querySelectorAll("a[href]"); }
+    catch { blocked = true; renderFlow(); return; }
+    for (const a of anchors) {
+      const raw = a.getAttribute("href") || "";
+      if (/^(https?:|mailto:|tel:|data:|#|\/\/)/i.test(raw)) continue;
+      const target = raw.split(/[?#]/)[0];
+      if (!/\.html?$/i.test(target)) continue;
+      links.push({ from: s, to: byFile.get(target) ?? { file: target, missing: true }, label: a.textContent.trim().replace(/\s+/g, " ").slice(0, 48) });
+    }
+    renderFlow();
+  }
+
+  function renderFlow() {
+    const list = document.getElementById("flow-list");
+    const note = document.getElementById("flow-note");
+    document.getElementById("flow-title").textContent = `Переходы: ${links.length} · экранов: ${screens.length}`;
+    list.innerHTML = links.map((l) =>
+      `<li>${name(l.from)} → ${l.to.missing ? `<span class="bad">${esc(l.to.file)} — файла нет</span>` : name(l.to)} <span class="q">«${esc(l.label)}»</span></li>`
+    ).join("");
+
+    const incoming = new Set(links.filter((l) => !l.to.missing && l.to.file !== l.from.file).map((l) => l.to.file));
+    const orphans = screens.filter((s, i) => i > 0 && !incoming.has(s.file) && !/пуст/i.test(s.state ?? ""));
+    const parts = [];
+    if (blocked) parts.push("Карта переходов и подписи фреймов работают через сервер (адрес http://127.0.0.1:…); с диска видно только экраны.");
+    if (!blocked && orphans.length) parts.push(`Сюда ничего не ведёт: ${orphans.map((s) => `${pad(s.n)} ${s.title}`).join(", ")}.`);
+    if (!blocked && !links.length && scanned.size === screens.length) parts.push("Ссылок между экранами нет.");
+    note.textContent = parts.join(" ");
+  }
+
+  renderFlow();
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,345 @@
+/* Прототип 002 — витрина и карточка: вид поверх кита.
+   Направление — design.md §1 (этикетка 02-didona, 000 r3); предложено,
+   не утверждено Юлаем. Каркас — base.css (не правится), значения
+   палитры — tokens.css. Здесь — шрифт, имя бренда, новые токены
+   (пачка и наклейка), шкала кеглей и классы экранов. */
+
+@font-face {
+  font-family: "Manrope";
+  src: url("fonts/Manrope-var.ttf") format("truetype");
+  font-weight: 200 800;
+  font-display: block;
+}
+
+:root {
+  /* Имя бренда — одна константа. Рабочее, под риском знака «СВОИ»
+     (questions.md п. 4): меняется здесь и больше нигде. В разметке —
+     <span class="brand"></span>. */
+  --brand-name: "SVOI COFFEE";
+
+  /* Пачка и наклейка не меняются с темой: это предмет, а не интерфейс.
+     Цвета измерены по образцу 02-didona (design.md §1 «Палитра»). */
+  --pack: #0A2F18;
+  --pack-deep: #062913;
+  --label: #FBE9CB;
+  --label-ink: #0B2A15;
+
+  /* Поле под пачкой: светлая — кремовое, тёмная — зелёное светлее фона,
+     иначе пачка на фоне-пачке пропадает (контраст 1.13 против 1.51). */
+  --stage: var(--surface);
+  --stage-floor: #EFDFBE;
+
+  /* Линии — только в светлой теме (§1); в тёмной их держит тон. */
+  --hair: var(--line);
+
+  /* Геометрия §1: карточки и плитки 16 (--radius), кнопки 14, наклейка 12. */
+  --radius-btn: 14px;
+  --radius-label: 12px;
+
+  /* Шкала кеглей §1: 14 / 17 / 21 / 26 / 34. */
+  --fs-small: 14px;
+  --fs-h3: 21px;
+  --fs-h2: 26px;
+  --fs-h1: 34px;
+  --caps: 0.04em;            /* трекинг капса: только имя сорта и бренда */
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --stage: #1F4D30;
+    --stage-floor: #174328;
+    --hair: transparent;
+  }
+}
+
+/* ---------- Основа ---------- */
+
+body { font-weight: 400; font-variant-numeric: lining-nums; }
+.page { padding: var(--s2) var(--s2) var(--s3); }
+.muted { color: var(--muted); }
+b, strong { font-weight: 700; }
+
+/* Имя бренда: литерала в разметке нет — только эта константа. */
+.brand::before { content: var(--brand-name); }
+.brand { font-weight: 800; text-transform: uppercase; letter-spacing: var(--caps); white-space: normal; }
+
+/* Имя сорта — единственный капс в тексте экрана, кроме бренда. */
+.sort-name { font-size: var(--fs-h1); text-transform: uppercase; letter-spacing: var(--caps); line-height: 1; }
+.h-page { font-size: var(--fs-h2); line-height: 1.15; }
+.h-block { font-size: var(--fs-base); font-weight: 800; }
+
+/* Текст только для чтения с экрана (подпись иконки «назад»). */
+.vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+/* «пример» из кита — и как приписка к тексту, и как отдельная метка. */
+.sample::after { font-weight: 400; }
+.sample:empty { margin-left: 0; }
+
+/* Поле «уточняем у обжарщика»: настоящий текст будущего экрана, не заглушка. */
+.tbd { color: var(--muted); }
+
+/* ---------- Иконки: свои, однолинейные, масками ---------- */
+
+.ico {
+  display: inline-block; flex: none; width: 24px; height: 24px;
+  background: currentColor;
+  -webkit-mask: var(--i) center / contain no-repeat;
+          mask: var(--i) center / contain no-repeat;
+}
+.ico--lg { width: 32px; height: 32px; }
+
+/* ---------- Шапка ---------- */
+
+.bar { min-height: 56px; padding: var(--s1) var(--s1); }
+.bar--center { flex-direction: column; justify-content: center; gap: 0; text-align: center; padding-top: var(--s2); }
+.bar__brand { font-size: var(--fs-base); line-height: 1.2; }
+.bar__title { font-size: var(--fs-base); font-weight: 800; line-height: 1.2; }
+.bar__sub { font-size: var(--fs-small); color: var(--muted); }
+.bar__side { width: 44px; }
+
+.iconbtn {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: var(--target); height: var(--target); border-radius: 50%;
+  color: var(--text); background: transparent; border: 0; text-decoration: none;
+}
+
+/* ---------- Действия ---------- */
+
+.action { border-radius: var(--radius-btn); font-weight: 700; }
+.action--primary { min-height: 56px; font-size: var(--fs-base); }
+.action[aria-disabled="true"] { background: transparent; color: var(--muted); border: 1px dashed var(--muted); }
+
+/* Липкий низ: действие над панелью вкладок или одно. */
+.dock { position: sticky; bottom: 0; z-index: 2; background: var(--bg); border-top: 1px solid var(--hair); padding-bottom: env(safe-area-inset-bottom, 0px); }
+.dock__action { padding: var(--s1) var(--s2) var(--s1); }
+.dock__action:only-child { padding-bottom: var(--s2); }
+.dock__action + .tabs { border-top: 1px solid var(--hair); }
+
+/* ---------- Панель вкладок ---------- */
+
+.tabs { display: grid; grid-template-columns: repeat(5, 1fr); padding: 4px 4px 8px; }
+.tab {
+  position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+  min-height: 56px; padding: 0; border: 0; background: none;
+  color: var(--muted); font-size: var(--fs-small); line-height: 1.2; text-decoration: none;
+}
+.tab[aria-current="page"] { color: var(--text); font-weight: 700; }
+.tab__badge {
+  position: absolute; top: 2px; left: calc(50% + 6px);
+  min-width: 20px; height: 20px; padding: 0 5px; border-radius: 10px;
+  background: var(--accent); color: var(--on-accent);
+  font-size: var(--fs-small); font-weight: 800; line-height: 20px; text-align: center;
+}
+
+/* ---------- Пачка: одна запоминающаяся вещь (§1) ----------
+   Нарисована, не сфотографирована. Размер задаёт ширина; всё внутри —
+   в долях ширины (cqw), чтобы одна разметка жила и героем, и миниатюрой. */
+
+.stage {
+  display: flex; align-items: flex-end; justify-content: center;
+  height: 352px; padding-bottom: 28px; border-radius: var(--radius);
+  background: linear-gradient(to bottom, var(--stage) 0 80%, var(--stage-floor) 80% 100%);
+}
+.stage--card { height: 236px; padding-bottom: 20px; }
+
+.pack {
+  container-type: inline-size;
+  position: relative; flex: none; width: 244px; aspect-ratio: 43 / 50;
+  border-radius: 3% 3% 4% 4% / 2.6% 2.6% 3.4% 3.4%;
+  background:
+    linear-gradient(to bottom, transparent 0 21%, color-mix(in srgb, var(--label) 9%, transparent) 21% 21.6%, transparent 21.6%),
+    linear-gradient(to top, var(--pack-deep) 0 2.5%, transparent 2.5%),
+    linear-gradient(90deg, var(--pack-deep) 0, var(--pack) 13% 87%, var(--pack-deep) 100%);
+}
+/* Шов сверху — рубчик термосварки, как у настоящей пачки. */
+.pack::before {
+  content: ""; position: absolute; inset: 0 0 auto 0; height: 7%;
+  border-radius: inherit;
+  background: repeating-linear-gradient(90deg, color-mix(in srgb, var(--label) 7%, transparent) 0 1px, transparent 1px 4px);
+  border-bottom: 1px solid color-mix(in srgb, var(--pack-deep) 80%, transparent);
+}
+/* Клапан дегазации. */
+.pack::after {
+  content: ""; position: absolute; right: 8%; top: 26%; width: 5.5%; aspect-ratio: 1;
+  border-radius: 50%; border: 1.5px solid color-mix(in srgb, var(--label) 16%, transparent);
+}
+.pack--card { width: 164px; }
+.pack--thumb { width: 40px; border-radius: 3px 3px 4px 4px; }
+.pack--thumb::before { background: none; }
+
+.pack__label {
+  position: absolute; left: 8%; right: 8%; top: 31%; bottom: 12%;
+  display: flex; flex-direction: column; justify-content: space-between;
+  padding: 6cqw 6cqw 5cqw;
+  border-radius: min(var(--radius-label), 5.7cqw);
+  background: var(--label); color: var(--label-ink);
+  line-height: 1.1; text-align: left;
+}
+.pack__brand {
+  display: block; padding: 0;
+  font-size: 15cqw; font-weight: 800; line-height: 0.95; text-align: left;
+}
+.pack__foot { display: flex; align-items: flex-end; justify-content: space-between; gap: 3cqw; }
+.pack__sort { display: block; font-size: 7.2cqw; font-weight: 800; text-transform: uppercase; letter-spacing: var(--caps); }
+.pack__proc { display: block; margin-top: 1.2cqw; font-size: 4.4cqw; font-weight: 600; }
+.pack__weight { font-size: 7.6cqw; font-weight: 800; white-space: nowrap; }
+
+/* Пустая витрина: та же наклейка, но строки сорта и веса не вписаны —
+   как незаполненные «ноты вкуса: ____» на настоящей этикетке. */
+.pack__blanks { display: grid; gap: 4cqw; width: 100%; }
+.pack__blank { display: block; height: 0; border-bottom: max(1.5px, 0.8cqw) solid color-mix(in srgb, var(--label-ink) 45%, transparent); }
+.pack__blank--short { width: 55%; }
+
+/* Миниатюра в корзине: надписи не читаются — остаётся пятно наклейки. */
+@container (max-width: 90px) {
+  .pack__label > * { visibility: hidden; }
+}
+.pack--thumb::after { display: none; }
+
+/* Пустая корзина: место для пачки — контур, без заливки. */
+.pack--ghost { width: 120px; background: none; border: 1.5px dashed var(--muted); }
+.pack--ghost::before { background: none; border-bottom: 1.5px dashed var(--muted); border-radius: 0; height: 9%; }
+.pack--ghost::after { display: none; }
+
+/* ---------- Витрина ---------- */
+
+.hero { display: block; text-decoration: none; color: inherit; }
+.hero .sort-name { margin-top: var(--s3); }
+.hero__sub { margin-top: var(--s1); color: var(--muted); }
+.prices { margin-top: var(--s2); }
+.price { font-size: var(--fs-h3); font-weight: 800; line-height: 1.25; }
+.price__note { font-size: var(--fs-base); font-weight: 600; }
+.price--soon { margin-top: 2px; font-size: var(--fs-base); font-weight: 400; color: var(--muted); }
+.vitrina__go { margin-top: var(--s3); }
+.later { margin-top: var(--s2); font-size: var(--fs-small); color: var(--muted); text-align: center; }
+
+/* ---------- Карточка ---------- */
+
+.card__head { margin-top: var(--s3); }
+.card__head .muted { margin-top: var(--s1); }
+.block { margin-top: var(--s3); }
+
+/* Вес: две плитки; без цены — недоступна, пунктиром. */
+.weights { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s1); }
+.weight {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 2px;
+  min-height: 76px; padding: var(--s1) var(--s2);
+  border: 1px solid var(--hair); border-radius: var(--radius);
+  background: var(--surface); text-align: left; line-height: 1.25;
+}
+.weight b { font-size: var(--fs-h3); font-weight: 800; }
+.weight span { font-size: var(--fs-small); color: var(--muted); }
+.weight[aria-pressed="true"] { box-shadow: inset 0 0 0 2px var(--text); border-color: transparent; }
+.weight[aria-pressed="true"] span { color: var(--text); }
+.weight[aria-disabled="true"] { background: transparent; border: 1px dashed var(--muted); color: var(--muted); }
+
+/* Состав — строки, как нижний блок наклейки, а не карточки. */
+.facts { display: grid; }
+.facts > div { display: grid; grid-template-columns: 112px 1fr; gap: var(--s2); padding: 10px 0; border-top: 1px solid var(--hair); }
+.facts > div:last-child { border-bottom: 1px solid var(--hair); }
+.facts dt { color: var(--muted); }
+.facts dd { margin: 0; }
+
+/* Шкала «горько ↔ кисло»: одна линия цветом текста, без градиента. */
+.scale__head { display: flex; justify-content: space-between; align-items: baseline; }
+.scale__row { display: flex; align-items: center; gap: var(--s2); margin-top: var(--s1); }
+.scale__track {
+  position: relative; flex: 1; height: 16px;
+  background: linear-gradient(var(--text), var(--text)) center / 100% 2px no-repeat;
+}
+.scale__mark {
+  position: absolute; top: 50%; left: var(--at); width: 18px; height: 18px; margin: -9px 0 0 -9px;
+  border-radius: 50%; background: var(--text); box-shadow: 0 0 0 3px var(--bg);
+}
+
+/* Помол: 2 × 3, частица на значке — размер помола. */
+.tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s1); margin-top: var(--s1); }
+.tile {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
+  min-height: 88px; padding: var(--s1) 4px;
+  border: 1px solid var(--hair); border-radius: var(--radius);
+  background: var(--surface); color: var(--text);
+  font-size: var(--fs-small); font-weight: 600; line-height: 1.2; text-align: center; text-decoration: none;
+}
+.tile[aria-pressed="true"] { box-shadow: inset 0 0 0 2px var(--text); border-color: transparent; font-weight: 800; }
+.tile--ask { background: transparent; border-style: dashed; border-color: var(--muted); }
+
+/* Обжарка и гарантия — тихие строки, не плашки. */
+.notes > li { padding: 10px 0; border-top: 1px solid var(--hair); }
+.notes > li:last-child { border-bottom: 1px solid var(--hair); }
+
+/* ---------- Чем варишь ---------- */
+
+.lead { margin-top: var(--s1); color: var(--muted); max-width: var(--measure); }
+.methods { display: grid; gap: var(--s1); margin-top: var(--s3); }
+.method {
+  display: flex; align-items: center; gap: var(--s2);
+  min-height: 88px; padding: var(--s2);
+  border: 1px solid var(--hair); border-radius: var(--radius);
+  background: var(--surface); color: var(--text); text-align: left; text-decoration: none; line-height: 1.3;
+}
+.method b { display: block; font-size: var(--fs-h3); font-weight: 800; }
+.method span span { display: block; margin-top: 2px; font-size: var(--fs-small); color: var(--muted); }
+.method[aria-pressed="true"] { box-shadow: inset 0 0 0 2px var(--text); border-color: transparent; }
+
+.advice { margin-top: var(--s4); }
+.advice__head { display: flex; align-items: center; gap: var(--s2); }
+.advice__head h2 { font-size: var(--fs-h3); }
+.advice p { margin-top: var(--s1); max-width: var(--measure); }
+
+/* ---------- Корзина ---------- */
+
+.line { display: grid; grid-template-columns: 64px 1fr; gap: var(--s2); padding: var(--s2) 0; border-bottom: 1px solid var(--hair); }
+/* Миниатюра стоит на том же поле, что и герой: в тёмной теме пачка на фоне-пачке пропадает. */
+.line__thumb {
+  display: flex; align-items: flex-end; justify-content: center;
+  width: 64px; height: 64px; padding-bottom: 6px; border-radius: var(--radius-label);
+  background: linear-gradient(to bottom, var(--stage) 0 80%, var(--stage-floor) 80% 100%);
+}
+.line__title { display: flex; align-items: center; min-height: var(--target); text-decoration: none; line-height: 1.35; }
+.line__row { display: flex; align-items: center; justify-content: space-between; margin-top: 4px; }
+.line__price { font-size: var(--fs-h3); font-weight: 800; }
+.stepper { display: flex; align-items: center; gap: var(--s1); }
+.stepper button {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: var(--target); height: var(--target); border-radius: 50%;
+  border: 1px solid var(--hair); background: var(--surface); color: var(--text); padding: 0;
+}
+.stepper output { min-width: 24px; text-align: center; font-weight: 700; }
+
+.total { margin-top: var(--s2); display: grid; gap: var(--s1); }
+.total > div { display: flex; justify-content: space-between; align-items: baseline; }
+.total dt { color: var(--muted); }
+.total dd { margin: 0; }
+.total__sum dt { color: var(--text); font-weight: 700; }
+.total__sum dd { font-size: var(--fs-h3); font-weight: 800; }
+
+/* ---------- Пустые состояния ---------- */
+
+.empty { padding: var(--s4) 0; }
+.empty--center .muted { max-width: 30ch; }
+.empty .stage, .empty .pack--ghost { margin-bottom: var(--s1); }
+
+
+/* ---------- Значки (масками; рисованы для этого прототипа) ---------- */
+
+.ico-back { --i: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M15 5l-7 7 7 7'/%3E%3C/svg%3E"); }
+.ico-plus { --i: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 5v14'/%3E%3Cpath d='M5 12h14'/%3E%3C/svg%3E"); }
+.ico-minus { --i: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14'/%3E%3C/svg%3E"); }
+.ico-home { --i: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 10.5 12 4l8 6.5V20h-5.5v-5h-5v5H4z'/%3E%3C/svg%3E"); }
+.ico-coffee { --i: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M7 3h10l1.5 3.5V20a1 1 0 0 1-1 1h-11a1 1 0 0 1-1-1V6.5z'/%3E%3Cpath d='M5.5 6.5h13'/%3E%3Cpath d='M8.5 11h7v6h-7z'/%3E%3C/svg%3E"); }
+.ico-friends { --i: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 11a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z'/%3E%3Cpath d='M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6'/%3E%3Cpath d='M15.5 4.3a3.5 3.5 0 0 1 0 6.4'/%3E%3Cpath d='M18 14.4c2 .8 3.5 2.8 3.5 5.6'/%3E%3C/svg%3E"); }
+.ico-cart { --i: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 8h14l-1.2 12.5H6.2z'/%3E%3Cpath d='M9 8V6.5a3 3 0 0 1 6 0V8'/%3E%3C/svg%3E"); }
+.ico-profile { --i: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8z'/%3E%3Cpath d='M4.5 20.5c.8-3.8 3.9-6 7.5-6s6.7 2.2 7.5 6'/%3E%3C/svg%3E"); }
+.ico-turka { --i: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 6.5h11'/%3E%3Cpath d='M6.5 6.5 7.5 10 5.2 18.8a1.6 1.6 0 0 0 1.6 2h7.4a1.6 1.6 0 0 0 1.6-2L13.5 10l1-3.5'/%3E%3Cpath d='M15.6 12.5 22 10'/%3E%3C/svg%3E"); }
+.ico-machine { --i: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 3.5h14v17H5z'/%3E%3Cpath d='M5 8h14'/%3E%3Cpath d='M12 8v2.5'/%3E%3Cpath d='M9.5 13.5h5v2.2a2.5 2.5 0 0 1-5 0z'/%3E%3C/svg%3E"); }
+.ico-press { --i: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M11.5 2.5v6.5'/%3E%3Cpath d='M9 2.5h5'/%3E%3Cpath d='M6 6.5h11'/%3E%3Cpath d='M6.5 6.5v13a1.5 1.5 0 0 0 1.5 1.5h7a1.5 1.5 0 0 0 1.5-1.5v-13'/%3E%3Cpath d='M16.5 9h1.8a1.5 1.5 0 0 1 1.5 1.5v5a1.5 1.5 0 0 1-1.5 1.5h-1.8'/%3E%3Cpath d='M6.5 11.5h10'/%3E%3C/svg%3E"); }
+.ico-cup { --i: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 9.5h11v4A5.5 5.5 0 0 1 10.5 19 5.5 5.5 0 0 1 5 13.5z'/%3E%3Cpath d='M16 10.5h1.5a2.5 2.5 0 0 1 0 5H16'/%3E%3Cpath d='M9 3.5v3'/%3E%3Cpath d='M12 3.5v3'/%3E%3C/svg%3E"); }
+.ico-g-turka { --i: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40' fill='black'%3E%3Cpath d='M5 31c3.5-8.5 9-12.5 15-12.5S31.5 22.5 35 31z'/%3E%3Ccircle cx='11' cy='14' r='1.1'/%3E%3Ccircle cx='18' cy='10.5' r='1.1'/%3E%3Ccircle cx='26' cy='12' r='1.1'/%3E%3Ccircle cx='31' cy='16.5' r='1'/%3E%3Ccircle cx='15' cy='17' r='0.9'/%3E%3Ccircle cx='22' cy='15.5' r='0.9'/%3E%3C/svg%3E"); }
+.ico-g-press { --i: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40' fill='black'%3E%3Ccircle cx='11' cy='11' r='3.6'/%3E%3Ccircle cx='23' cy='9' r='3.6'/%3E%3Ccircle cx='32' cy='16' r='3.4'/%3E%3Ccircle cx='16' cy='21' r='3.4'/%3E%3Ccircle cx='27' cy='25' r='3.6'/%3E%3Ccircle cx='9' cy='30' r='3.4'/%3E%3Ccircle cx='19' cy='32' r='3.4'/%3E%3Ccircle cx='32' cy='33' r='3.2'/%3E%3C/svg%3E"); }
+.ico-g-filter { --i: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40' fill='black'%3E%3Ccircle cx='7.5' cy='8' r='2.2'/%3E%3Ccircle cx='15.5' cy='8' r='2.2'/%3E%3Ccircle cx='23.5' cy='8' r='2.2'/%3E%3Ccircle cx='31.5' cy='8' r='2.2'/%3E%3Ccircle cx='11' cy='16' r='2.2'/%3E%3Ccircle cx='19' cy='16' r='2.2'/%3E%3Ccircle cx='27' cy='16' r='2.2'/%3E%3Ccircle cx='35' cy='16' r='2.2'/%3E%3Ccircle cx='7.5' cy='24' r='2.2'/%3E%3Ccircle cx='15.5' cy='24' r='2.2'/%3E%3Ccircle cx='23.5' cy='24' r='2.2'/%3E%3Ccircle cx='31.5' cy='24' r='2.2'/%3E%3Ccircle cx='11' cy='32' r='2.2'/%3E%3Ccircle cx='19' cy='32' r='2.2'/%3E%3Ccircle cx='27' cy='32' r='2.2'/%3E%3Ccircle cx='35' cy='32' r='2.2'/%3E%3C/svg%3E"); }
+.ico-g-espresso { --i: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40' fill='black'%3E%3Ccircle cx='6.5' cy='6.5' r='1.3'/%3E%3Ccircle cx='11.9' cy='6.5' r='1.3'/%3E%3Ccircle cx='17.3' cy='6.5' r='1.3'/%3E%3Ccircle cx='22.7' cy='6.5' r='1.3'/%3E%3Ccircle cx='28.1' cy='6.5' r='1.3'/%3E%3Ccircle cx='33.5' cy='6.5' r='1.3'/%3E%3Ccircle cx='8.9' cy='11.9' r='1.3'/%3E%3Ccircle cx='14.3' cy='11.9' r='1.3'/%3E%3Ccircle cx='19.7' cy='11.9' r='1.3'/%3E%3Ccircle cx='25.1' cy='11.9' r='1.3'/%3E%3Ccircle cx='30.5' cy='11.9' r='1.3'/%3E%3Ccircle cx='35.9' cy='11.9' r='1.3'/%3E%3Ccircle cx='6.5' cy='17.3' r='1.3'/%3E%3Ccircle cx='11.9' cy='17.3' r='1.3'/%3E%3Ccircle cx='17.3' cy='17.3' r='1.3'/%3E%3Ccircle cx='22.7' cy='17.3' r='1.3'/%3E%3Ccircle cx='28.1' cy='17.3' r='1.3'/%3E%3Ccircle cx='33.5' cy='17.3' r='1.3'/%3E%3Ccircle cx='8.9' cy='22.7' r='1.3'/%3E%3Ccircle cx='14.3' cy='22.7' r='1.3'/%3E%3Ccircle cx='19.7' cy='22.7' r='1.3'/%3E%3Ccircle cx='25.1' cy='22.7' r='1.3'/%3E%3Ccircle cx='30.5' cy='22.7' r='1.3'/%3E%3Ccircle cx='35.9' cy='22.7' r='1.3'/%3E%3Ccircle cx='6.5' cy='28.1' r='1.3'/%3E%3Ccircle cx='11.9' cy='28.1' r='1.3'/%3E%3Ccircle cx='17.3' cy='28.1' r='1.3'/%3E%3Ccircle cx='22.7' cy='28.1' r='1.3'/%3E%3Ccircle cx='28.1' cy='28.1' r='1.3'/%3E%3Ccircle cx='33.5' cy='28.1' r='1.3'/%3E%3Ccircle cx='8.9' cy='33.5' r='1.3'/%3E%3Ccircle cx='14.3' cy='33.5' r='1.3'/%3E%3Ccircle cx='19.7' cy='33.5' r='1.3'/%3E%3Ccircle cx='25.1' cy='33.5' r='1.3'/%3E%3Ccircle cx='30.5' cy='33.5' r='1.3'/%3E%3Ccircle cx='35.9' cy='33.5' r='1.3'/%3E%3C/svg%3E"); }
+.ico-g-beans { --i: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cdefs%3E%3Cmask id='m'%3E%3Crect width='40' height='40' fill='white'/%3E%3Cpath d='M17.6 9.2c-3.4 3.2-1.4 8.6-6.6 13.4M23.4 17.8c2.6 3.6-1.6 9.2 3.8 14.2' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round'/%3E%3C/mask%3E%3C/defs%3E%3Cg mask='url(%23m)' fill='black'%3E%3Cellipse cx='14' cy='16' rx='6.4' ry='9' transform='rotate(30 14 16)'/%3E%3Cellipse cx='26.5' cy='25' rx='6.4' ry='9' transform='rotate(-25 26.5 25)'/%3E%3C/g%3E%3C/svg%3E"); }
+
+.pack__date { display: block; margin-top: 1.2cqw; font-size: 4.4cqw; font-weight: 600; }
+.next-stage { margin-top: var(--s1); font-size: var(--fs-small); color: var(--muted); text-align: center; }

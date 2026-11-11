@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="ru" data-device="phone">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Корзина</title>
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="base.css">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="bar bar--center">
+  <h1 class="bar__title">Корзина</h1>
+</header>
+<main class="page">
+  <div class="line">
+    <div class="line__thumb" aria-hidden="true"><div class="pack pack--thumb"><div class="pack__label"></div></div></div>
+    <div>
+      <a class="line__title" href="03-kartochka.html"><span><b>Эфиопия</b> · 1&nbsp;кг · в&nbsp;зёрнах</span></a>
+      <div class="line__row">
+        <b class="line__price">2&nbsp;250&nbsp;₽</b>
+        <div class="stepper">
+          <button type="button" aria-label="Убрать одну пачку"><i class="ico ico-minus" aria-hidden="true"></i></button>
+          <output aria-label="Пачек">1</output>
+          <button type="button" aria-label="Добавить ещё пачку"><i class="ico ico-plus" aria-hidden="true"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <dl class="total">
+    <div><dt>Доставка</dt><dd>в цене</dd></div>
+    <div class="total__sum"><dt>Итого</dt><dd>2&nbsp;250&nbsp;₽</dd></div>
+  </dl>
+</main>
+<footer class="dock">
+  <div class="dock__action"><button type="button" class="action action--primary action--full">Оформить · 2&nbsp;250&nbsp;₽</button><p class="next-stage">Оформление и оплата — следующий этап</p></div>
+  <nav class="tabs" aria-label="Разделы">
+    <button type="button" class="tab"><i class="ico ico-home" aria-hidden="true"></i>Главная</button>
+    <a class="tab" href="01-vitrina.html"><i class="ico ico-coffee" aria-hidden="true"></i>Кофе</a>
+    <button type="button" class="tab"><i class="ico ico-friends" aria-hidden="true"></i>Друзья</button>
+    <a class="tab" aria-current="page"><i class="ico ico-cart" aria-hidden="true"></i>Корзина<span class="tab__badge" aria-label="в корзине 1">1</span></a>
+    <button type="button" class="tab"><i class="ico ico-profile" aria-hidden="true"></i>Профиль</button>
+  </nav>
+</footer>
+</body>
+</html>
