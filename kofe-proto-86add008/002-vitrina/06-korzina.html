@@ -8,39 +8,48 @@
 <link rel="stylesheet" href="base.css">
 <link rel="stylesheet" href="styles.css">
 </head>
-<body>
-<header class="bar bar--center">
-  <h1 class="bar__title">Корзина</h1>
-</header>
-<main class="page">
-  <div class="line">
-    <div class="line__thumb" aria-hidden="true"><div class="pack pack--thumb"><div class="pack__label"></div></div></div>
-    <div>
-      <a class="line__title" href="03-kartochka.html"><span><b>Эфиопия</b> · 1&nbsp;кг · в&nbsp;зёрнах</span></a>
-      <div class="line__row">
-        <b class="line__price">2&nbsp;250&nbsp;₽</b>
-        <div class="stepper">
-          <button type="button" aria-label="Убрать одну пачку"><i class="ico ico-minus" aria-hidden="true"></i></button>
-          <output aria-label="Пачек">1</output>
-          <button type="button" aria-label="Добавить ещё пачку"><i class="ico ico-plus" aria-hidden="true"></i></button>
-        </div>
-      </div>
-    </div>
-  </div>
-  <dl class="total">
-    <div><dt>Доставка</dt><dd>в цене</dd></div>
-    <div class="total__sum"><dt>Итого</dt><dd>2&nbsp;250&nbsp;₽</dd></div>
-  </dl>
-</main>
-<footer class="dock">
-  <div class="dock__action"><button type="button" class="action action--primary action--full">Оформить · 2&nbsp;250&nbsp;₽</button><p class="next-stage">Оформление и оплата — следующий этап</p></div>
-  <nav class="tabs" aria-label="Разделы">
-    <button type="button" class="tab"><i class="ico ico-home" aria-hidden="true"></i>Главная</button>
-    <a class="tab" href="01-vitrina.html"><i class="ico ico-coffee" aria-hidden="true"></i>Кофе</a>
-    <button type="button" class="tab"><i class="ico ico-friends" aria-hidden="true"></i>Друзья</button>
-    <a class="tab" aria-current="page"><i class="ico ico-cart" aria-hidden="true"></i>Корзина<span class="tab__badge" aria-label="в корзине 1">1</span></a>
-    <button type="button" class="tab"><i class="ico ico-profile" aria-hidden="true"></i>Профиль</button>
-  </nav>
-</footer>
+<body class="pg cart">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <filter id="rough"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="4" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.2"/></filter>
+    <symbol id="logo" viewBox="0 0 32 32"><rect width="32" height="32" rx="9" fill="#141416"/><g transform="rotate(35 16 16)"><ellipse cx="16" cy="16" rx="6.6" ry="9.6" fill="var(--cream)"/><path d="M16 7c-2.4 2.9-2.4 6 0 9s2.4 6.1 0 9" fill="none" stroke="#141416" stroke-width="1.9" stroke-linecap="round"/></g></symbol>
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></symbol>
+    <symbol id="i-bean" viewBox="0 0 24 24"><path d="M10.165 6.598C9.954 7.478 9.64 8.36 9 9c-.64.64-1.521.954-2.402 1.165A6 6 0 0 0 8 22c7.732 0 14-6.268 14-14a6 6 0 0 0-11.835-1.402Z"/><path d="M5.341 10.62a4 4 0 1 0 5.279-5.28"/></symbol>
+    <symbol id="i-bag" viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></symbol>
+    <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
+    <symbol id="i-left" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol>
+    <symbol id="i-right" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+    <symbol id="i-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5v14"/></symbol>
+    <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
+    <symbol id="i-truck" viewBox="0 0 24 24"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></symbol>
+    <symbol id="i-chat" viewBox="0 0 24 24"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></symbol>
+    <symbol id="i-coffee" viewBox="0 0 24 24"><path d="M10 2v2"/><path d="M14 2v2"/><path d="M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1h14a4 4 0 1 1 0 8h-1"/><path d="M6 2v2"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></symbol>
+    <symbol id="g-whole" viewBox="0 0 40 40"><g fill="currentColor"><ellipse cx="14" cy="16" rx="6" ry="8.5" transform="rotate(30 14 16)"/><ellipse cx="26" cy="25" rx="6" ry="8.5" transform="rotate(-25 26 25)"/></g><g fill="none" stroke="rgba(127,127,127,.6)" stroke-width="1.4" stroke-linecap="round"><path d="M17.5 9.5c-3.5 3-1.5 9-6.5 13"/><path d="M23 18c2.5 3.5-1.5 9 4 14"/></g></symbol>
+    <symbol id="g-coarse" viewBox="0 0 40 40"><g fill="currentColor"><circle cx="11" cy="12" r="3.4"/><circle cx="22" cy="10" r="3"/><circle cx="30" cy="16" r="3.4"/><circle cx="15" cy="22" r="3"/><circle cx="26" cy="25" r="3.4"/><circle cx="10" cy="30" r="3"/><circle cx="20" cy="31" r="3.2"/><circle cx="31" cy="31" r="2.8"/></g></symbol>
+    <symbol id="g-mid" viewBox="0 0 40 40"><g fill="currentColor"><circle cx="9" cy="10" r="2"/><circle cx="16" cy="9" r="2"/><circle cx="23" cy="11" r="2"/><circle cx="30" cy="9" r="2"/><circle cx="12" cy="16" r="2"/><circle cx="19" cy="17" r="2"/><circle cx="27" cy="16" r="2"/><circle cx="9" cy="23" r="2"/><circle cx="16" cy="24" r="2"/><circle cx="23" cy="23" r="2"/><circle cx="31" cy="23" r="2"/><circle cx="12" cy="30" r="2"/><circle cx="20" cy="31" r="2"/><circle cx="28" cy="30" r="2"/></g></symbol>
+    <symbol id="g-fine" viewBox="0 0 40 40"><path d="M6 30c4-8 9-12 14-12s10 4 14 12z" fill="currentColor"/><g fill="currentColor"><circle cx="12" cy="13" r="1"/><circle cx="20" cy="11" r="1"/><circle cx="28" cy="13" r="1"/><circle cx="16" cy="16" r="1"/><circle cx="24" cy="15.5" r="1"/></g></symbol>
+  </defs>
+</svg>
+<div class="hd"><span class="sp"></span><div class="t">корзина</div><button type="button" class="round" aria-label="помощь"><svg class="i"><use href="#i-chat"/></svg></button></div>
+<div class="items card">
+  <div class="ci"><a class="ph" href="03-kartochka.html" aria-label="эфиопия — к сорту"></a><div class="tx"><small>1&nbsp;кг · в зёрнах · обжарим 12.11</small><b>эфиопия</b><div class="row"><span>2&nbsp;250&nbsp;₽</span><div class="step"><a href="07-korzina-pusto.html" aria-label="меньше"><svg class="i"><use href="#i-minus"/></svg></a>1<button type="button" aria-label="больше"><svg class="i"><use href="#i-plus"/></svg></button></div></div></div></div>
+</div>
+<p class="dlv">Не понравилась первая пачка&nbsp;— заменим: напиши в помощь, пришлём другую. <span class="tag">условия — пример</span></p>
+<div class="paybar">
+  <div class="r"><div class="way"><small>доставка</small><span>в цене</span></div><div class="tot"><small>итого</small><b>2&nbsp;250&nbsp;₽</b></div></div>
+  <button type="button" class="pill">оформить заказ</button>
+  <p class="next">оформление и оплата — следующий этап</p>
+</div>
+<nav class="nav" aria-label="Разделы">
+  <button type="button"><svg class="i"><use href="#i-home"/></svg>главная</button>
+  <a href="01-vitrina.html"><svg class="i"><use href="#i-bean"/></svg>зерно</a>
+  <button type="button"><svg class="i"><use href="#i-users"/></svg>друзья</button>
+  <a class="on" aria-current="page"><svg class="i"><use href="#i-bag"/></svg>корзина<span class="badge" aria-label="в корзине 1">1</span></a>
+  <button type="button"><svg class="i"><use href="#i-user"/></svg>профиль</button>
+</nav>
 </body>
 </html>

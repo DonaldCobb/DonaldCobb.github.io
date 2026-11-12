@@ -8,69 +8,80 @@
 <link rel="stylesheet" href="base.css">
 <link rel="stylesheet" href="styles.css">
 </head>
-<body>
-<header class="bar">
-  <a class="iconbtn" href="01-vitrina.html"><i class="ico ico-back" aria-hidden="true"></i><span class="vh">Назад к витрине</span></a>
-  <span class="bar__side" aria-hidden="true"></span>
-</header>
-<main class="page">
-  <div class="stage stage--card">
-    <div class="pack pack--card" role="img" aria-label="Пачка: Эфиопия, натуральная обработка, 1 кг">
-      <div class="pack__label">
-        <span class="pack__brand brand"></span>
-        <div class="pack__foot">
-          <div><span class="pack__sort">Эфиопия</span><span class="pack__proc">натуральная обработка</span><span class="pack__date">обжарка 12.11</span></div>
-          <span class="pack__weight">1&nbsp;кг</span>
-        </div>
-      </div>
+<body class="prod sort-eth">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <filter id="rough"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="4" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.2"/></filter>
+    <symbol id="logo" viewBox="0 0 32 32"><rect width="32" height="32" rx="9" fill="#141416"/><g transform="rotate(35 16 16)"><ellipse cx="16" cy="16" rx="6.6" ry="9.6" fill="var(--cream)"/><path d="M16 7c-2.4 2.9-2.4 6 0 9s2.4 6.1 0 9" fill="none" stroke="#141416" stroke-width="1.9" stroke-linecap="round"/></g></symbol>
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></symbol>
+    <symbol id="i-bean" viewBox="0 0 24 24"><path d="M10.165 6.598C9.954 7.478 9.64 8.36 9 9c-.64.64-1.521.954-2.402 1.165A6 6 0 0 0 8 22c7.732 0 14-6.268 14-14a6 6 0 0 0-11.835-1.402Z"/><path d="M5.341 10.62a4 4 0 1 0 5.279-5.28"/></symbol>
+    <symbol id="i-bag" viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></symbol>
+    <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
+    <symbol id="i-left" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol>
+    <symbol id="i-right" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+    <symbol id="i-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5v14"/></symbol>
+    <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
+    <symbol id="i-truck" viewBox="0 0 24 24"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></symbol>
+    <symbol id="i-chat" viewBox="0 0 24 24"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></symbol>
+    <symbol id="i-coffee" viewBox="0 0 24 24"><path d="M10 2v2"/><path d="M14 2v2"/><path d="M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1h14a4 4 0 1 1 0 8h-1"/><path d="M6 2v2"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></symbol>
+    <symbol id="g-whole" viewBox="0 0 40 40"><g fill="currentColor"><ellipse cx="14" cy="16" rx="6" ry="8.5" transform="rotate(30 14 16)"/><ellipse cx="26" cy="25" rx="6" ry="8.5" transform="rotate(-25 26 25)"/></g><g fill="none" stroke="rgba(127,127,127,.6)" stroke-width="1.4" stroke-linecap="round"><path d="M17.5 9.5c-3.5 3-1.5 9-6.5 13"/><path d="M23 18c2.5 3.5-1.5 9 4 14"/></g></symbol>
+    <symbol id="g-coarse" viewBox="0 0 40 40"><g fill="currentColor"><circle cx="11" cy="12" r="3.4"/><circle cx="22" cy="10" r="3"/><circle cx="30" cy="16" r="3.4"/><circle cx="15" cy="22" r="3"/><circle cx="26" cy="25" r="3.4"/><circle cx="10" cy="30" r="3"/><circle cx="20" cy="31" r="3.2"/><circle cx="31" cy="31" r="2.8"/></g></symbol>
+    <symbol id="g-mid" viewBox="0 0 40 40"><g fill="currentColor"><circle cx="9" cy="10" r="2"/><circle cx="16" cy="9" r="2"/><circle cx="23" cy="11" r="2"/><circle cx="30" cy="9" r="2"/><circle cx="12" cy="16" r="2"/><circle cx="19" cy="17" r="2"/><circle cx="27" cy="16" r="2"/><circle cx="9" cy="23" r="2"/><circle cx="16" cy="24" r="2"/><circle cx="23" cy="23" r="2"/><circle cx="31" cy="23" r="2"/><circle cx="12" cy="30" r="2"/><circle cx="20" cy="31" r="2"/><circle cx="28" cy="30" r="2"/></g></symbol>
+    <symbol id="g-fine" viewBox="0 0 40 40"><path d="M6 30c4-8 9-12 14-12s10 4 14 12z" fill="currentColor"/><g fill="currentColor"><circle cx="12" cy="13" r="1"/><circle cx="20" cy="11" r="1"/><circle cx="28" cy="13" r="1"/><circle cx="16" cy="16" r="1"/><circle cx="24" cy="15.5" r="1"/></g></symbol>
+  </defs>
+</svg>
+<div class="bar-top"><a class="round" href="01-vitrina.html" aria-label="назад к витрине"><svg class="i"><use href="#i-left"/></svg></a><h3>эфиопия</h3><button type="button" class="round" aria-label="помощь"><svg class="i"><use href="#i-chat"/></svg></button></div>
+<div class="stats"><div><b>натуральная</b><small>обработка</small></div><div><b>сидамо</b><small>регион · пример</small></div><div><b>средняя</b><small>обжарка · пример</small></div></div>
+<button type="button" class="more2">подробнее <svg class="i"><use href="#i-down"/></svg></button>
+<div class="lower">
+  <div class="notes"><span class="glass">ягоды</span><span class="glass">жасмин</span><span class="glass">бергамот</span><span class="tag">пример</span></div>
+
+  <div class="blk">
+    <div class="lab"><span>горько</span><span>кисло</span></div>
+    <div class="scale"><div class="bar"><i style="left:78%"></i></div></div>
+    <div class="sc-cap muted2">Ближе к кислому: ягодная кислинка, сладкое послевкусие. (пример)</div>
+  </div>
+
+  <div class="blk">
+    <div class="lab"><span>фасовка</span><span>цена до двери</span></div>
+    <div class="tiles2" role="group" aria-label="Фасовка">
+      <button type="button" class="tile glass on" aria-pressed="true"><b>1&nbsp;кг</b><small>2&nbsp;250&nbsp;₽</small></button>
+      <button type="button" class="tile glass soon" aria-disabled="true"><b>500&nbsp;г</b><small>цена скоро</small></button>
     </div>
   </div>
 
-  <div class="card__head">
-    <h1 class="sort-name">Эфиопия</h1>
-    <p class="muted">Арабика</p>
-  </div>
-
-  <div class="block weights" role="group" aria-label="Вес">
-    <button type="button" class="weight" aria-pressed="true"><b>1&nbsp;кг</b><span>2&nbsp;250&nbsp;₽ до двери</span></button>
-    <button type="button" class="weight" aria-disabled="true"><b>500&nbsp;г</b><span>цена скоро</span></button>
-  </div>
-  <section class="block" aria-labelledby="grind">
-    <h2 class="h-block" id="grind">Помол</h2>
-    <div class="tiles">
-      <button type="button" class="tile" aria-pressed="false"><i class="ico ico--lg ico-g-turka" aria-hidden="true"></i>турка</button>
-      <button type="button" class="tile" aria-pressed="false"><i class="ico ico--lg ico-g-press" aria-hidden="true"></i>френч-пресс</button>
-      <button type="button" class="tile" aria-pressed="false"><i class="ico ico--lg ico-g-filter" aria-hidden="true"></i>фильтр</button>
-      <button type="button" class="tile" aria-pressed="false"><i class="ico ico--lg ico-g-espresso" aria-hidden="true"></i>эспрессо</button>
-      <button type="button" class="tile" aria-pressed="true"><i class="ico ico--lg ico-g-beans" aria-hidden="true"></i>в зёрнах</button>
-      <a class="tile tile--ask" href="04-chem-varish.html"><i class="ico ico--lg ico-cup" aria-hidden="true"></i>не знаю</a>
-    </div>
-  </section>
-
-  <dl class="block facts">
-    <div><dt>Обработка</dt><dd>натуральная</dd></div>
-    <div><dt>Регион</dt><dd class="tbd">уточняем у обжарщика</dd></div>
-    <div><dt>Обжарка</dt><dd class="tbd">уточняем у обжарщика</dd></div>
-    <div><dt>Ноты вкуса</dt><dd class="tbd">уточняем у обжарщика</dd></div>
-  </dl>
-
-  <div class="block scale">
-    <div class="scale__head"><span class="small muted">Кислотность</span><span class="small sample"></span></div>
-    <div class="scale__row">
-      <span>горько</span>
-      <span class="scale__track" aria-hidden="true"><span class="scale__mark" style="--at: 50%"></span></span>
-      <span>кисло</span>
+  <div class="blk">
+    <div class="lab"><span>помол</span></div>
+    <div class="tiles3" role="group" aria-label="Помол">
+      <button type="button" class="tile glass"><svg><use href="#g-fine"/></svg>турка</button>
+      <button type="button" class="tile glass"><svg><use href="#g-coarse"/></svg>френч-пресс</button>
+      <button type="button" class="tile glass"><svg><use href="#g-mid"/></svg>фильтр</button>
+      <button type="button" class="tile glass"><svg><use href="#g-mid" style="transform:scale(.8);transform-origin:center"/></svg>эспрессо</button>
+      <button type="button" class="tile glass on" aria-pressed="true"><svg><use href="#g-whole"/></svg>в зёрнах</button>
+      <a class="tile glass" href="04-chem-varish.html"><svg class="i"><use href="#i-coffee"/></svg>не знаю</a>
     </div>
   </div>
 
+  <div class="blk"><div class="stamp2">
+    <svg class="sq2" viewBox="0 0 120 120" role="img" aria-label="штамп: обжарка 12.11, партия 3"><defs><path id="stp" d="M60 60m-38 0a38 38 0 1 1 76 0a38 38 0 1 1-76 0"/></defs>
+  <g filter="url(#rough)" fill="none" stroke="currentColor"><circle cx="60" cy="60" r="56" stroke-width="3"/><circle cx="60" cy="60" r="50" stroke-width="1"/><circle cx="60" cy="60" r="31" stroke-width="1.6"/></g>
+  <g filter="url(#rough)" fill="currentColor"><text font-family="Oswald,sans-serif" font-weight="500" font-size="11"><textPath href="#stp" textLength="236" lengthAdjust="spacing">ОБЖАРЕНО ПОД ЗАКАЗ · ПАРТИЯ №3 · </textPath></text>
+  <text x="60" y="58" text-anchor="middle" font-family="Oswald,sans-serif" font-weight="700" font-size="25">12.11</text>
+  <text x="60" y="73" text-anchor="middle" font-family="Oswald,sans-serif" font-weight="500" font-size="9" letter-spacing="2">ОБЖАРКА</text></g></svg>
+    <div class="st-tx"><b>Обжарим 12.11 под твой заказ</b><small>Не впрок: дата и партия — штампом на каждой пачке.</small><em>дата — пример</em></div>
+  </div></div>
 
-  <ul class="block notes">
-    <li><b>Обжарим 12.11</b><span class="sample"></span></li>
-    <li>Не понравилась первая пачка — заменим<span class="sample"></span></li>
-  </ul>
-</main>
-<footer class="dock">
-  <div class="dock__action"><a class="action action--primary action--full" href="06-korzina.html">В корзину · 2&nbsp;250&nbsp;₽ · в&nbsp;зёрнах</a></div>
-</footer>
+  <div class="blk">
+    <div class="guar glass"><svg class="i"><use href="#i-shield"/></svg><div><b>Не&nbsp;понравилась первая пачка — заменим</b><small>Напиши в&nbsp;помощь, пришлём другую · условия — пример</small></div></div>
+  </div>
+
+  <div class="dockwrap">
+    <div class="dock"><a class="pill" href="06-korzina.html"><svg class="i"><use href="#i-plus"/></svg><span class="pp">2&nbsp;250&nbsp;₽<small>1&nbsp;кг · в зёрнах</small></span></a></div>
+  </div>
+</div>
 </body>
 </html>
