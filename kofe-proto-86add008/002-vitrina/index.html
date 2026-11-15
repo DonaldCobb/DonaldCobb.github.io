@@ -9,16 +9,16 @@
    страница собирает сама: полосу экранов по порядку, подписи и карту
    переходов, снятую с настоящих ссылок в экранах. */
 const prototype = {
-  title: "«Кофе» — прототип 002 r2: витрина и карточка сорта (основа — 000-mobilka r3)",
-  note: "Круг r2: вид — продолжение утверждённого прототипа 000-mobilka r3 (реестр notes/approved.md [visual-base]; мята #26825B, Oswald капсом, Manrope, фото пачки, меню из 5 вкладок). Слева направо — путь покупателя: витрина, карточка, «чем варишь», корзина. Тёмная тема — по системной настройке. Помеченное «пример» не решено (questions.md).",
+  title: "«Кофе» — прототип 002 r3: витрина и карточка сорта (основа — 000-mobilka r3)",
+  note: "Круг r3 (правки Юлая 15235): вид — продолжение утверждённого прототипа 000-mobilka r3 (реестр notes/approved.md [visual-base]; мята #26825B, Oswald капсом, Manrope, фото пачки, меню из 5 вкладок). Слева направо — путь покупателя: витрина, карточка, корзина. Тёмная тема — по системной настройке. Помеченное «пример» не решено (questions.md).",
   // Устройство из design.md §1: телефон 390×844, ноутбук 1440×900.
   device: { width: 390, height: 844 },
   screens: [
     { file: "01-vitrina.html", title: "Витрина", state: "штатно" },
+    { file: "01b-razdel-skoro.html", title: "Бразилия", state: "скоро" },
+    { file: "01c-razdel-skoro.html", title: "Уганда", state: "скоро" },
     { file: "02-vitrina-pusto.html", title: "Витрина", state: "пусто" },
     { file: "03-kartochka.html", title: "Карточка сорта", state: "штатно" },
-    { file: "04-chem-varish.html", title: "Чем варишь?", state: "штатно" },
-    { file: "05-sovet-turka.html", title: "Совет: турка", state: "штатно" },
     { file: "06-korzina.html", title: "Корзина", state: "одна пачка" },
     { file: "07-korzina-pusto.html", title: "Корзина", state: "пусто" },
   ],
@@ -72,13 +72,13 @@ const prototype = {
   const p = prototype;
   const pad = (n) => String(n).padStart(2, "0");
   const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
-  const name = (s) => `<b>${pad(s.n)}</b> ${esc(s.title)}${s.state ? ` · ${esc(s.state)}` : ""}`;
+  const name = (s) => `<b>${s.n}</b> ${esc(s.title)}${s.state ? ` · ${esc(s.state)}` : ""}`;
 
   document.title = p.title;
   document.getElementById("title").textContent = p.title;
   document.getElementById("note").textContent = p.note;
 
-  const screens = p.screens.map((s, i) => ({ ...s, n: i + 1 }));
+  const screens = p.screens.map((s) => ({ ...s, n: s.file.slice(0, s.file.indexOf("-")) }));
   const byFile = new Map(screens.map((s) => [s.file, s]));
   const strip = document.getElementById("strip");
   const links = [];        // { from, to, label } — снимаются с экранов
@@ -148,7 +148,7 @@ const prototype = {
     const orphans = screens.filter((s, i) => i > 0 && !incoming.has(s.file) && !/пуст/i.test(s.state ?? ""));
     const parts = [];
     if (blocked) parts.push("Карта переходов и подписи фреймов работают через сервер (адрес http://127.0.0.1:…); с диска видно только экраны.");
-    if (!blocked && orphans.length) parts.push(`Сюда ничего не ведёт: ${orphans.map((s) => `${pad(s.n)} ${s.title}`).join(", ")}.`);
+    if (!blocked && orphans.length) parts.push(`Сюда ничего не ведёт: ${orphans.map((s) => `${s.n} ${s.title}`).join(", ")}.`);
     if (!blocked && !links.length && scanned.size === screens.length) parts.push("Ссылок между экранами нет.");
     note.textContent = parts.join(" ");
   }
