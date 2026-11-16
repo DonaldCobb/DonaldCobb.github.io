@@ -1,0 +1,24 @@
+/* r3.3 — вариант D: «Я» = друзья и бонусы + профиль. Цвета — токены. Бейдж корзины внутри вкладки. */
+.nav-4 .badge { top: 0; left: calc(50% + 10px); box-shadow: 0 0 0 2px var(--nav-solid); font-style: normal; font-weight: 500; }
+.ya .ya-h0 { margin-top: 10px; }
+.ya .fr { margin: 0 16px; padding: 18px; display: grid; gap: 14px; }
+.ya .fr-h { display: flex; gap: 12px; align-items: center; }
+.ya .fr-h b { font-size: 17px; font-weight: 500; display: block; text-transform: lowercase; }
+.ya .fr-h small { margin-top: 0; font-size: 14px; color: var(--ink-2); display: block; line-height: 1.35; margin-top: 2px; }
+.ya .fr-s { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.ya .fr-s > div { background: var(--surface-2); border-radius: var(--r-m); padding: 12px 14px; }
+.ya .fr-s b { font-family: var(--font-display); font-size: 26px; font-weight: 700; letter-spacing: .04em; display: block; line-height: 1.1; }
+.ya .fr-s small { font-size: 14px; color: var(--ink-2); }
+.ya .ya-h { margin: 22px 16px 10px; }
+.ya .ya-me { margin: 0 16px; padding: 14px; display: flex; align-items: center; gap: 14px; }
+.ya .av { width: 52px; height: 52px; border-radius: 50%; background: var(--surface-2); color: var(--ink); display: grid; place-items: center; font-family: var(--font-display); font-size: 21px; font-weight: 700; flex: none; }
+.ya .ya-me b { font-size: 17px; font-weight: 500; display: block; }
+.ya .ya-me small { font-size: 14px; color: var(--ink-2); }
+.ya .ya-list { margin: 10px 16px 0; padding: 4px 0; }
+.ya .ya-list > * { display: flex; align-items: center; gap: 14px; padding: 12px 16px; min-height: 64px; width: 100%; text-align: left; color: inherit; }
+.ya .ya-list > * + * { border-top: 1px solid var(--line); }
+.ya .ya-list b { font-size: 17px; font-weight: 500; display: block; }
+.ya .ya-list small { font-size: 14px; color: var(--ink-2); display: block; }
+.ya .ya-list span { flex: 1; }
+.ya .ya-list svg.i { color: var(--ink); }
+.ya .ya-list svg.r { opacity: .5; }

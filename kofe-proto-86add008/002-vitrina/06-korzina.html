@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="tokens.css">
 <link rel="stylesheet" href="base.css">
 <link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="menu-variants.css">
 </head>
 <body class="pg cart">
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -39,7 +40,7 @@
     <symbol id="f-user" viewBox="0 0 256 256"><g><path d="M172,120a44,44,0,1,1-44-44A44.05,44.05,0,0,1,172,120Zm60,8A104,104,0,1,1,128,24,104.11,104.11,0,0,1,232,128Zm-16,0a88.09,88.09,0,0,0-91.47-87.93C77.43,41.89,39.87,81.12,40,128.25a87.65,87.65,0,0,0,22.24,58.16A79.71,79.71,0,0,1,84,165.1a4,4,0,0,1,4.83.32,59.83,59.83,0,0,0,78.28,0,4,4,0,0,1,4.83-.32,79.71,79.71,0,0,1,21.79,21.31A87.62,87.62,0,0,0,216,128Z"/></g></symbol>
   </defs>
 </svg>
-<div class="hd"><span class="sp"></span><div class="t">корзина</div><button type="button" class="round" aria-label="помощь"><svg class="i"><use href="#i-chat"/></svg></button></div>
+<div class="hd"><span class="sp" style="width:96px"></span><div class="t">корзина</div><span class="tools" style="display:flex;gap:8px;flex:none"><button type="button" class="round" aria-label="профиль"><svg class="i f"><use href="#f-user"/></svg></button><button type="button" class="round" aria-label="помощь"><svg class="i"><use href="#i-chat"/></svg></button></span></div>
 <div class="items card">
   <div class="ci"><a class="ph" href="03-kartochka.html" aria-label="эфиопия — к сорту"></a><div class="tx"><small>1&nbsp;кг · в зёрнах · обжарим 12.11</small><b>эфиопия</b><div class="row"><span>2&nbsp;250&nbsp;₽</span><div class="step"><a href="07-korzina-pusto.html" aria-label="меньше"><svg class="i"><use href="#i-minus"/></svg></a>1<button type="button" aria-label="больше"><svg class="i"><use href="#i-plus"/></svg></button></div></div></div></div>
 </div>
@@ -49,12 +50,11 @@
   <button type="button" class="pill">оформить заказ</button>
   <p class="next">оформление и оплата — следующий этап</p>
 </div>
-<nav class="nav" aria-label="Разделы">
-  <button type="button"><svg class="i f"><use href="#f-home"/></svg>главная</button>
-  <a href="01-vitrina.html"><svg class="i f"><use href="#f-bean"/></svg>зерно</a>
-  <button type="button"><svg class="i f"><use href="#f-users"/></svg>друзья</button>
-  <a class="on" aria-current="page"><svg class="i f"><use href="#f-bag"/></svg>корзина<span class="badge" aria-label="в корзине 1">1</span></a>
-  <button type="button"><svg class="i f"><use href="#f-user"/></svg>профиль</button>
+<nav class="nav dark-nav nav-4" aria-label="Разделы">
+  <button type="button" aria-label="главная"><svg class="i f"><use href="#f-home"/></svg><span>главная</span></button>
+  <a href="01-vitrina.html" aria-label="зерно"><svg class="i f"><use href="#f-bean"/></svg><span>зерно</span></a>
+  <button type="button" aria-label="друзья"><svg class="i f"><use href="#f-users"/></svg><span>друзья</span></button>
+  <a class="on" aria-current="page" aria-label="корзина"><svg class="i f"><use href="#f-bag"/></svg><span>корзина</span></a>
 </nav>
 </body>
 </html>

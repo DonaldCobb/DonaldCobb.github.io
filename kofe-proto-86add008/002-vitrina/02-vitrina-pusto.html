@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="tokens.css">
 <link rel="stylesheet" href="base.css">
 <link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="menu-variants.css">
 </head>
 <body class="pg">
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -40,8 +41,8 @@
   </defs>
 </svg>
 <header class="top">
-  <div class="mark"><svg><use href="#logo"/></svg><div class="where"><b class="brand"></b><small><svg class="i"><use href="#i-truck"/></svg>ближайшая обжарка 12.11 · Пермь</small></div></div>
-  <button type="button" class="round" aria-label="помощь"><svg class="i"><use href="#i-chat"/></svg></button>
+  <div class="mark"><svg><use href="#logo"/></svg><div class="where"><b class="brand"></b><small><svg class="i"><use href="#i-truck"/></svg>обжарка 12.11 · Пермь</small></div></div>
+  <div class="tools"><button type="button" class="round" aria-label="профиль"><svg class="i f"><use href="#f-user"/></svg></button><button type="button" class="round" aria-label="помощь"><svg class="i"><use href="#i-chat"/></svg></button></div>
 </header>
 <div class="center">
   <div class="card empty">
@@ -50,12 +51,11 @@
     <p>Сейчас на витрине нет сорта, который можно заказать. Новый появится здесь — сразу с&nbsp;ценой до&nbsp;двери.</p>
   </div>
 </div>
-<nav class="nav" aria-label="Разделы">
-  <button type="button"><svg class="i f"><use href="#f-home"/></svg>главная</button>
-  <a class="on" aria-current="page"><svg class="i f"><use href="#f-bean"/></svg>зерно</a>
-  <button type="button"><svg class="i f"><use href="#f-users"/></svg>друзья</button>
-  <a href="07-korzina-pusto.html"><svg class="i f"><use href="#f-bag"/></svg>корзина</a>
-  <button type="button"><svg class="i f"><use href="#f-user"/></svg>профиль</button>
+<nav class="nav dark-nav nav-4" aria-label="Разделы">
+  <button type="button" aria-label="главная"><svg class="i f"><use href="#f-home"/></svg><span>главная</span></button>
+  <a class="on" aria-current="page" aria-label="зерно"><svg class="i f"><use href="#f-bean"/></svg><span>зерно</span></a>
+  <button type="button" aria-label="друзья"><svg class="i f"><use href="#f-users"/></svg><span>друзья</span></button>
+  <a href="07-korzina-pusto.html" aria-label="корзина"><svg class="i f"><use href="#f-bag"/></svg><span>корзина</span></a>
 </nav>
 </body>
 </html>

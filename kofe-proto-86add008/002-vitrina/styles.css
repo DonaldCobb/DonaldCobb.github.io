@@ -225,3 +225,9 @@ body { padding-bottom: calc(96px + env(safe-area-inset-bottom)); }
 }
 .prod { padding-bottom: 0; }
 .soonbox .pill { --acc: var(--cream); --acc-ink: #141416; margin-top: 18px; }
+
+/* r3.2 — текст описания на карточке (прежний текст шторки «подробнее», теперь без шторки) */
+.about { margin-top: 12px; }
+.about p { font-size: 14px; line-height: 1.45; margin: 0 0 4px; opacity: .94; }
+.about h5 { font-family: var(--font-display); font-weight: 500; text-transform: uppercase; letter-spacing: .06em; font-size: 14px; margin: 12px 0 2px; opacity: .85; }
+.about .about-note { margin-top: 14px; opacity: .75; }
