@@ -1,0 +1,29 @@
+/* r3.2 — три варианта нижнего меню на экране 01. Цвета и стекло — из styles.css / tokens.css, новых нет. */
+.top .tools { display: flex; gap: 8px; flex: none; }
+.top .where { min-width: 0; }
+.top .mark { min-width: 0; display: flex; align-items: center; gap: 4px; }
+.top .where b, .top .where small { white-space: nowrap; }
+
+/* общее: подпись — отдельный span, чтобы её можно было прятать */
+.nav span { display: block; }
+
+/* A — четыре вкладки в капсуле */
+.nav-4 { grid-template-columns: repeat(4, 1fr); }
+
+/* B — капсула из трёх + отдельный круг корзины справа (как отдельная кнопка у Apple) */
+.navrow { position: fixed; z-index: 20; bottom: calc(12px + env(safe-area-inset-bottom)); left: 50%; transform: translateX(-50%);
+  width: min(calc(100vw - 32px), calc(var(--device-width) - 32px)); display: flex; gap: 8px; align-items: center; }
+.navrow .nav { position: static; transform: none; width: auto; flex: 1; min-width: 0; }
+.nav-3 { grid-template-columns: repeat(3, 1fr); }
+.navrow .navcart { flex: none; width: 74px; height: 74px; padding: 0; border-radius: 50%; display: grid; place-items: center; color: var(--ink); position: relative; left: auto; bottom: auto; transform: none; grid-template-columns: none; }
+.navrow .navcart svg.i { width: 30px; height: 30px; }
+.navrow .navcart .badge { top: 10px; left: auto; right: 10px; font-style: normal; }
+
+/* C — пять значков, подпись только у активной */
+.nav-5 { display: flex; gap: 2px; }
+.nav-5 a, .nav-5 button { flex: 1 1 0; min-width: 44px; flex-direction: row; gap: 6px; height: 56px; }
+.nav-5 span { display: none; }
+.nav-5 .on { flex: 0 0 auto; padding: 0 16px 0 14px; }
+.nav-5 .on span { display: block; }
+.top .round { flex: none; }
+.round svg.f { fill: currentColor; stroke: none; }

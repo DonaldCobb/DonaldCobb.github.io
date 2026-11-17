@@ -1,0 +1,137 @@
+/* Каркас прототипа: сброс, устройство, сетка, структурные блоки.
+   Вида здесь нет — только то, что нужно любому экрану, чтобы стоять.
+   Файл копируется в папку прототипа и не правится: свои классы и
+   перекрытия — в styles.css рядом. Цвета, шрифты и отступы — только
+   переменными из tokens.css. */
+
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; }
+h1, h2, h3, h4, p, ul, ol, figure { margin: 0; }
+ul, ol { padding: 0; list-style: none; }
+img, svg { display: block; max-width: 100%; }
+button, input, textarea, select { font: inherit; color: inherit; }
+
+/* Устройство — из design.md §1 «Устройство и обстановка».
+   На <html> ставится data-device="phone" или "laptop"; экран, открытый
+   целиком на большом мониторе, держит ширину своего устройства. */
+html { --device-width: 100%; }
+html[data-device="phone"]  { --device-width: 390px; }
+html[data-device="laptop"] { --device-width: 1440px; }
+
+/* Шаг сетки и масштаб заголовков — от токенов. Направление просит
+   другой масштаб — перекрой эти переменные в styles.css. */
+:root {
+  --s1: var(--space);
+  --s2: calc(var(--space) * 2);
+  --s3: calc(var(--space) * 3);
+  --s4: calc(var(--space) * 4);
+  --s6: calc(var(--space) * 6);
+  --s8: calc(var(--space) * 8);
+  --fs-small: calc(var(--fs-base) * 0.875);
+  --fs-h3: calc(var(--fs-base) * 1.25);
+  --fs-h2: calc(var(--fs-base) * 1.6);
+  --fs-h1: calc(var(--fs-base) * 2.2);
+}
+
+body {
+  min-height: 100vh;
+  max-width: var(--device-width);
+  margin-inline: auto;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-text);
+  font-size: var(--fs-base);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  display: flex;
+  flex-direction: column;
+}
+
+h1, h2, h3 { font-family: var(--font-display); font-weight: var(--weight-display); line-height: 1.15; }
+h1 { font-size: var(--fs-h1); }
+h2 { font-size: var(--fs-h2); }
+h3 { font-size: var(--fs-h3); }
+
+a { color: inherit; }
+/* Ссылка с адресом — переход на другой экран прототипа, курсор говорит,
+   что нажать можно. Кнопка без обработчика курсор не меняет. */
+a[href] { cursor: pointer; }
+button { cursor: default; }
+:focus-visible { outline: 2px solid var(--text); outline-offset: 2px; }
+
+/* Раскладка */
+.page { flex: 1; width: 100%; padding: var(--s2) var(--s2) var(--s8); }
+.page--center { display: flex; flex-direction: column; justify-content: center; }
+.stack > * + * { margin-top: var(--s2); }
+.stack-lg > * + * { margin-top: var(--s4); }
+.row { display: flex; align-items: center; gap: var(--s2); }
+.cluster { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s1); }
+.spread { display: flex; align-items: center; justify-content: space-between; gap: var(--s2); }
+.measure { max-width: var(--measure); }
+.muted { color: var(--muted); }
+.small { font-size: var(--fs-small); }
+
+/* Шапка экрана */
+.bar {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--s2);
+  min-height: var(--target); padding: var(--s1) var(--s2);
+}
+.bar__title { font-weight: var(--weight-display); }
+
+/* Действие: ссылка на другой экран или кнопка. Одно главное на экран. */
+.action {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--s1);
+  min-height: var(--target); padding: 0 var(--s2);
+  border: 1px solid var(--line); border-radius: var(--radius); background: transparent;
+  text-decoration: none; line-height: 1.2;
+}
+.action--primary { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
+.action--danger { color: var(--danger); border-color: var(--danger); }
+.action--quiet { border-color: transparent; color: var(--muted); }
+.action--full { width: 100%; }
+.actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s1); }
+
+/* Нижнее действие на телефоне — там, где палец. */
+.sticky-bottom { position: sticky; bottom: 0; padding: var(--s2); background: var(--bg); }
+
+/* Поле ввода */
+.field {
+  display: block; width: 100%; min-height: var(--target); padding: var(--s1) var(--s2);
+  border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface);
+  line-height: 1.5;
+}
+.field::placeholder { color: var(--muted); }
+.label { display: block; font-size: var(--fs-small); color: var(--muted); margin-bottom: calc(var(--s1) / 2); }
+
+/* Список: строки с разделителем, каждая — цель для пальца. */
+.list { display: flex; flex-direction: column; }
+.item {
+  display: flex; align-items: center; gap: var(--s2);
+  min-height: var(--target); padding: var(--s1) 0; border-top: 1px solid var(--line);
+  text-decoration: none;
+}
+.item:last-child { border-bottom: 1px solid var(--line); }
+.item__body { flex: 1; min-width: 0; }
+.item__title { font-weight: 600; }
+.item__meta { color: var(--muted); font-size: var(--fs-small); }
+
+/* Поверхность: карточка, шторка, панель. Тень и радиус — из токенов,
+   и только если направление их просит. */
+.surface {
+  background: var(--surface); border: 1px solid var(--line);
+  border-radius: var(--radius); box-shadow: var(--shadow); padding: var(--s2);
+}
+
+/* Пустое состояние: объяснение и одно действие, не нули и прочерки. */
+.empty {
+  display: flex; flex-direction: column; align-items: flex-start; gap: var(--s2);
+  padding: var(--s6) 0; max-width: var(--measure);
+}
+.empty--center { align-items: center; text-align: center; margin-inline: auto; }
+
+/* Число или метрика подписаны как пример — скриншот не примут за отчёт. */
+.sample::after { content: "пример"; font-size: var(--fs-small); color: var(--muted); margin-left: var(--s1); }
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}

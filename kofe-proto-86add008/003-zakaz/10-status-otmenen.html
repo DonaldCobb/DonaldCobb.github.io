@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="ru" data-device="phone">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Заказ отменён</title>
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="base.css">
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="menu-variants.css">
+<link rel="stylesheet" href="zakaz.css">
+</head>
+<body class="pg">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="logo" viewBox="0 0 32 32"><rect width="32" height="32" rx="9" fill="#141416"/><g transform="rotate(35 16 16)"><ellipse cx="16" cy="16" rx="6.6" ry="9.6" fill="var(--cream)"/><path d="M16 7c-2.4 2.9-2.4 6 0 9s2.4 6.1 0 9" fill="none" stroke="#141416" stroke-width="1.9" stroke-linecap="round"/></g></symbol>
+    <symbol id="i-left" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol>
+    <symbol id="i-chat" viewBox="0 0 24 24"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></symbol>
+    <symbol id="i-truck" viewBox="0 0 24 24"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
+    <symbol id="f-home" viewBox="0 0 256 256"><g><path d="M224,120v96a8,8,0,0,1-8,8H160a8,8,0,0,1-8-8V164a4,4,0,0,0-4-4H108a4,4,0,0,0-4,4v52a8,8,0,0,1-8,8H40a8,8,0,0,1-8-8V120a16,16,0,0,1,4.69-11.31l80-80a16,16,0,0,1,22.62,0l80,80A16,16,0,0,1,224,120Z"/></g></symbol>
+    <symbol id="f-bean" viewBox="0 0 256 256"><g><path d="M71.22,190.47a108.88,108.88,0,0,1-33.84,9.16,4,4,0,0,1-3.89-2c-8.67-15.28-11.52-34.29-8-55.15,4.49-26.92,19.09-53.87,41.12-75.9s49-36.63,75.9-41.12c22.79-3.79,43.37,0,59.29,10.6a4,4,0,0,1-1.25,7.23,121,121,0,0,0-21.82,7.46c-21.77,9.9-49.6,31.06-58.52,75.7C114.1,156.73,97.63,178.27,71.22,190.47ZM222.51,58.38a4,4,0,0,0-3.88-2,108.5,108.5,0,0,0-33.85,9.16c-26.41,12.2-42.88,33.74-48.94,64-8.93,44.64-36.75,65.8-58.52,75.7a121,121,0,0,1-21.82,7.46A4,4,0,0,0,54.27,220c11.87,7.92,26.32,12,42.35,12a103.66,103.66,0,0,0,16.92-1.44c26.91-4.49,53.87-19.09,75.9-41.12s36.63-49,41.12-75.9C234,92.68,231.18,73.66,222.51,58.38Z"/></g></symbol>
+    <symbol id="f-users" viewBox="0 0 256 256"><g><path d="M164.47,195.63a8,8,0,0,1-6.7,12.37H10.23a8,8,0,0,1-6.7-12.37,95.83,95.83,0,0,1,47.22-37.71,60,60,0,1,1,66.5,0A95.83,95.83,0,0,1,164.47,195.63Zm87.91-.15a95.87,95.87,0,0,0-47.13-37.56A60,60,0,0,0,144.7,54.59a4,4,0,0,0-1.33,6A75.83,75.83,0,0,1,147,150.53a4,4,0,0,0,1.07,5.53,112.32,112.32,0,0,1,29.85,30.83,23.92,23.92,0,0,1,3.65,16.47,4,4,0,0,0,3.95,4.64h60.3a8,8,0,0,0,7.73-5.93A8.22,8.22,0,0,0,252.38,195.48Z"/></g></symbol>
+    <symbol id="f-bag" viewBox="0 0 256 256"><g><path d="M216,40H40A16,16,0,0,0,24,56V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40Zm-88,96A48.05,48.05,0,0,1,80,88a8,8,0,0,1,16,0,32,32,0,0,0,64,0,8,8,0,0,1,16,0A48.05,48.05,0,0,1,128,136Z"/></g></symbol>
+    <symbol id="f-user" viewBox="0 0 256 256"><g><path d="M172,120a44,44,0,1,1-44-44A44.05,44.05,0,0,1,172,120Zm60,8A104,104,0,1,1,128,24,104.11,104.11,0,0,1,232,128Zm-16,0a88.09,88.09,0,0,0-91.47-87.93C77.43,41.89,39.87,81.12,40,128.25a87.65,87.65,0,0,0,22.24,58.16A79.71,79.71,0,0,1,84,165.1a4,4,0,0,1,4.83.32,59.83,59.83,0,0,0,78.28,0,4,4,0,0,1,4.83-.32,79.71,79.71,0,0,1,21.79,21.31A87.62,87.62,0,0,0,216,128Z"/></g></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></symbol>
+    <symbol id="i-send" viewBox="0 0 24 24"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/><path d="m21.854 2.147-10.94 10.939"/></symbol>
+    <symbol id="i-flame" viewBox="0 0 24 24"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></symbol>
+    <symbol id="i-pkg" viewBox="0 0 24 24"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/><path d="M12 22V12"/><path d="m3.3 7 7.703 4.734a2 2 0 0 0 1.994 0L20.7 7"/><path d="m7.5 4.27 9 5.15"/></symbol>
+  </defs>
+</svg>
+<div class="hd"><span class="sp2"></span><div class="t">заказ</div><span class="tools"><button type="button" class="round" aria-label="профиль"><svg class="i f" aria-hidden="true"><use href="#f-user"/></svg></button><button type="button" class="round" aria-label="помощь"><svg class="i" aria-hidden="true"><use href="#i-chat"/></svg></button></span></div>
+<section class="placed cancelled"><h1 class="hero">Заказ отменён</h1><div class="num">№1042 <span class="tag">пример</span></div><span class="res"><svg class="i" aria-hidden="true"><use href="#i-x"/></svg>отменён продавцом</span><p>Продавец отменил заказ. Если это неожиданно&nbsp;— нажми «помощь по&nbsp;заказу».</p></section>
+<div class="items card"><div class="ci"><div class="ph ph-s" role="img" aria-label="пачка эфиопии"></div><div class="tx"><small>1&nbsp;кг · в&nbsp;зёрнах</small><b>эфиопия</b><div class="row"><span>2&nbsp;250&nbsp;₽</span><span class="q">×&nbsp;1</span></div></div></div><div class="sumrow"><div class="way"><small>доставка</small><span>Пермь · Ozon, в&nbsp;цене</span></div><div class="tot"><small>итого</small><b>2&nbsp;250&nbsp;₽</b></div></div></div>
+<div class="acts"><button type="button" class="pill">на витрину</button><button type="button" class="pill ghost">помощь по заказу</button></div>
+<nav class="nav dark-nav nav-4" aria-label="Разделы">
+  <button type="button" aria-label="главная"><svg class="i f" aria-hidden="true"><use href="#f-home"/></svg><span>главная</span></button>
+  <button type="button" aria-label="зерно"><svg class="i f" aria-hidden="true"><use href="#f-bean"/></svg><span>зерно</span></button>
+  <button type="button" aria-label="друзья"><svg class="i f" aria-hidden="true"><use href="#f-users"/></svg><span>друзья</span></button>
+  <button type="button" aria-label="корзина"><svg class="i f" aria-hidden="true"><use href="#f-bag"/></svg><span>корзина</span></button>
+</nav>
+</body>
+</html>
